@@ -1,0 +1,43 @@
+<nav class="navbar navbar-expand-lg bg-body-tertiary bg-dark" data-bs-theme="dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="">TapChat</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarScroll">
+        <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
+          <li class="nav-item">
+            <button (click)="onClickNavItem('home')" [class]="(currentOpenedNavItem === 'home')? 'nav-link active': 'nav-link'" aria-current="page">Home</button>
+          </li>
+          <li class="nav-item">
+            <button (click)="onClickNavItem('contact')" [class]="currentOpenedNavItem === 'contact'? 'nav-link active': 'nav-link'">Contacts</button>
+          </li>
+          <li class="nav-item">
+            <button (click)="onClickNavItem('chat')"[class]="currentOpenedNavItem === 'chat'? 'nav-link active': 'nav-link'">Chats</button>
+          </li>
+        </ul>
+        <div class="w-50">
+            <ul class="navbar-nav">
+                <li *ngIf="isLoggedIn" class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      Profile
+                    </a>
+                    <ul class="dropdown-menu">
+                      <li><button (click)="onClickUserProfile()" class="dropdown-item">User Profile</button></li>
+                      <li><hr class="dropdown-divider"></li>
+                      <li><button class="dropdown-item" (click)="onClickLogOut()"> Log Out</button></li>
+                    </ul>
+                  </li>
+                <li *ngIf="!isLoggedIn" class="nav-item">
+                    <a class="nav-link" href="\log-in">Log In</a>
+                </li>
+                <li *ngIf="!isLoggedIn" class="nav-item">
+                    <a class="nav-link" href="\register">Register</a>
+                </li>
+            </ul>
+            
+        </div>
+      </div>
+    </div>
+  </nav>
+  <router-outlet></router-outlet>
