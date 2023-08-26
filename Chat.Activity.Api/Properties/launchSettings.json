@@ -9,7 +9,7 @@
     }
   },
   "profiles": {
-    "Chat.Activity": {
+    "Chat.Activity.Api": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": false,
