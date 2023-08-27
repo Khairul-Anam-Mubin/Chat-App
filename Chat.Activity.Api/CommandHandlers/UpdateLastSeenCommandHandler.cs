@@ -7,7 +7,7 @@ using Chat.Shared.Contracts.Commands;
 
 namespace Chat.Activity.Api.CommandHandlers
 {
-    [ServiceRegister(typeof(IRequestHandler), ServiceLifetime.Singleton)]
+    [ServiceRegister(typeof(IRequestHandler<UpdateLastSeenCommand, CommandResponse>), ServiceLifetime.Singleton)]
     public class UpdateLastSeenCommandHandler : ACommandHandler<UpdateLastSeenCommand>
     {
         private readonly ILastSeenRepository _lastSeenRepository;

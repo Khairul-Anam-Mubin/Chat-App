@@ -1,4 +1,3 @@
-using Chat.Framework.Enums;
 using Chat.Framework.Mediators;
 
 namespace Chat.Framework.CQRS

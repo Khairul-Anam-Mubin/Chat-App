@@ -6,7 +6,7 @@ using Chat.Framework.Mediators;
 
 namespace Chat.Api.ChatModule.CommandHandlers
 {
-    [ServiceRegister(typeof(IRequestHandler), ServiceLifetime.Singleton)]
+    [ServiceRegister(typeof(IRequestHandler<UpdateLatestChatCommand, CommandResponse>), ServiceLifetime.Singleton)]
     public class UpdateLatestChatCommandHandler : ACommandHandler<UpdateLatestChatCommand>
     {
         

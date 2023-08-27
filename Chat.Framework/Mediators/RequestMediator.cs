@@ -26,6 +26,14 @@ public class RequestMediator : IRequestMediator
 
     protected virtual IRequestHandler<TRequest, TResponse>? GetHandler<TRequest, TResponse>(string handlerName)
     {
+        try
+        {
+            return _serviceProvider.GetRequiredService<IRequestHandler<TRequest, TResponse>>();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+        }
         var handler = _serviceProvider.GetService<IRequestHandler>(handlerName);
         return (IRequestHandler<TRequest, TResponse>?)handler;
     }

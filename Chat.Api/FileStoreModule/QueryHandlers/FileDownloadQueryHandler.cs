@@ -7,7 +7,7 @@ using Chat.Framework.Mediators;
 
 namespace Chat.Api.FileStoreModule.QueryHandlers
 {
-    [ServiceRegister(typeof(IRequestHandler), ServiceLifetime.Singleton)]
+    [ServiceRegister(typeof(IRequestHandler<FileDownloadQuery, QueryResponse>), ServiceLifetime.Singleton)]
     public class FileDownloadQueryHandler : AQueryHandler<FileDownloadQuery>
     {
         private readonly IFileRepository _fileRepository;

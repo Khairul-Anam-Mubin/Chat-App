@@ -6,7 +6,7 @@ using Chat.Framework.Mediators;
 
 namespace Chat.Api.ChatModule.QueryHandlers
 {
-    [ServiceRegister(typeof(IRequestHandler), ServiceLifetime.Singleton)]
+    [ServiceRegister(typeof(IRequestHandler<ChatListQuery, QueryResponse>), ServiceLifetime.Singleton)]
     public class ChatListQueryHandler : AQueryHandler<ChatListQuery>
     {
         private readonly ILatestChatRepository _latestChatRepository;

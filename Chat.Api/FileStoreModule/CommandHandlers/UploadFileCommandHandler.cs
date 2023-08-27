@@ -9,7 +9,7 @@ using Chat.Framework.Mediators;
 
 namespace Chat.Api.FileStoreModule.CommandHandlers
 {
-    [ServiceRegister(typeof(IRequestHandler), ServiceLifetime.Singleton)]
+    [ServiceRegister(typeof(IRequestHandler<UploadFileCommand, CommandResponse>), ServiceLifetime.Singleton)]
     public class UploadFileCommandHandler : ACommandHandler<UploadFileCommand>
     {
         private readonly IFileRepository _fileRepository;

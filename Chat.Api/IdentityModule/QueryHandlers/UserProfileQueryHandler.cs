@@ -7,7 +7,7 @@ using Chat.Framework.Mediators;
 
 namespace Chat.Api.IdentityModule.QueryHandlers
 {
-    [ServiceRegister(typeof(IRequestHandler), ServiceLifetime.Singleton)]
+    [ServiceRegister(typeof(IRequestHandler<UserProfileQuery, QueryResponse>), ServiceLifetime.Singleton)]
     public class UserProfileQueryHandler : AQueryHandler<UserProfileQuery>
     {
         private readonly IUserRepository _userRepository;

@@ -6,7 +6,7 @@ using Chat.Framework.Mediators;
 
 namespace Chat.Api.ContactModule.QueryHandlers
 {
-    [ServiceRegister(typeof(IRequestHandler), ServiceLifetime.Singleton)]
+    [ServiceRegister(typeof(IRequestHandler<ContactQuery, QueryResponse>), ServiceLifetime.Singleton)]
     public class ContactQueryHandler : AQueryHandler<ContactQuery>
     {
         private readonly IContactRepository _contactRepository;

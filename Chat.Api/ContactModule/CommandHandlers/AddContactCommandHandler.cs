@@ -11,7 +11,7 @@ using Chat.Framework.Proxy;
 
 namespace Chat.Api.ContactModule.CommandHandlers
 {
-    [ServiceRegister(typeof(IRequestHandler), ServiceLifetime.Singleton)]
+    [ServiceRegister(typeof(IRequestHandler<AddContactCommand, CommandResponse>), ServiceLifetime.Singleton)]
     public class AddContactCommandHandler : ACommandHandler<AddContactCommand>
     {
         private readonly IContactRepository _contactRepository;

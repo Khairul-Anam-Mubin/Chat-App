@@ -8,7 +8,7 @@ using Chat.Framework.Proxy;
 
 namespace Chat.Api.ChatModule.CommandHandlers
 {
-    [ServiceRegister(typeof(IRequestHandler), ServiceLifetime.Singleton)]
+    [ServiceRegister(typeof(IRequestHandler<SendMessageCommand, CommandResponse>), ServiceLifetime.Singleton)]
     public class SendMessageCommandHandler : ACommandHandler<SendMessageCommand>
     {
         private readonly IChatRepository _chatRepository;

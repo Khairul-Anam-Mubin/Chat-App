@@ -7,7 +7,7 @@ using Chat.Framework.Mediators;
 
 namespace Chat.Activity.Api.QueryHandlers
 {
-    [ServiceRegister(typeof(IRequestHandler), ServiceLifetime.Singleton)]
+    [ServiceRegister(typeof(IRequestHandler<LastSeenQuery, QueryResponse>), ServiceLifetime.Singleton)]
     public class LastSeenQueryHandler : AQueryHandler<LastSeenQuery>
     {
         private readonly ILastSeenRepository _lastSeenRepository;

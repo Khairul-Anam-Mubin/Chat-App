@@ -7,7 +7,7 @@ using Chat.Shared.Domain.Helpers;
 
 namespace Chat.Api.IdentityModule.CommandHandlers
 {
-    [ServiceRegister(typeof(IRequestHandler), ServiceLifetime.Singleton)]
+    [ServiceRegister(typeof(IRequestHandler<RefreshTokenCommand, CommandResponse>), ServiceLifetime.Singleton)]
     public class RefreshTokenCommandHandler : ACommandHandler<RefreshTokenCommand>
     {
         private readonly ITokenService _tokenService;

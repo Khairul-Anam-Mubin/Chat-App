@@ -6,7 +6,7 @@ using Chat.Framework.Mediators;
 
 namespace Chat.Api.IdentityModule.CommandHandlers
 {
-    [ServiceRegister(typeof(IRequestHandler), ServiceLifetime.Singleton)]
+    [ServiceRegister(typeof(IRequestHandler<LoginCommand, CommandResponse>), ServiceLifetime.Singleton)]
     public class LoginCommandHandler : ACommandHandler<LoginCommand>
     {
         private readonly IUserRepository _userRepository;
