@@ -3,7 +3,7 @@ using Chat.Framework.Models;
 
 namespace Chat.Framework.CQRS
 {
-    public abstract class ACommand : Request, ICommand
+    public abstract class ACommand : MetaDataDictionary, ICommand
     {
         public abstract void ValidateCommand();
         public CommandResponse CreateResponse()

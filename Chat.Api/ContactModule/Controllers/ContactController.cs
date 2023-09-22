@@ -1,21 +1,19 @@
-using Chat.Api.ChatModule.Hubs;
 using Chat.Api.ContactModule.Commands;
 using Chat.Api.ContactModule.Queries;
-using Chat.Api.SharedModule.Controllers;
 using Chat.Framework.Proxy;
+using Chat.Shared.Controllers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
 
 namespace Chat.Api.ContactModule.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
     [Authorize]
-    public class ContactController : AChatController
+    public class ContactController : ACommonController
     {
-        public ContactController(IHubContext<ChatHub> hubContext, ICommandQueryProxy commandQueryProxy) 
-            : base(hubContext, commandQueryProxy)
+        public ContactController(ICommandQueryProxy commandQueryProxy) 
+            : base(commandQueryProxy)
         {
         }
 

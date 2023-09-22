@@ -2,20 +2,18 @@ using Chat.Api.FileStoreModule.Commands;
 using Chat.Api.FileStoreModule.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
-using Chat.Api.ChatModule.Hubs;
 using Chat.Api.FileStoreModule.Models;
-using Chat.Api.SharedModule.Controllers;
 using Chat.Framework.Proxy;
+using Chat.Shared.Controllers;
 
 namespace Chat.Api.FileStoreModule.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
     [Authorize]
-    public class FileController : AChatController
+    public class FileController : ACommonController
     {
-        public FileController(IHubContext<ChatHub> hubContext, ICommandQueryProxy commandQueryProxy) : base(hubContext, commandQueryProxy)
+        public FileController(ICommandQueryProxy commandQueryProxy) : base(commandQueryProxy)
         {
         }
 

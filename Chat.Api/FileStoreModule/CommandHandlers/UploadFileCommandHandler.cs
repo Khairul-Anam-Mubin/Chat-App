@@ -14,10 +14,12 @@ namespace Chat.Api.FileStoreModule.CommandHandlers
     {
         private readonly IFileRepository _fileRepository;
         private readonly ITokenService _tokenService;
-        public UploadFileCommandHandler(IFileRepository fileRepository, ITokenService tokenService)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public UploadFileCommandHandler(IFileRepository fileRepository, ITokenService tokenService, IHttpContextAccessor httpContextAccessor)
         {
             _fileRepository = fileRepository;
             _tokenService = tokenService;
+            _httpContextAccessor = httpContextAccessor;
         }
         
         protected override async Task<CommandResponse> OnHandleAsync(UploadFileCommand command)
@@ -38,8 +40,8 @@ namespace Chat.Api.FileStoreModule.CommandHandlers
                 await file.CopyToAsync(stream);
             }
 
-            var requestContext = command.GetRequestContext()?.HttpContext;
-            var currentUser = _tokenService.GetUserProfileFromAccessToken(requestContext?.GetAccessToken());
+            var requestContextFromAccessor = _httpContextAccessor.HttpContext;
+            var currentUser = _tokenService.GetUserProfileFromAccessToken(requestContextFromAccessor?.GetAccessToken());
             var fileModel = new FileModel()
             {
                 Id = fileId,

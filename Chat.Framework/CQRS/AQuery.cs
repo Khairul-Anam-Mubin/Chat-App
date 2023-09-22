@@ -2,7 +2,7 @@ using Chat.Framework.Models;
 
 namespace Chat.Framework.CQRS
 {
-    public abstract class AQuery : Request, IQuery
+    public abstract class AQuery : MetaDataDictionary, IQuery
     {
         public int Offset { get; set; }
         public int Limit { get; set; }

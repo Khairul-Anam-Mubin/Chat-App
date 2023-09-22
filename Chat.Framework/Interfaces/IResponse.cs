@@ -2,7 +2,7 @@ using Chat.Framework.Enums;
 
 namespace Chat.Framework.Interfaces
 {
-    public interface IResponse : ICommonData
+    public interface IResponse : IMetaDataDictionary
     {
         string Message { get; set; }
         ResponseStatus Status { get; set; }

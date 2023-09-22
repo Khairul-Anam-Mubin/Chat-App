@@ -26,19 +26,22 @@ namespace Chat.Api.ChatModule.CommandHandlers
             command.ChatModel.Id = Guid.NewGuid().ToString();
             command.ChatModel.SentAt = DateTime.UtcNow;
             command.ChatModel.Status = "Sent";
+
             if (!await _chatRepository.SaveChatModelAsync(command.ChatModel))
             {
                 throw new Exception("Chat model save error");
             }
-            var requestContext = command.GetRequestContext();
-            await _chatHubService.SendAsync<ChatModel>(command.ChatModel.SendTo, command.ChatModel, requestContext);
+            
+            await _chatHubService.SendAsync<ChatModel>(command.ChatModel.SendTo, command.ChatModel);
 
             var latestChatModel = command.ChatModel.ToLatestChatModel();
             var updateLatestChatCommand = new UpdateLatestChatCommand()
             {
                 LatestChatModel = latestChatModel
             };
+            updateLatestChatCommand.SetData("FireAndForget", true);
             await _commandQueryProxy.GetCommandResponseAsync(updateLatestChatCommand);
+
             response.SetData("Message", command.ChatModel.ToChatDto());
             return response;
         }

@@ -1,4 +1,4 @@
-﻿using MongoDB.Driver;
+﻿using Chat.Framework.Enums;
 
 namespace Chat.Framework.Database.Models
 {

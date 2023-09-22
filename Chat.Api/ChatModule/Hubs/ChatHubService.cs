@@ -1,6 +1,5 @@
 using Chat.Api.ChatModule.Interfaces;
 using Chat.Framework.Attributes;
-using Chat.Framework.Models;
 using Microsoft.AspNetCore.SignalR;
 
 namespace Chat.Api.ChatModule.Hubs
@@ -9,12 +8,15 @@ namespace Chat.Api.ChatModule.Hubs
     public class ChatHubService : IChatHubService
     {
         private readonly IHubConnectionService _hubConnectionService;
-        public ChatHubService(IHubConnectionService hubConnectionService)
+        private readonly IHubContext<ChatHub> _hubContext;
+
+        public ChatHubService(IHubContext<ChatHub> hubContext, IHubConnectionService hubConnectionService)
         {
             _hubConnectionService = hubConnectionService;
+            _hubContext = hubContext;
         }
 
-        public async Task SendAsync<T>(string userId, T message, RequestContext requestContext)
+        public async Task SendAsync<T>(string userId, T message, string method = "ReceivedChat")
         {
             var connectionId = _hubConnectionService.GetConnectionId(userId);
             Console.WriteLine("==============Sending");
@@ -23,8 +25,8 @@ namespace Chat.Api.ChatModule.Hubs
                 Console.WriteLine("ConnectionId not found");
                 return;
             }
-            await requestContext.HubContext.Clients.Client(connectionId).SendAsync("ReceivedChat", message);
-            Console.WriteLine("==============Sent message");
+            await _hubContext.Clients.Client(connectionId).SendAsync(method, message);
+            Console.WriteLine("==============message sent");
         }
     }
 }

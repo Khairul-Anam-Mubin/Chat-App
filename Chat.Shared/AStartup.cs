@@ -4,7 +4,6 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Chat.Framework.Extensions;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,12 +14,12 @@ namespace Chat.Shared
     public abstract class AStartup
     {
         private IConfiguration Configuration { get; set; }
-        private IWebHostEnvironment WebHostEnvironment { get; set; }
+        private IHostEnvironment HostEnvironment { get; set; }
 
-        protected AStartup(IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
+        protected AStartup(IConfiguration configuration, IHostEnvironment hostEnvironment)
         {
             Configuration = configuration;
-            WebHostEnvironment = webHostEnvironment;
+            HostEnvironment = hostEnvironment;
         }
 
         public void ConfigureServices(IServiceCollection services)
@@ -101,12 +100,13 @@ namespace Chat.Shared
             services.AddAllAssemblies("Chat");
             services.AddAttributeRegisteredServices();
             services.AddHttpClient();
+            services.AddHttpContextAccessor();
             RegisterServices(services);
         }
 
         public void Configure(IApplicationBuilder app)
         {
-            if (WebHostEnvironment.IsDevelopment())
+            if (HostEnvironment.IsDevelopment())
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();

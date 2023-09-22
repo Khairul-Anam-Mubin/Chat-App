@@ -2,7 +2,6 @@ using Chat.Framework.Attributes;
 using Chat.Framework.CQRS;
 using Chat.Framework.Enums;
 using Chat.Framework.Mediators;
-using Chat.Framework.Models;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Chat.Framework.Proxy;
@@ -17,13 +16,11 @@ public class CommandQueryProxy : ICommandQueryProxy
         _requestMediator = requestMediator;
     }
 
-    public async Task<CommandResponse> GetCommandResponseAsync<TCommand>(TCommand command,
-        RequestContext? requestContext = null) where TCommand : ICommand
+    public async Task<CommandResponse> GetCommandResponseAsync<TCommand>(TCommand command) where TCommand : ICommand
     {
         CommandResponse response;
         try
         {
-            if (requestContext != null) command.SetRequestContext(requestContext);
             if (command.GetData<bool>("FireAndForget"))
             {
                 _ = Task.Factory.StartNew( () => _requestMediator.HandleAsync<TCommand, CommandResponse>(command));
@@ -47,12 +44,11 @@ public class CommandQueryProxy : ICommandQueryProxy
         return response;
     }
 
-    public async Task<QueryResponse> GetQueryResponseAsync<TQuery>(TQuery query, RequestContext? requestContext = null) where TQuery : IQuery
+    public async Task<QueryResponse> GetQueryResponseAsync<TQuery>(TQuery query) where TQuery : IQuery
     {
         QueryResponse response;
         try
         {
-            if (requestContext != null) query.SetRequestContext(requestContext);
             response = await _requestMediator.HandleAsync<TQuery, QueryResponse>(query);
             response = query.CreateResponse(response);
             response.Status = ResponseStatus.Success;

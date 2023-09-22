@@ -4,7 +4,7 @@ namespace Chat.Activity.Api
 {
     public class Startup : AStartup
     {
-        public Startup(IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base(configuration, webHostEnvironment)
+        public Startup(IConfiguration configuration, IHostEnvironment hostEnvironment) : base(configuration, hostEnvironment)
         {
 
         }

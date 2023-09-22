@@ -3,11 +3,11 @@ using Chat.Framework.Interfaces;
 
 namespace Chat.Framework.Models
 {
-    public class CommonData : ICommonData
+    public class MetaDataDictionary : IMetaDataDictionary
     {
         public Dictionary<string, object> MetaData { get; set; }
 
-        public CommonData()
+        public MetaDataDictionary()
         {
             MetaData = new Dictionary<string, object>();
         }
