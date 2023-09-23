@@ -1,4 +1,6 @@
+using Chat.Api.ContactModule.Extensions;
 using Chat.Api.ContactModule.Interfaces;
+using Chat.Api.ContactModule.Models;
 using Chat.Api.ContactModule.Queries;
 using Chat.Framework.Attributes;
 using Chat.Framework.CQRS;
@@ -17,20 +19,25 @@ namespace Chat.Api.ContactModule.QueryHandlers
         protected override async Task<QueryResponse> OnHandleAsync(ContactQuery query)
         {
             var response = query.CreateResponse();
+
+            List<Contact> contacts;
+            
             if (query.IsRequestContacts)
             {
-                var contacts = await _contactRepository.GetContactRequestsAsync(query.UserId);
-                response.SetItems(contacts.ToList<object>());
-            } 
+                contacts = await _contactRepository.GetContactRequestsAsync(query.UserId);
+            }
             else if (query.IsPendingContacts)
             {
-                var contacts = await _contactRepository.GetPendingContactsAsync(query.UserId);
-                response.SetItems(contacts.ToList<object>());
-            } 
-            else 
+                contacts = await _contactRepository.GetPendingContactsAsync(query.UserId);
+            }
+            else
             {
-                var contacts = await _contactRepository.GetUserContactsAsync(query.UserId);
-                response.SetItems(contacts.ToList<object>());
+                contacts = await _contactRepository.GetUserContactsAsync(query.UserId);
+            }
+
+            foreach (var contact in contacts)
+            {
+                response.AddItem(contact.ToContactDto(query.UserId));
             }
             return response;
         }

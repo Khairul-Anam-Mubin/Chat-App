@@ -18,11 +18,11 @@ import { LastSeenQuery } from 'src/app/activity/queries/last-seen-query';
   styleUrls: ['./contact.component.css']
 })
 export class ContactComponent implements OnInit {
-  
+
   addContactFormControl = this.fb.group({
     email : ['', [Validators.required, Validators.email]],
   });
-  
+
   items : any;
   contactTabs : any;
   activeTabIndex : any = 0;
@@ -69,24 +69,43 @@ export class ContactComponent implements OnInit {
       this.items = response.items;
       const contactUserIds = [];
       for (let item of this.items) {
-        const userId = item.userA.id === this.currentUserId? item.userB.id : item.userA.id;
-        contactUserIds.push(userId);
-        this.getLastSeenStatus(contactUserIds);
+        contactUserIds.push(item.contactUserId);
+      }
+      this.getLastSeenStatus(contactUserIds);
+
+      if (contactUserIds !== null && contactUserIds.length > 0) {
+        this.userService.getUserProfilesByIds(contactUserIds)
+          .pipe(take(1))
+          .subscribe(response => {
+            this.syncContactsWithProfiles(response.items);
+          });
       }
     });
   }
 
+  private syncContactsWithProfiles(userProfiles: any) {
+    for (let i = 0; i < this.items.length; i++) {
+      for (let user of userProfiles) {
+        if (user.id === this.items[i].contactUserId) {
+          this.items[i].email = user.email;
+          // can take others properties
+          break;
+        }
+      }
+    }
+  }
+
   getLastSeenStatus(userIds : any) {
-    var lastSeenQuery = new LastSeenQuery();
+    if (userIds === null || userIds.length <= 0) return;
+    const lastSeenQuery = new LastSeenQuery();
     lastSeenQuery.userIds = userIds;
     this.queryService.execute(lastSeenQuery)
     .pipe(take(1))
     .subscribe(response => {
       // TODO : need to refactor here
       for (let i = 0; i < this.items.length; i++) {
-        const userId = this.items[i].userA.id === this.currentUserId? this.items[i].userB.id : this.items[i].userA.id;
         for (let item of response.items) {
-          if (item.userId === userId) {
+          if (item.userId === this.items[i].contactUserId) {
             this.items[i].status = item.status;
             this.items[i].isActive = item.isActive;
             break;
@@ -100,7 +119,7 @@ export class ContactComponent implements OnInit {
     this.commandService.execute(this.getAddContactCommand())
     .pipe(take(1))
     .subscribe(response => {
-      
+
     });
   }
 
@@ -112,7 +131,7 @@ export class ContactComponent implements OnInit {
         this.getContacts();
         console.log("[ContactComponent] (onClickTab) selected index %d", idx, this.contactTabs[i]);
         continue;
-      } 
+      }
       this.contactTabs[i].isActive = false;
     }
   }
@@ -133,28 +152,25 @@ export class ContactComponent implements OnInit {
   }
 
   getContactUserId(contact: any) {
-    if (this.currentUserId === contact.userA.id) {
-      return contact.userB.id;
-    }
-    return contact.userA.id;
+    return contact.contactUserId;
   }
-  
+
   getAcceptOrRejectContactRequestCommand(id : any) {
-    var acceptOrRejectContactRequestCommand = new AcceptOrRejectContactRequestCommand();
-    acceptOrRejectContactRequestCommand.contactId = this.items[id].id;
-    acceptOrRejectContactRequestCommand.isAcceptRequest = this.items[id].requestUserId !== this.currentUserId;
+    const acceptOrRejectContactRequestCommand = new AcceptOrRejectContactRequestCommand();
+    acceptOrRejectContactRequestCommand.contactId = this.items[id].contactId;
+    acceptOrRejectContactRequestCommand.isAcceptRequest = this.activeTabIndex === 1;
     return acceptOrRejectContactRequestCommand;
   }
 
   getAddContactCommand() {
-    var addContactCommand = new AddContactCommand();
+    const addContactCommand = new AddContactCommand();
     addContactCommand.contactEmail = this.getFormValue("email");
     addContactCommand.userId = this.userService.getCurrentUserId();
     return addContactCommand;
   }
 
   getContactQuery() {
-    var contactQuery = new ContactQuery();
+    const contactQuery = new ContactQuery();
     contactQuery.isPendingContacts = this.activeTabIndex === 2;
     contactQuery.isRequestContacts = this.activeTabIndex === 1;
     contactQuery.userId = this.userService.getCurrentUserId();

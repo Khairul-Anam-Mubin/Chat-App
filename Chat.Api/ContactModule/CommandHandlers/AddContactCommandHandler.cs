@@ -16,6 +16,7 @@ namespace Chat.Api.ContactModule.CommandHandlers
     {
         private readonly IContactRepository _contactRepository;
         private readonly ICommandQueryProxy _commandQueryProxy;
+
         public AddContactCommandHandler(IContactRepository contactRepository, ICommandQueryProxy commandQueryProxy)
         {
             _contactRepository = contactRepository;
@@ -48,14 +49,14 @@ namespace Chat.Api.ContactModule.CommandHandlers
             {
                 throw new Exception("Contact User Profile error");
             }
+            
             var userContact = new Contact()
             {
                 Id = Guid.NewGuid().ToString(),
-                UserA = userProfile,
-                UserB = contactUserProfile,
+                UserId = userProfile.Id,
+                ContactUserId = contactUserProfile.Id,
                 CreatedAt = DateTime.UtcNow,
-                IsPending = true,
-                RequestUserId = command.UserId
+                IsPending = true
             };
             
             if (!await _contactRepository.SaveContactAsync(userContact))

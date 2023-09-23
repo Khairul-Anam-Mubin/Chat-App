@@ -14,10 +14,10 @@ export class UserService{
     constructor (
         private router : Router,
         private queryService: QueryService) {}
-    
+
     getCurrentUserProfile() {
         const user = localStorage.getItem("userProfile");
-        var userProfile = new UserProfile();
+        let userProfile = new UserProfile();
         if (user === null) return userProfile;
         userProfile = JSON.parse(user);
         return userProfile;
@@ -32,7 +32,7 @@ export class UserService{
             let splittedUrl = this.router.url.split('/');
             if (splittedUrl.length === 0) {
                 splittedUrl = this.router.url.split('\\');
-            } 
+            }
             if (splittedUrl.length === 0) return '';
             splittedUrl = splittedUrl.reverse();
             return splittedUrl[0];
@@ -45,7 +45,7 @@ export class UserService{
             let splittedUrl = this.router.url.split('/');
             if (splittedUrl.length === 0) {
                 splittedUrl = this.router.url.split('\\');
-            } 
+            }
             if (splittedUrl.length === 0) return '';
             splittedUrl = splittedUrl.reverse();
             return splittedUrl[0];
@@ -56,13 +56,13 @@ export class UserService{
     setUserProfileToStore(userProfile: any) {
         localStorage.setItem('userProfile', JSON.stringify(userProfile));
     }
-    
+
     getUserProfileByEmail(email: any) {
         var userProfileQuery = new UserProfileQuery();
         userProfileQuery.emails = [email];
         return this.queryService.execute(userProfileQuery);
     }
-    
+
     getUserProfileById(userId : any) {
         var userProfileQuery = new UserProfileQuery();
         userProfileQuery.userIds = [userId];
@@ -70,7 +70,7 @@ export class UserService{
     }
 
     getUserProfilesByIds(userIds : any) {
-        var userProfileQuery = new UserProfileQuery();
+        const userProfileQuery = new UserProfileQuery();
         userProfileQuery.userIds = userIds;
         return this.queryService.execute(userProfileQuery);
     }

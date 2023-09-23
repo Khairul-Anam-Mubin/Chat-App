@@ -17,7 +17,7 @@
             <li *ngFor="let item of items; let id = index;" class="list-group-item d-flex justify-content-between align-items-center">
                 <button (click)="onClickedContact(item)" class="list-group-item list-group-item-action" aria-current="true">
                     <div class="d-flex w-100 justify-content-between">
-                      <h3 class="mb-1">{{item.userA.id === currentUserId? item.userB.email : item.userA.email}}</h3>
+                      <h3 class="mb-1">{{item.email}}</h3>
                       <div [class]="item.isActive? 'active-now' : 'active-now-idle'">
                         <i class="fas fa-circle"></i>
                         <span class="active-now-title">{{item.status}}</span>
@@ -29,8 +29,8 @@
         </div>
         <div *ngIf="activeTabIndex !== 0">
             <li *ngFor="let item of items; let id = index;" class="list-group-item d-flex justify-content-between align-items-center">
-                {{item.userA.id === currentUserId? item.userB.email : item.userA.email}}
-                <button class="btn btn-dark" (click)="onClickContact(id)">{{item.userA.id === currentUserId? 'Cancel Pending' : 'Accept Request'}}</button>
+                {{item.email}}
+                <button class="btn btn-dark" (click)="onClickContact(id)">{{activeTabIndex === 2? 'Cancel Pending' : 'Accept Request'}}</button>
             </li>
         </div>
     </div>

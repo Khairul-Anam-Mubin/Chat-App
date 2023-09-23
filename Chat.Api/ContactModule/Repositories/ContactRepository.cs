@@ -26,9 +26,9 @@ namespace Chat.Api.ContactModule.Repositories
 
         public async Task<List<Contact>> GetUserContactsAsync(string userId)
         {
-            var userAFilter = Builders<Contact>.Filter.Eq("UserA.Id", userId);
-            var userBFilter = Builders<Contact>.Filter.Eq("UserB.Id", userId);
-            var userFilter = Builders<Contact>.Filter.Or(userAFilter, userBFilter);
+            var userIdFilter = Builders<Contact>.Filter.Eq("UserId", userId);
+            var contactUserIdFilter = Builders<Contact>.Filter.Eq("ContactUserId", userId);
+            var userFilter = Builders<Contact>.Filter.Or(userIdFilter, contactUserIdFilter);
             var pendingFilter = Builders<Contact>.Filter.Eq("IsPending", false);
             var filter = Builders<Contact>.Filter.And(userFilter, pendingFilter);
             return await _dbContext.GetItemsByFilterDefinitionAsync<Contact>(_databaseInfo, filter);
@@ -36,19 +36,17 @@ namespace Chat.Api.ContactModule.Repositories
 
         public async Task<List<Contact>> GetContactRequestsAsync(string userId)
         {   
-            var userBFilter = Builders<Contact>.Filter.Eq("UserB.Id", userId);
-            var requestUserIdFilter = Builders<Contact>.Filter.Ne("RequestUserId", userId);
+            var userFilter = Builders<Contact>.Filter.Eq("ContactUserId", userId);
             var pendingFilter = Builders<Contact>.Filter.Eq("IsPending", true);
-            var filter = Builders<Contact>.Filter.And(userBFilter,requestUserIdFilter,pendingFilter);
+            var filter = Builders<Contact>.Filter.And(userFilter, pendingFilter);
             return await _dbContext.GetItemsByFilterDefinitionAsync<Contact>(_databaseInfo, filter);
         }
 
         public async Task<List<Contact>> GetPendingContactsAsync(string userId)
         {   
-            var userAFilter = Builders<Contact>.Filter.Eq("UserA.Id", userId);
-            var requestUserIdFilter = Builders<Contact>.Filter.Eq("RequestUserId", userId);
+            var userFilter = Builders<Contact>.Filter.Eq("UserId", userId);
             var pendingFilter = Builders<Contact>.Filter.Eq("IsPending", true);
-            var filter = Builders<Contact>.Filter.And(userAFilter,requestUserIdFilter,pendingFilter);
+            var filter = Builders<Contact>.Filter.And(userFilter, pendingFilter);
             return await _dbContext.GetItemsByFilterDefinitionAsync<Contact>(_databaseInfo, filter);
         }
 
