@@ -1,6 +1,6 @@
 ﻿using Chat.Api.ChatModule.Hubs;
 using Chat.Api.Middlewares;
-using Chat.Shared;
+using Chat.Application.Shared;
 
 namespace Chat.Api
 {

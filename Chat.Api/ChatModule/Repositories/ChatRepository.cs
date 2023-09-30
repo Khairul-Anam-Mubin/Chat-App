@@ -26,23 +26,23 @@ namespace Chat.Api.ChatModule.Repositories
 
         public async Task<List<ChatModel>> GetChatModelsAsync(string userId, string sendTo, int offset, int limit)
         {
-            var userIdFilter = Builders<ChatModel>.Filter.Eq("UserId", userId);
-            var sendToFilter = Builders<ChatModel>.Filter.Eq("SendTo", sendTo);
+            var userIdFilter = Builders<ChatModel>.Filter.Eq(chatModel => chatModel.UserId, userId);
+            var sendToFilter = Builders<ChatModel>.Filter.Eq(chatModel => chatModel.SendTo, sendTo);
             var andFilter = Builders<ChatModel>.Filter.And(userIdFilter, sendToFilter);
-            var alterUserIdFilter = Builders<ChatModel>.Filter.Eq("UserId", sendTo);
-            var alterSendToFilter = Builders<ChatModel>.Filter.Eq("SendTo", userId);
+            var alterUserIdFilter = Builders<ChatModel>.Filter.Eq(chatModel => chatModel.UserId, sendTo);
+            var alterSendToFilter = Builders<ChatModel>.Filter.Eq(chatModel => chatModel.SendTo, userId);
             var alterAndFilter = Builders<ChatModel>.Filter.And(alterUserIdFilter, alterSendToFilter);
             var orFilter = Builders<ChatModel>.Filter.Or(andFilter, alterAndFilter);
-            return await _dbContext.GetItemsByFilterDefinitionAsync<ChatModel>(_databaseInfo, orFilter, offset, limit);
+            return await _dbContext.GetItemsByFilterDefinitionAsync(_databaseInfo, orFilter, offset, limit);
         }
 
         public async Task<List<ChatModel>> GetSenderAndReceiverSpecificChatModelsAsync(string senderId, string receiverId)
         {
-            var senderFilter = Builders<ChatModel>.Filter.Eq("UserId", senderId);
-            var receiverFilter = Builders<ChatModel>.Filter.Eq("SendTo", receiverId);
-            var statusFilter = Builders<ChatModel>.Filter.Ne("Status", "Seen");
+            var senderFilter = Builders<ChatModel>.Filter.Eq(chatModel => chatModel.UserId, senderId);
+            var receiverFilter = Builders<ChatModel>.Filter.Eq(chatModel => chatModel.SendTo, receiverId);
+            var statusFilter = Builders<ChatModel>.Filter.Ne(chatModel => chatModel.Status, "Seen");
             var andFilter = Builders<ChatModel>.Filter.And(senderFilter, receiverFilter);
-            return await _dbContext.GetItemsByFilterDefinitionAsync<ChatModel>(_databaseInfo, andFilter);
+            return await _dbContext.GetItemsByFilterDefinitionAsync(_databaseInfo, andFilter);
         }
 
         public async Task<bool> SaveChatModelsAsync(List<ChatModel> chatModels)

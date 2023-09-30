@@ -8,7 +8,7 @@ import { Configuration } from './configuration';
 
 @Injectable()
 export class SignalRService {
-  
+
   private hubConnection: any;
 
   constructor(
@@ -16,14 +16,17 @@ export class SignalRService {
     private chatSocketService : ChatSocketService) { }
 
   startConnection(): void {
-    const token = this.authService.getAccessToken();
+    const token = 'Bearer ' + this.authService.getAccessToken();
+    console.log(token);
     const options : any = {
         accessTokenFactory : () => token
     };
+    const url = Configuration.chatHub;
     this.hubConnection = new signalR.HubConnectionBuilder()
-    .withUrl(Configuration.chatHubApi, options)
+    .withUrl(url, options)
+      .withAutomaticReconnect()
     .build();
-    
+
     this.hubConnection.start().catch((err: string) => console.log(err));
 
     this.hubConnection.on("ReceivedChat",  (message: any) => {

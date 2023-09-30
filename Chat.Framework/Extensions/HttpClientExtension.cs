@@ -30,6 +30,7 @@ namespace Chat.Framework.Extensions
 
         public static HttpClient AddBearerToken(this HttpClient client, string accessToken)
         {
+            if (string.IsNullOrEmpty(accessToken)) return client;
             if (!accessToken.StartsWith("Bearer "))
             {
                 accessToken = "Bearer " + accessToken;

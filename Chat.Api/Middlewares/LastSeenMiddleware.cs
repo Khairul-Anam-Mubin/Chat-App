@@ -1,10 +1,11 @@
-using Chat.Api.IdentityModule.Interfaces;
-using Chat.Api.IdentityModule.Models;
+using Chat.Application.Shared.Helpers;
+using Chat.Application.Shared.Providers;
+using Chat.Domain.Shared.Commands;
+using Chat.Domain.Shared.Models;
 using Chat.Framework.Attributes;
-using Chat.Framework.CQRS;
 using Chat.Framework.Extensions;
-using Chat.Shared.Contracts.Commands;
-using Chat.Shared.Domain.Helpers;
+using Chat.Framework.Proxy;
+using Chat.Identity.Application.Interfaces;
 
 namespace Chat.Api.Middlewares
 {
@@ -13,11 +14,13 @@ namespace Chat.Api.Middlewares
     {
         private readonly ITokenService _tokenService;
         private readonly IHttpClientFactory _httpClientFactory;
+        private readonly ICommandQueryProxy _commandQueryProxy;
 
-        public LastSeenMiddleware(ITokenService tokenService, IHttpClientFactory clientFactory)
+        public LastSeenMiddleware(ITokenService tokenService, IHttpClientFactory clientFactory, ICommandQueryProxy commandQueryProxy)
         {
             _tokenService = tokenService;
             _httpClientFactory = clientFactory;
+            _commandQueryProxy = commandQueryProxy;
         }
 
         public async Task InvokeAsync(HttpContext context, RequestDelegate next)
@@ -35,10 +38,10 @@ namespace Chat.Api.Middlewares
 
                 if (TokenHelper.IsTokenValid(accessToken, _tokenService.GetTokenValidationParameters()))
                 {
-                    var userProfile = _tokenService.GetUserProfileFromAccessToken(accessToken);
+                    var userProfile = IdentityProvider.GetUserProfile(accessToken);
 
                     // Todo: its currently synchronous. have to use message broker for async 
-                    await TrackLastSeenActivityAsync(userProfile, accessToken);
+                    // await TrackLastSeenActivityAsync(userProfile, accessToken);
 
                     Console.WriteLine("Last seen activity tracing from LastSeenMiddleware\n");
                 }
@@ -53,15 +56,12 @@ namespace Chat.Api.Middlewares
         {
             var updateLastSeenCommand = new UpdateLastSeenCommand()
             {
-                UserId = userProfile.Id
+                UserId = userProfile.Id,
+                ApiUrl = "https://localhost:50502/api/Activity/track",
+                IsActive = true
             };
-            updateLastSeenCommand.SetData("FireAndForget", true);
-
-            var url = "https://localhost:50502/api/Activity/track";
-            var response = await _httpClientFactory
-                .CreateClient()
-                .AddBearerToken(accessToken)
-                .PostAsync<CommandResponse>(url, updateLastSeenCommand);
+            updateLastSeenCommand.FireAndForget = true;
+            await _commandQueryProxy.GetCommandResponseAsync(updateLastSeenCommand);
         }
     }
 }

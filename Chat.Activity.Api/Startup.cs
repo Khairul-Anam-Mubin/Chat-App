@@ -1,4 +1,4 @@
-﻿using Chat.Shared;
+﻿using Chat.Application.Shared;
 
 namespace Chat.Activity.Api
 {

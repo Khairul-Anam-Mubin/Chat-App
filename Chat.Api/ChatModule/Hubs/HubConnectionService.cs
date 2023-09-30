@@ -1,5 +1,5 @@
 using Chat.Api.ChatModule.Interfaces;
-using Chat.Api.IdentityModule.Interfaces;
+using Chat.Application.Shared.Providers;
 using Chat.Framework.Attributes;
 
 namespace Chat.Api.ChatModule.Hubs
@@ -9,18 +9,16 @@ namespace Chat.Api.ChatModule.Hubs
     {
         private readonly Dictionary<string, string> _connectionIdUserIdMapper;
         private readonly Dictionary<string, string> _userIdConnectionIdMapper;
-        private readonly ITokenService _tokenService;
 
-        public HubConnectionService(ITokenService tokenService)
+        public HubConnectionService()
         {
-             _tokenService = tokenService;
             _connectionIdUserIdMapper = new Dictionary<string, string>();
             _userIdConnectionIdMapper = new Dictionary<string, string>();
         }
 
         public void AddConnection(string connectionId, string accessToken)
         {
-            var userProfile = _tokenService.GetUserProfileFromAccessToken(accessToken);
+            var userProfile = IdentityProvider.GetUserProfile(accessToken);
             var userId = userProfile.Id;
             if (_userIdConnectionIdMapper.TryGetValue(userId, out var prevConnectionId))
             {

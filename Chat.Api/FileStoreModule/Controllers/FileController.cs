@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Chat.Api.FileStoreModule.Models;
 using Chat.Framework.Proxy;
-using Chat.Shared.Controllers;
+using Chat.Presentation.Shared.Controllers;
 
 namespace Chat.Api.FileStoreModule.Controllers
 {

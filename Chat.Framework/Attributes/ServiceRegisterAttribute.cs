@@ -2,6 +2,7 @@
 
 namespace Chat.Framework.Attributes
 {
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
     public class ServiceRegisterAttribute : Attribute
     {
         public Type ServiceType { get; set; }

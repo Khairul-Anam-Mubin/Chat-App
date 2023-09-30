@@ -1,7 +1,7 @@
 using Chat.Api.FileStoreModule.Commands;
 using Chat.Api.FileStoreModule.Interfaces;
 using Chat.Api.FileStoreModule.Models;
-using Chat.Api.IdentityModule.Interfaces;
+using Chat.Application.Shared.Providers;
 using Chat.Framework.Attributes;
 using Chat.Framework.CQRS;
 using Chat.Framework.Extensions;
@@ -13,12 +13,10 @@ namespace Chat.Api.FileStoreModule.CommandHandlers
     public class UploadFileCommandHandler : ACommandHandler<UploadFileCommand>
     {
         private readonly IFileRepository _fileRepository;
-        private readonly ITokenService _tokenService;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        public UploadFileCommandHandler(IFileRepository fileRepository, ITokenService tokenService, IHttpContextAccessor httpContextAccessor)
+        public UploadFileCommandHandler(IFileRepository fileRepository, IHttpContextAccessor httpContextAccessor)
         {
             _fileRepository = fileRepository;
-            _tokenService = tokenService;
             _httpContextAccessor = httpContextAccessor;
         }
         
@@ -41,7 +39,7 @@ namespace Chat.Api.FileStoreModule.CommandHandlers
             }
 
             var requestContextFromAccessor = _httpContextAccessor.HttpContext;
-            var currentUser = _tokenService.GetUserProfileFromAccessToken(requestContextFromAccessor?.GetAccessToken());
+            var currentUser = IdentityProvider.GetUserProfile(requestContextFromAccessor?.GetAccessToken());
             var fileModel = new FileModel()
             {
                 Id = fileId,

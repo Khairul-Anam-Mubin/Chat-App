@@ -1,7 +1,10 @@
 using Chat.Framework.Attributes;
 using Chat.Framework.CQRS;
 using Chat.Framework.Enums;
+using Chat.Framework.Extensions;
 using Chat.Framework.Mediators;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Chat.Framework.Proxy;
@@ -10,10 +13,20 @@ namespace Chat.Framework.Proxy;
 public class CommandQueryProxy : ICommandQueryProxy
 {
     private readonly IRequestMediator _requestMediator;
+    private readonly IConfiguration _configuration;
+    private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly IHttpClientFactory _httpClientFactory;
 
-    public CommandQueryProxy(IRequestMediator requestMediator)
+    public CommandQueryProxy(
+        IRequestMediator requestMediator, 
+        IConfiguration configuration, 
+        IHttpContextAccessor httpContextAccessor, 
+        IHttpClientFactory httpClientFactory) 
     {
         _requestMediator = requestMediator;
+        _configuration = configuration;
+        _httpContextAccessor = httpContextAccessor;
+        _httpClientFactory = httpClientFactory;
     }
 
     public async Task<CommandResponse> GetCommandResponseAsync<TCommand>(TCommand command) where TCommand : ICommand
@@ -21,19 +34,29 @@ public class CommandQueryProxy : ICommandQueryProxy
         CommandResponse response;
         try
         {
-            if (command.GetData<bool>("FireAndForget"))
+            if (IsCurrentApi(command))
             {
-                _ = Task.Factory.StartNew( () => _requestMediator.HandleAsync<TCommand, CommandResponse>(command));
-                response = command.CreateResponse();
-                response.Status = ResponseStatus.Pending;
+                if (command.FireAndForget)
+                {
+                    _ = Task.Factory.StartNew(() => _requestMediator.HandleAsync<TCommand, CommandResponse>(command));
+                    response = command.CreateResponse();
+                    response.Status = ResponseStatus.Pending;
+                }
+                else
+                {
+                    response = await _requestMediator.HandleAsync<TCommand, CommandResponse>(command);
+                    response = command.CreateResponse(response);
+                    response.Status = ResponseStatus.Success;
+                }
             }
             else
             {
-                response = await _requestMediator.HandleAsync<TCommand, CommandResponse>(command);
-                response = command.CreateResponse(response);
-                response.Status = ResponseStatus.Success;
+                var accessToken = _httpContextAccessor.HttpContext?.GetAccessToken();
+                response = await _httpClientFactory
+                    .CreateClient()
+                    .AddBearerToken(accessToken)
+                    .PostAsync<CommandResponse>(command.ApiUrl, command);
             }
-            
         }
         catch (Exception e)
         {
@@ -41,7 +64,7 @@ public class CommandQueryProxy : ICommandQueryProxy
             response = command.CreateResponse();
             response.SetErrorMessage(e.Message);
         }
-        return response;
+        return response!;
     }
 
     public async Task<QueryResponse> GetQueryResponseAsync<TQuery>(TQuery query) where TQuery : IQuery
@@ -61,5 +84,12 @@ public class CommandQueryProxy : ICommandQueryProxy
             response.Message = e.Message;
         }
         return response;
+    }
+
+    private bool IsCurrentApi<TCommand>(TCommand command) where TCommand : ICommand
+    {
+        if (string.IsNullOrEmpty(command.ApiUrl)) return true;
+        var currentApiOrigin = _configuration.GetSection("ApiOrigin").Value;
+        return command.ApiUrl.StartsWith(currentApiOrigin);
     }
 }

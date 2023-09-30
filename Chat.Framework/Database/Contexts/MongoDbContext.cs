@@ -12,11 +12,9 @@ namespace Chat.Framework.Database.Contexts
     public class MongoDbContext : IMongoDbContext
     {
         private readonly Dictionary<string, MongoClient> _dbClients;
-        private readonly int _maxLimit;
         public MongoDbContext()
         {
             _dbClients = new Dictionary<string, MongoClient>();
-            _maxLimit = 1000;
         }
 
         private MongoClient? GetClient(string connectionString)
@@ -214,10 +212,6 @@ namespace Chat.Framework.Database.Contexts
         {
             try
             {
-                if (limit > _maxLimit)
-                {
-                    throw new Exception($"Limit exceeded!");
-                }
                 var collection = GetCollection<T>(databaseInfo);
                 if (collection == null)
                 {
@@ -239,6 +233,18 @@ namespace Chat.Framework.Database.Contexts
                 Console.WriteLine($"Problem Get Items by filter\n{ex.Message}\n");
                 return new List<T>();
             }
+        }
+
+        public async Task<bool> UpdateItemByFilterDefinitionAsync<T>(DatabaseInfo databaseInfo,
+            FilterDefinition<T> filterDefinition, UpdateDefinition<T> updateDefinition) where T : class, IRepositoryItem
+        {
+            var collection = GetCollection<T>(databaseInfo);
+            if (collection == null)
+            {
+                throw new Exception("Collection null");
+            }
+            var result = await collection.UpdateOneAsync(filterDefinition, updateDefinition);
+            return result.IsModifiedCountAvailable;
         }
 
         public async Task<bool> SaveItemsAsync<T>(DatabaseInfo databaseInfo, List<T> items) where T : class, IRepositoryItem

@@ -3,7 +3,7 @@ using Chat.Api.ChatModule.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Chat.Framework.Proxy;
-using Chat.Shared.Controllers;
+using Chat.Presentation.Shared.Controllers;
 
 namespace Chat.Api.ChatModule.Controllers
 {

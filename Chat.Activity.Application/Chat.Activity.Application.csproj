@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Chat.Activity.Domain\Chat.Activity.Domain.csproj" />
+    <ProjectReference Include="..\Chat.Application.Shared\Chat.Application.Shared.csproj" />
+    <ProjectReference Include="..\Chat.Domain.Shared\Chat.Domain.Shared.csproj" />
+  </ItemGroup>
+
+</Project>

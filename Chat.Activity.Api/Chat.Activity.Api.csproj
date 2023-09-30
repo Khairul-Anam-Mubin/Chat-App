@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -7,8 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Chat.Framework\Chat.Framework.csproj" />
-    <ProjectReference Include="..\Chat.Shared\Chat.Shared.csproj" />
+	  <ProjectReference Include="..\Chat.Activity.Application\Chat.Activity.Application.csproj" />
+	  <ProjectReference Include="..\Chat.Activity.Persistence\Chat.Activity.Persistence.csproj" />
+	  <ProjectReference Include="..\Chat.Presentation.Shared\Chat.Presentation.Shared.csproj" />
   </ItemGroup>
 
 </Project>

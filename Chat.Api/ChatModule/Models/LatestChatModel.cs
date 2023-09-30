@@ -1,4 +1,4 @@
-using Chat.Shared.Domain.Helpers;
+using Chat.Application.Shared.Helpers;
 
 namespace Chat.Api.ChatModule.Models
 {

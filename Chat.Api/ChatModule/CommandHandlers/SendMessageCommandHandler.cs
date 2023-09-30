@@ -35,11 +35,11 @@ namespace Chat.Api.ChatModule.CommandHandlers
             await _chatHubService.SendAsync<ChatModel>(command.ChatModel.SendTo, command.ChatModel);
 
             var latestChatModel = command.ChatModel.ToLatestChatModel();
-            var updateLatestChatCommand = new UpdateLatestChatCommand()
+            var updateLatestChatCommand = new UpdateLatestChatCommand
             {
-                LatestChatModel = latestChatModel
+                LatestChatModel = latestChatModel,
+                FireAndForget = true
             };
-            updateLatestChatCommand.SetData("FireAndForget", true);
             await _commandQueryProxy.GetCommandResponseAsync(updateLatestChatCommand);
 
             response.SetData("Message", command.ChatModel.ToChatDto());
