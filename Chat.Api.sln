@@ -45,23 +45,23 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat.Contact.Presentation",
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FileStoreModule", "FileStoreModule", "{5B66DF56-6D08-421A-BD15-5CA82346BB7B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chat.FileStore.Domain", "Chat.FileStore.Domain\Chat.FileStore.Domain.csproj", "{7AC447FF-98F7-4D60-AE2B-40A7C7BFAF2F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat.FileStore.Domain", "Chat.FileStore.Domain\Chat.FileStore.Domain.csproj", "{7AC447FF-98F7-4D60-AE2B-40A7C7BFAF2F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chat.FileStore.Application", "Chat.FileStore.Application\Chat.FileStore.Application.csproj", "{04338BBC-A4F3-4C26-8369-AACABB39FFFE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat.FileStore.Application", "Chat.FileStore.Application\Chat.FileStore.Application.csproj", "{04338BBC-A4F3-4C26-8369-AACABB39FFFE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chat.FileStore.Persistence", "Chat.FileStore.Persistence\Chat.FileStore.Persistence.csproj", "{6C28C2FD-FA6F-4194-9493-6B20EC92BB09}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat.FileStore.Persistence", "Chat.FileStore.Persistence\Chat.FileStore.Persistence.csproj", "{6C28C2FD-FA6F-4194-9493-6B20EC92BB09}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chat.FileStore.Presentation", "Chat.FileStore.Presentation\Chat.FileStore.Presentation.csproj", "{BA2BEA3F-76D8-44BA-B988-61406B7EE93B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat.FileStore.Presentation", "Chat.FileStore.Presentation\Chat.FileStore.Presentation.csproj", "{BA2BEA3F-76D8-44BA-B988-61406B7EE93B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ChatModule", "ChatModule", "{271BD1F3-D957-4912-AAD7-96E4BECA1613}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chat.Domain", "Chat.Domain\Chat.Domain.csproj", "{BB6463EC-2310-4204-90EB-31288B46815B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat.Domain", "Chat.Domain\Chat.Domain.csproj", "{BB6463EC-2310-4204-90EB-31288B46815B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chat.Application", "Chat.Application\Chat.Application.csproj", "{E94A226A-DFEF-4D9A-9661-65133FB06878}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat.Application", "Chat.Application\Chat.Application.csproj", "{E94A226A-DFEF-4D9A-9661-65133FB06878}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chat.Persistence", "Chat.Persistence\Chat.Persistence.csproj", "{E9BD821F-BD8C-4206-9F0B-7398C2984D1A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat.Persistence", "Chat.Persistence\Chat.Persistence.csproj", "{E9BD821F-BD8C-4206-9F0B-7398C2984D1A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chat.Notification", "Chat.Notification\Chat.Notification.csproj", "{0D74F44B-BFAE-4914-A24D-96B233CC066C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat.Notification", "Chat.Notification\Chat.Notification.csproj", "{0D74F44B-BFAE-4914-A24D-96B233CC066C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -183,6 +183,7 @@ Global
 		{4356FFF6-CF9F-4190-9BA2-33CB7B91A325} = {70BBA365-2DBB-4EB6-B870-205934DB08FB}
 		{2146D478-8682-4327-A250-11885039641B} = {70BBA365-2DBB-4EB6-B870-205934DB08FB}
 		{A2FE8B25-2A40-4B13-86DC-093B035B414A} = {70BBA365-2DBB-4EB6-B870-205934DB08FB}
+		{9D9AD2C1-4432-48BC-95A3-41703AE2FB5A} = {5B66DF56-6D08-421A-BD15-5CA82346BB7B}
 		{784B4EAD-D735-45A7-8D16-DDB8241B1723} = {9D9AD2C1-4432-48BC-95A3-41703AE2FB5A}
 		{249F8232-E45D-45DD-9D4A-D8420B2C8B6C} = {9D9AD2C1-4432-48BC-95A3-41703AE2FB5A}
 		{4044AB2C-F51F-47DE-813B-7327BCEFE17D} = {9D9AD2C1-4432-48BC-95A3-41703AE2FB5A}
