@@ -12,18 +12,22 @@ namespace Chat.Application.QueryHandlers;
 public class ChatListQueryHandler : AQueryHandler<ChatListQuery>
 {
     private readonly ILatestChatRepository _latestChatRepository;
+
     public ChatListQueryHandler(ILatestChatRepository latestChatRepository)
     {
         _latestChatRepository = latestChatRepository;
     }
+
     protected override async Task<QueryResponse> OnHandleAsync(ChatListQuery query)
     {
         var response = query.CreateResponse();
+
         var latestChatModels = await _latestChatRepository.GetLatestChatModelsAsync(query.UserId, query.Offset, query.Limit);
         foreach (var latestChatModel in latestChatModels)
         {
             response.AddItem(latestChatModel.ToLatestChatDto(query.UserId));
         }
+
         return response;
     }
 }

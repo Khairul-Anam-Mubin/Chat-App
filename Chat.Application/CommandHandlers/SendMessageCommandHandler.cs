@@ -15,15 +15,18 @@ public class SendMessageCommandHandler : ACommandHandler<SendMessageCommand>
     private readonly IChatRepository _chatRepository;
     private readonly IChatHubService _chatHubService;
     private readonly ICommandQueryProxy _commandQueryProxy;
+
     public SendMessageCommandHandler(IChatRepository chatRepository, IChatHubService chatHubService, ICommandQueryProxy commandQueryProxy)
     {
         _chatHubService = chatHubService;
         _chatRepository = chatRepository;
         _commandQueryProxy = commandQueryProxy;
     }
+
     protected override async Task<CommandResponse> OnHandleAsync(SendMessageCommand command)
     {
         var response = command.CreateResponse();
+
         command.ChatModel.Id = Guid.NewGuid().ToString();
         command.ChatModel.SentAt = DateTime.UtcNow;
         command.ChatModel.Status = "Sent";
@@ -36,6 +39,7 @@ public class SendMessageCommandHandler : ACommandHandler<SendMessageCommand>
         await _chatHubService.SendAsync(command.ChatModel.SendTo, command.ChatModel);
 
         var latestChatModel = command.ChatModel.ToLatestChatModel();
+
         var updateLatestChatCommand = new UpdateLatestChatCommand
         {
             LatestChatModel = latestChatModel,
@@ -44,6 +48,7 @@ public class SendMessageCommandHandler : ACommandHandler<SendMessageCommand>
         await _commandQueryProxy.GetCommandResponseAsync(updateLatestChatCommand);
 
         response.SetData("Message", command.ChatModel.ToChatDto());
+
         return response;
     }
 }

@@ -49,6 +49,7 @@ public abstract class AStartup
                 {
                     var accessToken = context.Request.Query["access_token"];
                     var path = context.HttpContext.Request.Path;
+
                     if (string.IsNullOrEmpty(path) == false && 
                         string.IsNullOrEmpty(accessToken) == false)
                     {
@@ -60,10 +61,12 @@ public abstract class AStartup
                 }
             };
         });
+
         services.AddSignalR();
         services.AddControllers();
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();
+
         services.AddSwaggerGen(opt =>
         {
             opt.SwaggerDoc("v1", new OpenApiInfo { Title = "MyAPI", Version = "v1" });
@@ -91,6 +94,7 @@ public abstract class AStartup
                 }
             });
         });
+
         services.AddCors(options => options.AddPolicy("CorsPolicy", builder =>
         {
             builder.AllowAnyHeader()

@@ -10,13 +10,4 @@ public class AccessModel : IRepositoryItem
     public string AppId { get; set; } = string.Empty;
     public DateTime CreatedAt { get; set; }
     public bool Expired { get; set; }
-
-    public Token ToToken()
-    {
-        return new Token
-        {
-            RefreshToken = Id,
-            AccessToken = AccessToken
-        };
-    }
 }

@@ -21,20 +21,25 @@ public class UpdateLastSeenCommandHandler : ACommandHandler<UpdateLastSeenComman
     protected override async Task<CommandResponse> OnHandleAsync(UpdateLastSeenCommand command)
     {
         var response = command.CreateResponse();
+
         var lastSeenModel = await _lastSeenRepository.GetLastSeenModelByUserIdAsync(command.UserId) ?? new LastSeenModel 
         {
             Id = Guid.NewGuid().ToString(),
             UserId = command.UserId,
             IsActive = command.IsActive
         };
+
         lastSeenModel.LastSeenAt = DateTime.UtcNow;
+
         if (!await _lastSeenRepository.SaveLastSeenModelAsync(lastSeenModel))
         {
             response.SetErrorMessage("Save Last Seen Model Error");
             return response;
         }
+
         response.SetSuccessMessage("Last seen time set successfully");
         response.SetData("LastSeenAt", lastSeenModel.LastSeenAt);
+
         return response;
     }
 }

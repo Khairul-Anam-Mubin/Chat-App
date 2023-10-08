@@ -12,13 +12,18 @@ public static class HttpClientExtension
         try
         {
             encoding ??= Encoding.UTF8;
+
             if (string.IsNullOrEmpty(mediaType)) mediaType = MediaTypeNames.Application.Json;
+
             var response = await client
                 .AddMediaType(mediaType)
                 .AddHeaders(headers)
                 .PostAsync(url, new StringContent(data.Serialize(), encoding, mediaType));
+
             if (!response.IsSuccessStatusCode) throw new Exception(response.StatusCode.ToString());
+
             var responseContent = await response.Content.ReadAsStringAsync();
+
             return responseContent.Deserialize<TResponse>();
         }
         catch (Exception e)
@@ -31,11 +36,14 @@ public static class HttpClientExtension
     public static HttpClient AddBearerToken(this HttpClient client, string accessToken)
     {
         if (string.IsNullOrEmpty(accessToken)) return client;
+
         if (!accessToken.StartsWith("Bearer "))
         {
             accessToken = "Bearer " + accessToken;
         }
+
         client.AddHeader(HeaderNames.Authorization, accessToken);
+
         return client;
     }
 
@@ -48,10 +56,12 @@ public static class HttpClientExtension
     public static HttpClient AddHeaders(this HttpClient client, Dictionary<string, string>? headers)
     {
         if (headers == null) return client;
+
         foreach (var header in headers)
         {
             client.AddHeader(header.Key, header.Value);
         }
+
         return client;
     }
 

@@ -11,6 +11,7 @@ namespace Chat.Contact.Application.CommandHandlers;
 public class AcceptOrRejectContactRequestCommandHandler : ACommandHandler<AcceptOrRejectContactRequestCommand>
 {
     private readonly IContactRepository _contactRepository;
+
     public AcceptOrRejectContactRequestCommandHandler(IContactRepository contactRepository)
     {
         _contactRepository = contactRepository;
@@ -19,11 +20,13 @@ public class AcceptOrRejectContactRequestCommandHandler : ACommandHandler<Accept
     protected override async Task<CommandResponse> OnHandleAsync(AcceptOrRejectContactRequestCommand command)
     {
         var response = command.CreateResponse();
+
         var contact = await _contactRepository.GetContactByIdAsync(command.ContactId);
         if (contact == null)
         {
             throw new Exception("ContactModel not found");
         }
+
         if (command.IsAcceptRequest)
         {
             contact.IsPending = false;
@@ -41,6 +44,7 @@ public class AcceptOrRejectContactRequestCommandHandler : ACommandHandler<Accept
             }
             response.Message = "ContactModel rejected";
         }
+
         return response;
     }
 }

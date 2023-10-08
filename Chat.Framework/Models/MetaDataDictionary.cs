@@ -11,13 +11,16 @@ public class MetaDataDictionary : IMetaDataDictionary
     {
         MetaData = new Dictionary<string, object>();
     }
+
     public void SetData(string key, object data)
     {
         MetaData[key] = data;
     }
+
     public T? GetData<T>(string key)
     {
         if (!MetaData.TryGetValue(key, out var data)) return default;
+
         try
         {
             return (T)data;
@@ -36,6 +39,7 @@ public class MetaDataDictionary : IMetaDataDictionary
         {
             Console.WriteLine(e.Message);
         }
+
         return default;
     }
 }

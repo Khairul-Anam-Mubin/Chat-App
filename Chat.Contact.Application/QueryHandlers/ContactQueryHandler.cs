@@ -13,10 +13,12 @@ namespace Chat.Contact.Application.QueryHandlers;
 public class ContactQueryHandler : AQueryHandler<ContactQuery>
 {
     private readonly IContactRepository _contactRepository;
+
     public ContactQueryHandler(IContactRepository contactRepository)
     {
         _contactRepository = contactRepository;
     }
+
     protected override async Task<QueryResponse> OnHandleAsync(ContactQuery query)
     {
         var response = query.CreateResponse();
@@ -40,6 +42,7 @@ public class ContactQueryHandler : AQueryHandler<ContactQuery>
         {
             response.AddItem(contact.ToContactDto(query.UserId));
         }
+
         return response;
     }
 }

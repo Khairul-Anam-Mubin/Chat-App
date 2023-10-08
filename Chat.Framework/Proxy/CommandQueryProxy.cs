@@ -52,6 +52,7 @@ public class CommandQueryProxy : ICommandQueryProxy
             else
             {
                 var accessToken = _httpContextAccessor.HttpContext?.GetAccessToken();
+
                 response = await _httpClientFactory
                     .CreateClient()
                     .AddBearerToken(accessToken)
@@ -61,6 +62,7 @@ public class CommandQueryProxy : ICommandQueryProxy
         catch (Exception e)
         {
             Console.WriteLine(e);
+
             response = command.CreateResponse();
             response.SetErrorMessage(e.Message);
         }
@@ -79,6 +81,7 @@ public class CommandQueryProxy : ICommandQueryProxy
         catch (Exception e)
         {
             Console.WriteLine(e);
+
             response = query.CreateResponse();
             response.Status = ResponseStatus.Error;
             response.Message = e.Message;
@@ -89,7 +92,9 @@ public class CommandQueryProxy : ICommandQueryProxy
     private bool IsCurrentApi<TCommand>(TCommand command) where TCommand : ICommand
     {
         if (string.IsNullOrEmpty(command.ApiUrl)) return true;
+
         var currentApiOrigin = _configuration.GetSection("ApiOrigin").Value;
+
         return command.ApiUrl.StartsWith(currentApiOrigin);
     }
 }

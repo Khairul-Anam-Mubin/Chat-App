@@ -44,6 +44,7 @@ public class LatestChatRepository : ILatestChatRepository
         var userIdFilter = Builders<LatestChatModel>.Filter.Eq("UserId", userId);
         var sendToFilter = Builders<LatestChatModel>.Filter.Eq("SendTo", userId);
         var orFilter = Builders<LatestChatModel>.Filter.Or(userIdFilter, sendToFilter);
+
         return await _dbContext.GetItemsByFilterDefinitionAsync(_databaseInfo, orFilter, offset, limit);
     }
 }

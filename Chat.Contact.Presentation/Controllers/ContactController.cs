@@ -22,11 +22,13 @@ public class ContactController : ACommonController
     {
         return Ok(await GetCommandResponseAsync(command));
     }
+
     [HttpPost, Route("accept-reject")]
     public async Task<IActionResult> AcceptOrRejectContactRequestAsync(AcceptOrRejectContactRequestCommand command)
     {
         return Ok(await GetCommandResponseAsync(command));
     }
+
     [HttpPost, Route("get")]
     public async Task<IActionResult> AddContactAsync(ContactQuery query)
     {

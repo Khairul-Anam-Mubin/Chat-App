@@ -27,16 +27,19 @@ public class AddContactCommandHandler : ACommandHandler<AddContactCommand>
     protected override async Task<CommandResponse> OnHandleAsync(AddContactCommand command)
     {
         var response = command.CreateResponse();
+
         var userProfileQuery = new UserProfileQuery
         {
             UserIds = new List<string> { command.UserId },
             Emails = new List<string> { command.ContactEmail }
         };
+
         var queryResponse = await _commandQueryProxy.GetQueryResponseAsync(userProfileQuery);
         if (queryResponse == null || queryResponse.Status != ResponseStatus.Success || queryResponse.Items.Count < 2)
         {
             throw new Exception("User profile query error");
         }
+
         var userProfiles = queryResponse.GetItems<UserProfile>();
 
         var userProfile = userProfiles.FirstOrDefault(x => x.Id == command.UserId);
@@ -44,8 +47,8 @@ public class AddContactCommandHandler : ACommandHandler<AddContactCommand>
         {
             throw new Exception("User profile error");
         }
-        var contactUserProfile = userProfiles.FirstOrDefault(x => x.Email == command.ContactEmail);
 
+        var contactUserProfile = userProfiles.FirstOrDefault(x => x.Email == command.ContactEmail);
         if (contactUserProfile == null)
         {
             throw new Exception("ContactModel User Profile error");
@@ -66,6 +69,7 @@ public class AddContactCommandHandler : ACommandHandler<AddContactCommand>
         }
 
         response.Message = "ContactModel added successfully";
+
         return response;
     }
 }

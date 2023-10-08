@@ -4,6 +4,7 @@ using Chat.Application.Shared.Helpers;
 using Chat.Domain.Shared.Constants;
 using Chat.Domain.Shared.Models;
 using Chat.Framework.Attributes;
+using Chat.Identity.Application.Extensions;
 using Chat.Identity.Application.Interfaces;
 using Chat.Identity.Domain.Models;
 using Microsoft.Extensions.Configuration;
@@ -54,7 +55,12 @@ public class TokenService : ITokenService
     public AccessModel GenerateAccessModel(UserProfile userProfile, string appId)
     {
         var claims = GenerateClaims(userProfile, appId);
-        var accessToken = TokenHelper.GenerateJwtToken(_tokenConfig.SecretKey, _tokenConfig.Issuer, _tokenConfig.Audience, _tokenConfig.ExpirationTimeInSec, claims);
+        var accessToken = TokenHelper.GenerateJwtToken(
+            _tokenConfig.SecretKey, 
+            _tokenConfig.Issuer, 
+            _tokenConfig.Audience, 
+            _tokenConfig.ExpirationTimeInSec, 
+            claims);
         var refreshToken = TokenHelper.GenerateRefreshToken();
         var accessModel = new AccessModel
         {
@@ -85,7 +91,11 @@ public class TokenService : ITokenService
         return claims;
     }
 
-    public TokenValidationParameters GetTokenValidationParameters(bool validateIssuer = true, bool validateAudience = true, bool validateLifetime = true, bool validateIssuerSigningKey = true)
+    public TokenValidationParameters GetTokenValidationParameters(
+        bool validateIssuer = true, 
+        bool validateAudience = true, 
+        bool validateLifetime = true, 
+        bool validateIssuerSigningKey = true)
     {
         return new TokenValidationParameters
         {

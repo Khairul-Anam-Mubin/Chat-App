@@ -12,6 +12,7 @@ namespace Chat.Activity.Application.QueryHandlers;
 public class LastSeenQueryHandler : AQueryHandler<LastSeenQuery>
 {
     private readonly ILastSeenRepository _lastSeenRepository;
+
     public LastSeenQueryHandler(ILastSeenRepository lastSeenRepository)
     {
         _lastSeenRepository = lastSeenRepository;
@@ -20,11 +21,13 @@ public class LastSeenQueryHandler : AQueryHandler<LastSeenQuery>
     protected override async Task<QueryResponse> OnHandleAsync(LastSeenQuery query)
     {
         var response = query.CreateResponse();
+
         var lastSeenModels = await _lastSeenRepository.GetLastSeenModelsByUserIdsAsync(query.UserIds);
         foreach (var lastSeenModel in lastSeenModels)
         {
             response.AddItem(lastSeenModel.ToLastSeenDto());
         }
+
         return response;
     }
 }

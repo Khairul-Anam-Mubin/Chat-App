@@ -17,14 +17,17 @@ public class ChatQueryHandler : AQueryHandler<ChatQuery>
     {
         _chatRepository = chatRepository;
     }
+
     protected override async Task<QueryResponse> OnHandleAsync(ChatQuery query)
     {
         var response = query.CreateResponse();
+
         var chatModels = await _chatRepository.GetChatModelsAsync(query.UserId, query.SendTo, query.Offset, query.Limit);
         foreach (var chatModel in chatModels)
         {
             response.AddItem(chatModel.ToChatDto());   
         }
+
         return response;
     }
 }

@@ -7,7 +7,12 @@ namespace Chat.Application.Shared.Helpers;
 
 public static class TokenHelper
 {
-    public static string GenerateJwtToken(string secretKey, string issuer, string audience, int expiredTimeInSec, List<Claim>? claims = null)
+    public static string GenerateJwtToken(
+        string secretKey, 
+        string issuer, 
+        string audience, 
+        int expiredTimeInSec, 
+        List<Claim>? claims = null)
     {
         try
         {
@@ -96,6 +101,7 @@ public static class TokenHelper
             return false;
         }
     }
+
     private static string? GetPreparedToken(string? accessToken)
     {
         if (string.IsNullOrEmpty(accessToken) == false && accessToken.StartsWith("Bearer "))

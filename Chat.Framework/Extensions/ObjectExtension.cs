@@ -7,6 +7,7 @@ public static class ObjectExtension
     public static string Serialize(this object? obj)
     {
         if (obj is null) return string.Empty;
+
         try
         {
             var jsonText = JsonSerializer.Serialize(obj);

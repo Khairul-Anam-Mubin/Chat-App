@@ -20,13 +20,17 @@ public class ChatHubService : IChatHubService
     public async Task SendAsync<T>(string userId, T message, string method = "ReceivedChat")
     {
         var connectionId = _hubConnectionService.GetConnectionId(userId);
+
         Console.WriteLine("==============Sending");
+
         if (string.IsNullOrEmpty(connectionId))
         {
             Console.WriteLine("ConnectionId not found");
             return;
         }
+
         await _hubContext.Clients.Client(connectionId).SendAsync(method, message);
+
         Console.WriteLine("==============message sent");
     }
 }

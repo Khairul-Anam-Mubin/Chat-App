@@ -7,6 +7,7 @@ public abstract class ACommand : MetaDataDictionary, ICommand
 {
     public string ApiUrl { get; set; }
     public bool FireAndForget { get; set; }
+
     public abstract void ValidateCommand();
     protected ACommand()
     {

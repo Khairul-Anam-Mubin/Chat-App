@@ -9,7 +9,9 @@ public class IdentityProvider
     public static UserProfile GetUserProfile(string? accessToken)
     {
         var claims = TokenHelper.GetClaims(accessToken);
+
         var userProfile = new UserProfile();
+
         foreach (var claim in claims)
         {
             switch (claim.Type)
@@ -34,6 +36,7 @@ public class IdentityProvider
                     break;
             }
         }
+
         return userProfile;
     }
 }

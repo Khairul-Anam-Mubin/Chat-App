@@ -20,9 +20,11 @@ public static class ServiceCollectionExtension
         _counter++;
 
         var assemblies = GetAddedAssemblies();
+
         foreach (var assembly in assemblies)
         {
             var exportedTypes = assembly.GetExportedTypes();
+
             foreach (var type in exportedTypes)
             {
                 if (!type.IsClass || type.IsAbstract || type.IsInterface) continue;
@@ -53,11 +55,14 @@ public static class ServiceCollectionExtension
     public static void AddAllAssemblies(this IServiceCollection services, string assemblyPrefix)
     {
         var entryAssemblyLocation = Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location);
+
         if (!string.IsNullOrEmpty(entryAssemblyLocation))
         {
             AddAllAssemblies(entryAssemblyLocation, assemblyPrefix);
         }
+
         var executingAssemblyLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+        
         if (!string.IsNullOrEmpty(executingAssemblyLocation))
         {
             AddAllAssemblies(executingAssemblyLocation, assemblyPrefix);
@@ -67,7 +72,9 @@ public static class ServiceCollectionExtension
     private static void AddAllAssemblies(string location, string assemblyPrefix)
     {
         if (string.IsNullOrEmpty(location)) return;
+
         var files = Directory.GetFiles(location);
+
         foreach (var file in files)
         {
             try

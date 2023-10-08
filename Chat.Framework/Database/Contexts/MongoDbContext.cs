@@ -12,6 +12,7 @@ namespace Chat.Framework.Database.Contexts;
 public class MongoDbContext : IMongoDbContext
 {
     private readonly Dictionary<string, MongoClient> _dbClients;
+
     public MongoDbContext()
     {
         _dbClients = new Dictionary<string, MongoClient>();

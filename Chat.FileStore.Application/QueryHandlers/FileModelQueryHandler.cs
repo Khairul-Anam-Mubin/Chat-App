@@ -20,14 +20,18 @@ public class FileModelQueryHandler : AQueryHandler<FileModelQuery>
     protected override async Task<QueryResponse> OnHandleAsync(FileModelQuery query)
     {
         var response = query.CreateResponse();
+
         var fileModel = await _fileRepository.GetFileModelByIdAsync(query.FileId);
         if (fileModel == null)
         {
             throw new Exception("File not found");
         }
+
         var path = Directory.GetCurrentDirectory();
         fileModel.Url = Path.Combine(path, fileModel.Url);
+
         response.AddItem(fileModel);
+
         return response;
     }
 }

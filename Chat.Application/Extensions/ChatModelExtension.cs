@@ -16,6 +16,7 @@ public static class ChatModelExtension
             Status = chatModel.Status
         };
     }
+
     public static ChatDto ToChatDto(this ChatModel chatModel)
     {
         return new ChatDto

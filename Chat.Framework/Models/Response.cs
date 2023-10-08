@@ -13,6 +13,7 @@ public class Response : MetaDataDictionary, IResponse
         Message = message;
         Status = ResponseStatus.Error;
     }
+
     public void SetSuccessMessage(string message)
     {
         Message = message;

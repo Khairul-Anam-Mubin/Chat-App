@@ -20,6 +20,7 @@ public class HubConnectionService : IHubConnectionService
     public void AddConnection(string connectionId, string accessToken)
     {
         var userProfile = IdentityProvider.GetUserProfile(accessToken);
+
         var userId = userProfile.Id;
         if (_userIdConnectionIdMapper.TryGetValue(userId, out var prevConnectionId))
         {
@@ -28,6 +29,7 @@ public class HubConnectionService : IHubConnectionService
                 _connectionIdUserIdMapper.Remove(prevConnectionId);
             }
         }
+
         _userIdConnectionIdMapper[userId] = connectionId;
         _connectionIdUserIdMapper[connectionId] = userId;
     }
@@ -45,10 +47,12 @@ public class HubConnectionService : IHubConnectionService
     public void RemoveConnection(string connectionId)
     {
         var userId = GetUserId(connectionId);
+
         if (!string.IsNullOrEmpty(userId))
         {
             _connectionIdUserIdMapper.Remove(userId);
         }
+
         if (_connectionIdUserIdMapper.ContainsKey(connectionId))
         {
             _connectionIdUserIdMapper.Remove(connectionId);

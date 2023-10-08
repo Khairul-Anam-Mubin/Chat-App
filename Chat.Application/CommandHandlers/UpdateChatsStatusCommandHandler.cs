@@ -23,11 +23,13 @@ public class UpdateChatsStatusCommandHandler : ACommandHandler<UpdateChatsStatus
     protected override async Task<CommandResponse> OnHandleAsync(UpdateChatsStatusCommand command)
     {
         var response = command.CreateResponse();
+
         var latestChatModel = await _latestChatRepository.GetLatestChatAsync(command.UserId, command.OpenedChatUserId);
         if (latestChatModel == null)
         {
             throw new Exception("LatestChatModel not found");
         }
+
         if (latestChatModel.UserId != command.UserId)
         {
             latestChatModel.Occurrance = 0;
@@ -41,6 +43,7 @@ public class UpdateChatsStatusCommandHandler : ACommandHandler<UpdateChatsStatus
         }
 
         await _chatRepository.SaveChatModelsAsync(chatModels);
+
         return response;
     }
 }
