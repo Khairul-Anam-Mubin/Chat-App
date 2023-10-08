@@ -1,19 +1,18 @@
 using Chat.Framework.CQRS;
 
-namespace Chat.Contact.Domain.Queries
-{
-    public class ContactQuery : AQuery
-    {
-        public string UserId { get; set; } = string.Empty;
-        public bool IsRequestContacts { get; set; }
-        public bool IsPendingContacts { get; set; }
+namespace Chat.Contact.Domain.Queries;
 
-        public override void ValidateQuery()
+public class ContactQuery : AQuery
+{
+    public string UserId { get; set; } = string.Empty;
+    public bool IsRequestContacts { get; set; }
+    public bool IsPendingContacts { get; set; }
+
+    public override void ValidateQuery()
+    {
+        if (string.IsNullOrEmpty(UserId))
         {
-            if (string.IsNullOrEmpty(UserId))
-            {
-                throw new Exception("User id not set");
-            }
+            throw new Exception("User id not set");
         }
     }
 }

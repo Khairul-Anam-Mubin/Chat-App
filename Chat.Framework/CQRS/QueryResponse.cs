@@ -1,43 +1,42 @@
 using Chat.Framework.Models;
 
-namespace Chat.Framework.CQRS
+namespace Chat.Framework.CQRS;
+
+public class QueryResponse : Response
 {
-    public class QueryResponse : Response
+    public string Name { get; set; } = string.Empty;
+    public int Offset { get; set; }
+    public int Limit { get; set; }
+    public int TotalCount { get; set; }
+    public List<object> Items { get; set; }
+
+    public QueryResponse()
     {
-        public string Name { get; set; } = string.Empty;
-        public int Offset { get; set; }
-        public int Limit { get; set; }
-        public int TotalCount { get; set; }
-        public List<object> Items { get; set; }
+        Items = new List<object>();
+    }
 
-        public QueryResponse()
-        {
-            Items = new List<object>();
-        }
+    public void AddItem(object item)
+    {
+        Items.Add(item);
+    }
 
-        public void AddItem(object item)
-        {
-            Items.Add(item);
-        }
+    public void AddItems(List<object> items)
+    {
+        Items.AddRange(items);
+    }
 
-        public void AddItems(List<object> items)
-        {
-            Items.AddRange(items);
-        }
+    public void SetItems(List<object> items)
+    {
+        Items = items;
+    }
 
-        public void SetItems(List<object> items)
+    public List<T> GetItems<T>()
+    {
+        var items = new List<T>();
+        foreach (var item in Items)
         {
-            Items = items;
+            items.Add((T)item);
         }
-
-        public List<T> GetItems<T>()
-        {
-            var items = new List<T>();
-            foreach (var item in Items)
-            {
-                items.Add((T)item);
-            }
-            return items;
-        }
+        return items;
     }
 }

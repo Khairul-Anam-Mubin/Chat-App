@@ -1,34 +1,33 @@
 using Chat.Framework.Models;
 
-namespace Chat.Framework.CQRS
+namespace Chat.Framework.CQRS;
+
+public abstract class AQuery : MetaDataDictionary, IQuery
 {
-    public abstract class AQuery : MetaDataDictionary, IQuery
+    public int Offset { get; set; }
+    public int Limit { get; set; }
+    public abstract void ValidateQuery();
+
+    protected AQuery()
     {
-        public int Offset { get; set; }
-        public int Limit { get; set; }
-        public abstract void ValidateQuery();
+        Offset = 0;
+        Limit = 1;
+    }
+    public QueryResponse CreateResponse()
+    {
+        return new QueryResponse
+        {
+            Name = GetType().Name,
+            Offset = Offset,
+            Limit = Limit
+        };
+    }
 
-        protected AQuery()
-        {
-            Offset = 0;
-            Limit = 1;
-        }
-        public QueryResponse CreateResponse()
-        {
-            return new QueryResponse
-            {
-                Name = GetType().Name,
-                Offset = Offset,
-                Limit = Limit
-            };
-        }
-
-        public QueryResponse CreateResponse(QueryResponse response)
-        {
-            response.Name = GetType().Name;
-            response.Offset = Offset;
-            response.Limit = Limit;
-            return response;
-        }
+    public QueryResponse CreateResponse(QueryResponse response)
+    {
+        response.Name = GetType().Name;
+        response.Offset = Offset;
+        response.Limit = Limit;
+        return response;
     }
 }

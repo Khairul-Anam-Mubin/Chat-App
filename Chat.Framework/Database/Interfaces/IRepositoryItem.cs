@@ -1,7 +1,6 @@
-namespace Chat.Framework.Database.Interfaces
+namespace Chat.Framework.Database.Interfaces;
+
+public interface IRepositoryItem
 {
-    public interface IRepositoryItem
-    {
-        public string Id { get; set; }
-    }
+    public string Id { get; set; }
 }

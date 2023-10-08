@@ -1,0 +1,20 @@
+using Chat.Framework.CQRS;
+
+namespace Chat.Domain.Commands;
+
+public class UpdateChatsStatusCommand : ACommand
+{
+    public string UserId {get; set;} = string.Empty;
+    public string OpenedChatUserId {get; set;} = string.Empty;
+    public override void ValidateCommand()
+    {
+        if (string.IsNullOrEmpty(UserId))
+        {
+            throw new Exception("UserId not set");
+        }
+        if (string.IsNullOrEmpty(OpenedChatUserId))
+        {
+            throw new Exception("OpenedChatUserId not set");
+        }
+    }
+}

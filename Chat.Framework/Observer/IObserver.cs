@@ -1,7 +1,6 @@
-﻿namespace Chat.Framework.Observer
+﻿namespace Chat.Framework.Observer;
+
+public interface IObserver<in T>
 {
-    public interface IObserver<in T>
-    {
-        Task ObserveAsync(T data);
-    }
+    Task ObserveAsync(T data);
 }

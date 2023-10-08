@@ -1,9 +1,8 @@
-﻿namespace Chat.Framework.Observer
+﻿namespace Chat.Framework.Observer;
+
+public interface IObservable<T>
 {
-    public interface IObservable<T>
-    {
-        Task NotifyAsync(T data);
-        void Subscribe(IObserver<T> observer);
-        void UnSubscribe(IObserver<T> observer);
-    }
+    Task NotifyAsync(T data);
+    void Subscribe(IObserver<T> observer);
+    void UnSubscribe(IObserver<T> observer);
 }

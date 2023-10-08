@@ -1,8 +1,7 @@
-﻿namespace Chat.Framework.Enums
+﻿namespace Chat.Framework.Enums;
+
+public enum SortDirection
 {
-    public enum SortDirection
-    {
-        Ascending = 1,
-        Descending = -1
-    }
+    Ascending = 1,
+    Descending = -1
 }

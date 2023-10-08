@@ -7,7 +7,7 @@ public static class UserModelExtension
 {
     public static UserProfile ToUserProfile(this UserModel userModel)
     {
-        var userProfile = new UserProfile()
+        var userProfile = new UserProfile
         {
             Id = userModel.Id,
             FirstName = userModel.FirstName,

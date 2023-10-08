@@ -1,26 +1,25 @@
 using Chat.Framework.CQRS;
 
-namespace Chat.Identity.Domain.Commands
+namespace Chat.Identity.Domain.Commands;
+
+public class LoginCommand : ACommand
 {
-    public class LoginCommand : ACommand
+    public string Email { get; set; } = string.Empty;
+    public string Password { get; set; } = string.Empty;
+    public string AppId { get; set; } = string.Empty;
+    public override void ValidateCommand()
     {
-        public string Email { get; set; } = string.Empty;
-        public string Password { get; set; } = string.Empty;
-        public string AppId { get; set; } = string.Empty;
-        public override void ValidateCommand()
+        if (string.IsNullOrEmpty(Email))
         {
-            if (string.IsNullOrEmpty(Email))
-            {
-                throw new Exception($"Email not set");
-            }
-            if (string.IsNullOrEmpty(Password))
-            {
-                throw new Exception("Password not set");
-            }
-            if (string.IsNullOrEmpty(AppId))
-            {
-                throw new Exception("AppId not set");
-            }
+            throw new Exception("Email not set");
+        }
+        if (string.IsNullOrEmpty(Password))
+        {
+            throw new Exception("Password not set");
+        }
+        if (string.IsNullOrEmpty(AppId))
+        {
+            throw new Exception("AppId not set");
         }
     }
 }

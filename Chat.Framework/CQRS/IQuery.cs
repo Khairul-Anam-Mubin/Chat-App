@@ -1,11 +1,10 @@
 using Chat.Framework.Interfaces;
 
-namespace Chat.Framework.CQRS
+namespace Chat.Framework.CQRS;
+
+public interface IQuery : IMetaDataDictionary
 {
-    public interface IQuery : IMetaDataDictionary
-    {
-        void ValidateQuery();
-        QueryResponse CreateResponse();
-        QueryResponse CreateResponse(QueryResponse response);
-    }
+    void ValidateQuery();
+    QueryResponse CreateResponse();
+    QueryResponse CreateResponse(QueryResponse response);
 }

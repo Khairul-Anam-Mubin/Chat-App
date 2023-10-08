@@ -1,16 +1,15 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace Chat.Framework.Attributes
+namespace Chat.Framework.Attributes;
+
+[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
+public class ServiceRegisterAttribute : Attribute
 {
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
-    public class ServiceRegisterAttribute : Attribute
+    public Type ServiceType { get; set; }
+    public ServiceLifetime ServiceLifetime { get; set; }
+    public ServiceRegisterAttribute(Type serviceType, ServiceLifetime serviceLifeTime)
     {
-        public Type ServiceType { get; set; }
-        public ServiceLifetime ServiceLifetime { get; set; }
-        public ServiceRegisterAttribute(Type serviceType, ServiceLifetime serviceLifeTime)
-        {
-            ServiceType = serviceType;
-            ServiceLifetime = serviceLifeTime;
-        }
+        ServiceType = serviceType;
+        ServiceLifetime = serviceLifeTime;
     }
 }

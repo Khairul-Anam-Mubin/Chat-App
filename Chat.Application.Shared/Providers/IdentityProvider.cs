@@ -1,6 +1,6 @@
 ﻿using Chat.Application.Shared.Helpers;
-using Chat.Domain.Shared.Models;
 using Chat.Domain.Shared.Constants;
+using Chat.Domain.Shared.Models;
 
 namespace Chat.Application.Shared.Providers;
 

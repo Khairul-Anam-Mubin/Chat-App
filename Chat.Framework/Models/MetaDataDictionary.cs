@@ -1,42 +1,41 @@
 ﻿using Chat.Framework.Extensions;
 using Chat.Framework.Interfaces;
 
-namespace Chat.Framework.Models
+namespace Chat.Framework.Models;
+
+public class MetaDataDictionary : IMetaDataDictionary
 {
-    public class MetaDataDictionary : IMetaDataDictionary
+    public Dictionary<string, object> MetaData { get; set; }
+
+    public MetaDataDictionary()
     {
-        public Dictionary<string, object> MetaData { get; set; }
+        MetaData = new Dictionary<string, object>();
+    }
+    public void SetData(string key, object data)
+    {
+        MetaData[key] = data;
+    }
+    public T? GetData<T>(string key)
+    {
+        if (!MetaData.TryGetValue(key, out var data)) return default;
+        try
+        {
+            return (T)data;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+        }
 
-        public MetaDataDictionary()
+        try
         {
-            MetaData = new Dictionary<string, object>();
+            var serializedData = data.Serialize();
+            return serializedData.Deserialize<T>();
         }
-        public void SetData(string key, object data)
+        catch (Exception e)
         {
-            MetaData[key] = data;
+            Console.WriteLine(e.Message);
         }
-        public T? GetData<T>(string key)
-        {
-            if (!MetaData.TryGetValue(key, out var data)) return default;
-            try
-            {
-                return (T)data;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-
-            try
-            {
-                var serializedData = data.Serialize();
-                return serializedData.Deserialize<T>();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-            return default;
-        }
+        return default;
     }
 }

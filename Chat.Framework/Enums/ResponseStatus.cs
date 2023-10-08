@@ -1,10 +1,9 @@
-namespace Chat.Framework.Enums
+namespace Chat.Framework.Enums;
+
+public enum ResponseStatus
 {
-    public enum ResponseStatus
-    {
-        Failed = 0,
-        Success = 1,
-        Error = 2,
-        Pending = 3
-    }
+    Failed = 0,
+    Success = 1,
+    Error = 2,
+    Pending = 3
 }

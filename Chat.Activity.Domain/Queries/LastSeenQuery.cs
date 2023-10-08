@@ -1,22 +1,21 @@
 using Chat.Framework.CQRS;
 
-namespace Chat.Activity.Domain.Queries
+namespace Chat.Activity.Domain.Queries;
+
+public class LastSeenQuery : AQuery
 {
-    public class LastSeenQuery : AQuery
+    public List<string> UserIds { get; set; }
+
+    public LastSeenQuery()
     {
-        public List<string> UserIds { get; set; }
+        UserIds = new List<string>();
+    }
 
-        public LastSeenQuery()
+    public override void ValidateQuery()
+    {
+        if (UserIds == null || !UserIds.Any())
         {
-            UserIds = new List<string>();
-        }
-
-        public override void ValidateQuery()
-        {
-            if (UserIds == null || !UserIds.Any())
-            {
-                throw new Exception("UserId not set");
-            }
+            throw new Exception("UserId not set");
         }
     }
 }

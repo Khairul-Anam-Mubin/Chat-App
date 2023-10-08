@@ -6,34 +6,33 @@ using Chat.Identity.Application.Interfaces;
 using Chat.Identity.Domain.Commands;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Chat.Identity.Application.CommandHandlers
+namespace Chat.Identity.Application.CommandHandlers;
+
+[ServiceRegister(typeof(IRequestHandler<RegisterCommand, CommandResponse>), ServiceLifetime.Singleton)]
+public class RegisterCommandHandler : ACommandHandler<RegisterCommand>
 {
-    [ServiceRegister(typeof(IRequestHandler<RegisterCommand, CommandResponse>), ServiceLifetime.Singleton)]
-    public class RegisterCommandHandler : ACommandHandler<RegisterCommand>
+    private readonly IUserRepository _userRepository;
+
+    public RegisterCommandHandler(IUserRepository userRepository)
     {
-        private readonly IUserRepository _userRepository;
+        _userRepository = userRepository;
+    }
 
-        public RegisterCommandHandler(IUserRepository userRepository)
+    protected override async Task<CommandResponse> OnHandleAsync(RegisterCommand command)
+    {
+        var response = command.CreateResponse();
+        if (await _userRepository.IsUserExistAsync(command.UserModel))
         {
-            _userRepository = userRepository;
+            throw new Exception("User email or id already exists!!");
         }
-
-        protected override async Task<CommandResponse> OnHandleAsync(RegisterCommand command)
+        command.UserModel.Id = Guid.NewGuid().ToString();
+        command.UserModel.UserName = $"{command.UserModel.FirstName}_{command.UserModel.LastName}";
+        if (!await _userRepository.CreateUserAsync(command.UserModel))
         {
-            var response = command.CreateResponse();
-            if (await _userRepository.IsUserExistAsync(command.UserModel))
-            {
-                throw new Exception("User email or id already exists!!");
-            }
-            command.UserModel.Id = Guid.NewGuid().ToString();
-            command.UserModel.UserName = $"{command.UserModel.FirstName}_{command.UserModel.LastName}";
-            if (!await _userRepository.CreateUserAsync(command.UserModel))
-            {
-                throw new Exception("Some anonymous problem occured!!");
-            }
-            response.Message = "User Created Successfully!!";
-            response.SetData("UserProfile", command.UserModel.ToUserProfile());
-            return response;
+            throw new Exception("Some anonymous problem occured!!");
         }
+        response.Message = "User Created Successfully!!";
+        response.SetData("UserProfile", command.UserModel.ToUserProfile());
+        return response;
     }
 }

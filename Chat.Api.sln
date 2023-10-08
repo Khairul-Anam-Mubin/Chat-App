@@ -15,33 +15,53 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat.Application.Shared", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat.Presentation.Shared", "Chat.Presentation.Shared\Chat.Presentation.Shared.csproj", "{F78D1F49-B28C-4098-A789-B5AE7FB5D8FE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chat.Activity.Domain", "Chat.Activity.Domain\Chat.Activity.Domain.csproj", "{865AD37C-B994-4429-86CB-38E5E8716DA3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat.Activity.Domain", "Chat.Activity.Domain\Chat.Activity.Domain.csproj", "{865AD37C-B994-4429-86CB-38E5E8716DA3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chat.Activity.Application", "Chat.Activity.Application\Chat.Activity.Application.csproj", "{4EE0F15C-1EC1-4D51-B15D-A7A06706BBAD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat.Activity.Application", "Chat.Activity.Application\Chat.Activity.Application.csproj", "{4EE0F15C-1EC1-4D51-B15D-A7A06706BBAD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chat.Activity.Persistence", "Chat.Activity.Persistence\Chat.Activity.Persistence.csproj", "{7C893C70-C5FE-4676-84FE-1EF46AB21C87}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat.Activity.Persistence", "Chat.Activity.Persistence\Chat.Activity.Persistence.csproj", "{7C893C70-C5FE-4676-84FE-1EF46AB21C87}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ActivityModule", "ActivityModule", "{7FD0C201-7D97-400B-870C-C63CEF8D2404}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chat.Identity.Domain", "Chat.Identity.Domain\Chat.Identity.Domain.csproj", "{6EADE35C-9377-40EB-AFEC-BAE9553966FE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat.Identity.Domain", "Chat.Identity.Domain\Chat.Identity.Domain.csproj", "{6EADE35C-9377-40EB-AFEC-BAE9553966FE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chat.Identity.Application", "Chat.Identity.Application\Chat.Identity.Application.csproj", "{4356FFF6-CF9F-4190-9BA2-33CB7B91A325}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat.Identity.Application", "Chat.Identity.Application\Chat.Identity.Application.csproj", "{4356FFF6-CF9F-4190-9BA2-33CB7B91A325}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chat.Identity.Persistence", "Chat.Identity.Persistence\Chat.Identity.Persistence.csproj", "{2146D478-8682-4327-A250-11885039641B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat.Identity.Persistence", "Chat.Identity.Persistence\Chat.Identity.Persistence.csproj", "{2146D478-8682-4327-A250-11885039641B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chat.Identity.Presentation", "Chat.Identity.Presentation\Chat.Identity.Presentation.csproj", "{A2FE8B25-2A40-4B13-86DC-093B035B414A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat.Identity.Presentation", "Chat.Identity.Presentation\Chat.Identity.Presentation.csproj", "{A2FE8B25-2A40-4B13-86DC-093B035B414A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IdentityModule", "IdentityModule", "{70BBA365-2DBB-4EB6-B870-205934DB08FB}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ContactModule", "ContactModule", "{9D9AD2C1-4432-48BC-95A3-41703AE2FB5A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chat.Contact.Domain", "Chat.Contact.Domain\Chat.Contact.Domain.csproj", "{784B4EAD-D735-45A7-8D16-DDB8241B1723}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat.Contact.Domain", "Chat.Contact.Domain\Chat.Contact.Domain.csproj", "{784B4EAD-D735-45A7-8D16-DDB8241B1723}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chat.Contact.Application", "Chat.Contact.Application\Chat.Contact.Application.csproj", "{249F8232-E45D-45DD-9D4A-D8420B2C8B6C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat.Contact.Application", "Chat.Contact.Application\Chat.Contact.Application.csproj", "{249F8232-E45D-45DD-9D4A-D8420B2C8B6C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chat.Contact.Persistence", "Chat.Contact.Persistence\Chat.Contact.Persistence.csproj", "{4044AB2C-F51F-47DE-813B-7327BCEFE17D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat.Contact.Persistence", "Chat.Contact.Persistence\Chat.Contact.Persistence.csproj", "{4044AB2C-F51F-47DE-813B-7327BCEFE17D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chat.Contact.Presentation", "Chat.Contact.Presentation\Chat.Contact.Presentation.csproj", "{B0FEC69D-52D8-4331-854C-5E3332A78B90}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat.Contact.Presentation", "Chat.Contact.Presentation\Chat.Contact.Presentation.csproj", "{B0FEC69D-52D8-4331-854C-5E3332A78B90}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FileStoreModule", "FileStoreModule", "{5B66DF56-6D08-421A-BD15-5CA82346BB7B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chat.FileStore.Domain", "Chat.FileStore.Domain\Chat.FileStore.Domain.csproj", "{7AC447FF-98F7-4D60-AE2B-40A7C7BFAF2F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chat.FileStore.Application", "Chat.FileStore.Application\Chat.FileStore.Application.csproj", "{04338BBC-A4F3-4C26-8369-AACABB39FFFE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chat.FileStore.Persistence", "Chat.FileStore.Persistence\Chat.FileStore.Persistence.csproj", "{6C28C2FD-FA6F-4194-9493-6B20EC92BB09}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chat.FileStore.Presentation", "Chat.FileStore.Presentation\Chat.FileStore.Presentation.csproj", "{BA2BEA3F-76D8-44BA-B988-61406B7EE93B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ChatModule", "ChatModule", "{271BD1F3-D957-4912-AAD7-96E4BECA1613}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chat.Domain", "Chat.Domain\Chat.Domain.csproj", "{BB6463EC-2310-4204-90EB-31288B46815B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chat.Application", "Chat.Application\Chat.Application.csproj", "{E94A226A-DFEF-4D9A-9661-65133FB06878}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chat.Persistence", "Chat.Persistence\Chat.Persistence.csproj", "{E9BD821F-BD8C-4206-9F0B-7398C2984D1A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chat.Notification", "Chat.Notification\Chat.Notification.csproj", "{0D74F44B-BFAE-4914-A24D-96B233CC066C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -117,11 +137,44 @@ Global
 		{B0FEC69D-52D8-4331-854C-5E3332A78B90}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B0FEC69D-52D8-4331-854C-5E3332A78B90}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B0FEC69D-52D8-4331-854C-5E3332A78B90}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7AC447FF-98F7-4D60-AE2B-40A7C7BFAF2F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7AC447FF-98F7-4D60-AE2B-40A7C7BFAF2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7AC447FF-98F7-4D60-AE2B-40A7C7BFAF2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7AC447FF-98F7-4D60-AE2B-40A7C7BFAF2F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{04338BBC-A4F3-4C26-8369-AACABB39FFFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04338BBC-A4F3-4C26-8369-AACABB39FFFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04338BBC-A4F3-4C26-8369-AACABB39FFFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04338BBC-A4F3-4C26-8369-AACABB39FFFE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6C28C2FD-FA6F-4194-9493-6B20EC92BB09}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C28C2FD-FA6F-4194-9493-6B20EC92BB09}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C28C2FD-FA6F-4194-9493-6B20EC92BB09}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C28C2FD-FA6F-4194-9493-6B20EC92BB09}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA2BEA3F-76D8-44BA-B988-61406B7EE93B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA2BEA3F-76D8-44BA-B988-61406B7EE93B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA2BEA3F-76D8-44BA-B988-61406B7EE93B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA2BEA3F-76D8-44BA-B988-61406B7EE93B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB6463EC-2310-4204-90EB-31288B46815B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB6463EC-2310-4204-90EB-31288B46815B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB6463EC-2310-4204-90EB-31288B46815B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB6463EC-2310-4204-90EB-31288B46815B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E94A226A-DFEF-4D9A-9661-65133FB06878}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E94A226A-DFEF-4D9A-9661-65133FB06878}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E94A226A-DFEF-4D9A-9661-65133FB06878}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E94A226A-DFEF-4D9A-9661-65133FB06878}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E9BD821F-BD8C-4206-9F0B-7398C2984D1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E9BD821F-BD8C-4206-9F0B-7398C2984D1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E9BD821F-BD8C-4206-9F0B-7398C2984D1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E9BD821F-BD8C-4206-9F0B-7398C2984D1A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D74F44B-BFAE-4914-A24D-96B233CC066C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D74F44B-BFAE-4914-A24D-96B233CC066C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D74F44B-BFAE-4914-A24D-96B233CC066C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D74F44B-BFAE-4914-A24D-96B233CC066C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{7B7DD4B3-4E1B-4AFC-9AF3-697201860D19} = {271BD1F3-D957-4912-AAD7-96E4BECA1613}
 		{E391CA4F-6F15-4893-B3DB-104304A67896} = {7FD0C201-7D97-400B-870C-C63CEF8D2404}
 		{865AD37C-B994-4429-86CB-38E5E8716DA3} = {7FD0C201-7D97-400B-870C-C63CEF8D2404}
 		{4EE0F15C-1EC1-4D51-B15D-A7A06706BBAD} = {7FD0C201-7D97-400B-870C-C63CEF8D2404}
@@ -134,6 +187,14 @@ Global
 		{249F8232-E45D-45DD-9D4A-D8420B2C8B6C} = {9D9AD2C1-4432-48BC-95A3-41703AE2FB5A}
 		{4044AB2C-F51F-47DE-813B-7327BCEFE17D} = {9D9AD2C1-4432-48BC-95A3-41703AE2FB5A}
 		{B0FEC69D-52D8-4331-854C-5E3332A78B90} = {9D9AD2C1-4432-48BC-95A3-41703AE2FB5A}
+		{7AC447FF-98F7-4D60-AE2B-40A7C7BFAF2F} = {5B66DF56-6D08-421A-BD15-5CA82346BB7B}
+		{04338BBC-A4F3-4C26-8369-AACABB39FFFE} = {5B66DF56-6D08-421A-BD15-5CA82346BB7B}
+		{6C28C2FD-FA6F-4194-9493-6B20EC92BB09} = {5B66DF56-6D08-421A-BD15-5CA82346BB7B}
+		{BA2BEA3F-76D8-44BA-B988-61406B7EE93B} = {5B66DF56-6D08-421A-BD15-5CA82346BB7B}
+		{BB6463EC-2310-4204-90EB-31288B46815B} = {271BD1F3-D957-4912-AAD7-96E4BECA1613}
+		{E94A226A-DFEF-4D9A-9661-65133FB06878} = {271BD1F3-D957-4912-AAD7-96E4BECA1613}
+		{E9BD821F-BD8C-4206-9F0B-7398C2984D1A} = {271BD1F3-D957-4912-AAD7-96E4BECA1613}
+		{0D74F44B-BFAE-4914-A24D-96B233CC066C} = {271BD1F3-D957-4912-AAD7-96E4BECA1613}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {80680230-D6F1-46D5-A086-2E31E4457929}

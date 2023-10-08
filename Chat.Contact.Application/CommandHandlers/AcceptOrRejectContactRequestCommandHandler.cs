@@ -5,43 +5,42 @@ using Chat.Framework.CQRS;
 using Chat.Framework.Mediators;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Chat.Contact.Application.CommandHandlers
-{
-    [ServiceRegister(typeof(IRequestHandler<AcceptOrRejectContactRequestCommand, CommandResponse>), ServiceLifetime.Singleton)]
-    public class AcceptOrRejectContactRequestCommandHandler : ACommandHandler<AcceptOrRejectContactRequestCommand>
-    {
-        private readonly IContactRepository _contactRepository;
-        public AcceptOrRejectContactRequestCommandHandler(IContactRepository contactRepository)
-        {
-            _contactRepository = contactRepository;
-        }
+namespace Chat.Contact.Application.CommandHandlers;
 
-        protected override async Task<CommandResponse> OnHandleAsync(AcceptOrRejectContactRequestCommand command)
+[ServiceRegister(typeof(IRequestHandler<AcceptOrRejectContactRequestCommand, CommandResponse>), ServiceLifetime.Singleton)]
+public class AcceptOrRejectContactRequestCommandHandler : ACommandHandler<AcceptOrRejectContactRequestCommand>
+{
+    private readonly IContactRepository _contactRepository;
+    public AcceptOrRejectContactRequestCommandHandler(IContactRepository contactRepository)
+    {
+        _contactRepository = contactRepository;
+    }
+
+    protected override async Task<CommandResponse> OnHandleAsync(AcceptOrRejectContactRequestCommand command)
+    {
+        var response = command.CreateResponse();
+        var contact = await _contactRepository.GetContactByIdAsync(command.ContactId);
+        if (contact == null)
         {
-            var response = command.CreateResponse();
-            var contact = await _contactRepository.GetContactByIdAsync(command.ContactId);
-            if (contact == null)
-            {
-                throw new Exception("Contact not found");
-            }
-            if (command.IsAcceptRequest)
-            {
-                contact.IsPending = false;
-                if (!await _contactRepository.SaveContactAsync(contact))
-                {
-                    throw new Exception("Contact save problem");
-                }
-                response.Message = "Contact added";
-            }
-            else
-            {
-                if (!await _contactRepository.DeleteContactById(command.ContactId))
-                {
-                    throw new Exception("Delete contact problem");
-                }
-                response.Message = "Contact rejected";
-            }
-            return response;
+            throw new Exception("ContactModel not found");
         }
+        if (command.IsAcceptRequest)
+        {
+            contact.IsPending = false;
+            if (!await _contactRepository.SaveContactAsync(contact))
+            {
+                throw new Exception("ContactModel save problem");
+            }
+            response.Message = "ContactModel added";
+        }
+        else
+        {
+            if (!await _contactRepository.DeleteContactById(command.ContactId))
+            {
+                throw new Exception("Delete contact problem");
+            }
+            response.Message = "ContactModel rejected";
+        }
+        return response;
     }
 }

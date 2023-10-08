@@ -3,18 +3,17 @@ using Chat.Domain.Shared.Models;
 using Chat.Identity.Domain.Models;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Chat.Identity.Application.Interfaces
-{
-    public interface ITokenService
-    {
-        AccessModel GenerateAccessModel(UserProfile userProfile, string appId);
-        List<Claim> GenerateClaims(UserProfile userProfile, string appId);
-        TokenValidationParameters GetTokenValidationParameters(bool validateIssuer = true, bool validateAudience = true, bool validateLifetime = true, bool validateIssuerSigningKey = true);
-        Task<Token?> CreateTokenAsync(UserProfile userProfile, string appId);
-        Task<bool> SaveAccessModelAsync(AccessModel accessModel);
-        Task<bool> RevokeAllTokenByAppIdAsync(string appId);
-        Task<bool> RevokeAllTokensByUserId(string userId);
-        Task<AccessModel?> GetAccessModelByRefreshTokenAsync(string refreshToken);
+namespace Chat.Identity.Application.Interfaces;
 
-    }
+public interface ITokenService
+{
+    AccessModel GenerateAccessModel(UserProfile userProfile, string appId);
+    List<Claim> GenerateClaims(UserProfile userProfile, string appId);
+    TokenValidationParameters GetTokenValidationParameters(bool validateIssuer = true, bool validateAudience = true, bool validateLifetime = true, bool validateIssuerSigningKey = true);
+    Task<Token?> CreateTokenAsync(UserProfile userProfile, string appId);
+    Task<bool> SaveAccessModelAsync(AccessModel accessModel);
+    Task<bool> RevokeAllTokenByAppIdAsync(string appId);
+    Task<bool> RevokeAllTokensByUserId(string userId);
+    Task<AccessModel?> GetAccessModelByRefreshTokenAsync(string refreshToken);
+
 }

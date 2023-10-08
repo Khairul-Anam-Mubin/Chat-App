@@ -1,12 +1,11 @@
 using Chat.Framework.Enums;
 
-namespace Chat.Framework.Interfaces
+namespace Chat.Framework.Interfaces;
+
+public interface IResponse : IMetaDataDictionary
 {
-    public interface IResponse : IMetaDataDictionary
-    {
-        string Message { get; set; }
-        ResponseStatus Status { get; set; }
-        void SetErrorMessage(string message);
-        void SetSuccessMessage(string message);
-    }
+    string Message { get; set; }
+    ResponseStatus Status { get; set; }
+    void SetErrorMessage(string message);
+    void SetSuccessMessage(string message);
 }
