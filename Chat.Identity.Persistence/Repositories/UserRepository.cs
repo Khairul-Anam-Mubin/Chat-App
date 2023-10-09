@@ -26,25 +26,25 @@ public class UserRepository : IUserRepository
         var idFilter = Builders<UserModel>.Filter.Eq("Id", userModel.Id);
         var emailFilter = Builders<UserModel>.Filter.Eq("Email", userModel.Email);
         var filter = Builders<UserModel>.Filter.Or(idFilter, emailFilter);
-        var userItem = await _dbContext.GetItemByFilterDefinitionAsync(_databaseInfo, filter);
+        var userItem = await _dbContext.GetByFilterDefinitionAsync(_databaseInfo, filter);
         return userItem != null;
     }
 
     public async Task<UserModel?> GetUserByEmailAsync(string email)
     {
         var emailFilter = Builders<UserModel>.Filter.Eq("Email", email);
-        var userModel = await _dbContext.GetItemByFilterDefinitionAsync(_databaseInfo, emailFilter);
+        var userModel = await _dbContext.GetByFilterDefinitionAsync(_databaseInfo, emailFilter);
         return userModel;
     }
 
     public async Task<bool> CreateUserAsync(UserModel userModel)
     {
-        return await _dbContext.SaveItemAsync(_databaseInfo, userModel);
+        return await _dbContext.SaveAsync(_databaseInfo, userModel);
     }
 
     public async Task<bool> UpdateUserAsync(UserModel userModel)
     {
-        return await _dbContext.SaveItemAsync(_databaseInfo, userModel);
+        return await _dbContext.SaveAsync(_databaseInfo, userModel);
     }
 
     public async Task<List<UserModel>> GetUsersByUserIdOrEmailAsync(string userId, string email)
@@ -52,13 +52,13 @@ public class UserRepository : IUserRepository
         var idFilter = Builders<UserModel>.Filter.Eq("Id", userId);
         var emailFilter = Builders<UserModel>.Filter.Eq("Email", email);
         var filter = Builders<UserModel>.Filter.Or(idFilter, emailFilter);
-        return await _dbContext.GetItemsByFilterDefinitionAsync(_databaseInfo, filter);
+        return await _dbContext.GetEntitiesByFilterDefinitionAsync(_databaseInfo, filter);
     }
 
     private async Task<List<UserModel>> GetUsersByMultipleValuesAsync(string field, List<string> values)
     {
         var filter = Builders<UserModel>.Filter.In(field, values);
-        return await _dbContext.GetItemsByFilterDefinitionAsync(_databaseInfo, filter);
+        return await _dbContext.GetEntitiesByFilterDefinitionAsync(_databaseInfo, filter);
     }
 
     public async Task<List<UserModel>> GetUsersByUserIdsAsync(List<string> userIds)

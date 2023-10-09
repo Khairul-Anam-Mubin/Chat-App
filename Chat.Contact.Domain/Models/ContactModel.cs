@@ -2,7 +2,7 @@ using Chat.Framework.Database.Interfaces;
 
 namespace Chat.Contact.Domain.Models;
 
-public class ContactModel : IRepositoryItem
+public class ContactModel : IEntity
 {
     public string Id { get; set; } = string.Empty;
     public string UserId { get; set; } = string.Empty;

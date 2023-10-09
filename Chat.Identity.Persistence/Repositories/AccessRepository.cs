@@ -23,23 +23,23 @@ public class AccessRepository : IAccessRepository
 
     public async Task<bool> SaveAccessModelAsync(AccessModel accessModel)
     {
-        return await _dbContext.SaveItemAsync(_databaseInfo, accessModel);
+        return await _dbContext.SaveAsync(_databaseInfo, accessModel);
     }
 
     public async Task<bool> DeleteAllTokenByAppId(string appId)
     {
         var filter = Builders<AccessModel>.Filter.Eq("AppId", appId);
-        return await _dbContext.DeleteItemsByFilterDefinitionAsync(_databaseInfo, filter);
+        return await _dbContext.DeleteManyByFilterDefinitionAsync(_databaseInfo, filter);
     }
 
     public async Task<bool> DeleteAllTokensByUserId(string userId)
     {
         var filter = Builders<AccessModel>.Filter.Eq("UserId", userId);
-        return await _dbContext.DeleteItemsByFilterDefinitionAsync(_databaseInfo, filter);
+        return await _dbContext.DeleteManyByFilterDefinitionAsync(_databaseInfo, filter);
     }
 
     public async Task<AccessModel?> GetAccessModelByIdAsync(string id)
     {
-        return await _dbContext.GetItemByIdAsync<AccessModel>(_databaseInfo, id);
+        return await _dbContext.GetByIdAsync<AccessModel>(_databaseInfo, id);
     }
 }

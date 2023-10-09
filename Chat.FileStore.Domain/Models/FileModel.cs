@@ -2,7 +2,7 @@ using Chat.Framework.Database.Interfaces;
 
 namespace Chat.FileStore.Domain.Models;
 
-public class FileModel : IRepositoryItem
+public class FileModel : IEntity
 {
     public string Id { get; set; } = string.Empty;
     public string Name { get; set; } = string.Empty;

@@ -53,7 +53,7 @@ public class MongoDbContext : IMongoDbContext
         }
     }
 
-    public async Task<bool> SaveItemAsync<T>(DatabaseInfo databaseInfo, T item) where T : class, IRepositoryItem
+    public async Task<bool> SaveAsync<T>(DatabaseInfo databaseInfo, T item) where T : class, IEntity
     {
         try
         {
@@ -74,7 +74,7 @@ public class MongoDbContext : IMongoDbContext
         }
     }
 
-    public async Task<bool> DeleteItemByIdAsync<T>(DatabaseInfo databaseInfo, string id) where T : class, IRepositoryItem
+    public async Task<bool> DeleteOneByIdAsync<T>(DatabaseInfo databaseInfo, string id) where T : class, IEntity
     {
         try
         {
@@ -99,7 +99,7 @@ public class MongoDbContext : IMongoDbContext
         }
     }
 
-    public async Task<T?> GetItemByIdAsync<T>(DatabaseInfo databaseInfo, string id) where T : class, IRepositoryItem
+    public async Task<T?> GetByIdAsync<T>(DatabaseInfo databaseInfo, string id) where T : class, IEntity
     {
         try
         {
@@ -121,7 +121,7 @@ public class MongoDbContext : IMongoDbContext
         }
     }
 
-    public async Task<List<T>> GetItemsAsync<T>(DatabaseInfo databaseInfo) where T : class, IRepositoryItem
+    public async Task<List<T>> GetAllAsync<T>(DatabaseInfo databaseInfo) where T : class, IEntity
     {
         try
         {
@@ -143,7 +143,7 @@ public class MongoDbContext : IMongoDbContext
         }
     }
 
-    public async Task<T?> GetItemByFilterDefinitionAsync<T>(DatabaseInfo databaseInfo, FilterDefinition<T> filterDefinition) where T : class, IRepositoryItem
+    public async Task<T?> GetByFilterDefinitionAsync<T>(DatabaseInfo databaseInfo, FilterDefinition<T> filterDefinition) where T : class, IEntity
     {
         try
         {
@@ -164,7 +164,7 @@ public class MongoDbContext : IMongoDbContext
         }
     }
 
-    public async Task<bool> DeleteItemsByFilterDefinitionAsync<T>(DatabaseInfo databaseInfo, FilterDefinition<T> filterDefinition) where T : class, IRepositoryItem
+    public async Task<bool> DeleteManyByFilterDefinitionAsync<T>(DatabaseInfo databaseInfo, FilterDefinition<T> filterDefinition) where T : class, IEntity
     {
         try
         {
@@ -188,7 +188,7 @@ public class MongoDbContext : IMongoDbContext
         }
     }
 
-    public async Task<List<T>> GetItemsByFilterDefinitionAsync<T>(DatabaseInfo databaseInfo, FilterDefinition<T> filterDefinition) where T : class, IRepositoryItem
+    public async Task<List<T>> GetEntitiesByFilterDefinitionAsync<T>(DatabaseInfo databaseInfo, FilterDefinition<T> filterDefinition) where T : class, IEntity
     {
         try
         {
@@ -209,7 +209,7 @@ public class MongoDbContext : IMongoDbContext
         }
     }
 
-    public async Task<List<T>> GetItemsByFilterDefinitionAsync<T>(DatabaseInfo databaseInfo, FilterDefinition<T> filterDefinition, int offset, int limit) where T : class, IRepositoryItem
+    public async Task<List<T>> GetEntitiesByFilterDefinitionAsync<T>(DatabaseInfo databaseInfo, FilterDefinition<T> filterDefinition, int offset, int limit) where T : class, IEntity
     {
         try
         {
@@ -236,8 +236,8 @@ public class MongoDbContext : IMongoDbContext
         }
     }
 
-    public async Task<bool> UpdateItemByFilterDefinitionAsync<T>(DatabaseInfo databaseInfo,
-        FilterDefinition<T> filterDefinition, UpdateDefinition<T> updateDefinition) where T : class, IRepositoryItem
+    public async Task<bool> UpdateOneByFilterDefinitionAsync<T>(DatabaseInfo databaseInfo,
+        FilterDefinition<T> filterDefinition, UpdateDefinition<T> updateDefinition) where T : class, IEntity
     {
         var collection = GetCollection<T>(databaseInfo);
         if (collection == null)
@@ -248,7 +248,7 @@ public class MongoDbContext : IMongoDbContext
         return result.IsModifiedCountAvailable;
     }
 
-    public async Task<bool> SaveItemsAsync<T>(DatabaseInfo databaseInfo, List<T> items) where T : class, IRepositoryItem
+    public async Task<bool> SaveManyAsync<T>(DatabaseInfo databaseInfo, List<T> items) where T : class, IEntity
     {
         var writeModels = new List<WriteModel<T>>();
         foreach (var item in items)

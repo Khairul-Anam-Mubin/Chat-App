@@ -2,7 +2,7 @@ using Chat.Framework.Database.Interfaces;
 
 namespace Chat.Identity.Domain.Models;
 
-public class AccessModel : IRepositoryItem
+public class AccessModel : IEntity
 {
     public string Id { get; set; } = string.Empty;
     public string AccessToken { get; set; } = string.Empty;

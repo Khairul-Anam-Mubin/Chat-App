@@ -1,0 +1,36 @@
+﻿using Chat.Framework.Database.Interfaces;
+using Chat.Framework.Database.Models;
+
+namespace Chat.Framework.Database.Repositories;
+
+public abstract class RepositoryBase<TEntity> : IRepository<TEntity> where TEntity : class, IEntity
+{
+    protected readonly IMongoDbContext DbContext;
+    protected readonly DatabaseInfo DatabaseInfo;
+
+    protected RepositoryBase(DatabaseInfo databaseInfo, IMongoDbContext dbContext)
+    {
+        DatabaseInfo = databaseInfo;
+        DbContext = dbContext;
+    }
+
+    public virtual async Task<TEntity?> GetByIdAsync(string id)
+    {
+        return await DbContext.GetByIdAsync<TEntity>(DatabaseInfo, id);
+    }
+
+    public virtual async Task<bool> SaveAsync(TEntity entity)
+    {
+        return await DbContext.SaveAsync(DatabaseInfo, entity);
+    }
+
+    public virtual async Task<bool> SaveAsync(List<TEntity> entities)
+    {
+        return await DbContext.SaveManyAsync(DatabaseInfo, entities);
+    }
+
+    public virtual async Task<bool> DeleteByIdAsync(string id)
+    {
+        return await DbContext.DeleteOneByIdAsync<TEntity>(DatabaseInfo, id);
+    }
+}

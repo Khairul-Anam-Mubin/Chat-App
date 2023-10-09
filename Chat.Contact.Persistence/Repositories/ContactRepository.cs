@@ -23,7 +23,7 @@ public class ContactRepository : IContactRepository
 
     public async Task<bool> SaveContactAsync(ContactModel contactModel)
     {
-        return await _dbContext.SaveItemAsync(_databaseInfo, contactModel);
+        return await _dbContext.SaveAsync(_databaseInfo, contactModel);
     }
 
     public async Task<List<ContactModel>> GetUserContactsAsync(string userId)
@@ -33,7 +33,7 @@ public class ContactRepository : IContactRepository
         var userFilter = Builders<ContactModel>.Filter.Or(userIdFilter, contactUserIdFilter);
         var pendingFilter = Builders<ContactModel>.Filter.Eq("IsPending", false);
         var filter = Builders<ContactModel>.Filter.And(userFilter, pendingFilter);
-        return await _dbContext.GetItemsByFilterDefinitionAsync(_databaseInfo, filter);
+        return await _dbContext.GetEntitiesByFilterDefinitionAsync(_databaseInfo, filter);
     }
 
     public async Task<List<ContactModel>> GetContactRequestsAsync(string userId)
@@ -41,7 +41,7 @@ public class ContactRepository : IContactRepository
         var userFilter = Builders<ContactModel>.Filter.Eq("ContactUserId", userId);
         var pendingFilter = Builders<ContactModel>.Filter.Eq("IsPending", true);
         var filter = Builders<ContactModel>.Filter.And(userFilter, pendingFilter);
-        return await _dbContext.GetItemsByFilterDefinitionAsync(_databaseInfo, filter);
+        return await _dbContext.GetEntitiesByFilterDefinitionAsync(_databaseInfo, filter);
     }
 
     public async Task<List<ContactModel>> GetPendingContactsAsync(string userId)
@@ -49,16 +49,16 @@ public class ContactRepository : IContactRepository
         var userFilter = Builders<ContactModel>.Filter.Eq("UserId", userId);
         var pendingFilter = Builders<ContactModel>.Filter.Eq("IsPending", true);
         var filter = Builders<ContactModel>.Filter.And(userFilter, pendingFilter);
-        return await _dbContext.GetItemsByFilterDefinitionAsync(_databaseInfo, filter);
+        return await _dbContext.GetEntitiesByFilterDefinitionAsync(_databaseInfo, filter);
     }
 
     public async Task<ContactModel?> GetContactByIdAsync(string contactId)
     {
-        return await _dbContext.GetItemByIdAsync<ContactModel>(_databaseInfo, contactId);
+        return await _dbContext.GetByIdAsync<ContactModel>(_databaseInfo, contactId);
     }
 
     public async Task<bool> DeleteContactById(string contactId)
     {
-        return await _dbContext.DeleteItemByIdAsync<ContactModel>(_databaseInfo, contactId);
+        return await _dbContext.DeleteOneByIdAsync<ContactModel>(_databaseInfo, contactId);
     }
 }

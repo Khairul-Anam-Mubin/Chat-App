@@ -22,11 +22,11 @@ public class FileRepository : IFileRepository
 
     public async Task<bool> SaveFileModelAsync(FileModel fileModel)
     {
-        return await _dbContext.SaveItemAsync(_databaseInfo, fileModel);
+        return await _dbContext.SaveAsync(_databaseInfo, fileModel);
     }
 
     public async Task<FileModel?> GetFileModelByIdAsync(string id)
     {
-        return await _dbContext.GetItemByIdAsync<FileModel>(_databaseInfo, id);
+        return await _dbContext.GetByIdAsync<FileModel>(_databaseInfo, id);
     }
 }

@@ -31,7 +31,7 @@ public class UpdateLastSeenCommandHandler : ACommandHandler<UpdateLastSeenComman
 
         lastSeenModel.LastSeenAt = DateTime.UtcNow;
 
-        if (!await _lastSeenRepository.SaveLastSeenModelAsync(lastSeenModel))
+        if (!await _lastSeenRepository.SaveAsync(lastSeenModel))
         {
             response.SetErrorMessage("Save Last Seen Model Error");
             return response;

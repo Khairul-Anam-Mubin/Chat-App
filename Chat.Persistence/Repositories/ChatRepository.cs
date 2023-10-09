@@ -23,7 +23,7 @@ public class ChatRepository : IChatRepository
 
     public async Task<bool> SaveChatModelAsync(ChatModel chatModel)
     {
-        return await _dbContext.SaveItemAsync(_databaseInfo, chatModel);
+        return await _dbContext.SaveAsync(_databaseInfo, chatModel);
     }
 
     public async Task<List<ChatModel>> GetChatModelsAsync(string userId, string sendTo, int offset, int limit)
@@ -35,7 +35,7 @@ public class ChatRepository : IChatRepository
         var alterSendToFilter = Builders<ChatModel>.Filter.Eq(chatModel => chatModel.SendTo, userId);
         var alterAndFilter = Builders<ChatModel>.Filter.And(alterUserIdFilter, alterSendToFilter);
         var orFilter = Builders<ChatModel>.Filter.Or(andFilter, alterAndFilter);
-        return await _dbContext.GetItemsByFilterDefinitionAsync(_databaseInfo, orFilter, offset, limit);
+        return await _dbContext.GetEntitiesByFilterDefinitionAsync(_databaseInfo, orFilter, offset, limit);
     }
 
     public async Task<List<ChatModel>> GetSenderAndReceiverSpecificChatModelsAsync(string senderId, string receiverId)
@@ -44,11 +44,11 @@ public class ChatRepository : IChatRepository
         var receiverFilter = Builders<ChatModel>.Filter.Eq(chatModel => chatModel.SendTo, receiverId);
         var statusFilter = Builders<ChatModel>.Filter.Ne(chatModel => chatModel.Status, "Seen");
         var andFilter = Builders<ChatModel>.Filter.And(senderFilter, receiverFilter);
-        return await _dbContext.GetItemsByFilterDefinitionAsync(_databaseInfo, andFilter);
+        return await _dbContext.GetEntitiesByFilterDefinitionAsync(_databaseInfo, andFilter);
     }
 
     public async Task<bool> SaveChatModelsAsync(List<ChatModel> chatModels)
     {
-        return await _dbContext.SaveItemsAsync(_databaseInfo, chatModels);
+        return await _dbContext.SaveManyAsync(_databaseInfo, chatModels);
     }
 }

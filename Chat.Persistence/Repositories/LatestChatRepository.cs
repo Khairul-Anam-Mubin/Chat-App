@@ -23,7 +23,7 @@ public class LatestChatRepository : ILatestChatRepository
 
     public async Task<bool> SaveLatestChatModelAsync(LatestChatModel latestChatModel)
     {
-        return await _dbContext.SaveItemAsync(_databaseInfo, latestChatModel);
+        return await _dbContext.SaveAsync(_databaseInfo, latestChatModel);
     }
 
     public async Task<LatestChatModel?> GetLatestChatAsync(string userId, string sendTo)
@@ -36,7 +36,7 @@ public class LatestChatRepository : ILatestChatRepository
         var alterAndFilter = Builders<LatestChatModel>.Filter.And(alterUserIdFilter, alterSendToFilter);
         var orFilter = Builders<LatestChatModel>.Filter.Or(andFilter, alterAndFilter);
             
-        return await _dbContext.GetItemByFilterDefinitionAsync(_databaseInfo, orFilter);
+        return await _dbContext.GetByFilterDefinitionAsync(_databaseInfo, orFilter);
     }
 
     public async Task<List<LatestChatModel>> GetLatestChatModelsAsync(string userId, int offset, int limit)
@@ -45,6 +45,6 @@ public class LatestChatRepository : ILatestChatRepository
         var sendToFilter = Builders<LatestChatModel>.Filter.Eq("SendTo", userId);
         var orFilter = Builders<LatestChatModel>.Filter.Or(userIdFilter, sendToFilter);
 
-        return await _dbContext.GetItemsByFilterDefinitionAsync(_databaseInfo, orFilter, offset, limit);
+        return await _dbContext.GetEntitiesByFilterDefinitionAsync(_databaseInfo, orFilter, offset, limit);
     }
 }
