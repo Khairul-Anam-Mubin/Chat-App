@@ -209,7 +209,7 @@ public class MongoDbContext : IMongoDbContext
         }
     }
 
-    public async Task<List<T>> GetEntitiesByFilterDefinitionAsync<T>(DatabaseInfo databaseInfo, FilterDefinition<T> filterDefinition, int offset, int limit) where T : class, IEntity
+    public async Task<List<T>> GetEntitiesByFilterDefinitionAsync<T>(DatabaseInfo databaseInfo, FilterDefinition<T> filterDefinition, SortDefinition<T> sortDefinition, int offset, int limit) where T : class, IEntity
     {
         try
         {
@@ -218,10 +218,10 @@ public class MongoDbContext : IMongoDbContext
             {
                 throw new Exception("Collection null");
             }
-            var sortDef = Builders<T>.Sort.Descending("SentAt");
+            
             var itemsCursor = await collection
                 .Find(filterDefinition)
-                .Sort(sortDef)
+                .Sort(sortDefinition)
                 .Skip(offset)
                 .Limit(limit)
                 .ToCursorAsync();

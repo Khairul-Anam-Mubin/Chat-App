@@ -22,11 +22,16 @@ public class ChatRepository : RepositoryBase<ChatModel>, IChatRepository
         var userIdFilter = Builders<ChatModel>.Filter.Eq(chatModel => chatModel.UserId, userId);
         var sendToFilter = Builders<ChatModel>.Filter.Eq(chatModel => chatModel.SendTo, sendTo);
         var andFilter = Builders<ChatModel>.Filter.And(userIdFilter, sendToFilter);
+        
         var alterUserIdFilter = Builders<ChatModel>.Filter.Eq(chatModel => chatModel.UserId, sendTo);
         var alterSendToFilter = Builders<ChatModel>.Filter.Eq(chatModel => chatModel.SendTo, userId);
         var alterAndFilter = Builders<ChatModel>.Filter.And(alterUserIdFilter, alterSendToFilter);
+        
         var orFilter = Builders<ChatModel>.Filter.Or(andFilter, alterAndFilter);
-        return await DbContext.GetEntitiesByFilterDefinitionAsync(DatabaseInfo, orFilter, offset, limit);
+        
+        var sortDef = Builders<ChatModel>.Sort.Descending("SentAt");
+        
+        return await DbContext.GetEntitiesByFilterDefinitionAsync(DatabaseInfo, orFilter, sortDef, offset, limit);
     }
 
     public async Task<List<ChatModel>> GetSenderAndReceiverSpecificChatModelsAsync(string senderId, string receiverId)
@@ -35,6 +40,7 @@ public class ChatRepository : RepositoryBase<ChatModel>, IChatRepository
         var receiverFilter = Builders<ChatModel>.Filter.Eq(chatModel => chatModel.SendTo, receiverId);
         var statusFilter = Builders<ChatModel>.Filter.Ne(chatModel => chatModel.Status, "Seen");
         var andFilter = Builders<ChatModel>.Filter.And(senderFilter, receiverFilter);
+        
         return await DbContext.GetEntitiesByFilterDefinitionAsync(DatabaseInfo, andFilter);
     }
 }

@@ -23,7 +23,7 @@ public interface IMongoDbContext
     
     Task<List<T>> GetEntitiesByFilterDefinitionAsync<T>(DatabaseInfo databaseInfo, FilterDefinition<T> filterDefinition) where T : class, IEntity;
     
-    Task<List<T>> GetEntitiesByFilterDefinitionAsync<T>(DatabaseInfo databaseInfo, FilterDefinition<T> filterDefinition, int offset, int limit) where T : class, IEntity;
+    Task<List<T>> GetEntitiesByFilterDefinitionAsync<T>(DatabaseInfo databaseInfo, FilterDefinition<T> filterDefinition, SortDefinition<T> sortDefinition,int offset, int limit) where T : class, IEntity;
     
     Task<string?> CreateIndexAsync<T>(DatabaseInfo databaseInfo, List<FieldOrder> fieldOrders);
 }
