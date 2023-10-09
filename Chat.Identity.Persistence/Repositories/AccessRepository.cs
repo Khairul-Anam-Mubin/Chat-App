@@ -1,6 +1,7 @@
 using Chat.Framework.Attributes;
 using Chat.Framework.Database.Interfaces;
 using Chat.Framework.Database.Models;
+using Chat.Framework.Database.Repositories;
 using Chat.Identity.Application.Interfaces;
 using Chat.Identity.Domain.Models;
 using Microsoft.Extensions.Configuration;
@@ -10,36 +11,21 @@ using MongoDB.Driver;
 namespace Chat.Identity.Persistence.Repositories;
 
 [ServiceRegister(typeof(IAccessRepository), ServiceLifetime.Singleton)]
-public class AccessRepository : IAccessRepository
+public class AccessRepository : RepositoryBase<AccessModel>, IAccessRepository
 {
-    private readonly DatabaseInfo _databaseInfo;
-    private readonly IMongoDbContext _dbContext;
-
-    public AccessRepository(IMongoDbContext mongoDbContext, IConfiguration configuration)
-    {
-        _databaseInfo = configuration.GetSection("DatabaseInfo").Get<DatabaseInfo>();
-        _dbContext = mongoDbContext;
-    }
-
-    public async Task<bool> SaveAccessModelAsync(AccessModel accessModel)
-    {
-        return await _dbContext.SaveAsync(_databaseInfo, accessModel);
-    }
+    public AccessRepository(IMongoDbContext mongoDbContext, IConfiguration configuration):
+        base(configuration.GetSection("DatabaseInfo").Get<DatabaseInfo>(), mongoDbContext)
+    { }
 
     public async Task<bool> DeleteAllTokenByAppId(string appId)
     {
-        var filter = Builders<AccessModel>.Filter.Eq("AppId", appId);
-        return await _dbContext.DeleteManyByFilterDefinitionAsync(_databaseInfo, filter);
+        var filter = Builders<AccessModel>.Filter.Eq(accessModel => accessModel.AppId, appId);
+        return await DbContext.DeleteManyByFilterDefinitionAsync(DatabaseInfo, filter);
     }
 
     public async Task<bool> DeleteAllTokensByUserId(string userId)
     {
-        var filter = Builders<AccessModel>.Filter.Eq("UserId", userId);
-        return await _dbContext.DeleteManyByFilterDefinitionAsync(_databaseInfo, filter);
-    }
-
-    public async Task<AccessModel?> GetAccessModelByIdAsync(string id)
-    {
-        return await _dbContext.GetByIdAsync<AccessModel>(_databaseInfo, id);
+        var filter = Builders<AccessModel>.Filter.Eq(accessModel => accessModel.UserId, userId);
+        return await DbContext.DeleteManyByFilterDefinitionAsync(DatabaseInfo, filter);
     }
 }

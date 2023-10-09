@@ -1,9 +1,9 @@
 using Chat.FileStore.Domain.Models;
+using Chat.Framework.Database.Interfaces;
 
 namespace Chat.FileStore.Application.Interfaces;
 
-public interface IFileRepository
+public interface IFileRepository : IRepository<FileModel>
 {
-    Task<bool> SaveFileModelAsync(FileModel fileModel);
-    Task<FileModel?> GetFileModelByIdAsync(string id);
+
 }

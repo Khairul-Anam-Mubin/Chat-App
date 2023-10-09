@@ -3,6 +3,7 @@ using Chat.Domain.Models;
 using Chat.Framework.Attributes;
 using Chat.Framework.Database.Interfaces;
 using Chat.Framework.Database.Models;
+using Chat.Framework.Database.Repositories;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
@@ -10,21 +11,11 @@ using MongoDB.Driver;
 namespace Chat.Persistence.Repositories;
 
 [ServiceRegister(typeof(IChatRepository), ServiceLifetime.Singleton)]
-public class ChatRepository : IChatRepository
+public class ChatRepository : RepositoryBase<ChatModel>, IChatRepository
 {
-    private readonly IMongoDbContext _dbContext;
-    private readonly DatabaseInfo _databaseInfo;
-
     public ChatRepository(IMongoDbContext mongoDbContext, IConfiguration configuration)
-    {
-        _dbContext = mongoDbContext;
-        _databaseInfo = configuration.GetSection("DatabaseInfo").Get<DatabaseInfo>();
-    }
-
-    public async Task<bool> SaveChatModelAsync(ChatModel chatModel)
-    {
-        return await _dbContext.SaveAsync(_databaseInfo, chatModel);
-    }
+    : base(configuration.GetSection("DatabaseInfo").Get<DatabaseInfo>(), mongoDbContext)
+    {}
 
     public async Task<List<ChatModel>> GetChatModelsAsync(string userId, string sendTo, int offset, int limit)
     {
@@ -35,7 +26,7 @@ public class ChatRepository : IChatRepository
         var alterSendToFilter = Builders<ChatModel>.Filter.Eq(chatModel => chatModel.SendTo, userId);
         var alterAndFilter = Builders<ChatModel>.Filter.And(alterUserIdFilter, alterSendToFilter);
         var orFilter = Builders<ChatModel>.Filter.Or(andFilter, alterAndFilter);
-        return await _dbContext.GetEntitiesByFilterDefinitionAsync(_databaseInfo, orFilter, offset, limit);
+        return await DbContext.GetEntitiesByFilterDefinitionAsync(DatabaseInfo, orFilter, offset, limit);
     }
 
     public async Task<List<ChatModel>> GetSenderAndReceiverSpecificChatModelsAsync(string senderId, string receiverId)
@@ -44,11 +35,6 @@ public class ChatRepository : IChatRepository
         var receiverFilter = Builders<ChatModel>.Filter.Eq(chatModel => chatModel.SendTo, receiverId);
         var statusFilter = Builders<ChatModel>.Filter.Ne(chatModel => chatModel.Status, "Seen");
         var andFilter = Builders<ChatModel>.Filter.And(senderFilter, receiverFilter);
-        return await _dbContext.GetEntitiesByFilterDefinitionAsync(_databaseInfo, andFilter);
-    }
-
-    public async Task<bool> SaveChatModelsAsync(List<ChatModel> chatModels)
-    {
-        return await _dbContext.SaveManyAsync(_databaseInfo, chatModels);
+        return await DbContext.GetEntitiesByFilterDefinitionAsync(DatabaseInfo, andFilter);
     }
 }

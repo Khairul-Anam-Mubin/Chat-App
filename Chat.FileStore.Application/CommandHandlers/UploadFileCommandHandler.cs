@@ -58,7 +58,7 @@ public class UploadFileCommandHandler : ACommandHandler<UploadFileCommand>
             UserId = currentUser?.Id ?? ""
         };
         
-        if (!await _fileRepository.SaveFileModelAsync(fileModel))
+        if (!await _fileRepository.SaveAsync(fileModel))
         {
             throw new Exception("File Save error to db");
         }

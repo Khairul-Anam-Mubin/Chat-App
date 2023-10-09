@@ -31,7 +31,7 @@ public class SendMessageCommandHandler : ACommandHandler<SendMessageCommand>
         command.ChatModel.SentAt = DateTime.UtcNow;
         command.ChatModel.Status = "Sent";
 
-        if (!await _chatRepository.SaveChatModelAsync(command.ChatModel))
+        if (!await _chatRepository.SaveAsync(command.ChatModel))
         {
             throw new Exception("Chat model save error");
         }

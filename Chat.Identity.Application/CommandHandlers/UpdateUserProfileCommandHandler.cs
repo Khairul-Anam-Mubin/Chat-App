@@ -64,7 +64,7 @@ public class UpdateUserProfileCommandHandler : ACommandHandler<UpdateUserProfile
         
         if (updateInfoCount > 0)
         {
-            await _userRepository.UpdateUserAsync(userModel);
+            await _userRepository.SaveAsync(userModel);
         }
         
         response.Message = "User Updated Successfully!!";

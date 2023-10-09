@@ -21,7 +21,7 @@ public class FileModelQueryHandler : AQueryHandler<FileModelQuery>
     {
         var response = query.CreateResponse();
 
-        var fileModel = await _fileRepository.GetFileModelByIdAsync(query.FileId);
+        var fileModel = await _fileRepository.GetByIdAsync(query.FileId);
         if (fileModel == null)
         {
             throw new Exception("File not found");

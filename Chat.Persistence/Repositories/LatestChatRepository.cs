@@ -3,6 +3,7 @@ using Chat.Domain.Models;
 using Chat.Framework.Attributes;
 using Chat.Framework.Database.Interfaces;
 using Chat.Framework.Database.Models;
+using Chat.Framework.Database.Repositories;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
@@ -10,21 +11,11 @@ using MongoDB.Driver;
 namespace Chat.Persistence.Repositories;
 
 [ServiceRegister(typeof(ILatestChatRepository), ServiceLifetime.Singleton)]
-public class LatestChatRepository : ILatestChatRepository
+public class LatestChatRepository : RepositoryBase<LatestChatModel>, ILatestChatRepository
 {
-    private readonly IMongoDbContext _dbContext;
-    private readonly DatabaseInfo _databaseInfo;
-
     public LatestChatRepository(IMongoDbContext mongoDbContext, IConfiguration configuration)
-    {
-        _dbContext = mongoDbContext;
-        _databaseInfo = configuration.GetSection("DatabaseInfo").Get<DatabaseInfo>();
-    }
-
-    public async Task<bool> SaveLatestChatModelAsync(LatestChatModel latestChatModel)
-    {
-        return await _dbContext.SaveAsync(_databaseInfo, latestChatModel);
-    }
+    : base(configuration.GetSection("DatabaseInfo").Get<DatabaseInfo>(), mongoDbContext)
+    {}
 
     public async Task<LatestChatModel?> GetLatestChatAsync(string userId, string sendTo)
     {
@@ -36,7 +27,7 @@ public class LatestChatRepository : ILatestChatRepository
         var alterAndFilter = Builders<LatestChatModel>.Filter.And(alterUserIdFilter, alterSendToFilter);
         var orFilter = Builders<LatestChatModel>.Filter.Or(andFilter, alterAndFilter);
             
-        return await _dbContext.GetByFilterDefinitionAsync(_databaseInfo, orFilter);
+        return await DbContext.GetByFilterDefinitionAsync(DatabaseInfo, orFilter);
     }
 
     public async Task<List<LatestChatModel>> GetLatestChatModelsAsync(string userId, int offset, int limit)
@@ -45,6 +36,6 @@ public class LatestChatRepository : ILatestChatRepository
         var sendToFilter = Builders<LatestChatModel>.Filter.Eq("SendTo", userId);
         var orFilter = Builders<LatestChatModel>.Filter.Or(userIdFilter, sendToFilter);
 
-        return await _dbContext.GetEntitiesByFilterDefinitionAsync(_databaseInfo, orFilter, offset, limit);
+        return await DbContext.GetEntitiesByFilterDefinitionAsync(DatabaseInfo, orFilter, offset, limit);
     }
 }

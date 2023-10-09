@@ -14,9 +14,8 @@ namespace Chat.Activity.Persistence.Repositories;
 public class LastSeenRepository : RepositoryBase<LastSeenModel>, ILastSeenRepository
 {
     public LastSeenRepository(IMongoDbContext mongoDbContext, IConfiguration configuration) 
-        : base(configuration.GetSection("DatabaseInfo").Get<DatabaseInfo>(), mongoDbContext)
-    { }
-
+        : base(configuration.GetSection("DatabaseInfo").Get<DatabaseInfo>(), mongoDbContext) 
+    {}
 
     public async Task<LastSeenModel?> GetLastSeenModelByUserIdAsync(string userId)
     {

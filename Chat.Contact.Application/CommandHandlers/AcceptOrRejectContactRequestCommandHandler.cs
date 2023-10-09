@@ -21,7 +21,7 @@ public class AcceptOrRejectContactRequestCommandHandler : ACommandHandler<Accept
     {
         var response = command.CreateResponse();
 
-        var contact = await _contactRepository.GetContactByIdAsync(command.ContactId);
+        var contact = await _contactRepository.GetByIdAsync(command.ContactId);
         if (contact == null)
         {
             throw new Exception("ContactModel not found");
@@ -30,7 +30,7 @@ public class AcceptOrRejectContactRequestCommandHandler : ACommandHandler<Accept
         if (command.IsAcceptRequest)
         {
             contact.IsPending = false;
-            if (!await _contactRepository.SaveContactAsync(contact))
+            if (!await _contactRepository.SaveAsync(contact))
             {
                 throw new Exception("ContactModel save problem");
             }
@@ -38,7 +38,7 @@ public class AcceptOrRejectContactRequestCommandHandler : ACommandHandler<Accept
         }
         else
         {
-            if (!await _contactRepository.DeleteContactById(command.ContactId))
+            if (!await _contactRepository.DeleteByIdAsync(command.ContactId))
             {
                 throw new Exception("Delete contact problem");
             }

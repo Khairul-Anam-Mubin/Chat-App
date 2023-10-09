@@ -45,7 +45,7 @@ public class UpdateLatestChatCommandHandler : ACommandHandler<UpdateLatestChatCo
             latestChatModel.SendTo = command.LatestChatModel.SendTo;
         }
 
-        await _latestChatRepository.SaveLatestChatModelAsync(latestChatModel);
+        await _latestChatRepository.SaveAsync(latestChatModel);
 
         return response;
     }

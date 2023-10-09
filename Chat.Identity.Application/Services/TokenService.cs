@@ -28,7 +28,7 @@ public class TokenService : ITokenService
     public async Task<Token?> CreateTokenAsync(UserProfile userProfile, string appId)
     {
         var accessModel = GenerateAccessModel(userProfile, appId);
-        var isSave = await _accessRepository.SaveAccessModelAsync(accessModel);
+        var isSave = await _accessRepository.SaveAsync(accessModel);
         if (isSave == false) return null;
         return accessModel.ToToken();
     }
@@ -45,11 +45,11 @@ public class TokenService : ITokenService
 
     public async Task<bool> SaveAccessModelAsync(AccessModel accessModel)
     {
-        return await _accessRepository.SaveAccessModelAsync(accessModel);
+        return await _accessRepository.SaveAsync(accessModel);
     }
     public async Task<AccessModel?> GetAccessModelByRefreshTokenAsync(string refreshToken)
     {
-        return await _accessRepository.GetAccessModelByIdAsync(refreshToken);
+        return await _accessRepository.GetByIdAsync(refreshToken);
     }
 
     public AccessModel GenerateAccessModel(UserProfile userProfile, string appId)

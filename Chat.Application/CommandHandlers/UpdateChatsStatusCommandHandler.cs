@@ -33,7 +33,7 @@ public class UpdateChatsStatusCommandHandler : ACommandHandler<UpdateChatsStatus
         if (latestChatModel.UserId != command.UserId)
         {
             latestChatModel.Occurrance = 0;
-            await _latestChatRepository.SaveLatestChatModelAsync(latestChatModel);
+            await _latestChatRepository.SaveAsync(latestChatModel);
         }
             
         var chatModels = await _chatRepository.GetSenderAndReceiverSpecificChatModelsAsync(command.OpenedChatUserId, command.UserId);
@@ -42,7 +42,7 @@ public class UpdateChatsStatusCommandHandler : ACommandHandler<UpdateChatsStatus
             chatModel.Status = "Seen";
         }
 
-        await _chatRepository.SaveChatModelsAsync(chatModels);
+        await _chatRepository.SaveAsync(chatModels);
 
         return response;
     }

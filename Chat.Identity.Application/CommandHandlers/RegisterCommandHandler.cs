@@ -30,7 +30,7 @@ public class RegisterCommandHandler : ACommandHandler<RegisterCommand>
         command.UserModel.Id = Guid.NewGuid().ToString();
         command.UserModel.UserName = $"{command.UserModel.FirstName}_{command.UserModel.LastName}";
         
-        if (!await _userRepository.CreateUserAsync(command.UserModel))
+        if (!await _userRepository.SaveAsync(command.UserModel))
         {
             throw new Exception("Some anonymous problem occured!!");
         }

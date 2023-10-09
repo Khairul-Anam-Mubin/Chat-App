@@ -1,13 +1,13 @@
 using Chat.Contact.Domain.Models;
+using Chat.Framework.Database.Interfaces;
 
 namespace Chat.Contact.Application.Interfaces;
 
-public interface IContactRepository
+public interface IContactRepository : IRepository<ContactModel>
 {
-    Task<bool> SaveContactAsync(ContactModel contactModel);
     Task<List<ContactModel>> GetUserContactsAsync(string userId);
+
     Task<List<ContactModel>> GetContactRequestsAsync(string userId);
+    
     Task<List<ContactModel>> GetPendingContactsAsync(string userId);
-    Task<ContactModel?> GetContactByIdAsync(string contactId);
-    Task<bool> DeleteContactById(string contactId);
 }

@@ -63,7 +63,7 @@ public class AddContactCommandHandler : ACommandHandler<AddContactCommand>
             IsPending = true
         };
 
-        if (!await _contactRepository.SaveContactAsync(userContact))
+        if (!await _contactRepository.SaveAsync(userContact))
         {
             throw new Exception("Saving User contact error");
         }
