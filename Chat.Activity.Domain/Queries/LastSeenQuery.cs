@@ -10,12 +10,4 @@ public class LastSeenQuery : AQuery
     {
         UserIds = new List<string>();
     }
-
-    public override void ValidateQuery()
-    {
-        if (UserIds == null || !UserIds.Any())
-        {
-            throw new Exception("UserId not set");
-        }
-    }
 }

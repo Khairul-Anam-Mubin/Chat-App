@@ -11,7 +11,6 @@ public abstract class AQueryHandler<TQuery> : IRequestHandler<TQuery, QueryRespo
         Console.WriteLine($"OnHandleAsync of : {GetType().Name}\n");
         try
         {
-            query.ValidateQuery();
             var response = await OnHandleAsync(query);
             return query.CreateResponse(response);
         }

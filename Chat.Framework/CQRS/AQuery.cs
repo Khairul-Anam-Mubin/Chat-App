@@ -6,13 +6,13 @@ public abstract class AQuery : MetaDataDictionary, IQuery
 {
     public int Offset { get; set; }
     public int Limit { get; set; }
-    public abstract void ValidateQuery();
 
     protected AQuery()
     {
         Offset = 0;
         Limit = 1;
     }
+
     public QueryResponse CreateResponse()
     {
         return new QueryResponse

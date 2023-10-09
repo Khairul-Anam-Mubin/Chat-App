@@ -11,7 +11,6 @@ public abstract class ACommandHandler<TCommand> : IRequestHandler<TCommand, Comm
         Console.WriteLine($"OnHandleAsync of : {GetType().Name}\n");
         try
         {
-            command.ValidateCommand();
             var response = await OnHandleAsync(command);
             return command.CreateResponse(response);
         }
