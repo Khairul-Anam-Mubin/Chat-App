@@ -11,38 +11,18 @@ namespace Chat.Framework.Database.Contexts;
 [ServiceRegister(typeof(IMongoDbContext), ServiceLifetime.Singleton)]
 public class MongoDbContext : IMongoDbContext
 {
-    private readonly Dictionary<string, MongoClient> _dbClients;
+    protected readonly IMongoClientManager MongoClientManager;
 
-    public MongoDbContext()
+    public MongoDbContext(IMongoClientManager mongoClientManager)
     {
-        _dbClients = new Dictionary<string, MongoClient>();
-    }
-
-    private MongoClient? GetClient(string connectionString)
-    {
-        if (_dbClients.TryGetValue(connectionString, out var client))
-        {
-            return client;
-        }
-        try
-        {
-            var mongoClient = new MongoClient(connectionString);
-            _dbClients.Add(connectionString, mongoClient);
-            return mongoClient;
-        }
-        catch (Exception)
-        {
-            var message = $"Client Creation Error. Connection string {connectionString}";
-            Console.WriteLine(message);
-            return null;
-        }
+        MongoClientManager = mongoClientManager;
     }
 
     private IMongoCollection<T>? GetCollection<T>(DatabaseInfo databaseInfo)
     {
         try
         {
-            var client = GetClient(databaseInfo.ConnectionString);
+            var client = MongoClientManager.GetClient(databaseInfo);
             var database = client?.GetDatabase(databaseInfo.DatabaseName);
             return database?.GetCollection<T>(typeof(T).Name);
         }
