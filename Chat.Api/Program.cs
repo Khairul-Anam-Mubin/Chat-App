@@ -1,17 +1,33 @@
-namespace Chat.Api;
+using Chat.Api.Middlewares;
+using Chat.Application.Shared;
+using Chat.Notification;
+using Chat.Notification.Hubs;
 
-public class Program
+var builder = WebApplication.CreateBuilder(args);
+
+builder
+    .Services
+    .AddCommonServices(builder.Configuration)
+    .AddNotifications();
+
+var app = builder.Build();
+
+if (app.Environment.IsDevelopment())
 {
-    public static void Main(string[] args)
-    {
-        CreateHostBuilder(args).Build().Run();
-    }
-
-    public static IHostBuilder CreateHostBuilder(string[] args) =>
-        Host.CreateDefaultBuilder(args)
-            .ConfigureWebHostDefaults(webBuilder =>
-            {
-                webBuilder.UseStartup<Startup>();
-            });
-
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
+
+app.UseMiddleware<LastSeenMiddleware>();
+app.UseCors("CorsPolicy");
+app.UseHttpsRedirection();
+app.UseAuthentication();
+app.UseRouting();
+app.UseAuthorization();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+    endpoints.MapHub<ChatHub>("/chatHub");
+});
+
+app.Run();

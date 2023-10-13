@@ -27,6 +27,11 @@ public class SendMessageCommandHandler : ACommandHandler<SendMessageCommand>
     {
         var response = command.CreateResponse();
 
+        if (command.ChatModel == null)
+        {
+            throw new Exception("ChatModel not set");
+        }
+
         command.ChatModel.Id = Guid.NewGuid().ToString();
         command.ChatModel.SentAt = DateTime.UtcNow;
         command.ChatModel.Status = "Sent";
