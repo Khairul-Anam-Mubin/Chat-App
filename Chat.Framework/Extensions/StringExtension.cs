@@ -4,9 +4,12 @@ namespace Chat.Framework.Extensions;
 
 public static class StringExtenstion
 {
-    public static T? Deserialize<T>(this string str)
+    public static T? Deserialize<T>(this string? str)
     {
-        if (string.IsNullOrEmpty(str)) return default;
+        if (string.IsNullOrEmpty(str))
+        {
+            return default;
+        }
 
         try
         {

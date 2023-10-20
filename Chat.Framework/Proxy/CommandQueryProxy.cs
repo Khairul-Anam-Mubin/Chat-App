@@ -16,17 +16,19 @@ public class CommandQueryProxy : ICommandQueryProxy
     private readonly IConfiguration _configuration;
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IHttpClientFactory _httpClientFactory;
+    private readonly IProxy _proxy;
 
     public CommandQueryProxy(
         IRequestMediator requestMediator, 
         IConfiguration configuration, 
         IHttpContextAccessor httpContextAccessor, 
-        IHttpClientFactory httpClientFactory) 
+        IHttpClientFactory httpClientFactory, IProxy proxy) 
     {
         _requestMediator = requestMediator;
         _configuration = configuration;
         _httpContextAccessor = httpContextAccessor;
         _httpClientFactory = httpClientFactory;
+        _proxy = proxy;
     }
 
     public async Task<CommandResponse> GetCommandResponseAsync<TCommand>(TCommand command) where TCommand : ICommand
@@ -96,5 +98,10 @@ public class CommandQueryProxy : ICommandQueryProxy
         var currentApiOrigin = _configuration.GetSection("ApiOrigin").Value;
 
         return command.ApiUrl.StartsWith(currentApiOrigin);
+    }
+
+    public async Task SendAsync<TRequest>(TRequest request)
+    {
+        await _proxy.SendAsync(request);
     }
 }

@@ -21,25 +21,6 @@ public class MetaDataDictionary : IMetaDataDictionary
     {
         if (!MetaData.TryGetValue(key, out var data)) return default;
 
-        try
-        {
-            return (T)data;
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e.Message);
-        }
-
-        try
-        {
-            var serializedData = data.Serialize();
-            return serializedData.Deserialize<T>();
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e.Message);
-        }
-
-        return default;
+        return data.SmartCast<T>();
     }
 }
