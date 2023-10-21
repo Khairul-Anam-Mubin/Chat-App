@@ -1,7 +1,7 @@
 using Chat.Application.Interfaces;
 using Chat.Application.Shared.Providers;
-using Chat.Domain.Shared.Commands;
-using Chat.Framework.Proxy;
+using Chat.Domain.Events;
+using Chat.Framework.Events;
 using Microsoft.AspNetCore.SignalR;
 
 namespace Chat.Notification.Hubs;
@@ -9,12 +9,14 @@ namespace Chat.Notification.Hubs;
 public class ChatHub : Hub
 {
     private readonly IHubConnectionService _hubConnectionService;
-    private readonly ICommandQueryProxy _commandQueryProxy;
+    private readonly IEventPublisher _eventPublisher;
 
-    public ChatHub(IHubConnectionService hubConnectionService, ICommandQueryProxy commandQueryProxy)
+    public ChatHub(
+        IHubConnectionService hubConnectionService,
+        IEventPublisher eventPublisher)
     {
         _hubConnectionService = hubConnectionService;
-        _commandQueryProxy = commandQueryProxy;
+        _eventPublisher = eventPublisher;
     }
         
     public override async Task OnConnectedAsync()
@@ -42,7 +44,13 @@ public class ChatHub : Hub
 
         await _hubConnectionService.AddConnectionAsync(connectionId, userProfile.Id);
 
-        await TrackLastSeenActivityAsync(userProfile.Id, true);
+        var connectedEvent = new UserConnectedToHubEvent
+        {
+            UserId = userProfile.Id,
+            ConnectionId = connectionId
+        };
+        
+        await _eventPublisher.PublishAsync(connectedEvent);
     }
 
     public override async Task OnDisconnectedAsync(Exception? exception)
@@ -56,24 +64,18 @@ public class ChatHub : Hub
         var userId = _hubConnectionService.GetUserId(connectionId);
         
         Console.WriteLine($"Disconnected...UserId : {userId}\n");
-        
-        if (!string.IsNullOrEmpty(userId))
-        {
-            await TrackLastSeenActivityAsync(userId, false);
-        }
 
         await _hubConnectionService.RemoveConnectionAsync(connectionId);
-    }
 
-    private async Task TrackLastSeenActivityAsync(string userId, bool isActive)
-    {
-        var updateLastSeenCommand = new UpdateLastSeenCommand
+        if (!string.IsNullOrEmpty(userId))
         {
-            UserId = userId,
-            ApiUrl = "https://localhost:50502/api/Activity/track",
-            IsActive = isActive,
-            FireAndForget = true
-        };
-        await _commandQueryProxy.GetCommandResponseAsync(updateLastSeenCommand);
+            var disconnectedEvent = new UserDisconnectedToHubEvent
+            {
+                UserId = userId,
+                ConnectionId = connectionId
+            };
+
+            await _eventPublisher.PublishAsync(disconnectedEvent);
+        }
     }
 }

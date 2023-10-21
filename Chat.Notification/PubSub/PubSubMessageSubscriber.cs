@@ -6,8 +6,10 @@ using Chat.Framework.Database.Models;
 using Chat.Framework.Extensions;
 using Chat.Framework.Interfaces;
 using Chat.Framework.Proxy;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace Chat.Api;
+namespace Chat.Notification.PubSub;
 
 [ServiceRegister(typeof(IInitialService), ServiceLifetime.Singleton)]
 public sealed class PubSubMessageSubscriber : IInitialService
@@ -18,8 +20,8 @@ public sealed class PubSubMessageSubscriber : IInitialService
     private readonly ICommandQueryProxy _commandQueryProxy;
 
     public PubSubMessageSubscriber(
-        IRedisContext redisContext, 
-        IConfiguration configuration, 
+        IRedisContext redisContext,
+        IConfiguration configuration,
         ICommandQueryProxy commandQueryProxy, IHubConnectionService hubConnectionService)
     {
         _redisContext = redisContext;
@@ -34,16 +36,16 @@ public sealed class PubSubMessageSubscriber : IInitialService
             _configuration.GetSection("RedisConfig:DatabaseInfo").Get<DatabaseInfo>());
 
         var channel = _hubConnectionService.GetCurrentHubInstanceId();
-            
+
         await subscriber.SubscribeAsync(channel, (redisChannel, message) =>
         {
             Console.WriteLine($"Message received form channel : {redisChannel}\n");
             var pubSubMessage = message.SmartCast<PubSubMessage>();
 
-            if (pubSubMessage == null) return ;
+            if (pubSubMessage == null) return;
 
             Console.WriteLine($"PubSubMessage.Id : {pubSubMessage?.Id}, PubSubMessageType: {pubSubMessage?.MessageType.ToString()} , message : {message}\n");
-            
+
             if (pubSubMessage?.MessageType == MessageType.UserMessage)
             {
                 var sendMessageToClientCommand = new SendMessageToClientCommand

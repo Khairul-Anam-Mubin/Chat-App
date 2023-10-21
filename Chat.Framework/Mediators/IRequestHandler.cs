@@ -1,9 +1,6 @@
 namespace Chat.Framework.Mediators;
 
-public interface IRequestHandler
-{
-
-}
+public interface IRequestHandler {}
 
 public interface IRequestHandler<in TRequest> : IRequestHandler
 {

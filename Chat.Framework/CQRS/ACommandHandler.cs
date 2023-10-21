@@ -9,16 +9,20 @@ public abstract class ACommandHandler<TCommand> : IRequestHandler<TCommand, Comm
     public async Task<CommandResponse> HandleAsync(TCommand command)
     {
         Console.WriteLine($"OnHandleAsync of : {GetType().Name}\n");
+
         try
         {
             var response = await OnHandleAsync(command);
-            return command.CreateResponse(response);
+
+            return response;
         }
         catch (Exception e)
         {
             Console.WriteLine(e.Message);
+
             var response = command.CreateResponse();
             response.SetErrorMessage(e.Message);
+            
             return response;
         }
     }

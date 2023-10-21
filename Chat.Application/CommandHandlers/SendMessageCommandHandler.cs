@@ -5,6 +5,7 @@ using Chat.Domain.Events;
 using Chat.Domain.Models;
 using Chat.Framework.Attributes;
 using Chat.Framework.CQRS;
+using Chat.Framework.Events;
 using Chat.Framework.Mediators;
 using Chat.Framework.Proxy;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,15 +18,17 @@ public class SendMessageCommandHandler : ACommandHandler<SendMessageCommand>
     private readonly IChatRepository _chatRepository;
     private readonly ICommandQueryProxy _commandQueryProxy;
     private readonly IHubConnectionService _hubConnectionService;
+    private readonly IEventPublisher _eventPublisher;
 
     public SendMessageCommandHandler(
         IChatRepository chatRepository,
         ICommandQueryProxy commandQueryProxy, 
-        IHubConnectionService hubConnectionService)
+        IHubConnectionService hubConnectionService, IEventPublisher eventPublisher)
     {
         _chatRepository = chatRepository;
         _commandQueryProxy = commandQueryProxy;
         _hubConnectionService = hubConnectionService;
+        _eventPublisher = eventPublisher;
     }
 
     protected override async Task<CommandResponse> OnHandleAsync(SendMessageCommand command)
@@ -82,7 +85,7 @@ public class SendMessageCommandHandler : ACommandHandler<SendMessageCommand>
             ChatModel = chatModel
         };
 
-        return _commandQueryProxy.SendAsync(publishMessageToConnectedServerEvent);
+        return _eventPublisher.PublishAsync(publishMessageToConnectedServerEvent);
     }
 
     private Task UpdateLatestChatModelAsync(ChatModel chatModel)

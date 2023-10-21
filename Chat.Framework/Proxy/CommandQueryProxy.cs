@@ -16,19 +16,17 @@ public class CommandQueryProxy : ICommandQueryProxy
     private readonly IConfiguration _configuration;
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IHttpClientFactory _httpClientFactory;
-    private readonly IProxy _proxy;
 
     public CommandQueryProxy(
         IRequestMediator requestMediator, 
         IConfiguration configuration, 
         IHttpContextAccessor httpContextAccessor, 
-        IHttpClientFactory httpClientFactory, IProxy proxy) 
+        IHttpClientFactory httpClientFactory) 
     {
         _requestMediator = requestMediator;
         _configuration = configuration;
         _httpContextAccessor = httpContextAccessor;
         _httpClientFactory = httpClientFactory;
-        _proxy = proxy;
     }
 
     public async Task<CommandResponse> GetCommandResponseAsync<TCommand>(TCommand command) where TCommand : ICommand
@@ -40,13 +38,13 @@ public class CommandQueryProxy : ICommandQueryProxy
             {
                 if (command.FireAndForget)
                 {
-                    _ = Task.Factory.StartNew(() => _requestMediator.HandleAsync<TCommand, CommandResponse>(command));
+                    _ = Task.Factory.StartNew(() => _requestMediator.SendAsync<TCommand, CommandResponse>(command));
                     response = command.CreateResponse();
                     response.Status = ResponseStatus.Pending;
                 }
                 else
                 {
-                    response = await _requestMediator.HandleAsync<TCommand, CommandResponse>(command);
+                    response = await _requestMediator.SendAsync<TCommand, CommandResponse>(command);
                     response = command.CreateResponse(response);
                     response.Status = ResponseStatus.Success;
                 }
@@ -76,7 +74,7 @@ public class CommandQueryProxy : ICommandQueryProxy
         QueryResponse response;
         try
         {
-            response = await _requestMediator.HandleAsync<TQuery, QueryResponse>(query);
+            response = await _requestMediator.SendAsync<TQuery, QueryResponse>(query);
             response = query.CreateResponse(response);
             response.Status = ResponseStatus.Success;
         }
@@ -98,10 +96,5 @@ public class CommandQueryProxy : ICommandQueryProxy
         var currentApiOrigin = _configuration.GetSection("ApiOrigin").Value;
 
         return command.ApiUrl.StartsWith(currentApiOrigin);
-    }
-
-    public async Task SendAsync<TRequest>(TRequest request)
-    {
-        await _proxy.SendAsync(request);
     }
 }
