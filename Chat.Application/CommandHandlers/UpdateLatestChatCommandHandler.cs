@@ -27,7 +27,7 @@ public class UpdateLatestChatCommandHandler : ACommandHandler<UpdateLatestChatCo
         {
             latestChatModel = command.LatestChatModel;
             latestChatModel.Id = Guid.NewGuid().ToString();
-            latestChatModel.Occurrance = 1;
+            latestChatModel.Occurrence = 1;
         }
 
         latestChatModel.Message = command.LatestChatModel.Message;
@@ -36,11 +36,11 @@ public class UpdateLatestChatCommandHandler : ACommandHandler<UpdateLatestChatCo
 
         if (command.LatestChatModel.UserId == latestChatModel.UserId)
         {
-            latestChatModel.Occurrance++;
+            latestChatModel.Occurrence++;
         }
         else 
         {
-            latestChatModel.Occurrance = 1;
+            latestChatModel.Occurrence = 1;
             latestChatModel.UserId = command.LatestChatModel.UserId;
             latestChatModel.SendTo = command.LatestChatModel.SendTo;
         }

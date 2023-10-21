@@ -32,7 +32,7 @@ public class UpdateChatsStatusCommandHandler : ACommandHandler<UpdateChatsStatus
 
         if (latestChatModel.UserId != command.UserId)
         {
-            latestChatModel.Occurrance = 0;
+            latestChatModel.Occurrence = 0;
             await _latestChatRepository.SaveAsync(latestChatModel);
         }
             

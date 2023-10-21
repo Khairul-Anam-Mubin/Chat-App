@@ -5,33 +5,40 @@ using Chat.Framework.Database.Interfaces;
 using Chat.Framework.Database.Models;
 using Chat.Framework.Extensions;
 using Chat.Framework.Mediators;
-using Chat.Framework.Proxy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Chat.Application.EventHandlers;
 
-[ServiceRegister(typeof(IRequestHandler<PublishMessageToConnectedServerEvent>), ServiceLifetime.Singleton)]
-public class PublishMessageToConnectedServerEventHandler : IRequestHandler<PublishMessageToConnectedServerEvent>
+[ServiceRegister(typeof(IRequestHandler<PublishMessageToConnectedHubEvent>), ServiceLifetime.Singleton)]
+public class PublishMessageToConnectedHubEventHandler : IRequestHandler<PublishMessageToConnectedHubEvent>
 {
     private readonly IConfiguration _configuration;
     private readonly IRedisContext _redisContext;
+    private readonly IHubConnectionService _hubConnectionService;
 
-    public PublishMessageToConnectedServerEventHandler(
+    public PublishMessageToConnectedHubEventHandler(
         IRedisContext redisContext,
-        IConfiguration configuration)
+        IConfiguration configuration, 
+        IHubConnectionService hubConnectionService)
     {
         _redisContext = redisContext;
         _configuration = configuration;
+        _hubConnectionService = hubConnectionService;
     }
 
-    public async Task HandleAsync(PublishMessageToConnectedServerEvent request)
+    public async Task HandleAsync(PublishMessageToConnectedHubEvent request)
     {
         var subscriber = _redisContext.GetSubscriber(
             _configuration.GetSection("RedisConfig:DatabaseInfo").Get<DatabaseInfo>());
 
-        var channel = _configuration.GetSection("RedisConfig:GlobalChannel").Get<string>();
-        // Todo: will get the channel from user session persistent store
+        var channel = await _hubConnectionService.GetUserConnectedHubInstanceIdAsync(request.SendTo);
+
+        if (string.IsNullOrEmpty(channel))
+        {
+            Console.WriteLine($"Channel not found. So publish event to redis skipped\n");
+            return;
+        }
 
         await subscriber.PublishAsync(channel, new PubSubMessage
         {
@@ -39,5 +46,7 @@ public class PublishMessageToConnectedServerEventHandler : IRequestHandler<Publi
             MessageType = MessageType.UserMessage,
             Message = "Publish"
         }.Serialize());
+
+        Console.WriteLine("Event published to redis\n");
     }
 }

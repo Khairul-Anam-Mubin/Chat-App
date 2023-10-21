@@ -40,6 +40,12 @@ public class RedisContext : IRedisContext
 
     public async Task DeleteDataAsync(DatabaseInfo databaseInfo, string key)
     {
-         await GetDatabase(databaseInfo).StringGetDeleteAsync(key);
+        await GetDatabase(databaseInfo).StringGetDeleteAsync(key);
+    }
+
+    public async Task<bool> IsDataExistsAsync(DatabaseInfo databaseInfo, string key)
+    {
+        var data = await GetDataAsync<string>(databaseInfo, key);
+        return !string.IsNullOrEmpty(data);
     }
 }

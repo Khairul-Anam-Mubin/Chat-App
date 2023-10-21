@@ -19,38 +19,50 @@ public class ChatHub : Hub
         
     public override async Task OnConnectedAsync()
     {
+        await base.OnConnectedAsync();
+
         var connectionId = Context.ConnectionId;
         var accessToken = Context?.GetHttpContext()?.Request?.Query["access_token"].ToString();
 
-        Console.WriteLine($"Connected....Connection Id : {connectionId}");
-        Console.WriteLine($"Connected....AccessToken : {accessToken}");
+        Console.WriteLine($"User Connected With Hub....Connection Id : {connectionId}");
 
-        if (accessToken == null) return;
-
-        _hubConnectionService.AddConnection(connectionId, accessToken);
-
+        if (string.IsNullOrEmpty(accessToken))
+        {
+            return;
+        }
+        
         var userProfile = IdentityProvider.GetUserProfile(accessToken);
 
-        await TrackLastSeenActivityAsync(userProfile.Id, true);
+        if (string.IsNullOrEmpty(userProfile.Id))
+        {
+            return;
+        }
 
-        await base.OnConnectedAsync();
+        Console.WriteLine($"Connected UserId : {userProfile.Id}\n");
+
+        await _hubConnectionService.AddConnectionAsync(connectionId, userProfile.Id);
+
+        await TrackLastSeenActivityAsync(userProfile.Id, true);
     }
 
     public override async Task OnDisconnectedAsync(Exception? exception)
     {
+        await base.OnDisconnectedAsync(exception);
+
         var connectionId = Context.ConnectionId;
 
-        Console.WriteLine($"Disconnected...Connection Id : {connectionId}");
+        Console.WriteLine($"User Disconnected to hub...Connection Id : {connectionId}");
 
         var userId = _hubConnectionService.GetUserId(connectionId);
+        
+        Console.WriteLine($"Disconnected...UserId : {userId}\n");
+        
         if (!string.IsNullOrEmpty(userId))
         {
             await TrackLastSeenActivityAsync(userId, false);
         }
 
-        _hubConnectionService.RemoveConnection(connectionId);
-
-        await base.OnDisconnectedAsync(exception);
+        await _hubConnectionService.RemoveConnectionAsync(connectionId);
     }
 
     private async Task TrackLastSeenActivityAsync(string userId, bool isActive)

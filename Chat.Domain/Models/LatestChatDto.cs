@@ -8,5 +8,5 @@ public class LatestChatDto
     public string Message {get; set;} = string.Empty;
     public string Status {get; set;} = string.Empty;
     public string DurationDisplayTime {get; set;} = string.Empty;
-    public int Occurrance {get; set;}
+    public int Occurrence {get; set;}
 }

@@ -15,20 +15,20 @@ import { ChatProcessor } from '../../helpers/chat-processor';
   styleUrls: ['./chat-list.component.css']
 })
 export class ChatListComponent implements OnInit{
-  
+
   items : any;
   chatList : any;
   chatUsers : any;
 
   constructor(
     private commandService: CommandService,
-    private queryService : QueryService, 
+    private queryService : QueryService,
     private userService : UserService,
     private router : Router,
     private securityService : SecurtiyService) {
-    
+
   }
-  
+
   ngOnInit(): void {
     var chatLstQuery = new ChatListQuery();
     chatLstQuery.userId = this.userService.getCurrentUserId();
@@ -62,17 +62,17 @@ export class ChatListComponent implements OnInit{
         'chatName' : userProfile.firstName + " " + userProfile.lastName,
         'userId' : this.items[i].userId,
         'isReceiver' : this.items[i].isReceiver,
-        'occurrance' : this.items[i].occurrance
+        'occurrence' : this.items[i].occurrence
       };
       this.chatList.push(chat);
-    } 
+    }
     console.log(this.chatList);
   }
 
   onClickChat(chat: any) {
     console.log("clicked", chat);
     var url = "chat/" + chat.userId;
-    if (chat.occurrance === 0) {
+    if (chat.occurrence === 0) {
       this.router.navigateByUrl(url);
       return;
     }
@@ -83,7 +83,7 @@ export class ChatListComponent implements OnInit{
     .pipe(take(1))
     .subscribe(response => {
       this.router.navigateByUrl(url);
-    });    
+    });
   }
 
   getChatUser(userId : any) {

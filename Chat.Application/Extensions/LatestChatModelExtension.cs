@@ -15,7 +15,7 @@ public static class LatestChatModelExtension
             DurationDisplayTime = DisplayTimeHelper.GetChatListDisplayTime(latestChatModel.SentAt),
             UserId = latestChatModel.UserId == currentUserId ? latestChatModel.SendTo : latestChatModel.UserId,
             IsReceiver = latestChatModel.UserId != currentUserId,
-            Occurrance = latestChatModel.UserId != currentUserId ? latestChatModel.Occurrance : 0
+            Occurrence = latestChatModel.UserId != currentUserId ? latestChatModel.Occurrence : 0
         };
     }
 }

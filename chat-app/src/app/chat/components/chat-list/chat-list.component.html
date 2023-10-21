@@ -6,8 +6,8 @@
           <button (click)="onClickChat(chat)" class="list-group-item list-group-item-action" aria-current="true">
             <div class="d-flex w-100 justify-content-between">
               <h3 class="mb-1">{{chat.chatName}}
-                <span *ngIf="chat.isReceiver && chat.occurrance !== 0" class="badge rounded-pill bg-danger">
-                  {{chat.occurrance}}
+                <span *ngIf="chat.isReceiver && chat.occurrence !== 0" class="badge rounded-pill bg-danger">
+                  {{chat.occurrence}}
                 </span>
               </h3>
               <small class="mb-1">{{chat.durationDisplayTime}}</small>

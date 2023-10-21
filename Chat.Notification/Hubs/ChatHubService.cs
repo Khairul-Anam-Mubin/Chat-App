@@ -11,7 +11,9 @@ public class ChatHubService : IChatHubService
     private readonly IHubConnectionService _hubConnectionService;
     private readonly IHubContext<ChatHub> _hubContext;
 
-    public ChatHubService(IHubContext<ChatHub> hubContext, IHubConnectionService hubConnectionService)
+    public ChatHubService(
+        IHubContext<ChatHub> hubContext, 
+        IHubConnectionService hubConnectionService)
     {
         _hubConnectionService = hubConnectionService;
         _hubContext = hubContext;

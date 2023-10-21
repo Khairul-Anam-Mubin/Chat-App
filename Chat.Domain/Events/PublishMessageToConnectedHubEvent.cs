@@ -2,7 +2,7 @@
 
 namespace Chat.Domain.Events;
 
-public class PublishMessageToConnectedServerEvent
+public class PublishMessageToConnectedHubEvent
 {
     public string UserId { get; set; } = string.Empty;
     public string SendTo { get; set; } = string.Empty;

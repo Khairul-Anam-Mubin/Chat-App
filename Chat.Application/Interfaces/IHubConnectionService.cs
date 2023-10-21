@@ -2,9 +2,12 @@ namespace Chat.Application.Interfaces;
 
 public interface IHubConnectionService
 {
-    void AddConnection(string connectionId, string accessToken);
-    void RemoveConnection(string connectionId);
+    Task AddConnectionAsync(string connectionId, string userId);
+    Task RemoveConnectionAsync(string connectionId);
     string GetConnectionId(string userId);
     string GetUserId(string connectionId);
-    bool IsUserConnectedWithHub(string userId);
+    string GetCurrentHubInstanceId();
+    Task<string?> GetUserConnectedHubInstanceIdAsync(string userId);
+    bool IsUserConnectedWithCurrentHubInstance(string userId);
+    Task<bool> IsUserConnectedWithAnyHubInstanceAsync(string userId);
 }

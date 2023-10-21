@@ -1,4 +1,5 @@
-﻿using Chat.Domain.Commands;
+﻿using Chat.Application.Interfaces;
+using Chat.Domain.Commands;
 using Chat.Framework.Attributes;
 using Chat.Framework.Database.Interfaces;
 using Chat.Framework.Database.Models;
@@ -11,6 +12,7 @@ namespace Chat.Api;
 [ServiceRegister(typeof(IInitialService), ServiceLifetime.Singleton)]
 public sealed class PubSubMessageSubscriber : IInitialService
 {
+    private readonly IHubConnectionService _hubConnectionService;
     private readonly IRedisContext _redisContext;
     private readonly IConfiguration _configuration;
     private readonly ICommandQueryProxy _commandQueryProxy;
@@ -18,19 +20,20 @@ public sealed class PubSubMessageSubscriber : IInitialService
     public PubSubMessageSubscriber(
         IRedisContext redisContext, 
         IConfiguration configuration, 
-        ICommandQueryProxy commandQueryProxy)
+        ICommandQueryProxy commandQueryProxy, IHubConnectionService hubConnectionService)
     {
         _redisContext = redisContext;
         _configuration = configuration;
         _commandQueryProxy = commandQueryProxy;
+        _hubConnectionService = hubConnectionService;
     }
 
     public async Task InitializeAsync()
     {
         var subscriber = _redisContext.GetSubscriber(
             _configuration.GetSection("RedisConfig:DatabaseInfo").Get<DatabaseInfo>());
-            
-        var channel = _configuration.GetSection("RedisConfig:GlobalChannel").Get<string>();
+
+        var channel = _hubConnectionService.GetCurrentHubInstanceId();
             
         await subscriber.SubscribeAsync(channel, (redisChannel, message) =>
         {
