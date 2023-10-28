@@ -14,7 +14,14 @@ public static class WebApplicationExtension
 
         foreach (var initialService in initialServices)
         {
-            initialService.InitializeAsync().Wait();
+            try
+            {
+                initialService.InitializeAsync().Wait();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
         }
         
         return app;
