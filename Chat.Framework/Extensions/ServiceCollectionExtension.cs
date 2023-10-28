@@ -14,6 +14,11 @@ public static class ServiceCollectionExtension
         return AssemblyLists.Values.ToList();
     }
 
+    public static List<Assembly> GetAddedAssemblies(this IServiceCollection services)
+    {
+        return GetAddedAssemblies();
+    }
+
     public static void AddAttributeRegisteredServices(this IServiceCollection services)
     {
         if (_counter != 0) return;

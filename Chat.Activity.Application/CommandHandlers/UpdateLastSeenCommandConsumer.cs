@@ -4,25 +4,26 @@ using Chat.Domain.Shared.Commands;
 using Chat.Framework.Attributes;
 using Chat.Framework.CQRS;
 using Chat.Framework.Mediators;
+using Chat.Framework.MessageBrokers;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Chat.Activity.Application.CommandHandlers;
 
 [ServiceRegister(typeof(IRequestHandler<UpdateLastSeenCommand, CommandResponse>), ServiceLifetime.Singleton)]
-public class UpdateLastSeenCommandHandler : ACommandHandler<UpdateLastSeenCommand>
+public class UpdateLastSeenCommandConsumer : ACommandConsumer<UpdateLastSeenCommand>
 {
     private readonly ILastSeenRepository _lastSeenRepository;
 
-    public UpdateLastSeenCommandHandler(ILastSeenRepository lastSeenRepository)
+    public UpdateLastSeenCommandConsumer(ILastSeenRepository lastSeenRepository)
     {
         _lastSeenRepository = lastSeenRepository;
     }
 
-    protected override async Task<CommandResponse> OnHandleAsync(UpdateLastSeenCommand command)
+    protected override async Task<CommandResponse> OnConsumeAsync(UpdateLastSeenCommand command, IMessageContext<UpdateLastSeenCommand>? context = null)
     {
         var response = command.CreateResponse();
 
-        var lastSeenModel = await _lastSeenRepository.GetLastSeenModelByUserIdAsync(command.UserId) ?? new LastSeenModel 
+        var lastSeenModel = await _lastSeenRepository.GetLastSeenModelByUserIdAsync(command.UserId) ?? new LastSeenModel
         {
             Id = Guid.NewGuid().ToString(),
             UserId = command.UserId,

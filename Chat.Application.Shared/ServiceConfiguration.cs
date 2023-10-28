@@ -5,6 +5,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using Chat.Framework.Mediators;
+using Chat.Framework.MessageBrokers;
+using MassTransit;
 
 namespace Chat.Application.Shared;
 
@@ -14,6 +17,11 @@ public static class ServiceConfiguration
         this IServiceCollection services, 
         IConfiguration configuration)
     {
+        services.AddAllAssemblies("Chat");
+        services.AddAttributeRegisteredServices();
+
+        services.AddTransient<IRequestMediator, RequestMediator>();
+
         services.AddAuthentication(options =>
         {
             options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -88,13 +96,39 @@ public static class ServiceConfiguration
                 .AllowCredentials();
         }));
 
+        services.AddSingleton(configuration.GetSection("MessageBrokerConfig").Get<MessageBrokerConfig>());
+
+        services.AddMassTransit(busConfigurator =>
+        {
+            busConfigurator.SetDefaultEndpointNameFormatter();
+
+            services.GetAddedAssemblies().ForEach(assembly => 
+                busConfigurator.AddConsumers(assembly));
+
+            busConfigurator.UsingRabbitMq((context, configurator) =>
+            {
+                var messageBrokerConfig = context.GetRequiredService<MessageBrokerConfig>();
+
+                configurator.Host(new Uri(messageBrokerConfig.Host), hostConfigurator =>
+                {
+                    hostConfigurator.Username(messageBrokerConfig.UserName);
+                    hostConfigurator.Password(messageBrokerConfig.Password);
+                });
+
+                configurator.AutoDelete = true;
+                
+                configurator.ConfigureEndpoints(context);
+            });
+        });
+
+        services.AddTransient<IEventBus, EventBus>();
+        services.AddTransient<ICommandBus, CommandBus>();
+        
+
         services.AddControllers();
         services.AddEndpointsApiExplorer();
         services.AddHttpClient();
         services.AddHttpContextAccessor();
-
-        services.AddAllAssemblies("Chat");
-        services.AddAttributeRegisteredServices();
 
         return services;
     }

@@ -1,7 +1,7 @@
 using Chat.Application.Interfaces;
 using Chat.Application.Shared.Providers;
-using Chat.Domain.Events;
-using Chat.Framework.Events;
+using Chat.Domain.Shared.Events;
+using Chat.Framework.MessageBrokers;
 using Microsoft.AspNetCore.SignalR;
 
 namespace Chat.Notification.Hubs;
@@ -9,14 +9,14 @@ namespace Chat.Notification.Hubs;
 public class ChatHub : Hub
 {
     private readonly IHubConnectionService _hubConnectionService;
-    private readonly IEventPublisher _eventPublisher;
+    private readonly IEventBus _eventBus;
 
     public ChatHub(
-        IHubConnectionService hubConnectionService,
-        IEventPublisher eventPublisher)
+        IHubConnectionService hubConnectionService, 
+        IEventBus eventBus)
     {
         _hubConnectionService = hubConnectionService;
-        _eventPublisher = eventPublisher;
+        _eventBus = eventBus;
     }
         
     public override async Task OnConnectedAsync()
@@ -49,8 +49,8 @@ public class ChatHub : Hub
             UserId = userProfile.Id,
             ConnectionId = connectionId
         };
-        
-        await _eventPublisher.PublishAsync(connectedEvent);
+
+        await _eventBus.PublishAsync(connectedEvent);
     }
 
     public override async Task OnDisconnectedAsync(Exception? exception)
@@ -75,7 +75,7 @@ public class ChatHub : Hub
                 ConnectionId = connectionId
             };
 
-            await _eventPublisher.PublishAsync(disconnectedEvent);
+            await _eventBus.PublishAsync(disconnectedEvent);
         }
     }
 }

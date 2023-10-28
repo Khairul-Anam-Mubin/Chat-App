@@ -1,10 +1,8 @@
-using Chat.Framework.Attributes;
 using Chat.Framework.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Chat.Framework.Mediators;
 
-[ServiceRegister(typeof(IRequestMediator), ServiceLifetime.Singleton)]
 public class RequestMediator : IRequestMediator
 {
     private readonly IServiceProvider _serviceProvider;

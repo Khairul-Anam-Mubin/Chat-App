@@ -9,24 +9,27 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Chat.Framework.Proxy;
 
-[ServiceRegister(typeof(ICommandQueryProxy), ServiceLifetime.Singleton)]
+[ServiceRegister(typeof(ICommandQueryProxy), ServiceLifetime.Transient)]
 public class CommandQueryProxy : ICommandQueryProxy
 {
     private readonly IRequestMediator _requestMediator;
     private readonly IConfiguration _configuration;
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IHttpClientFactory _httpClientFactory;
+    private readonly IServiceScopeFactory _serviceScopeFactory;
 
     public CommandQueryProxy(
         IRequestMediator requestMediator, 
         IConfiguration configuration, 
         IHttpContextAccessor httpContextAccessor, 
-        IHttpClientFactory httpClientFactory) 
+        IHttpClientFactory httpClientFactory, 
+        IServiceScopeFactory serviceScopeFactory) 
     {
         _requestMediator = requestMediator;
         _configuration = configuration;
         _httpContextAccessor = httpContextAccessor;
         _httpClientFactory = httpClientFactory;
+        _serviceScopeFactory = serviceScopeFactory;
     }
 
     public async Task<CommandResponse> GetCommandResponseAsync<TCommand>(TCommand command) where TCommand : ICommand

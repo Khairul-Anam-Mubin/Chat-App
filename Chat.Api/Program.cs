@@ -6,9 +6,8 @@ using Chat.Notification.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder
-    .Services
-    .AddCommonServices(builder.Configuration)
+builder.Services
+    .AddCommonServices(builder.Configuration) 
     .AddNotifications();
 
 var app = builder.Build();

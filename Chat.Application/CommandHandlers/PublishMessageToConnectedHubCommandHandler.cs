@@ -1,6 +1,7 @@
 ﻿using Chat.Application.Interfaces;
-using Chat.Domain.Events;
+using Chat.Domain.Commands;
 using Chat.Framework.Attributes;
+using Chat.Framework.CQRS;
 using Chat.Framework.Database.Interfaces;
 using Chat.Framework.Database.Models;
 using Chat.Framework.Extensions;
@@ -8,18 +9,18 @@ using Chat.Framework.Mediators;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Chat.Application.EventHandlers;
+namespace Chat.Application.CommandHandlers;
 
-[ServiceRegister(typeof(IRequestHandler<PublishMessageToConnectedHubEvent>), ServiceLifetime.Singleton)]
-public class PublishMessageToConnectedHubEventHandler : IRequestHandler<PublishMessageToConnectedHubEvent>
+[ServiceRegister(typeof(IRequestHandler<PublishMessageToConnectedHubCommand>), ServiceLifetime.Singleton)]
+public class PublishMessageToConnectedHubCommandHandler : ACommandHandler<PublishMessageToConnectedHubCommand>
 {
     private readonly IConfiguration _configuration;
     private readonly IRedisContext _redisContext;
     private readonly IHubConnectionService _hubConnectionService;
 
-    public PublishMessageToConnectedHubEventHandler(
+    public PublishMessageToConnectedHubCommandHandler(
         IRedisContext redisContext,
-        IConfiguration configuration, 
+        IConfiguration configuration,
         IHubConnectionService hubConnectionService)
     {
         _redisContext = redisContext;
@@ -27,26 +28,27 @@ public class PublishMessageToConnectedHubEventHandler : IRequestHandler<PublishM
         _hubConnectionService = hubConnectionService;
     }
 
-    public async Task HandleAsync(PublishMessageToConnectedHubEvent request)
+    protected override async Task<CommandResponse> OnHandleAsync(PublishMessageToConnectedHubCommand command)
     {
         var subscriber = _redisContext.GetSubscriber(
             _configuration.GetSection("RedisConfig:DatabaseInfo").Get<DatabaseInfo>());
 
-        var channel = await _hubConnectionService.GetUserConnectedHubInstanceIdAsync(request.SendTo);
+        var channel = await _hubConnectionService.GetUserConnectedHubInstanceIdAsync(command.SendTo);
 
         if (string.IsNullOrEmpty(channel))
         {
             Console.WriteLine($"Channel not found. So publish event to redis skipped\n");
-            return;
+            return command.CreateResponse();
         }
 
         await subscriber.PublishAsync(channel, new PubSubMessage
         {
-            Id = request.MessageId,
+            Id = command.MessageId,
             MessageType = MessageType.UserMessage,
             Message = "Publish"
         }.Serialize());
 
         Console.WriteLine("Event published to redis\n");
+        return command.CreateResponse();
     }
 }

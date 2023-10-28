@@ -1,9 +1,9 @@
 ﻿using Chat.Domain.Models;
-using Chat.Framework.Events;
+using Chat.Framework.CQRS;
 
-namespace Chat.Domain.Events;
+namespace Chat.Domain.Commands;
 
-public class PublishMessageToConnectedHubEvent : IEvent
+public class PublishMessageToConnectedHubCommand : ACommand
 {
     public string UserId { get; set; } = string.Empty;
     public string SendTo { get; set; } = string.Empty;

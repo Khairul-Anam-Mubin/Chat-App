@@ -2,7 +2,7 @@ using Chat.Framework.Mediators;
 
 namespace Chat.Framework.CQRS;
 
-public abstract class ACommandHandler<TCommand> : IRequestHandler<TCommand, CommandResponse> where TCommand : ICommand
+public abstract class ACommandHandler<TCommand> : IRequestHandler<TCommand, CommandResponse> where TCommand : class, ICommand
 {
     protected abstract Task<CommandResponse> OnHandleAsync(TCommand command);
 

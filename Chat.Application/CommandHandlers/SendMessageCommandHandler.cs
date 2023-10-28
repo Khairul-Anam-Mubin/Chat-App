@@ -1,11 +1,9 @@
 using Chat.Application.Extensions;
 using Chat.Application.Interfaces;
 using Chat.Domain.Commands;
-using Chat.Domain.Events;
 using Chat.Domain.Models;
 using Chat.Framework.Attributes;
 using Chat.Framework.CQRS;
-using Chat.Framework.Events;
 using Chat.Framework.Mediators;
 using Chat.Framework.Proxy;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,17 +16,15 @@ public class SendMessageCommandHandler : ACommandHandler<SendMessageCommand>
     private readonly IChatRepository _chatRepository;
     private readonly ICommandQueryProxy _commandQueryProxy;
     private readonly IHubConnectionService _hubConnectionService;
-    private readonly IEventPublisher _eventPublisher;
 
     public SendMessageCommandHandler(
         IChatRepository chatRepository,
         ICommandQueryProxy commandQueryProxy, 
-        IHubConnectionService hubConnectionService, IEventPublisher eventPublisher)
+        IHubConnectionService hubConnectionService)
     {
         _chatRepository = chatRepository;
         _commandQueryProxy = commandQueryProxy;
         _hubConnectionService = hubConnectionService;
-        _eventPublisher = eventPublisher;
     }
 
     protected override async Task<CommandResponse> OnHandleAsync(SendMessageCommand command)
@@ -44,7 +40,10 @@ public class SendMessageCommandHandler : ACommandHandler<SendMessageCommand>
         chatModel.SentAt = DateTime.UtcNow;
         chatModel.Status = "Sent";
 
-        await _chatRepository.SaveAsync(chatModel);
+        if (!await _chatRepository.SaveAsync(chatModel))
+        {
+            throw new Exception("ChatModel Creation Failed");
+        }
 
         if (_hubConnectionService.IsUserConnectedWithCurrentHubInstance(chatModel.SendTo))
         {
@@ -77,7 +76,7 @@ public class SendMessageCommandHandler : ACommandHandler<SendMessageCommand>
 
     private Task PublishMessageToConnectedHubAsync(ChatModel chatModel)
     {
-        var publishMessageToConnectedServerEvent = new PublishMessageToConnectedHubEvent
+        var publishMessageToConnectedHubCommand = new PublishMessageToConnectedHubCommand
         {
             UserId = chatModel.UserId,
             SendTo = chatModel.SendTo,
@@ -85,7 +84,7 @@ public class SendMessageCommandHandler : ACommandHandler<SendMessageCommand>
             ChatModel = chatModel
         };
 
-        return _eventPublisher.PublishAsync(publishMessageToConnectedServerEvent);
+        return _commandQueryProxy.GetCommandResponseAsync(publishMessageToConnectedHubCommand);
     }
 
     private Task UpdateLatestChatModelAsync(ChatModel chatModel)

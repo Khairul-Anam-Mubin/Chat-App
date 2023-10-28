@@ -22,7 +22,8 @@ public sealed class PubSubMessageSubscriber : IInitialService
     public PubSubMessageSubscriber(
         IRedisContext redisContext,
         IConfiguration configuration,
-        ICommandQueryProxy commandQueryProxy, IHubConnectionService hubConnectionService)
+        ICommandQueryProxy commandQueryProxy, 
+        IHubConnectionService hubConnectionService)
     {
         _redisContext = redisContext;
         _configuration = configuration;
