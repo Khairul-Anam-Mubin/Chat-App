@@ -1,4 +1,5 @@
-﻿using Chat.Framework.Mediators;
+﻿using Chat.Framework.Enums;
+using Chat.Framework.Mediators;
 using Chat.Framework.MessageBrokers;
 
 namespace Chat.Framework.CQRS;
@@ -18,7 +19,9 @@ public abstract class AQueryConsumer<TQuery, TResponse> :
     }
 
     public async Task<TResponse> HandleAsync(TQuery request)
-    {
-        return await OnConsumeAsync(request);
+    { 
+        var response = await OnConsumeAsync(request);
+        response.Status = ResponseStatus.Success;
+        return response;
     }
 }

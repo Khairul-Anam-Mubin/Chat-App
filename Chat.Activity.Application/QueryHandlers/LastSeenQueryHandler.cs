@@ -9,7 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Chat.Activity.Application.QueryHandlers;
 
 [ServiceRegister(typeof(IRequestHandler<LastSeenQuery, QueryResponse>), ServiceLifetime.Singleton)]
-public class LastSeenQueryHandler : AQueryHandler<LastSeenQuery>
+public class LastSeenQueryHandler : AQueryHandler<LastSeenQuery, QueryResponse>
 {
     private readonly ILastSeenRepository _lastSeenRepository;
 
