@@ -14,9 +14,9 @@ public class MassTransitConsumeContext<TMessage> : IMessageContext<TMessage> whe
 
     public TMessage Message { get; }
 
-    public async Task RespondAsync<T>(T message) where T : class
+    public async Task RespondAsync<TResponse>(TResponse response) where TResponse : class
     {
-        await _consumeContext.RespondAsync(message);
+        await _consumeContext.RespondAsync(response);
     }
 
     public async Task PublishAsync<TEvent>(TEvent message) where TEvent : class

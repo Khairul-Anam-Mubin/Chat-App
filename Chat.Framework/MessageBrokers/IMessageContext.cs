@@ -7,5 +7,5 @@ public interface IMessageContext<out TMessage> :
 {
     TMessage Message { get; }
 
-    Task RespondAsync<T>(T message) where T : class;
+    Task RespondAsync<TResponse>(TResponse response) where TResponse : class;
 }
