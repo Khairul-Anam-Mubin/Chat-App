@@ -7,8 +7,7 @@ using Chat.Framework.Attributes;
 using Chat.Framework.CQRS;
 using Chat.Framework.Enums;
 using Chat.Framework.Mediators;
-using Chat.Framework.Proxy;
-using MassTransit;
+using Chat.Framework.MessageBrokers;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Chat.Contact.Application.CommandHandlers;
@@ -17,32 +16,29 @@ namespace Chat.Contact.Application.CommandHandlers;
 public class AddContactCommandHandler : ACommandHandler<AddContactCommand>
 {
     private readonly IContactRepository _contactRepository;
-    private readonly ICommandQueryProxy _commandQueryProxy;
-    private readonly IRequestClient<UserProfileQuery> _requestClient;
+    private readonly IMessageRequestClient _messageRequestClient;
 
     public AddContactCommandHandler(
         IContactRepository contactRepository, 
-        ICommandQueryProxy commandQueryProxy, 
-        IRequestClient<UserProfileQuery> requestClient)
+        IMessageRequestClient messageRequestClient)
     {
         _contactRepository = contactRepository;
-        _commandQueryProxy = commandQueryProxy;
-        _requestClient = requestClient;
+        _messageRequestClient = messageRequestClient;
     }
 
     protected override async Task<CommandResponse> OnHandleAsync(AddContactCommand command)
     {
         var response = command.CreateResponse();
+
         var userProfileQuery = new UserProfileQuery
         {
             UserIds = new List<string> { command.UserId },
             Emails = new List<string> { command.ContactEmail }
         };
 
-        var res = await _requestClient.GetResponse<UserProfileQueryResponse>(userProfileQuery);
+        var queryResponse = 
+            await _messageRequestClient.GetResponseAsync<UserProfileQuery, UserProfileQueryResponse>(userProfileQuery);
         
-        // var queryResponse = await _commandQueryProxy.GetQueryResponseAsync(userProfileQuery);
-        var queryResponse = res.Message;
         if (queryResponse == null || queryResponse.Profiles.Count < 2)
         {
             throw new Exception("User profile query error");

@@ -1,4 +1,5 @@
 ﻿using Chat.Domain.Shared.Queries;
+using Chat.Framework.CQRS;
 using Chat.Framework.Proxy;
 using Chat.Identity.Domain.Commands;
 using Chat.Presentation.Shared.Controllers;
@@ -12,9 +13,11 @@ namespace Chat.Identity.Presentation.Controllers;
 [Authorize]
 public class UserController : ACommonController
 {
-    public UserController(ICommandQueryProxy commandQueryProxy) : base(commandQueryProxy)
-    {
+    private readonly IQueryClient _queryClient;
 
+    public UserController(ICommandQueryProxy commandQueryProxy, IQueryClient queryClient) : base(commandQueryProxy)
+    {
+        _queryClient = queryClient;
     }
 
     [HttpPost]
@@ -29,7 +32,8 @@ public class UserController : ACommonController
     [Route("profiles")]
     public async Task<IActionResult> UserProfileAsync(UserProfileQuery query)
     {
-        return Ok(await GetQueryResponseAsync(query));
+        var response = await _queryClient.GetResponseAsync<UserProfileQuery, UserProfileQueryResponse>(query);
+        return Ok(response);
     }
 
     [HttpPost]

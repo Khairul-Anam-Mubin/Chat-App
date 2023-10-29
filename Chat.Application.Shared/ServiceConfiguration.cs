@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using Chat.Framework.CQRS;
 using Chat.Framework.Mediators;
 using Chat.Framework.MessageBrokers;
 using MassTransit;
@@ -21,6 +22,7 @@ public static class ServiceConfiguration
         services.AddAttributeRegisteredServices();
 
         services.AddTransient<IRequestMediator, RequestMediator>();
+        services.AddTransient<IQueryClient, QueryClient>();
 
         services.AddAuthentication(options =>
         {
@@ -123,7 +125,7 @@ public static class ServiceConfiguration
 
         services.AddTransient<IEventBus, EventBus>();
         services.AddTransient<ICommandBus, CommandBus>();
-        
+        services.AddTransient<IMessageRequestClient, MessageRequestClient>();
 
         services.AddControllers();
         services.AddEndpointsApiExplorer();

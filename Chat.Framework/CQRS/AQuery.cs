@@ -1,3 +1,4 @@
+using Chat.Framework.Extensions;
 using Chat.Framework.Models;
 
 namespace Chat.Framework.CQRS;

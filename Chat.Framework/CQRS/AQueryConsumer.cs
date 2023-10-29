@@ -3,19 +3,21 @@ using Chat.Framework.MessageBrokers;
 
 namespace Chat.Framework.CQRS;
 
-public abstract class AQueryConsumer<TQuery> :
+public abstract class AQueryConsumer<TQuery, TResponse> :
     AMessageConsumer<TQuery>,
-    IRequestHandler<TQuery, QueryResponse> 
+    IRequestHandler<TQuery, TResponse>
+    where TResponse : QueryResponse
     where TQuery : class, IQuery
 {
-    protected abstract Task<QueryResponse> OnConsumeAsync(TQuery query, IMessageContext<TQuery>? context = null);
+    protected abstract Task<TResponse> OnConsumeAsync(TQuery query, IMessageContext<TQuery>? context = null);
 
     public override async Task Consume(IMessageContext<TQuery> context)
     {
-        await OnConsumeAsync(context.Message, context);
+        var response = await OnConsumeAsync(context.Message, context);
+        await context.RespondAsync(response);
     }
 
-    public async Task<QueryResponse> HandleAsync(TQuery request)
+    public async Task<TResponse> HandleAsync(TQuery request)
     {
         return await OnConsumeAsync(request);
     }

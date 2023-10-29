@@ -27,7 +27,9 @@ public class MassTransitConsumeContext<TMessage> : IMessageContext<TMessage> whe
     public async Task SendAsync<TCommand>(TCommand command) where TCommand : class
     {
         var uri = MessageEndpointProvider.GetSendEndpointUri(command);
+
         var sendEndpoint = await _consumeContext.GetSendEndpoint(uri);
+        
         await sendEndpoint.Send(command);
     }
 }

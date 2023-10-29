@@ -11,8 +11,8 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Chat.Identity.Application.QueryHandlers;
 
-[ServiceRegister(typeof(IRequestHandler<UserProfileQuery, QueryResponse>), ServiceLifetime.Transient)]
-public class UserProfileQueryConsumer : AQueryConsumer<UserProfileQuery>
+[ServiceRegister(typeof(IRequestHandler<UserProfileQuery, UserProfileQueryResponse>), ServiceLifetime.Transient)]
+public class UserProfileQueryConsumer : AQueryConsumer<UserProfileQuery, UserProfileQueryResponse>
 {
     private readonly IUserRepository _userRepository;
 
@@ -21,11 +21,10 @@ public class UserProfileQueryConsumer : AQueryConsumer<UserProfileQuery>
         _userRepository = userRepository;
     }
 
-    protected override async Task<QueryResponse> OnConsumeAsync(
-        UserProfileQuery query, 
+    protected override async Task<UserProfileQueryResponse> OnConsumeAsync(UserProfileQuery query, 
         IMessageContext<UserProfileQuery>? context = null)
     {
-        var asyncResponse = new UserProfileQueryResponse();
+        var response = new UserProfileQueryResponse();
 
         var userModels = new List<UserModel>();
 
@@ -39,25 +38,21 @@ public class UserProfileQueryConsumer : AQueryConsumer<UserProfileQuery>
             userModels.AddRange(await _userRepository.GetUsersByEmailsAsync(query.Emails));
         }
 
-        foreach (var userModel in userModels)
-        {
-            asyncResponse.Profiles.Add(userModel.ToUserProfile());
-        }
-
         if (context == null)
         {
-            var response = query.CreateResponse();
             foreach (var userModel in userModels)
             {
                 response.AddItem(userModel.ToUserProfile().SmartCast<object>()!);
             }
+
             return response;
         }
+
         foreach (var userModel in userModels)
         {
-            asyncResponse.Profiles.Add(userModel.ToUserProfile());
+            response.Profiles.Add(userModel.ToUserProfile());
         }
-        await context.RespondAsync(asyncResponse);
-        return query.CreateResponse();
+
+        return response;
     }
 }
