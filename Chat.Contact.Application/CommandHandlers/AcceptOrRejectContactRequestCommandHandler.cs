@@ -8,7 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Chat.Contact.Application.CommandHandlers;
 
 [ServiceRegister(typeof(IRequestHandler<AcceptOrRejectContactRequestCommand, CommandResponse>), ServiceLifetime.Singleton)]
-public class AcceptOrRejectContactRequestCommandHandler : ACommandHandler<AcceptOrRejectContactRequestCommand>
+public class AcceptOrRejectContactRequestCommandHandler : ACommandHandler<AcceptOrRejectContactRequestCommand, CommandResponse>
 {
     private readonly IContactRepository _contactRepository;
 

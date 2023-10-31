@@ -8,7 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Chat.Identity.Application.CommandHandlers;
 
 [ServiceRegister(typeof(IRequestHandler<LogOutCommand, CommandResponse>), ServiceLifetime.Singleton)]
-public class LogOutCommandHandler : ACommandHandler<LogOutCommand>
+public class LogOutCommandHandler : ACommandHandler<LogOutCommand, CommandResponse>
 {
     private readonly ITokenService _tokenService;
 

@@ -8,7 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Chat.Application.CommandHandlers;
 
 [ServiceRegister(typeof(IRequestHandler<UpdateChatsStatusCommand, CommandResponse>), ServiceLifetime.Singleton)]
-public class UpdateChatsStatusCommandHandler : ACommandHandler<UpdateChatsStatusCommand>
+public class UpdateChatsStatusCommandHandler : ACommandHandler<UpdateChatsStatusCommand, CommandResponse>
 {
         
     private readonly ILatestChatRepository _latestChatRepository;

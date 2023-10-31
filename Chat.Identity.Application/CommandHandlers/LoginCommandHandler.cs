@@ -9,7 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Chat.Identity.Application.CommandHandlers;
 
 [ServiceRegister(typeof(IRequestHandler<LoginCommand, CommandResponse>), ServiceLifetime.Singleton)]
-public class LoginCommandHandler : ACommandHandler<LoginCommand>
+public class LoginCommandHandler : ACommandHandler<LoginCommand, CommandResponse>
 {
     private readonly IUserRepository _userRepository;
     private readonly ITokenService _tokenService;

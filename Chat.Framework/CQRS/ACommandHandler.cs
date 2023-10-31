@@ -1,12 +1,16 @@
+using Chat.Framework.Interfaces;
 using Chat.Framework.Mediators;
 
 namespace Chat.Framework.CQRS;
 
-public abstract class ACommandHandler<TCommand> : IRequestHandler<TCommand, CommandResponse> where TCommand : class, ICommand
+public abstract class ACommandHandler<TCommand, TResponse> : 
+    IRequestHandler<TCommand, TResponse>
+    where TCommand : class, ICommand
+    where TResponse : class, IResponse
 {
-    protected abstract Task<CommandResponse> OnHandleAsync(TCommand command);
+    protected abstract Task<TResponse> OnHandleAsync(TCommand command);
 
-    public async Task<CommandResponse> HandleAsync(TCommand command)
+    public async Task<TResponse> HandleAsync(TCommand command)
     {
         Console.WriteLine($"OnHandleAsync of : {GetType().Name}\n");
 
@@ -23,7 +27,7 @@ public abstract class ACommandHandler<TCommand> : IRequestHandler<TCommand, Comm
             var response = command.CreateResponse();
             response.SetErrorMessage(e.Message);
             
-            return response;
+            return response as TResponse;
         }
     }
 }

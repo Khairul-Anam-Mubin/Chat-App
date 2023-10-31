@@ -11,7 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Chat.Application.CommandHandlers;
 
 [ServiceRegister(typeof(IRequestHandler<SendMessageCommand, CommandResponse>), ServiceLifetime.Singleton)]
-public class SendMessageCommandHandler : ACommandHandler<SendMessageCommand>
+public class SendMessageCommandHandler : ACommandHandler<SendMessageCommand, CommandResponse>
 {
     private readonly IChatRepository _chatRepository;
     private readonly ICommandService _commandService;

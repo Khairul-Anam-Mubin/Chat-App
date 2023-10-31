@@ -36,42 +36,7 @@ public class CommandService : ICommandService
     public async Task<CommandResponse> GetResponseAsync<TCommand>(TCommand command) 
         where TCommand : class, ICommand
     {
-        CommandResponse response;
-        try
-        {
-            if (IsCurrentApi(command))
-            {
-                if (command.FireAndForget)
-                {
-                    _ = Task.Factory.StartNew(() => _requestMediator.SendAsync<TCommand, CommandResponse>(command));
-                    response = command.CreateResponse();
-                    response.Status = ResponseStatus.Pending;
-                }
-                else
-                {
-                    response = await _requestMediator.SendAsync<TCommand, CommandResponse>(command);
-                    response = command.CreateResponse(response);
-                    response.Status = ResponseStatus.Success;
-                }
-            }
-            else
-            {
-                var accessToken = _httpContextAccessor.HttpContext?.GetAccessToken();
-
-                response = await _httpClientFactory
-                    .CreateClient()
-                    .AddBearerToken(accessToken)
-                    .PostAsync<CommandResponse>(command.ApiUrl, command);
-            }
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-
-            response = command.CreateResponse();
-            response.SetErrorMessage(e.Message);
-        }
-        return response!;
+        return await GetResponseAsync<TCommand, CommandResponse>(command);
     }
 
     public async Task<TResponse> GetResponseAsync<TCommand, TResponse>(TCommand command) 

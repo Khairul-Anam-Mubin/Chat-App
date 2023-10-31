@@ -12,7 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Chat.Application.CommandHandlers;
 
 [ServiceRegister(typeof(IRequestHandler<PublishMessageToConnectedHubCommand>), ServiceLifetime.Singleton)]
-public class PublishMessageToConnectedHubCommandHandler : ACommandHandler<PublishMessageToConnectedHubCommand>
+public class PublishMessageToConnectedHubCommandHandler : ACommandHandler<PublishMessageToConnectedHubCommand, CommandResponse>
 {
     private readonly IConfiguration _configuration;
     private readonly IRedisContext _redisContext;

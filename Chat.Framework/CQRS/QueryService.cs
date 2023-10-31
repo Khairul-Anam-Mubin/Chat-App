@@ -33,4 +33,10 @@ public class QueryService : IQueryService
             return response;
         }
     }
+
+    public async Task<IQueryResponse> GetResponseAsync<TQuery>(TQuery query) 
+        where TQuery : class, IQuery
+    {
+        return await GetResponseAsync<TQuery, IQueryResponse>(query);
+    }
 }
