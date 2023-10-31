@@ -1,4 +1,5 @@
 using Chat.Framework.Enums;
+using Chat.Framework.Interfaces;
 using Chat.Framework.Mediators;
 
 namespace Chat.Framework.CQRS;
@@ -6,7 +7,7 @@ namespace Chat.Framework.CQRS;
 public abstract class AQueryHandler<TQuery, TResponse> : 
     IRequestHandler<TQuery, TResponse> 
     where TQuery : class, IQuery
-    where TResponse : QueryResponse
+    where TResponse : class, IResponse
 {
     protected abstract Task<TResponse> OnHandleAsync(TQuery query);
 
@@ -24,7 +25,7 @@ public abstract class AQueryHandler<TQuery, TResponse> :
             Console.WriteLine(e.Message);
             var response = query.CreateResponse();
             response.Status = ResponseStatus.Error;
-            return (TResponse)response;
+            return response as TResponse;
         }
     }
 }

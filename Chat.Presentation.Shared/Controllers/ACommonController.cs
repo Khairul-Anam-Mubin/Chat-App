@@ -6,20 +6,15 @@ namespace Chat.Presentation.Shared.Controllers;
 
 public abstract class ACommonController : ControllerBase
 {
-    protected readonly ICommandQueryProxy CommandQueryProxy;
+    protected readonly ICommandService CommandService;
 
-    protected ACommonController(ICommandQueryProxy commandQueryProxy)
+    protected ACommonController(ICommandService commandService)
     {
-        CommandQueryProxy = commandQueryProxy;
+        CommandService = commandService;
     }
 
-    protected async Task<CommandResponse> GetCommandResponseAsync<TCommand>(TCommand command) where TCommand : ICommand
+    protected async Task<CommandResponse> GetCommandResponseAsync<TCommand>(TCommand command) where TCommand : class, ICommand
     {
-        return await CommandQueryProxy.GetCommandResponseAsync(command);
-    }
-
-    protected async Task<QueryResponse> GetQueryResponseAsync<TQuery>(TQuery query) where TQuery : IQuery
-    {
-        return await CommandQueryProxy.GetQueryResponseAsync(query);
+        return await CommandService.GetResponseAsync(command);
     }
 }

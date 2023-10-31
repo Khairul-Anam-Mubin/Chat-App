@@ -1,6 +1,8 @@
+using Chat.FileStore.Application.QueryHandlers;
 using Chat.FileStore.Domain.Commands;
 using Chat.FileStore.Domain.Models;
 using Chat.FileStore.Domain.Queries;
+using Chat.Framework.CQRS;
 using Chat.Framework.Proxy;
 using Chat.Presentation.Shared.Controllers;
 using Microsoft.AspNetCore.Authorization;
@@ -14,8 +16,11 @@ namespace Chat.FileStore.Presentation.Controllers;
 [Authorize]
 public class FileController : ACommonController
 {
-    public FileController(ICommandQueryProxy commandQueryProxy) : base(commandQueryProxy)
+    private readonly IQueryService _queryService;
+
+    public FileController(ICommandService commandService, IQueryService queryService) : base(commandService)
     {
+        _queryService = queryService;
     }
 
     [HttpPost]
@@ -37,7 +42,7 @@ public class FileController : ACommonController
         {
             FileId = fileId
         };
-        var response = await GetQueryResponseAsync(query);
+        var response = await _queryService.GetResponseAsync<FileDownloadQuery, QueryResponse>(query);
         var fileDownloadResult = (FileDownloadResult)response.Items[0];
         return File(fileDownloadResult.FileBytes, fileDownloadResult.ContentType);
     }
@@ -46,6 +51,6 @@ public class FileController : ACommonController
     [Route("get")]
     public async Task<IActionResult> GetFileModelAsync(FileModelQuery query)
     {
-        return Ok(await GetQueryResponseAsync(query));
+        return Ok(await _queryService.GetResponseAsync<FileModelQuery, QueryResponse>(query));
     }
 }

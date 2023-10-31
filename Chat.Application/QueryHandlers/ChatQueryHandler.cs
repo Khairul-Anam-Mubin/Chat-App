@@ -28,6 +28,6 @@ public class ChatQueryHandler : AQueryHandler<ChatQuery, QueryResponse>
             response.AddItem(chatModel.ToChatDto());   
         }
 
-        return response;
+        return (QueryResponse)response;
     }
 }

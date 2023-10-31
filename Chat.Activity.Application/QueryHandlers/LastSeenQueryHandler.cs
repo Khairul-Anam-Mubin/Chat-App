@@ -28,6 +28,6 @@ public class LastSeenQueryHandler : AQueryHandler<LastSeenQuery, QueryResponse>
             response.AddItem(lastSeenModel.ToLastSeenDto());
         }
 
-        return response;
+        return (QueryResponse)response;
     }
 }

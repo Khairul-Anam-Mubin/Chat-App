@@ -44,7 +44,7 @@ public class FileDownloadQueryHandler : AQueryHandler<FileDownloadQuery, QueryRe
 
         response.AddItem(fileDownloadResult);
 
-        return response;
+        return (QueryResponse)response;
     }
 
     private string GetContentType(string fileExtension)

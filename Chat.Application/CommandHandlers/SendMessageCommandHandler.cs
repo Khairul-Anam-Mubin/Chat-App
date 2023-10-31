@@ -14,16 +14,16 @@ namespace Chat.Application.CommandHandlers;
 public class SendMessageCommandHandler : ACommandHandler<SendMessageCommand>
 {
     private readonly IChatRepository _chatRepository;
-    private readonly ICommandQueryProxy _commandQueryProxy;
+    private readonly ICommandService _commandService;
     private readonly IHubConnectionService _hubConnectionService;
 
     public SendMessageCommandHandler(
         IChatRepository chatRepository,
-        ICommandQueryProxy commandQueryProxy, 
+        ICommandService commandService, 
         IHubConnectionService hubConnectionService)
     {
         _chatRepository = chatRepository;
-        _commandQueryProxy = commandQueryProxy;
+        _commandService = commandService;
         _hubConnectionService = hubConnectionService;
     }
 
@@ -71,7 +71,7 @@ public class SendMessageCommandHandler : ACommandHandler<SendMessageCommand>
             FireAndForget = true
         };
 
-        return _commandQueryProxy.GetCommandResponseAsync(sendMessageToClientCommand);
+        return _commandService.GetResponseAsync(sendMessageToClientCommand);
     }
 
     private Task PublishMessageToConnectedHubAsync(ChatModel chatModel)
@@ -84,7 +84,7 @@ public class SendMessageCommandHandler : ACommandHandler<SendMessageCommand>
             ChatModel = chatModel
         };
 
-        return _commandQueryProxy.GetCommandResponseAsync(publishMessageToConnectedHubCommand);
+        return _commandService.GetResponseAsync(publishMessageToConnectedHubCommand);
     }
 
     private Task UpdateLatestChatModelAsync(ChatModel chatModel)
@@ -97,6 +97,6 @@ public class SendMessageCommandHandler : ACommandHandler<SendMessageCommand>
             FireAndForget = true
         };
 
-        return _commandQueryProxy.GetCommandResponseAsync(updateLatestChatCommand);
+        return _commandService.GetResponseAsync(updateLatestChatCommand);
     }
 }

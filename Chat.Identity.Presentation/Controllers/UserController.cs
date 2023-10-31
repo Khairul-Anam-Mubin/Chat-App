@@ -13,11 +13,11 @@ namespace Chat.Identity.Presentation.Controllers;
 [Authorize]
 public class UserController : ACommonController
 {
-    private readonly IQueryClient _queryClient;
+    private readonly IQueryService _queryService;
 
-    public UserController(ICommandQueryProxy commandQueryProxy, IQueryClient queryClient) : base(commandQueryProxy)
+    public UserController(ICommandService commandService, IQueryService queryService) : base(commandService)
     {
-        _queryClient = queryClient;
+        _queryService = queryService;
     }
 
     [HttpPost]
@@ -32,7 +32,7 @@ public class UserController : ACommonController
     [Route("profiles")]
     public async Task<IActionResult> UserProfileAsync(UserProfileQuery query)
     {
-        var response = await _queryClient.GetResponseAsync<UserProfileQuery, UserProfileQueryResponse>(query);
+        var response = await _queryService.GetResponseAsync<UserProfileQuery, UserProfileQueryResponse>(query);
         return Ok(response);
     }
 

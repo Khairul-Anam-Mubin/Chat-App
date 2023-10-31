@@ -28,6 +28,6 @@ public class ChatListQueryHandler : AQueryHandler<ChatListQuery, QueryResponse>
             response.AddItem(latestChatModel.ToLatestChatDto(query.UserId));
         }
 
-        return response;
+        return (QueryResponse)response;
     }
 }

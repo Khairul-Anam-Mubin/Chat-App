@@ -7,11 +7,11 @@ namespace Chat.Activity.Application.EventHandlers;
 
 public class UserDisconnectedToHubEventConsumer : AMessageConsumer<UserDisconnectedToHubEvent>
 {
-    private readonly ICommandQueryProxy _commandQueryProxy;
+    private readonly ICommandService _commandService;
 
-    public UserDisconnectedToHubEventConsumer(ICommandQueryProxy commandQueryProxy)
+    public UserDisconnectedToHubEventConsumer(ICommandService commandService)
     {
-        _commandQueryProxy = commandQueryProxy;
+        _commandService = commandService;
     }
 
     public override async Task Consume(IMessageContext<UserDisconnectedToHubEvent> context)
@@ -28,6 +28,6 @@ public class UserDisconnectedToHubEventConsumer : AMessageConsumer<UserDisconnec
             IsActive = isActive,
             FireAndForget = true
         };
-        await _commandQueryProxy.GetCommandResponseAsync(updateLastSeenCommand);
+        await _commandService.GetResponseAsync(updateLastSeenCommand);
     }
 }

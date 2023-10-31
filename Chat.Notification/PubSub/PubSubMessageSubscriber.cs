@@ -17,17 +17,17 @@ public sealed class PubSubMessageSubscriber : IInitialService
     private readonly IHubConnectionService _hubConnectionService;
     private readonly IRedisContext _redisContext;
     private readonly IConfiguration _configuration;
-    private readonly ICommandQueryProxy _commandQueryProxy;
+    private readonly ICommandService _commandService;
 
     public PubSubMessageSubscriber(
         IRedisContext redisContext,
         IConfiguration configuration,
-        ICommandQueryProxy commandQueryProxy, 
+        ICommandService commandService, 
         IHubConnectionService hubConnectionService)
     {
         _redisContext = redisContext;
         _configuration = configuration;
-        _commandQueryProxy = commandQueryProxy;
+        _commandService = commandService;
         _hubConnectionService = hubConnectionService;
     }
 
@@ -53,7 +53,7 @@ public sealed class PubSubMessageSubscriber : IInitialService
                 {
                     MessageId = pubSubMessage.Id
                 };
-                _commandQueryProxy.GetCommandResponseAsync(sendMessageToClientCommand).Wait();
+                _commandService.GetResponseAsync(sendMessageToClientCommand).Wait();
             }
 
         });

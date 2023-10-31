@@ -2,11 +2,11 @@
 
 namespace Chat.Framework.MessageBrokers;
 
-public class MassTransitConsumeContext<TMessage> : IMessageContext<TMessage> where TMessage : class
+public class MessageContext<TMessage> : IMessageContext<TMessage> where TMessage : class
 {
     private readonly ConsumeContext<TMessage> _consumeContext;
 
-    public MassTransitConsumeContext(ConsumeContext<TMessage> consumeContext)
+    public MessageContext(ConsumeContext<TMessage> consumeContext)
     {
         _consumeContext = consumeContext;
         Message = _consumeContext.Message;

@@ -14,7 +14,7 @@ public abstract class AQuery : MetaDataDictionary, IQuery
         Limit = 1;
     }
 
-    public QueryResponse CreateResponse()
+    public IQueryResponse CreateResponse()
     {
         return new QueryResponse
         {
@@ -24,7 +24,7 @@ public abstract class AQuery : MetaDataDictionary, IQuery
         };
     }
 
-    public QueryResponse CreateResponse(QueryResponse response)
+    public IQueryResponse CreateResponse(IQueryResponse response)
     {
         response.Name = GetType().Name;
         response.Offset = Offset;

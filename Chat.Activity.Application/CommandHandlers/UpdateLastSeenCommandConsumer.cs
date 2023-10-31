@@ -10,7 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Chat.Activity.Application.CommandHandlers;
 
 [ServiceRegister(typeof(IRequestHandler<UpdateLastSeenCommand, CommandResponse>), ServiceLifetime.Singleton)]
-public class UpdateLastSeenCommandConsumer : ACommandConsumer<UpdateLastSeenCommand>
+public class UpdateLastSeenCommandConsumer : ACommandConsumer<UpdateLastSeenCommand, CommandResponse>
 {
     private readonly ILastSeenRepository _lastSeenRepository;
 

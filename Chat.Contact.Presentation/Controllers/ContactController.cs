@@ -1,5 +1,6 @@
 using Chat.Contact.Domain.Commands;
 using Chat.Contact.Domain.Queries;
+using Chat.Framework.CQRS;
 using Chat.Framework.Proxy;
 using Chat.Presentation.Shared.Controllers;
 using Microsoft.AspNetCore.Authorization;
@@ -12,9 +13,14 @@ namespace Chat.Contact.Presentation.Controllers;
 [Authorize]
 public class ContactController : ACommonController
 {
-    public ContactController(ICommandQueryProxy commandQueryProxy)
-        : base(commandQueryProxy)
+    private readonly IQueryService _queryService;
+
+    public ContactController(
+        ICommandService commandService, 
+        IQueryService queryService)
+        : base(commandService)
     {
+        _queryService = queryService;
     }
 
     [HttpPost, Route("add")]
@@ -32,6 +38,6 @@ public class ContactController : ACommonController
     [HttpPost, Route("get")]
     public async Task<IActionResult> AddContactAsync(ContactQuery query)
     {
-        return Ok(await GetQueryResponseAsync(query));
+        return Ok(await _queryService.GetResponseAsync<ContactQuery, QueryResponse>(query));
     }
 }

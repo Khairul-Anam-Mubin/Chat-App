@@ -32,6 +32,6 @@ public class FileModelQueryHandler : AQueryHandler<FileModelQuery, QueryResponse
 
         response.AddItem(fileModel);
 
-        return response;
+        return (QueryResponse)response;
     }
 }

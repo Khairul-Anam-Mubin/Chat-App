@@ -2,6 +2,7 @@ using Chat.Framework.Attributes;
 using Chat.Framework.CQRS;
 using Chat.Framework.Enums;
 using Chat.Framework.Extensions;
+using Chat.Framework.Interfaces;
 using Chat.Framework.Mediators;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
@@ -9,8 +10,8 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Chat.Framework.Proxy;
 
-[ServiceRegister(typeof(ICommandQueryProxy), ServiceLifetime.Transient)]
-public class CommandQueryProxy : ICommandQueryProxy
+[ServiceRegister(typeof(ICommandService), ServiceLifetime.Transient)]
+public class CommandService : ICommandService
 {
     private readonly IRequestMediator _requestMediator;
     private readonly IConfiguration _configuration;
@@ -18,7 +19,7 @@ public class CommandQueryProxy : ICommandQueryProxy
     private readonly IHttpClientFactory _httpClientFactory;
     private readonly IServiceScopeFactory _serviceScopeFactory;
 
-    public CommandQueryProxy(
+    public CommandService(
         IRequestMediator requestMediator, 
         IConfiguration configuration, 
         IHttpContextAccessor httpContextAccessor, 
@@ -32,7 +33,8 @@ public class CommandQueryProxy : ICommandQueryProxy
         _serviceScopeFactory = serviceScopeFactory;
     }
 
-    public async Task<CommandResponse> GetCommandResponseAsync<TCommand>(TCommand command) where TCommand : ICommand
+    public async Task<CommandResponse> GetResponseAsync<TCommand>(TCommand command) 
+        where TCommand : class, ICommand
     {
         CommandResponse response;
         try
@@ -72,24 +74,26 @@ public class CommandQueryProxy : ICommandQueryProxy
         return response!;
     }
 
-    public async Task<QueryResponse> GetQueryResponseAsync<TQuery>(TQuery query) where TQuery : IQuery
+    public async Task<TResponse> GetResponseAsync<TCommand, TResponse>(TCommand command) 
+        where TCommand : class, ICommand
+        where TResponse : class, IResponse
     {
-        QueryResponse response;
         try
         {
-            response = await _requestMediator.SendAsync<TQuery, QueryResponse>(query);
-            response = query.CreateResponse(response);
+            var response = await _requestMediator.SendAsync<TCommand, TResponse>(command);
             response.Status = ResponseStatus.Success;
+            return response;
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            Console.WriteLine(e.Message);
 
-            response = query.CreateResponse();
-            response.Status = ResponseStatus.Error;
+            var response = command.CreateResponse() as TResponse;
             response.Message = e.Message;
+            response.Status = ResponseStatus.Error;
+
+            return response;
         }
-        return response;
     }
 
     private bool IsCurrentApi<TCommand>(TCommand command) where TCommand : ICommand

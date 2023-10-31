@@ -8,6 +8,6 @@ public abstract class AMessageConsumer<TMessage> : IMessageConsumer<TMessage>, I
 
     public async Task Consume(ConsumeContext<TMessage> context)
     {
-        await Consume(new MassTransitConsumeContext<TMessage>(context));
+        await Consume(new MessageContext<TMessage>(context));
     }
 }

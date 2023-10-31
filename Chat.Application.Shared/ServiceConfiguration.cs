@@ -22,7 +22,7 @@ public static class ServiceConfiguration
         services.AddAttributeRegisteredServices();
 
         services.AddTransient<IRequestMediator, RequestMediator>();
-        services.AddTransient<IQueryClient, QueryClient>();
+        services.AddTransient<IQueryService, QueryService>();
 
         services.AddAuthentication(options =>
         {

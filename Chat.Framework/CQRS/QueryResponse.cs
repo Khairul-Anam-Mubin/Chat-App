@@ -2,7 +2,7 @@ using Chat.Framework.Models;
 
 namespace Chat.Framework.CQRS;
 
-public class QueryResponse : Response
+public class QueryResponse : Response, IQueryResponse
 {
     public string Name { get; set; } = string.Empty;
     public int Offset { get; set; }

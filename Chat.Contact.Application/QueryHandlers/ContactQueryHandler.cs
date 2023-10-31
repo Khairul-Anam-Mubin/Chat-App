@@ -43,6 +43,6 @@ public class ContactQueryHandler : AQueryHandler<ContactQuery, QueryResponse>
             response.AddItem(contact.ToContactDto(query.UserId));
         }
 
-        return response;
+        return (QueryResponse)response;
     }
 }

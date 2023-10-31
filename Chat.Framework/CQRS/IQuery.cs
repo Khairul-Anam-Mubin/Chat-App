@@ -4,6 +4,6 @@ namespace Chat.Framework.CQRS;
 
 public interface IQuery : IMetaDataDictionary
 {
-    QueryResponse CreateResponse();
-    QueryResponse CreateResponse(QueryResponse response);
+    IQueryResponse CreateResponse();
+    IQueryResponse CreateResponse(IQueryResponse response);
 }

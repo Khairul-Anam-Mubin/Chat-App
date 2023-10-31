@@ -8,14 +8,14 @@ namespace Chat.Activity.Application.EventHandlers;
 
 public class UserConnectedToHubEventConsumer : AMessageConsumer<UserConnectedToHubEvent>
 {
-    private readonly ICommandQueryProxy _commandQueryProxy;
+    private readonly ICommandService _commandService;
     private readonly ICommandBus _commandBus;
 
     public UserConnectedToHubEventConsumer(
-        ICommandQueryProxy commandQueryProxy,
+        ICommandService commandService,
         ICommandBus commandBus)
     {
-        _commandQueryProxy = commandQueryProxy;
+        _commandService = commandService;
         _commandBus = commandBus;
     }
 
@@ -36,6 +36,6 @@ public class UserConnectedToHubEventConsumer : AMessageConsumer<UserConnectedToH
             FireAndForget = true
         };
 
-        await _commandQueryProxy.GetCommandResponseAsync(updateLastSeenCommand);
+        await _commandService.GetResponseAsync(updateLastSeenCommand);
     }
 }
