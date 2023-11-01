@@ -9,7 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Chat.Application.QueryHandlers;
 
 [ServiceRegister(typeof(IRequestHandler<ChatQuery, QueryResponse>), ServiceLifetime.Singleton)]
-public class ChatQueryHandler : IQueryHandler<ChatQuery, QueryResponse>
+public class ChatQueryHandler : IRequestHandler<ChatQuery, QueryResponse>
 {
     private readonly IChatRepository _chatRepository;
 

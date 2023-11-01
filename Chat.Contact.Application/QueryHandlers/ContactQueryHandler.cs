@@ -10,7 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Chat.Contact.Application.QueryHandlers;
 
 [ServiceRegister(typeof(IRequestHandler<ContactQuery, QueryResponse>), ServiceLifetime.Singleton)]
-public class ContactQueryHandler : IQueryHandler<ContactQuery, QueryResponse>
+public class ContactQueryHandler : IRequestHandler<ContactQuery, QueryResponse>
 {
     private readonly IContactRepository _contactRepository;
 

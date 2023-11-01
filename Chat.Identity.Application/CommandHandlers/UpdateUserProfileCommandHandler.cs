@@ -9,7 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Chat.Identity.Application.CommandHandlers;
 
 [ServiceRegister(typeof(IRequestHandler<UpdateUserProfileCommand, CommandResponse>), ServiceLifetime.Singleton)]
-public class UpdateUserProfileCommandHandler : ICommandHandler<UpdateUserProfileCommand, CommandResponse>
+public class UpdateUserProfileCommandHandler : IRequestHandler<UpdateUserProfileCommand, CommandResponse>
 {
     private readonly IUserRepository _userRepository;
 

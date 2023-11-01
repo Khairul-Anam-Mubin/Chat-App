@@ -60,13 +60,4 @@ public class CommandService : ICommandService
             return response;
         }
     }
-
-    private bool IsCurrentApi<TCommand>(TCommand command) where TCommand : ICommand
-    {
-        if (string.IsNullOrEmpty(command.ApiUrl)) return true;
-
-        var currentApiOrigin = _configuration.GetSection("ApiOrigin").Value;
-
-        return command.ApiUrl.StartsWith(currentApiOrigin);
-    }
 }
