@@ -5,7 +5,6 @@ using Chat.Domain.Models;
 using Chat.Framework.Attributes;
 using Chat.Framework.CQRS;
 using Chat.Framework.Mediators;
-using Chat.Framework.Proxy;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Chat.Application.CommandHandlers;

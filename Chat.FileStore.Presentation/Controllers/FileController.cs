@@ -1,9 +1,7 @@
-using Chat.FileStore.Application.QueryHandlers;
 using Chat.FileStore.Domain.Commands;
 using Chat.FileStore.Domain.Models;
 using Chat.FileStore.Domain.Queries;
 using Chat.Framework.CQRS;
-using Chat.Framework.Proxy;
 using Chat.Presentation.Shared.Controllers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;

@@ -1,11 +1,9 @@
 using Chat.Contact.Application.Interfaces;
 using Chat.Contact.Domain.Commands;
 using Chat.Contact.Domain.Models;
-using Chat.Domain.Shared.Models;
 using Chat.Domain.Shared.Queries;
 using Chat.Framework.Attributes;
 using Chat.Framework.CQRS;
-using Chat.Framework.Enums;
 using Chat.Framework.Mediators;
 using Chat.Framework.MessageBrokers;
 using Microsoft.Extensions.DependencyInjection;

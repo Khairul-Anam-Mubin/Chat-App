@@ -19,19 +19,6 @@ public abstract class ACommandConsumer<TCommand, TResponse> :
 
     public async Task<TResponse> HandleAsync(TCommand request)
     {
-        try
-        {
-            return await OnConsumeAsync(request);
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e.Message);
-
-            var response = request.CreateResponse();
-            
-            response.SetErrorMessage(e.Message);
-            
-            return response as TResponse;
-        }
+        return await OnConsumeAsync(request);
     }
 }

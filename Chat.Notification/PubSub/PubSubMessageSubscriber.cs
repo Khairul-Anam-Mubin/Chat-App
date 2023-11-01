@@ -1,11 +1,11 @@
 ﻿using Chat.Application.Interfaces;
 using Chat.Domain.Commands;
 using Chat.Framework.Attributes;
+using Chat.Framework.CQRS;
 using Chat.Framework.Database.Interfaces;
 using Chat.Framework.Database.Models;
 using Chat.Framework.Extensions;
 using Chat.Framework.Interfaces;
-using Chat.Framework.Proxy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 

@@ -1,5 +1,4 @@
 ﻿using Chat.Framework.CQRS;
-using Chat.Framework.Proxy;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Chat.Presentation.Shared.Controllers;

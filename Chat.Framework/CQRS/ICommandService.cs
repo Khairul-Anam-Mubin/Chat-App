@@ -1,7 +1,6 @@
-using Chat.Framework.CQRS;
 using Chat.Framework.Interfaces;
 
-namespace Chat.Framework.Proxy;
+namespace Chat.Framework.CQRS;
 
 public interface ICommandService
 {

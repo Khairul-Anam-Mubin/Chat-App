@@ -3,7 +3,6 @@ using Chat.Domain.Shared.Events;
 using Chat.Framework.CQRS;
 using Chat.Framework.Extensions;
 using Chat.Framework.MessageBrokers;
-using Chat.Framework.Proxy;
 
 namespace Chat.Activity.Application.EventHandlers;
 

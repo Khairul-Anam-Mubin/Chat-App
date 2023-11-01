@@ -19,7 +19,9 @@ public class QueryService : IQueryService
         try
         {
             var response = await _requestMediator.SendAsync<TQuery, TResponse>(query);
+            
             response.Status = ResponseStatus.Success;
+
             return response;
         }
         catch (Exception e)
@@ -27,7 +29,8 @@ public class QueryService : IQueryService
             Console.WriteLine(e.Message);
 
             var response = query.CreateResponse() as TResponse;
-            response.Message = e.Message;
+
+            response!.Message = e.Message;
             response.Status = ResponseStatus.Error;
             
             return response;

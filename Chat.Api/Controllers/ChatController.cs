@@ -1,7 +1,6 @@
 using Chat.Domain.Commands;
 using Chat.Domain.Queries;
 using Chat.Framework.CQRS;
-using Chat.Framework.Proxy;
 using Chat.Presentation.Shared.Controllers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

@@ -1,4 +1,4 @@
-using Chat.Framework.Proxy;
+using Chat.Framework.CQRS;
 using Chat.Identity.Domain.Commands;
 using Chat.Presentation.Shared.Controllers;
 using Microsoft.AspNetCore.Mvc;
