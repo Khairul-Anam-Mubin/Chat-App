@@ -4,7 +4,7 @@ using Chat.Framework.CQRS;
 using Chat.Framework.MessageBrokers;
 using Chat.Framework.Models;
 
-namespace Chat.Activity.Application.EventHandlers;
+namespace Chat.Activity.Application.Consumers;
 
 public class UserDisconnectedToHubEventConsumer : AMessageConsumer<UserDisconnectedToHubEvent>
 {

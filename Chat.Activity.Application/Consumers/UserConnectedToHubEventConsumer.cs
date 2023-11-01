@@ -5,7 +5,7 @@ using Chat.Framework.Extensions;
 using Chat.Framework.MessageBrokers;
 using Chat.Framework.Models;
 
-namespace Chat.Activity.Application.EventHandlers;
+namespace Chat.Activity.Application.Consumers;
 
 public class UserConnectedToHubEventConsumer : AMessageConsumer<UserConnectedToHubEvent>
 {

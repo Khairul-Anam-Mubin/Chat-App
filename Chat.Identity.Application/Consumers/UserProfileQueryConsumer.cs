@@ -9,7 +9,7 @@ using Chat.Identity.Application.Interfaces;
 using Chat.Identity.Domain.Models;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Chat.Identity.Application.QueryHandlers;
+namespace Chat.Identity.Application.Consumers;
 
 [ServiceRegister(typeof(IRequestHandler<UserProfileQuery, UserProfileQueryResponse>), ServiceLifetime.Transient)]
 public class UserProfileQueryConsumer : AQueryConsumer<UserProfileQuery, UserProfileQueryResponse>
