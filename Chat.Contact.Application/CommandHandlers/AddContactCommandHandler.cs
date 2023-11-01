@@ -13,7 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Chat.Contact.Application.CommandHandlers;
 
 [ServiceRegister(typeof(IRequestHandler<AddContactCommand, CommandResponse>), ServiceLifetime.Transient)]
-public class AddContactCommandHandler : ACommandHandler<AddContactCommand, CommandResponse>
+public class AddContactCommandHandler : ICommandHandler<AddContactCommand, CommandResponse>
 {
     private readonly IContactRepository _contactRepository;
     private readonly IMessageRequestClient _messageRequestClient;
@@ -26,7 +26,7 @@ public class AddContactCommandHandler : ACommandHandler<AddContactCommand, Comma
         _messageRequestClient = messageRequestClient;
     }
 
-    protected override async Task<CommandResponse> OnHandleAsync(AddContactCommand command)
+    public async Task<CommandResponse> HandleAsync(AddContactCommand command)
     {
         var response = command.CreateResponse();
 

@@ -8,7 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Chat.Application.CommandHandlers;
 
 [ServiceRegister(typeof(IRequestHandler<UpdateChatsStatusCommand, CommandResponse>), ServiceLifetime.Singleton)]
-public class UpdateChatsStatusCommandHandler : ACommandHandler<UpdateChatsStatusCommand, CommandResponse>
+public class UpdateChatsStatusCommandHandler : ICommandHandler<UpdateChatsStatusCommand, CommandResponse>
 {
         
     private readonly ILatestChatRepository _latestChatRepository;
@@ -20,7 +20,7 @@ public class UpdateChatsStatusCommandHandler : ACommandHandler<UpdateChatsStatus
         _chatRepository = chatRepository;
     }
 
-    protected override async Task<CommandResponse> OnHandleAsync(UpdateChatsStatusCommand command)
+    public async Task<CommandResponse> HandleAsync(UpdateChatsStatusCommand command)
     {
         var response = command.CreateResponse();
 

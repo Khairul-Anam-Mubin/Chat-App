@@ -33,7 +33,7 @@ public class CommandService : ICommandService
         _serviceScopeFactory = serviceScopeFactory;
     }
 
-    public async Task<CommandResponse> GetResponseAsync<TCommand>(TCommand command) 
+    public async Task<IResponse> GetResponseAsync<TCommand>(TCommand command) 
         where TCommand : class, ICommand
     {
         return await GetResponseAsync<TCommand, CommandResponse>(command);

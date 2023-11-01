@@ -9,7 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Chat.Application.QueryHandlers;
 
 [ServiceRegister(typeof(IRequestHandler<ChatQuery, QueryResponse>), ServiceLifetime.Singleton)]
-public class ChatQueryHandler : AQueryHandler<ChatQuery, QueryResponse>
+public class ChatQueryHandler : IQueryHandler<ChatQuery, QueryResponse>
 {
     private readonly IChatRepository _chatRepository;
 
@@ -18,7 +18,7 @@ public class ChatQueryHandler : AQueryHandler<ChatQuery, QueryResponse>
         _chatRepository = chatRepository;
     }
 
-    protected override async Task<QueryResponse> OnHandleAsync(ChatQuery query)
+    public async Task<QueryResponse> HandleAsync(ChatQuery query)
     {
         var response = query.CreateResponse();
 

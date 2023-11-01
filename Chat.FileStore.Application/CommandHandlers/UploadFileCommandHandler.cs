@@ -12,7 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Chat.FileStore.Application.CommandHandlers;
 
 [ServiceRegister(typeof(IRequestHandler<UploadFileCommand, CommandResponse>), ServiceLifetime.Singleton)]
-public class UploadFileCommandHandler : ACommandHandler<UploadFileCommand, CommandResponse>
+public class UploadFileCommandHandler : ICommandHandler<UploadFileCommand, CommandResponse>
 {
     private readonly IFileRepository _fileRepository;
     private readonly IHttpContextAccessor _httpContextAccessor;
@@ -23,7 +23,7 @@ public class UploadFileCommandHandler : ACommandHandler<UploadFileCommand, Comma
         _httpContextAccessor = httpContextAccessor;
     }
 
-    protected override async Task<CommandResponse> OnHandleAsync(UploadFileCommand command)
+    public async Task<CommandResponse> HandleAsync(UploadFileCommand command)
     {
         var response = command.CreateResponse();
 

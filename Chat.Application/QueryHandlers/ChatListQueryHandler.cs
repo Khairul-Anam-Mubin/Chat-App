@@ -9,7 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Chat.Application.QueryHandlers;
 
 [ServiceRegister(typeof(IRequestHandler<ChatListQuery, QueryResponse>), ServiceLifetime.Singleton)]
-public class ChatListQueryHandler : AQueryHandler<ChatListQuery, QueryResponse>
+public class ChatListQueryHandler : IQueryHandler<ChatListQuery, QueryResponse>
 {
     private readonly ILatestChatRepository _latestChatRepository;
 
@@ -18,7 +18,7 @@ public class ChatListQueryHandler : AQueryHandler<ChatListQuery, QueryResponse>
         _latestChatRepository = latestChatRepository;
     }
 
-    protected override async Task<QueryResponse> OnHandleAsync(ChatListQuery query)
+    public async Task<QueryResponse> HandleAsync(ChatListQuery query)
     {
         var response = query.CreateResponse();
 

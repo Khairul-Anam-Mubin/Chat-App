@@ -8,7 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Chat.Identity.Application.CommandHandlers;
 
 [ServiceRegister(typeof(IRequestHandler<LogOutCommand, CommandResponse>), ServiceLifetime.Singleton)]
-public class LogOutCommandHandler : ACommandHandler<LogOutCommand, CommandResponse>
+public class LogOutCommandHandler : ICommandHandler<LogOutCommand, CommandResponse>
 {
     private readonly ITokenService _tokenService;
 
@@ -17,7 +17,7 @@ public class LogOutCommandHandler : ACommandHandler<LogOutCommand, CommandRespon
         _tokenService = tokenService;
     }
     
-    protected override async Task<CommandResponse> OnHandleAsync(LogOutCommand command)
+    public async Task<CommandResponse> HandleAsync(LogOutCommand command)
     {
         var response = command.CreateResponse();
 

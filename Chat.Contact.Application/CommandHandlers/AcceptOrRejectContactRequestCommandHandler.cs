@@ -8,7 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Chat.Contact.Application.CommandHandlers;
 
 [ServiceRegister(typeof(IRequestHandler<AcceptOrRejectContactRequestCommand, CommandResponse>), ServiceLifetime.Singleton)]
-public class AcceptOrRejectContactRequestCommandHandler : ACommandHandler<AcceptOrRejectContactRequestCommand, CommandResponse>
+public class AcceptOrRejectContactRequestCommandHandler : ICommandHandler<AcceptOrRejectContactRequestCommand, CommandResponse>
 {
     private readonly IContactRepository _contactRepository;
 
@@ -17,7 +17,7 @@ public class AcceptOrRejectContactRequestCommandHandler : ACommandHandler<Accept
         _contactRepository = contactRepository;
     }
 
-    protected override async Task<CommandResponse> OnHandleAsync(AcceptOrRejectContactRequestCommand command)
+    public async Task<CommandResponse> HandleAsync(AcceptOrRejectContactRequestCommand command)
     {
         var response = command.CreateResponse();
 

@@ -9,7 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Chat.Identity.Application.CommandHandlers;
 
 [ServiceRegister(typeof(IRequestHandler<RegisterCommand, CommandResponse>), ServiceLifetime.Singleton)]
-public class RegisterCommandHandler : ACommandHandler<RegisterCommand, CommandResponse>
+public class RegisterCommandHandler : ICommandHandler<RegisterCommand, CommandResponse>
 {
     private readonly IUserRepository _userRepository;
 
@@ -18,7 +18,7 @@ public class RegisterCommandHandler : ACommandHandler<RegisterCommand, CommandRe
         _userRepository = userRepository;
     }
 
-    protected override async Task<CommandResponse> OnHandleAsync(RegisterCommand command)
+    public async Task<CommandResponse> HandleAsync(RegisterCommand command)
     {
         var response = command.CreateResponse();
 

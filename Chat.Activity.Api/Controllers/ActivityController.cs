@@ -34,6 +34,6 @@ public class ActivityController : ACommonController
     [HttpPost, Route("track")]
     public async Task<IActionResult> UpdateLastSeenAsync(UpdateLastSeenCommand command)
     {
-        return Ok(await _commandService.GetResponseAsync(command));
+        return Ok(await _commandService.GetResponseAsync<UpdateLastSeenCommand, CommandResponse>(command));
     }
 }

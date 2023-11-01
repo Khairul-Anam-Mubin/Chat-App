@@ -8,7 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Chat.Application.CommandHandlers;
 
 [ServiceRegister(typeof(IRequestHandler<SendMessageToClientCommand, CommandResponse>), ServiceLifetime.Singleton)]
-public class SendMessageToClientCommandHandler : ACommandHandler<SendMessageToClientCommand, CommandResponse>
+public class SendMessageToClientCommandHandler : ICommandHandler<SendMessageToClientCommand, CommandResponse>
 {
     private readonly IChatHubService _chatHubService;
     private readonly IChatRepository _chatRepository;
@@ -21,7 +21,7 @@ public class SendMessageToClientCommandHandler : ACommandHandler<SendMessageToCl
         _chatRepository = chatRepository;
     }
 
-    protected override async Task<CommandResponse> OnHandleAsync(SendMessageToClientCommand command)
+    public async Task<CommandResponse> HandleAsync(SendMessageToClientCommand command)
     {
         var chatModel = command.ChatModel ?? await _chatRepository.GetByIdAsync(command.MessageId);
         

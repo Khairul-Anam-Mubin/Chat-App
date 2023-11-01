@@ -11,7 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Chat.Application.CommandHandlers;
 
 [ServiceRegister(typeof(IRequestHandler<SendMessageCommand, CommandResponse>), ServiceLifetime.Singleton)]
-public class SendMessageCommandHandler : ACommandHandler<SendMessageCommand, CommandResponse>
+public class SendMessageCommandHandler : ICommandHandler<SendMessageCommand, CommandResponse>
 {
     private readonly IChatRepository _chatRepository;
     private readonly ICommandService _commandService;
@@ -27,7 +27,7 @@ public class SendMessageCommandHandler : ACommandHandler<SendMessageCommand, Com
         _hubConnectionService = hubConnectionService;
     }
 
-    protected override async Task<CommandResponse> OnHandleAsync(SendMessageCommand command)
+    public async Task<CommandResponse> HandleAsync(SendMessageCommand command)
     { 
         var chatModel = command.ChatModel;
 
@@ -71,7 +71,7 @@ public class SendMessageCommandHandler : ACommandHandler<SendMessageCommand, Com
             FireAndForget = true
         };
 
-        return _commandService.GetResponseAsync(sendMessageToClientCommand);
+        return _commandService.GetResponseAsync<SendMessageToClientCommand, CommandResponse>(sendMessageToClientCommand);
     }
 
     private Task PublishMessageToConnectedHubAsync(ChatModel chatModel)

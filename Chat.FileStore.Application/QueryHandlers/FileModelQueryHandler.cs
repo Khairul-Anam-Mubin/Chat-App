@@ -8,7 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Chat.FileStore.Application.QueryHandlers;
 
 [ServiceRegister(typeof(IRequestHandler<FileModelQuery, QueryResponse>), ServiceLifetime.Singleton)]
-public class FileModelQueryHandler : AQueryHandler<FileModelQuery, QueryResponse>
+public class FileModelQueryHandler : IQueryHandler<FileModelQuery, QueryResponse>
 {
     private readonly IFileRepository _fileRepository;
 
@@ -17,7 +17,7 @@ public class FileModelQueryHandler : AQueryHandler<FileModelQuery, QueryResponse
         _fileRepository = fileRepository;
     }
 
-    protected override async Task<QueryResponse> OnHandleAsync(FileModelQuery query)
+    public async Task<QueryResponse> HandleAsync(FileModelQuery query)
     {
         var response = query.CreateResponse();
 

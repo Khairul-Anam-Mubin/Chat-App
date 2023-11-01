@@ -12,7 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Chat.Application.CommandHandlers;
 
 [ServiceRegister(typeof(IRequestHandler<PublishMessageToConnectedHubCommand>), ServiceLifetime.Singleton)]
-public class PublishMessageToConnectedHubCommandHandler : ACommandHandler<PublishMessageToConnectedHubCommand, CommandResponse>
+public class PublishMessageToConnectedHubCommandHandler : ICommandHandler<PublishMessageToConnectedHubCommand, CommandResponse>
 {
     private readonly IConfiguration _configuration;
     private readonly IRedisContext _redisContext;
@@ -28,7 +28,7 @@ public class PublishMessageToConnectedHubCommandHandler : ACommandHandler<Publis
         _hubConnectionService = hubConnectionService;
     }
 
-    protected override async Task<CommandResponse> OnHandleAsync(PublishMessageToConnectedHubCommand command)
+    public async Task<CommandResponse> HandleAsync(PublishMessageToConnectedHubCommand command)
     {
         var subscriber = _redisContext.GetSubscriber(
             _configuration.GetSection("RedisConfig:DatabaseInfo").Get<DatabaseInfo>());

@@ -15,6 +15,6 @@ public abstract class ACommonController : ControllerBase
 
     protected async Task<CommandResponse> GetCommandResponseAsync<TCommand>(TCommand command) where TCommand : class, ICommand
     {
-        return await CommandService.GetResponseAsync(command);
+        return await CommandService.GetResponseAsync<TCommand, CommandResponse>(command);
     }
 }

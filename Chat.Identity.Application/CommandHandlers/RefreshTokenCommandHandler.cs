@@ -10,7 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Chat.Identity.Application.CommandHandlers;
 
 [ServiceRegister(typeof(IRequestHandler<RefreshTokenCommand, CommandResponse>), ServiceLifetime.Singleton)]
-public class RefreshTokenCommandHandler : ACommandHandler<RefreshTokenCommand, CommandResponse>
+public class RefreshTokenCommandHandler : ICommandHandler<RefreshTokenCommand, CommandResponse>
 {
     private readonly ITokenService _tokenService;
 
@@ -19,7 +19,7 @@ public class RefreshTokenCommandHandler : ACommandHandler<RefreshTokenCommand, C
         _tokenService = tokenService;
     }
 
-    protected override async Task<CommandResponse> OnHandleAsync(RefreshTokenCommand command)
+    public async Task<CommandResponse> HandleAsync(RefreshTokenCommand command)
     {
         var response = command.CreateResponse();
 
