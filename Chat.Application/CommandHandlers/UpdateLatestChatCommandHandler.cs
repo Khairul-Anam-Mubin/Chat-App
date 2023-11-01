@@ -3,12 +3,13 @@ using Chat.Domain.Commands;
 using Chat.Framework.Attributes;
 using Chat.Framework.CQRS;
 using Chat.Framework.Mediators;
+using Chat.Framework.Models;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Chat.Application.CommandHandlers;
 
-[ServiceRegister(typeof(IRequestHandler<UpdateLatestChatCommand, CommandResponse>), ServiceLifetime.Singleton)]
-public class UpdateLatestChatCommandHandler : IRequestHandler<UpdateLatestChatCommand, CommandResponse>
+[ServiceRegister(typeof(IRequestHandler<UpdateLatestChatCommand, Response>), ServiceLifetime.Singleton)]
+public class UpdateLatestChatCommandHandler : IRequestHandler<UpdateLatestChatCommand, Response>
 {
         
     private readonly ILatestChatRepository _latestChatRepository;
@@ -18,7 +19,7 @@ public class UpdateLatestChatCommandHandler : IRequestHandler<UpdateLatestChatCo
         _latestChatRepository = latestChatRepository;
     }
 
-    public async Task<CommandResponse> HandleAsync(UpdateLatestChatCommand command)
+    public async Task<Response> HandleAsync(UpdateLatestChatCommand command)
     {
         var response = command.CreateResponse();
 
@@ -47,6 +48,6 @@ public class UpdateLatestChatCommandHandler : IRequestHandler<UpdateLatestChatCo
 
         await _latestChatRepository.SaveAsync(latestChatModel);
 
-        return response;
+        return (Response)response;
     }
 }

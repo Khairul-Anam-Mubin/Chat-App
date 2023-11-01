@@ -6,13 +6,14 @@ using Chat.Framework.Database.Interfaces;
 using Chat.Framework.Database.Models;
 using Chat.Framework.Extensions;
 using Chat.Framework.Mediators;
+using Chat.Framework.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Chat.Application.CommandHandlers;
 
 [ServiceRegister(typeof(IRequestHandler<PublishMessageToConnectedHubCommand>), ServiceLifetime.Singleton)]
-public class PublishMessageToConnectedHubCommandHandler : IRequestHandler<PublishMessageToConnectedHubCommand, CommandResponse>
+public class PublishMessageToConnectedHubCommandHandler : IRequestHandler<PublishMessageToConnectedHubCommand, Response>
 {
     private readonly IConfiguration _configuration;
     private readonly IRedisContext _redisContext;
@@ -28,7 +29,7 @@ public class PublishMessageToConnectedHubCommandHandler : IRequestHandler<Publis
         _hubConnectionService = hubConnectionService;
     }
 
-    public async Task<CommandResponse> HandleAsync(PublishMessageToConnectedHubCommand command)
+    public async Task<Response> HandleAsync(PublishMessageToConnectedHubCommand command)
     {
         var subscriber = _redisContext.GetSubscriber(
             _configuration.GetSection("RedisConfig:DatabaseInfo").Get<DatabaseInfo>());
@@ -38,7 +39,7 @@ public class PublishMessageToConnectedHubCommandHandler : IRequestHandler<Publis
         if (string.IsNullOrEmpty(channel))
         {
             Console.WriteLine($"Channel not found. So publish event to redis skipped\n");
-            return command.CreateResponse();
+            return (Response)command.CreateResponse();
         }
 
         await subscriber.PublishAsync(channel, new PubSubMessage
@@ -49,6 +50,6 @@ public class PublishMessageToConnectedHubCommandHandler : IRequestHandler<Publis
         }.Serialize());
 
         Console.WriteLine("Event published to redis\n");
-        return command.CreateResponse();
+        return (Response)command.CreateResponse();
     }
 }

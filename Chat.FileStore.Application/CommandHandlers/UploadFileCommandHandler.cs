@@ -6,13 +6,14 @@ using Chat.Framework.Attributes;
 using Chat.Framework.CQRS;
 using Chat.Framework.Extensions;
 using Chat.Framework.Mediators;
+using Chat.Framework.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Chat.FileStore.Application.CommandHandlers;
 
-[ServiceRegister(typeof(IRequestHandler<UploadFileCommand, CommandResponse>), ServiceLifetime.Singleton)]
-public class UploadFileCommandHandler : IRequestHandler<UploadFileCommand, CommandResponse>
+[ServiceRegister(typeof(IRequestHandler<UploadFileCommand, Response>), ServiceLifetime.Singleton)]
+public class UploadFileCommandHandler : IRequestHandler<UploadFileCommand, Response>
 {
     private readonly IFileRepository _fileRepository;
     private readonly IHttpContextAccessor _httpContextAccessor;
@@ -23,7 +24,7 @@ public class UploadFileCommandHandler : IRequestHandler<UploadFileCommand, Comma
         _httpContextAccessor = httpContextAccessor;
     }
 
-    public async Task<CommandResponse> HandleAsync(UploadFileCommand command)
+    public async Task<Response> HandleAsync(UploadFileCommand command)
     {
         var response = command.CreateResponse();
 
@@ -66,6 +67,6 @@ public class UploadFileCommandHandler : IRequestHandler<UploadFileCommand, Comma
         response.Message = "File uploaded successfully";
         response.SetData("FileId", fileModel.Id);
         
-        return response;
+        return (Response)response;
     }
 }

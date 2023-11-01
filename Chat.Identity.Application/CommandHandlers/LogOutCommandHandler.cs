@@ -1,14 +1,15 @@
 using Chat.Framework.Attributes;
 using Chat.Framework.CQRS;
 using Chat.Framework.Mediators;
+using Chat.Framework.Models;
 using Chat.Identity.Application.Interfaces;
 using Chat.Identity.Domain.Commands;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Chat.Identity.Application.CommandHandlers;
 
-[ServiceRegister(typeof(IRequestHandler<LogOutCommand, CommandResponse>), ServiceLifetime.Singleton)]
-public class LogOutCommandHandler : IRequestHandler<LogOutCommand, CommandResponse>
+[ServiceRegister(typeof(IRequestHandler<LogOutCommand, Response>), ServiceLifetime.Singleton)]
+public class LogOutCommandHandler : IRequestHandler<LogOutCommand, Response>
 {
     private readonly ITokenService _tokenService;
 
@@ -17,7 +18,7 @@ public class LogOutCommandHandler : IRequestHandler<LogOutCommand, CommandRespon
         _tokenService = tokenService;
     }
     
-    public async Task<CommandResponse> HandleAsync(LogOutCommand command)
+    public async Task<Response> HandleAsync(LogOutCommand command)
     {
         var response = command.CreateResponse();
 
@@ -28,6 +29,6 @@ public class LogOutCommandHandler : IRequestHandler<LogOutCommand, CommandRespon
         
         response.Message = "Logged out successfully!!";
         
-        return response;
+        return (Response)response;
     }
 }

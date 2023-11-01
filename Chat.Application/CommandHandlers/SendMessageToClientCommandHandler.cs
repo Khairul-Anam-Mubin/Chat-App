@@ -3,12 +3,13 @@ using Chat.Domain.Commands;
 using Chat.Framework.Attributes;
 using Chat.Framework.CQRS;
 using Chat.Framework.Mediators;
+using Chat.Framework.Models;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Chat.Application.CommandHandlers;
 
-[ServiceRegister(typeof(IRequestHandler<SendMessageToClientCommand, CommandResponse>), ServiceLifetime.Singleton)]
-public class SendMessageToClientCommandHandler : IRequestHandler<SendMessageToClientCommand, CommandResponse>
+[ServiceRegister(typeof(IRequestHandler<SendMessageToClientCommand, Response>), ServiceLifetime.Singleton)]
+public class SendMessageToClientCommandHandler : IRequestHandler<SendMessageToClientCommand, Response>
 {
     private readonly IChatHubService _chatHubService;
     private readonly IChatRepository _chatRepository;
@@ -21,7 +22,7 @@ public class SendMessageToClientCommandHandler : IRequestHandler<SendMessageToCl
         _chatRepository = chatRepository;
     }
 
-    public async Task<CommandResponse> HandleAsync(SendMessageToClientCommand command)
+    public async Task<Response> HandleAsync(SendMessageToClientCommand command)
     {
         var chatModel = command.ChatModel ?? await _chatRepository.GetByIdAsync(command.MessageId);
         
@@ -32,6 +33,6 @@ public class SendMessageToClientCommandHandler : IRequestHandler<SendMessageToCl
 
         await _chatHubService.SendAsync(chatModel.SendTo, chatModel);
 
-        return command.CreateResponse();
+        return (Response)command.CreateResponse();
     }
 }

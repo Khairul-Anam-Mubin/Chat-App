@@ -5,12 +5,13 @@ using Chat.Framework.Attributes;
 using Chat.Framework.CQRS;
 using Chat.Framework.Mediators;
 using Chat.Framework.MessageBrokers;
+using Chat.Framework.Models;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Chat.Activity.Application.CommandHandlers;
 
-[ServiceRegister(typeof(IRequestHandler<UpdateLastSeenCommand, CommandResponse>), ServiceLifetime.Singleton)]
-public class UpdateLastSeenCommandConsumer : ACommandConsumer<UpdateLastSeenCommand, CommandResponse>
+[ServiceRegister(typeof(IRequestHandler<UpdateLastSeenCommand, Response>), ServiceLifetime.Singleton)]
+public class UpdateLastSeenCommandConsumer : ACommandConsumer<UpdateLastSeenCommand, Response>
 {
     private readonly ILastSeenRepository _lastSeenRepository;
 
@@ -19,7 +20,7 @@ public class UpdateLastSeenCommandConsumer : ACommandConsumer<UpdateLastSeenComm
         _lastSeenRepository = lastSeenRepository;
     }
 
-    protected override async Task<CommandResponse> OnConsumeAsync(UpdateLastSeenCommand command, IMessageContext<UpdateLastSeenCommand>? context = null)
+    protected override async Task<Response> OnConsumeAsync(UpdateLastSeenCommand command, IMessageContext<UpdateLastSeenCommand>? context = null)
     {
         var response = command.CreateResponse();
 
@@ -35,12 +36,12 @@ public class UpdateLastSeenCommandConsumer : ACommandConsumer<UpdateLastSeenComm
         if (!await _lastSeenRepository.SaveAsync(lastSeenModel))
         {
             response.SetErrorMessage("Save Last Seen Model Error");
-            return response;
+            return (Response)response;
         }
 
         response.SetSuccessMessage("Last seen time set successfully");
         response.SetData("LastSeenAt", lastSeenModel.LastSeenAt);
 
-        return response;
+        return (Response)response;
     }
 }

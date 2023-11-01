@@ -1,6 +1,7 @@
 using Chat.Framework.Attributes;
 using Chat.Framework.CQRS;
 using Chat.Framework.Mediators;
+using Chat.Framework.Models;
 using Chat.Identity.Application.Extensions;
 using Chat.Identity.Application.Interfaces;
 using Chat.Identity.Domain.Commands;
@@ -8,8 +9,8 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Chat.Identity.Application.CommandHandlers;
 
-[ServiceRegister(typeof(IRequestHandler<LoginCommand, CommandResponse>), ServiceLifetime.Singleton)]
-public class LoginCommandHandler : IRequestHandler<LoginCommand, CommandResponse>
+[ServiceRegister(typeof(IRequestHandler<LoginCommand, Response>), ServiceLifetime.Singleton)]
+public class LoginCommandHandler : IRequestHandler<LoginCommand, Response>
 {
     private readonly IUserRepository _userRepository;
     private readonly ITokenService _tokenService;
@@ -20,7 +21,7 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, CommandResponse
         _tokenService = tokenService;
     }
 
-    public async Task<CommandResponse> HandleAsync(LoginCommand command)
+    public async Task<Response> HandleAsync(LoginCommand command)
     {
         var response = command.CreateResponse();
 
@@ -47,6 +48,6 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, CommandResponse
         response.SetData("Token", token);
         response.Message = "Logged in successfully";
         
-        return response;
+        return (Response)response;
     }
 }

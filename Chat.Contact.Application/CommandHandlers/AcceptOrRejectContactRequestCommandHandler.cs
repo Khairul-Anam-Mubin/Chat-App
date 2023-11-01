@@ -3,12 +3,13 @@ using Chat.Contact.Domain.Commands;
 using Chat.Framework.Attributes;
 using Chat.Framework.CQRS;
 using Chat.Framework.Mediators;
+using Chat.Framework.Models;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Chat.Contact.Application.CommandHandlers;
 
-[ServiceRegister(typeof(IRequestHandler<AcceptOrRejectContactRequestCommand, CommandResponse>), ServiceLifetime.Singleton)]
-public class AcceptOrRejectContactRequestCommandHandler : IRequestHandler<AcceptOrRejectContactRequestCommand, CommandResponse>
+[ServiceRegister(typeof(IRequestHandler<AcceptOrRejectContactRequestCommand, Response>), ServiceLifetime.Singleton)]
+public class AcceptOrRejectContactRequestCommandHandler : IRequestHandler<AcceptOrRejectContactRequestCommand, Response>
 {
     private readonly IContactRepository _contactRepository;
 
@@ -17,7 +18,7 @@ public class AcceptOrRejectContactRequestCommandHandler : IRequestHandler<Accept
         _contactRepository = contactRepository;
     }
 
-    public async Task<CommandResponse> HandleAsync(AcceptOrRejectContactRequestCommand command)
+    public async Task<Response> HandleAsync(AcceptOrRejectContactRequestCommand command)
     {
         var response = command.CreateResponse();
 
@@ -45,6 +46,6 @@ public class AcceptOrRejectContactRequestCommandHandler : IRequestHandler<Accept
             response.Message = "ContactModel rejected";
         }
 
-        return response;
+        return (Response)response;
     }
 }

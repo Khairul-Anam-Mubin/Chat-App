@@ -1,6 +1,7 @@
 using Chat.Framework.Attributes;
 using Chat.Framework.CQRS;
 using Chat.Framework.Mediators;
+using Chat.Framework.Models;
 using Chat.Identity.Application.Extensions;
 using Chat.Identity.Application.Interfaces;
 using Chat.Identity.Domain.Commands;
@@ -8,8 +9,8 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Chat.Identity.Application.CommandHandlers;
 
-[ServiceRegister(typeof(IRequestHandler<RegisterCommand, CommandResponse>), ServiceLifetime.Singleton)]
-public class RegisterCommandHandler : IRequestHandler<RegisterCommand, CommandResponse>
+[ServiceRegister(typeof(IRequestHandler<RegisterCommand, Response>), ServiceLifetime.Singleton)]
+public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Response>
 {
     private readonly IUserRepository _userRepository;
 
@@ -18,7 +19,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, CommandRe
         _userRepository = userRepository;
     }
 
-    public async Task<CommandResponse> HandleAsync(RegisterCommand command)
+    public async Task<Response> HandleAsync(RegisterCommand command)
     {
         var response = command.CreateResponse();
 
@@ -38,6 +39,6 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, CommandRe
         response.Message = "User Created Successfully!!";
         response.SetData("UserProfile", command.UserModel.ToUserProfile());
         
-        return response;
+        return (Response)response;
     }
 }

@@ -6,6 +6,5 @@ public interface ICommand : IMetaDataDictionary
 { 
     string ApiUrl { get; set; }
     bool FireAndForget { get; set; }
-    CommandResponse CreateResponse();
-    CommandResponse CreateResponse(CommandResponse response);
+    IResponse CreateResponse();
 }

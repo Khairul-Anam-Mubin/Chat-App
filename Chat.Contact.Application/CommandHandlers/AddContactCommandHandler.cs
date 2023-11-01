@@ -6,12 +6,13 @@ using Chat.Framework.Attributes;
 using Chat.Framework.CQRS;
 using Chat.Framework.Mediators;
 using Chat.Framework.MessageBrokers;
+using Chat.Framework.Models;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Chat.Contact.Application.CommandHandlers;
 
-[ServiceRegister(typeof(IRequestHandler<AddContactCommand, CommandResponse>), ServiceLifetime.Transient)]
-public class AddContactCommandHandler : IRequestHandler<AddContactCommand, CommandResponse>
+[ServiceRegister(typeof(IRequestHandler<AddContactCommand, Response>), ServiceLifetime.Transient)]
+public class AddContactCommandHandler : IRequestHandler<AddContactCommand, Response>
 {
     private readonly IContactRepository _contactRepository;
     private readonly IMessageRequestClient _messageRequestClient;
@@ -24,7 +25,7 @@ public class AddContactCommandHandler : IRequestHandler<AddContactCommand, Comma
         _messageRequestClient = messageRequestClient;
     }
 
-    public async Task<CommandResponse> HandleAsync(AddContactCommand command)
+    public async Task<Response> HandleAsync(AddContactCommand command)
     {
         var response = command.CreateResponse();
 
@@ -72,6 +73,6 @@ public class AddContactCommandHandler : IRequestHandler<AddContactCommand, Comma
 
         response.Message = "ContactModel added successfully";
 
-        return response;
+        return (Response)response;
     }
 }

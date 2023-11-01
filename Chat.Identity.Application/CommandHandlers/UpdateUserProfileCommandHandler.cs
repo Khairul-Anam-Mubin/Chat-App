@@ -1,15 +1,16 @@
 using Chat.Framework.Attributes;
 using Chat.Framework.CQRS;
 using Chat.Framework.Mediators;
+using Chat.Framework.Models;
 using Chat.Identity.Application.Extensions;
 using Chat.Identity.Application.Interfaces;
 using Chat.Identity.Domain.Commands;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Chat.Identity.Application.CommandHandlers;
-
-[ServiceRegister(typeof(IRequestHandler<UpdateUserProfileCommand, CommandResponse>), ServiceLifetime.Singleton)]
-public class UpdateUserProfileCommandHandler : IRequestHandler<UpdateUserProfileCommand, CommandResponse>
+    
+[ServiceRegister(typeof(IRequestHandler<UpdateUserProfileCommand, Response>), ServiceLifetime.Singleton)]
+public class UpdateUserProfileCommandHandler : IRequestHandler<UpdateUserProfileCommand, Response>
 {
     private readonly IUserRepository _userRepository;
 
@@ -18,7 +19,7 @@ public class UpdateUserProfileCommandHandler : IRequestHandler<UpdateUserProfile
         _userRepository = userRepository;
     }
 
-    public async Task<CommandResponse> HandleAsync(UpdateUserProfileCommand command)
+    public async Task<Response> HandleAsync(UpdateUserProfileCommand command)
     {
         var response = command.CreateResponse();
 
@@ -70,6 +71,6 @@ public class UpdateUserProfileCommandHandler : IRequestHandler<UpdateUserProfile
         response.Message = "User Updated Successfully!!";
         response.SetData("UserProfile", userModel.ToUserProfile());
         
-        return response;
+        return (Response)response;
     }
 }

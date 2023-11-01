@@ -3,14 +3,15 @@ using Chat.Application.Shared.Providers;
 using Chat.Framework.Attributes;
 using Chat.Framework.CQRS;
 using Chat.Framework.Mediators;
+using Chat.Framework.Models;
 using Chat.Identity.Application.Interfaces;
 using Chat.Identity.Domain.Commands;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Chat.Identity.Application.CommandHandlers;
 
-[ServiceRegister(typeof(IRequestHandler<RefreshTokenCommand, CommandResponse>), ServiceLifetime.Singleton)]
-public class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, CommandResponse>
+[ServiceRegister(typeof(IRequestHandler<RefreshTokenCommand, Response>), ServiceLifetime.Singleton)]
+public class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, Response>
 {
     private readonly ITokenService _tokenService;
 
@@ -19,7 +20,7 @@ public class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, C
         _tokenService = tokenService;
     }
 
-    public async Task<CommandResponse> HandleAsync(RefreshTokenCommand command)
+    public async Task<Response> HandleAsync(RefreshTokenCommand command)
     {
         var response = command.CreateResponse();
 
@@ -64,6 +65,6 @@ public class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, C
         
         response.SetData("Token", token);
         
-        return response;
+        return (Response)response;
     }
 }

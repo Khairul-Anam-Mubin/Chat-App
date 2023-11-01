@@ -1,4 +1,5 @@
 using Chat.Framework.Enums;
+using Chat.Framework.Interfaces;
 using Chat.Framework.Models;
 
 namespace Chat.Framework.CQRS;
@@ -14,18 +15,11 @@ public abstract class ACommand : MetaDataDictionary, ICommand
         ApiUrl = string.Empty;
     }
 
-    public CommandResponse CreateResponse()
+    public IResponse CreateResponse()
     {
-        return new CommandResponse
+        return new Response
         {
-            Name = GetType().Name,
             Status = ResponseStatus.Success
         };
-    }
-
-    public CommandResponse CreateResponse(CommandResponse response)
-    {
-        response.Name = GetType().Name;
-        return response;
     }
 }

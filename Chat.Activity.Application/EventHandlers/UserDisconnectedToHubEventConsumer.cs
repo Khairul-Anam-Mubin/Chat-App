@@ -2,6 +2,7 @@
 using Chat.Domain.Shared.Events;
 using Chat.Framework.CQRS;
 using Chat.Framework.MessageBrokers;
+using Chat.Framework.Models;
 
 namespace Chat.Activity.Application.EventHandlers;
 
@@ -28,6 +29,6 @@ public class UserDisconnectedToHubEventConsumer : AMessageConsumer<UserDisconnec
             IsActive = isActive,
             FireAndForget = true
         };
-        await _commandService.GetResponseAsync<UpdateLastSeenCommand, CommandResponse>(updateLastSeenCommand);
+        await _commandService.GetResponseAsync<UpdateLastSeenCommand, Response>(updateLastSeenCommand);
     }
 }

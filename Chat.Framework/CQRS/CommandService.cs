@@ -2,6 +2,7 @@ using Chat.Framework.Attributes;
 using Chat.Framework.Enums;
 using Chat.Framework.Interfaces;
 using Chat.Framework.Mediators;
+using Chat.Framework.Models;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Chat.Framework.CQRS;
@@ -19,7 +20,7 @@ public class CommandService : ICommandService
     public async Task<IResponse> GetResponseAsync<TCommand>(TCommand command) 
         where TCommand : class, ICommand
     {
-        return await GetResponseAsync<TCommand, CommandResponse>(command);
+        return await GetResponseAsync<TCommand, Response>(command);
     }
 
     public async Task<TResponse> GetResponseAsync<TCommand, TResponse>(TCommand command) 

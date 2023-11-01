@@ -1,14 +1,14 @@
 using Chat.Application.Interfaces;
 using Chat.Domain.Commands;
 using Chat.Framework.Attributes;
-using Chat.Framework.CQRS;
 using Chat.Framework.Mediators;
+using Chat.Framework.Models;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Chat.Application.CommandHandlers;
 
-[ServiceRegister(typeof(IRequestHandler<UpdateChatsStatusCommand, CommandResponse>), ServiceLifetime.Singleton)]
-public class UpdateChatsStatusCommandHandler : IRequestHandler<UpdateChatsStatusCommand, CommandResponse>
+[ServiceRegister(typeof(IRequestHandler<UpdateChatsStatusCommand, Response>), ServiceLifetime.Singleton)]
+public class UpdateChatsStatusCommandHandler : IRequestHandler<UpdateChatsStatusCommand, Response>
 {
         
     private readonly ILatestChatRepository _latestChatRepository;
@@ -20,7 +20,7 @@ public class UpdateChatsStatusCommandHandler : IRequestHandler<UpdateChatsStatus
         _chatRepository = chatRepository;
     }
 
-    public async Task<CommandResponse> HandleAsync(UpdateChatsStatusCommand command)
+    public async Task<Response> HandleAsync(UpdateChatsStatusCommand command)
     {
         var response = command.CreateResponse();
 
@@ -44,6 +44,6 @@ public class UpdateChatsStatusCommandHandler : IRequestHandler<UpdateChatsStatus
 
         await _chatRepository.SaveAsync(chatModels);
 
-        return response;
+        return (Response)response;
     }
 }

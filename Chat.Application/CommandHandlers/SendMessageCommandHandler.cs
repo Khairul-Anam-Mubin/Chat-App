@@ -5,12 +5,13 @@ using Chat.Domain.Models;
 using Chat.Framework.Attributes;
 using Chat.Framework.CQRS;
 using Chat.Framework.Mediators;
+using Chat.Framework.Models;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Chat.Application.CommandHandlers;
 
-[ServiceRegister(typeof(IRequestHandler<SendMessageCommand, CommandResponse>), ServiceLifetime.Singleton)]
-public class SendMessageCommandHandler : IRequestHandler<SendMessageCommand, CommandResponse>
+[ServiceRegister(typeof(IRequestHandler<SendMessageCommand, Response>), ServiceLifetime.Singleton)]
+public class SendMessageCommandHandler : IRequestHandler<SendMessageCommand, Response>
 {
     private readonly IChatRepository _chatRepository;
     private readonly ICommandService _commandService;
@@ -26,7 +27,7 @@ public class SendMessageCommandHandler : IRequestHandler<SendMessageCommand, Com
         _hubConnectionService = hubConnectionService;
     }
 
-    public async Task<CommandResponse> HandleAsync(SendMessageCommand command)
+    public async Task<Response> HandleAsync(SendMessageCommand command)
     { 
         var chatModel = command.ChatModel;
 
@@ -59,7 +60,7 @@ public class SendMessageCommandHandler : IRequestHandler<SendMessageCommand, Com
         
         response.SetData("Message", chatModel.ToChatDto());
 
-        return response;
+        return (Response)response;
     }
 
     private Task SendMessageToClientAsync(ChatModel chatModel)
@@ -70,7 +71,7 @@ public class SendMessageCommandHandler : IRequestHandler<SendMessageCommand, Com
             FireAndForget = true
         };
 
-        return _commandService.GetResponseAsync<SendMessageToClientCommand, CommandResponse>(sendMessageToClientCommand);
+        return _commandService.GetResponseAsync<SendMessageToClientCommand, Response>(sendMessageToClientCommand);
     }
 
     private Task PublishMessageToConnectedHubAsync(ChatModel chatModel)
