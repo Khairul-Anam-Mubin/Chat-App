@@ -1,7 +1,6 @@
 using Chat.Application.Shared.Helpers;
 using Chat.Application.Shared.Providers;
 using Chat.Framework.Attributes;
-using Chat.Framework.CQRS;
 using Chat.Framework.Mediators;
 using Chat.Framework.Models;
 using Chat.Identity.Application.Interfaces;

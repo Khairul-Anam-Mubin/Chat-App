@@ -5,14 +5,14 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Chat.Notification.Hubs;
 
-[ServiceRegister(typeof(IChatHubService), ServiceLifetime.Singleton)]
-public class ChatHubService : IChatHubService
+[ServiceRegister(typeof(INotificationHubService), ServiceLifetime.Singleton)]
+public class NotificationHubService : INotificationHubService
 {
     private readonly IHubConnectionService _hubConnectionService;
-    private readonly IHubContext<ChatHub> _hubContext;
+    private readonly IHubContext<NotificationHub> _hubContext;
 
-    public ChatHubService(
-        IHubContext<ChatHub> hubContext, 
+    public NotificationHubService(
+        IHubContext<NotificationHub> hubContext, 
         IHubConnectionService hubConnectionService)
     {
         _hubConnectionService = hubConnectionService;

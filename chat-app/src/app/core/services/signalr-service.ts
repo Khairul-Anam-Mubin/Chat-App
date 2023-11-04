@@ -21,7 +21,7 @@ export class SignalRService {
     const options : any = {
         accessTokenFactory : () => token
     };
-    const url = Configuration.chatHub;
+    const url = Configuration.notificationHub;
     this.hubConnection = new signalR.HubConnectionBuilder()
     .withUrl(url, options)
       .withAutomaticReconnect()
@@ -29,9 +29,13 @@ export class SignalRService {
 
     this.hubConnection.start().catch((err: string) => console.log(err));
 
-    this.hubConnection.on("ReceivedChat",  (message: any) => {
-        console.log("Received message with web socket", message);
-        this.chatSocketService.chatSubject.next(message);
+    // this.hubConnection.on("ReceivedChat",  (message: any) => {
+    //     console.log("Received message with web socket", message);
+    //     this.chatSocketService.chatSubject.next(message);
+    // });
+    this.hubConnection.on("UserChat",  (message: any) => {
+      console.log("Received message with web socket", message);
+      this.chatSocketService.chatSubject.next(message.content);
     });
   }
 

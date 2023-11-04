@@ -35,7 +35,7 @@ public class ChatController : ACommonController
     [HttpPost, Route("list")]
     public async Task<IActionResult> GetChatListAsync(ChatListQuery query)
     {
-        return Ok(await _queryService.GetResponseAsync<ChatListQuery, QueryResponse>(query));
+        return Ok(await _queryService.GetResponseAsync(query));
     }
 
     [HttpPost, Route("get")]

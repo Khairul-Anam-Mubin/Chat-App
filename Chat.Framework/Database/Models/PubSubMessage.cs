@@ -9,5 +9,5 @@ public class PubSubMessage
 
 public enum MessageType
 {
-    UserMessage = 0
+    Notification = 0
 }

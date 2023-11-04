@@ -6,12 +6,12 @@ using Microsoft.AspNetCore.SignalR;
 
 namespace Chat.Notification.Hubs;
 
-public class ChatHub : Hub
+public class NotificationHub : Hub
 {
     private readonly IHubConnectionService _hubConnectionService;
     private readonly IEventBus _eventBus;
 
-    public ChatHub(
+    public NotificationHub(
         IHubConnectionService hubConnectionService, 
         IEventBus eventBus)
     {

@@ -3,7 +3,6 @@ using Chat.FileStore.Application.Interfaces;
 using Chat.FileStore.Domain.Commands;
 using Chat.FileStore.Domain.Models;
 using Chat.Framework.Attributes;
-using Chat.Framework.CQRS;
 using Chat.Framework.Extensions;
 using Chat.Framework.Mediators;
 using Chat.Framework.Models;

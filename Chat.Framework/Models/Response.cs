@@ -19,4 +19,12 @@ public class Response : MetaDataDictionary, IResponse
         Message = message;
         Status = ResponseStatus.Success;
     }
+
+    public static Response Create()
+    {
+        return new Response
+        {
+            Status = ResponseStatus.Success
+        };
+    }
 }

@@ -1,5 +1,4 @@
-﻿using Chat.Framework.Interfaces;
-using Chat.Framework.Mediators;
+﻿using Chat.Framework.Mediators;
 using Chat.Framework.MessageBrokers;
 
 namespace Chat.Framework.CQRS;
@@ -7,8 +6,8 @@ namespace Chat.Framework.CQRS;
 public abstract class ACommandConsumer<TCommand, TResponse> : 
     AMessageConsumer<TCommand>,
     IRequestHandler<TCommand, TResponse>
-    where TCommand : class, ICommand
-    where TResponse : class, IResponse
+    where TCommand : class
+    where TResponse : class
 {
     protected abstract Task<TResponse> OnConsumeAsync(TCommand command, IMessageContext<TCommand>? context = null);
 

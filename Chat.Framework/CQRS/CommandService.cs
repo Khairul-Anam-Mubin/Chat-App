@@ -16,14 +16,7 @@ public class CommandService : ICommandService
     {
         _requestMediator = requestMediator;
     }
-
-    public async Task<IResponse> GetResponseAsync<TCommand>(TCommand command) 
-        where TCommand : class, ICommand
-    {
-        return await GetResponseAsync<TCommand, Response>(command);
-    }
-
-    public async Task<TResponse> GetResponseAsync<TCommand, TResponse>(TCommand command) 
+    public async Task<TResponse> GetResponseAsync<TCommand, TResponse>(TCommand command)
         where TCommand : class, ICommand
         where TResponse : class, IResponse
     {
@@ -45,5 +38,11 @@ public class CommandService : ICommandService
 
             return response;
         }
+    }
+
+    public async Task<IResponse> GetResponseAsync<TCommand>(TCommand command) 
+        where TCommand : class, ICommand
+    {
+        return await GetResponseAsync<TCommand, Response>(command);
     }
 }

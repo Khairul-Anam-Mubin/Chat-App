@@ -1,6 +1,6 @@
 namespace Chat.Application.Interfaces;
 
-public interface IChatHubService
+public interface INotificationHubService
 {
     Task SendAsync<T>(string userId, T message, string method = "ReceivedChat");
 }

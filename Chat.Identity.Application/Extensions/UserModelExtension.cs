@@ -1,4 +1,4 @@
-﻿using Chat.Domain.Shared.Models;
+﻿using Chat.Domain.Shared.Entities;
 using Chat.Identity.Domain.Models;
 
 namespace Chat.Identity.Application.Extensions;

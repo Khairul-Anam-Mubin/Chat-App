@@ -1,7 +1,6 @@
 using Chat.Application.Interfaces;
 using Chat.Domain.Commands;
 using Chat.Framework.Attributes;
-using Chat.Framework.CQRS;
 using Chat.Framework.Mediators;
 using Chat.Framework.Models;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,7 +8,8 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Chat.Application.CommandHandlers;
 
 [ServiceRegister(typeof(IRequestHandler<UpdateLatestChatCommand, Response>), ServiceLifetime.Singleton)]
-public class UpdateLatestChatCommandHandler : IRequestHandler<UpdateLatestChatCommand, Response>
+public class UpdateLatestChatCommandHandler : 
+    IRequestHandler<UpdateLatestChatCommand, Response>
 {
         
     private readonly ILatestChatRepository _latestChatRepository;

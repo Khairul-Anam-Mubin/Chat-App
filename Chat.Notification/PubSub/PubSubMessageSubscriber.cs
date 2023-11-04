@@ -18,7 +18,7 @@ public sealed class PubSubMessageSubscriber : IInitialService
     private readonly IRedisContext _redisContext;
     private readonly IConfiguration _configuration;
     private readonly ICommandService _commandService;
-
+    
     public PubSubMessageSubscriber(
         IRedisContext redisContext,
         IConfiguration configuration,
@@ -40,20 +40,23 @@ public sealed class PubSubMessageSubscriber : IInitialService
 
         await subscriber.SubscribeAsync(channel, (redisChannel, message) =>
         {
-            Console.WriteLine($"Message received form channel : {redisChannel}\n");
+            Console.WriteLine($"Content received form channel : {redisChannel}\n");
             var pubSubMessage = message.SmartCast<PubSubMessage>();
 
-            if (pubSubMessage == null) return;
+            if (pubSubMessage == null)
+            {
+                Console.WriteLine("Message is null here");
+                return;
+            }
 
             Console.WriteLine($"PubSubMessage.Id : {pubSubMessage?.Id}, PubSubMessageType: {pubSubMessage?.MessageType.ToString()} , message : {message}\n");
 
-            if (pubSubMessage?.MessageType == MessageType.UserMessage)
+            if (pubSubMessage?.MessageType == MessageType.Notification)
             {
-                var sendMessageToClientCommand = new SendMessageToClientCommand
-                {
-                    MessageId = pubSubMessage.Id
-                };
-                _commandService.GetResponseAsync(sendMessageToClientCommand).Wait();
+                var sendNotificationToClientCommand =
+                    pubSubMessage.Message.SmartCast<SendNotificationToClientCommand>();
+
+                _commandService.GetResponseAsync(sendNotificationToClientCommand!).Wait();
             }
 
         });

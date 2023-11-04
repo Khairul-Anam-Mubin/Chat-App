@@ -2,29 +2,35 @@ using Chat.Application.Extensions;
 using Chat.Application.Interfaces;
 using Chat.Domain.Commands;
 using Chat.Domain.Models;
+using Chat.Domain.Shared.Commands;
+using Chat.Domain.Shared.Constants;
+using Chat.Domain.Shared.Entities;
 using Chat.Framework.Attributes;
 using Chat.Framework.CQRS;
 using Chat.Framework.Mediators;
+using Chat.Framework.MessageBrokers;
 using Chat.Framework.Models;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Chat.Application.CommandHandlers;
 
-[ServiceRegister(typeof(IRequestHandler<SendMessageCommand, Response>), ServiceLifetime.Singleton)]
-public class SendMessageCommandHandler : IRequestHandler<SendMessageCommand, Response>
+[ServiceRegister(typeof(IRequestHandler<SendMessageCommand, Response>), 
+    ServiceLifetime.Transient)]
+public class SendMessageCommandHandler : 
+    IRequestHandler<SendMessageCommand, Response>
 {
     private readonly IChatRepository _chatRepository;
     private readonly ICommandService _commandService;
-    private readonly IHubConnectionService _hubConnectionService;
+    private readonly ICommandBus _commandBus;
 
     public SendMessageCommandHandler(
         IChatRepository chatRepository,
-        ICommandService commandService, 
-        IHubConnectionService hubConnectionService)
+        ICommandService commandService,
+        ICommandBus commandBus)
     {
         _chatRepository = chatRepository;
         _commandService = commandService;
-        _hubConnectionService = hubConnectionService;
+        _commandBus = commandBus;
     }
 
     public async Task<Response> HandleAsync(SendMessageCommand command)
@@ -45,46 +51,36 @@ public class SendMessageCommandHandler : IRequestHandler<SendMessageCommand, Res
             throw new Exception("ChatModel Creation Failed");
         }
 
-        if (_hubConnectionService.IsUserConnectedWithCurrentHubInstance(chatModel.SendTo))
-        {
-            await SendMessageToClientAsync(chatModel);
-        }
-        else if (await _hubConnectionService.IsUserConnectedWithAnyHubInstanceAsync(chatModel.SendTo))
-        {
-            await PublishMessageToConnectedHubAsync(chatModel);
-        }
+        await SendChatNotificationAsync(chatModel);
 
         await UpdateLatestChatModelAsync(chatModel);
         
-        var response = command.CreateResponse();
+        var response = Response.Create();
         
         response.SetData("Message", chatModel.ToChatDto());
 
-        return (Response)response;
+        return response;
     }
 
-    private Task SendMessageToClientAsync(ChatModel chatModel)
+    private Task SendChatNotificationAsync(ChatModel chatModel)
     {
-        var sendMessageToClientCommand = new SendMessageToClientCommand
+        var sendNotificationCommand = new SendNotificationCommand()
         {
-            ChatModel = chatModel,
-            FireAndForget = true
+            Notification = new Notification
+            {
+                Id = chatModel.Id,
+                Content = chatModel,
+                ContentType = "ChatModel",
+                Sender = chatModel.UserId,
+                NotificationType = NotificationType.UserChat
+            },
+            Receiver = new NotificationReceiver
+            {
+                ReceiverIds = new List<string> { chatModel.SendTo }
+            }
         };
 
-        return _commandService.GetResponseAsync<SendMessageToClientCommand, Response>(sendMessageToClientCommand);
-    }
-
-    private Task PublishMessageToConnectedHubAsync(ChatModel chatModel)
-    {
-        var publishMessageToConnectedHubCommand = new PublishMessageToConnectedHubCommand
-        {
-            UserId = chatModel.UserId,
-            SendTo = chatModel.SendTo,
-            MessageId = chatModel.Id,
-            ChatModel = chatModel
-        };
-
-        return _commandService.GetResponseAsync(publishMessageToConnectedHubCommand);
+        return _commandBus.SendAsync(sendNotificationCommand);
     }
 
     private Task UpdateLatestChatModelAsync(ChatModel chatModel)

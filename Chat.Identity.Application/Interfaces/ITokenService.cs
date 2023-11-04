@@ -1,5 +1,5 @@
 using System.Security.Claims;
-using Chat.Domain.Shared.Models;
+using Chat.Domain.Shared.Entities;
 using Chat.Identity.Domain.Models;
 using Microsoft.IdentityModel.Tokens;
 

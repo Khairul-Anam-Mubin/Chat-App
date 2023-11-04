@@ -1,7 +1,6 @@
 using Chat.Contact.Application.Interfaces;
 using Chat.Contact.Domain.Commands;
 using Chat.Framework.Attributes;
-using Chat.Framework.CQRS;
 using Chat.Framework.Mediators;
 using Chat.Framework.Models;
 using Microsoft.Extensions.DependencyInjection;

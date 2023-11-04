@@ -1,4 +1,5 @@
 ﻿using Chat.Framework.Enums;
+using Chat.Framework.Interfaces;
 using Chat.Framework.Mediators;
 
 namespace Chat.Framework.CQRS;
@@ -14,7 +15,7 @@ public class QueryService : IQueryService
 
     public async Task<TResponse> GetResponseAsync<TQuery, TResponse>(TQuery query) 
         where TQuery : class, IQuery
-        where TResponse : class, IQueryResponse
+        where TResponse : class, IResponse
     {
         try
         {
@@ -40,6 +41,6 @@ public class QueryService : IQueryService
     public async Task<IQueryResponse> GetResponseAsync<TQuery>(TQuery query) 
         where TQuery : class, IQuery
     {
-        return await GetResponseAsync<TQuery, IQueryResponse>(query);
+        return await GetResponseAsync<TQuery, QueryResponse>(query);
     }
 }
