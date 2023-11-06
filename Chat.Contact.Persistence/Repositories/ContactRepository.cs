@@ -1,4 +1,4 @@
-using Chat.Contact.Application.Interfaces;
+using Chat.Contact.Domain.Interfaces;
 using Chat.Contact.Domain.Models;
 using Chat.Framework.Attributes;
 using Chat.Framework.Database.Interfaces;

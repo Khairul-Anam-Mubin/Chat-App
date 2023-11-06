@@ -1,4 +1,4 @@
-using Chat.FileStore.Application.Interfaces;
+using Chat.FileStore.Domain.Interfaces;
 using Chat.FileStore.Domain.Queries;
 using Chat.Framework.Attributes;
 using Chat.Framework.CQRS;

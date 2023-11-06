@@ -1,6 +1,6 @@
 using Chat.Application.Extensions;
-using Chat.Application.Interfaces;
 using Chat.Domain.Commands;
+using Chat.Domain.Interfaces;
 using Chat.Domain.Models;
 using Chat.Domain.Shared.Commands;
 using Chat.Domain.Shared.Constants;

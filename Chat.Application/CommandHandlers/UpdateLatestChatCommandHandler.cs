@@ -1,5 +1,5 @@
-using Chat.Application.Interfaces;
 using Chat.Domain.Commands;
+using Chat.Domain.Interfaces;
 using Chat.Framework.Attributes;
 using Chat.Framework.Mediators;
 using Chat.Framework.Models;

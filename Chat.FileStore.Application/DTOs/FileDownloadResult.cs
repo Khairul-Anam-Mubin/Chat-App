@@ -1,4 +1,6 @@
-namespace Chat.FileStore.Domain.Models;
+using Chat.FileStore.Domain.Models;
+
+namespace Chat.FileStore.Application.DTOs;
 
 public class FileDownloadResult
 {

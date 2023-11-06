@@ -3,7 +3,7 @@ using Chat.Domain.Shared.Entities;
 using Chat.Identity.Domain.Models;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Chat.Identity.Application.Interfaces;
+namespace Chat.Identity.Domain.Interfaces;
 
 public interface ITokenService
 {

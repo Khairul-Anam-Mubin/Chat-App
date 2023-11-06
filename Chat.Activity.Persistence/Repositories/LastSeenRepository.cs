@@ -1,4 +1,4 @@
-using Chat.Activity.Application.Interfaces.Repositories;
+using Chat.Activity.Domain.Interfaces.Repositories;
 using Chat.Activity.Domain.Models;
 using Chat.Framework.Attributes;
 using Chat.Framework.Database.Interfaces;

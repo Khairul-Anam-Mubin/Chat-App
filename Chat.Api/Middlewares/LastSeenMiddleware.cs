@@ -2,7 +2,7 @@ using Chat.Application.Shared.Helpers;
 using Chat.Application.Shared.Providers;
 using Chat.Framework.Attributes;
 using Chat.Framework.Extensions;
-using Chat.Identity.Application.Interfaces;
+using Chat.Identity.Domain.Interfaces;
 
 namespace Chat.Api.Middlewares;
 

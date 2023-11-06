@@ -1,7 +1,7 @@
 using Chat.Domain.Models;
 using Chat.Framework.Database.Interfaces;
 
-namespace Chat.Application.Interfaces;
+namespace Chat.Domain.Interfaces;
 
 public interface ILatestChatRepository : IRepository<LatestChatModel>
 {

@@ -33,9 +33,7 @@ public class SendNotificationCommandConsumer :
 
         foreach (var receiverId in receiver.ReceiverIds)
         {
-            var hubInstanceId =
-                await _hubConnectionService.GetUserConnectedHubInstanceIdAsync(receiverId) ??
-                string.Empty;
+            var hubInstanceId = await _hubConnectionService.GetUserConnectedHubInstanceIdAsync(receiverId);
 
             if (string.IsNullOrEmpty(hubInstanceId))
             {

@@ -1,4 +1,4 @@
-namespace Chat.Activity.Domain.Models;
+namespace Chat.Activity.Application.DTOs;
 
 public class LastSeenDto
 {

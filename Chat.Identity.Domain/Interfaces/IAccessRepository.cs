@@ -1,7 +1,7 @@
 using Chat.Framework.Database.Interfaces;
 using Chat.Identity.Domain.Models;
 
-namespace Chat.Identity.Application.Interfaces;
+namespace Chat.Identity.Domain.Interfaces;
 
 public interface IAccessRepository : IRepository<AccessModel>
 {

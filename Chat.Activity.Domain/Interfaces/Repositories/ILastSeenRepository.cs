@@ -1,7 +1,7 @@
 using Chat.Activity.Domain.Models;
 using Chat.Framework.Database.Interfaces;
 
-namespace Chat.Activity.Application.Interfaces.Repositories;
+namespace Chat.Activity.Domain.Interfaces.Repositories;
 
 public interface ILastSeenRepository : IRepository<LastSeenModel>
 {

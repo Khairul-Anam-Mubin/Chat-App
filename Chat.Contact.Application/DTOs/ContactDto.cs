@@ -1,4 +1,4 @@
-﻿namespace Chat.Contact.Domain.Models;
+﻿namespace Chat.Contact.Application.DTOs;
 
 public class ContactDto
 {

@@ -1,5 +1,5 @@
+using Chat.FileStore.Application.DTOs;
 using Chat.FileStore.Domain.Commands;
-using Chat.FileStore.Domain.Models;
 using Chat.FileStore.Domain.Queries;
 using Chat.Framework.CQRS;
 using Chat.Presentation.Shared.Controllers;

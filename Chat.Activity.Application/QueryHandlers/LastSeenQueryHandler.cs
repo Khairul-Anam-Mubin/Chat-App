@@ -1,5 +1,5 @@
 using Chat.Activity.Application.Extensions;
-using Chat.Activity.Application.Interfaces.Repositories;
+using Chat.Activity.Domain.Interfaces.Repositories;
 using Chat.Activity.Domain.Queries;
 using Chat.Framework.Attributes;
 using Chat.Framework.CQRS;

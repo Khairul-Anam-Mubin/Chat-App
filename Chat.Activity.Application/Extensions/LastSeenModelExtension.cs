@@ -1,4 +1,5 @@
-﻿using Chat.Activity.Domain.Models;
+﻿using Chat.Activity.Application.DTOs;
+using Chat.Activity.Domain.Models;
 using Chat.Application.Shared.Helpers;
 
 namespace Chat.Activity.Application.Extensions;

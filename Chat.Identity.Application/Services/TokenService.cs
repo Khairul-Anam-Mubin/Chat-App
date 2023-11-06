@@ -5,7 +5,7 @@ using Chat.Domain.Shared.Constants;
 using Chat.Domain.Shared.Entities;
 using Chat.Framework.Attributes;
 using Chat.Identity.Application.Extensions;
-using Chat.Identity.Application.Interfaces;
+using Chat.Identity.Domain.Interfaces;
 using Chat.Identity.Domain.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

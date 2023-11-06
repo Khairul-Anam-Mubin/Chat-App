@@ -3,8 +3,8 @@ using Chat.Application.Shared.Providers;
 using Chat.Framework.Attributes;
 using Chat.Framework.Mediators;
 using Chat.Framework.Models;
-using Chat.Identity.Application.Interfaces;
 using Chat.Identity.Domain.Commands;
+using Chat.Identity.Domain.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Chat.Identity.Application.CommandHandlers;

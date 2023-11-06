@@ -5,7 +5,7 @@ using Chat.Framework.Extensions;
 using Chat.Framework.Mediators;
 using Chat.Framework.MessageBrokers;
 using Chat.Identity.Application.Extensions;
-using Chat.Identity.Application.Interfaces;
+using Chat.Identity.Domain.Interfaces;
 using Chat.Identity.Domain.Models;
 using Microsoft.Extensions.DependencyInjection;
 

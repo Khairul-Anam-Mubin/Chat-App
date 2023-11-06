@@ -1,5 +1,5 @@
 using Chat.Application.Extensions;
-using Chat.Application.Interfaces;
+using Chat.Domain.Interfaces;
 using Chat.Domain.Queries;
 using Chat.Framework.Attributes;
 using Chat.Framework.CQRS;
