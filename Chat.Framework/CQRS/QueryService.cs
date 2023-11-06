@@ -1,6 +1,7 @@
 ﻿using Chat.Framework.Enums;
 using Chat.Framework.Interfaces;
 using Chat.Framework.Mediators;
+using Chat.Framework.Models;
 
 namespace Chat.Framework.CQRS;
 
@@ -13,8 +14,8 @@ public class QueryService : IQueryService
         _requestMediator = requestMediator;
     }
 
-    public async Task<TResponse> GetResponseAsync<TQuery, TResponse>(TQuery query) 
-        where TQuery : class, IQuery
+    public async Task<TResponse> GetResponseAsync<TQuery, TResponse>(TQuery query)
+        where TQuery : class
         where TResponse : class, IResponse
     {
         try
@@ -29,17 +30,18 @@ public class QueryService : IQueryService
         {
             Console.WriteLine(e.Message);
 
-            var response = query.CreateResponse() as TResponse;
+            var response = new Response
+            {
+                Message = e.Message,
+                Status = ResponseStatus.Error
+            };
 
-            response!.Message = e.Message;
-            response.Status = ResponseStatus.Error;
-            
-            return response;
+            return (response as TResponse)!;
         }
     }
 
     public async Task<IQueryResponse> GetResponseAsync<TQuery>(TQuery query) 
-        where TQuery : class, IQuery
+        where TQuery : class
     {
         return await GetResponseAsync<TQuery, QueryResponse>(query);
     }

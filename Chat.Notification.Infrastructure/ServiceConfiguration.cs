@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace Chat.Notification;
+namespace Chat.Notification.Infrastructure;
 
 public static class ServiceConfiguration
 {

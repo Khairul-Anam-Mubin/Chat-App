@@ -1,23 +1,23 @@
-﻿using Chat.Application.Interfaces;
-using Chat.Domain.Commands;
-using Chat.Framework.Attributes;
+﻿using Chat.Framework.Attributes;
 using Chat.Framework.Mediators;
 using Chat.Framework.Models;
+using Chat.Notification.Domain.Commands;
+using Chat.Notification.Domain.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Chat.Application.CommandHandlers;
+namespace Chat.Notification.Application.CommandHandlers;
 
 [ServiceRegister(typeof(IRequestHandler<SendNotificationToClientCommand, Response>), ServiceLifetime.Transient)]
-public class SendNotificationToClientCommandHandler : 
+public class SendNotificationToClientCommandHandler :
     IRequestHandler<SendNotificationToClientCommand, Response>
 {
     private readonly INotificationHubService _notificationHubService;
-    
+
     public SendNotificationToClientCommandHandler(INotificationHubService notificationHubService)
     {
         _notificationHubService = notificationHubService;
     }
-    
+
     public async Task<Response> HandleAsync(SendNotificationToClientCommand request)
     {
         var notification = request.Notification;

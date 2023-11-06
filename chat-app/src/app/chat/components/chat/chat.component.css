@@ -1,5 +1,6 @@
 .chat-container {
-  height: 500px;
+  max-height: 700px;
+  height: auto;
   overflow-y: auto;
 }
 .chat-container::-webkit-scrollbar {

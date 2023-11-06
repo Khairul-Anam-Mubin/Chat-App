@@ -5,9 +5,9 @@ namespace Chat.Framework.CQRS;
 public interface ICommandService
 {
     Task<TResponse> GetResponseAsync<TCommand, TResponse>(TCommand command)
-        where TCommand : class, ICommand
+        where TCommand : class
         where TResponse : class, IResponse;
 
-    Task<IResponse> GetResponseAsync<TCommand>(TCommand command) 
-        where TCommand : class, ICommand;
+    Task<IResponse> GetResponseAsync<TCommand>(TCommand command)
+        where TCommand : class;
 }

@@ -1,10 +1,10 @@
-using Chat.Application.Interfaces;
 using Chat.Application.Shared.Providers;
 using Chat.Domain.Shared.Events;
 using Chat.Framework.MessageBrokers;
+using Chat.Notification.Domain.Interfaces;
 using Microsoft.AspNetCore.SignalR;
 
-namespace Chat.Notification.Hubs;
+namespace Chat.Notification.Infrastructure.Hubs;
 
 public class NotificationHub : Hub
 {
@@ -12,13 +12,13 @@ public class NotificationHub : Hub
     private readonly IEventBus _eventBus;
 
     public NotificationHub(
-        IHubConnectionService hubConnectionService, 
+        IHubConnectionService hubConnectionService,
         IEventBus eventBus)
     {
         _hubConnectionService = hubConnectionService;
         _eventBus = eventBus;
     }
-        
+
     public override async Task OnConnectedAsync()
     {
         await base.OnConnectedAsync();
@@ -32,7 +32,7 @@ public class NotificationHub : Hub
         {
             return;
         }
-        
+
         var userProfile = IdentityProvider.GetUserProfile(accessToken);
 
         if (string.IsNullOrEmpty(userProfile.Id))
@@ -62,7 +62,7 @@ public class NotificationHub : Hub
         Console.WriteLine($"User Disconnected to hub...Connection Id : {connectionId}");
 
         var userId = _hubConnectionService.GetUserId(connectionId);
-        
+
         Console.WriteLine($"Disconnected...UserId : {userId}\n");
 
         await _hubConnectionService.RemoveConnectionAsync(connectionId);

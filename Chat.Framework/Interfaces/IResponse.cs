@@ -9,3 +9,8 @@ public interface IResponse : IMetaDataDictionary
     void SetErrorMessage(string message);
     void SetSuccessMessage(string message);
 }
+
+public interface IResponse<TResponse> : IResponse
+{
+    TResponse? Response { get; set; }
+}

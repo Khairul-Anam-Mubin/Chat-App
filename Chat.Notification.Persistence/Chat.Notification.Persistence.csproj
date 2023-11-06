@@ -7,8 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Chat.Application\Chat.Application.csproj" />
-    <ProjectReference Include="..\Chat.Notification.Domain\Chat.Notification.Domain.csproj" />
+    <ProjectReference Include="..\Chat.Notification.Application\Chat.Notification.Application.csproj" />
   </ItemGroup>
 
 </Project>

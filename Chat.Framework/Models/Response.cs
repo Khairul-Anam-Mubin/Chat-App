@@ -28,3 +28,8 @@ public class Response : MetaDataDictionary, IResponse
         };
     }
 }
+
+public class ResponseEnvelope<TResponse> : Response, IResponse<TResponse>
+{
+    public TResponse? Response { get; set; }
+}

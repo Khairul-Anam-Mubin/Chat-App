@@ -16,13 +16,15 @@ public class CommandService : ICommandService
     {
         _requestMediator = requestMediator;
     }
+
     public async Task<TResponse> GetResponseAsync<TCommand, TResponse>(TCommand command)
-        where TCommand : class, ICommand
+        where TCommand : class
         where TResponse : class, IResponse
     {
         try
         {
             var response = await _requestMediator.SendAsync<TCommand, TResponse>(command);
+
             response.Status = ResponseStatus.Success;
 
             return response;
@@ -31,17 +33,18 @@ public class CommandService : ICommandService
         {
             Console.WriteLine(e.Message);
 
-            var response = command.CreateResponse() as TResponse;
+            var response = new Response
+            {
+                Message = e.Message,
+                Status = ResponseStatus.Error
+            };
 
-            response!.Message = e.Message;
-            response.Status = ResponseStatus.Error;
-
-            return response;
+            return (response as TResponse)!;
         }
     }
 
     public async Task<IResponse> GetResponseAsync<TCommand>(TCommand command) 
-        where TCommand : class, ICommand
+        where TCommand : class
     {
         return await GetResponseAsync<TCommand, Response>(command);
     }

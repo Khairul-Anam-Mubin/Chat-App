@@ -1,24 +1,24 @@
-﻿using Chat.Domain.Commands;
-using Chat.Framework.Attributes;
+﻿using Chat.Framework.Attributes;
 using Chat.Framework.Database.Interfaces;
 using Chat.Framework.Database.Models;
 using Chat.Framework.Extensions;
 using Chat.Framework.Mediators;
 using Chat.Framework.Models;
+using Chat.Notification.Domain.Commands;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Chat.Application.CommandHandlers;
+namespace Chat.Notification.Application.CommandHandlers;
 
 [ServiceRegister(typeof(IRequestHandler<PublishNotificationToConnectedHubCommand, Response>), ServiceLifetime.Transient)]
-public class PublishNotificationToConnectedHubCommandHandler : 
+public class PublishNotificationToConnectedHubCommandHandler :
     IRequestHandler<PublishNotificationToConnectedHubCommand, Response>
 {
     private readonly IConfiguration _configuration;
     private readonly IRedisContext _redisContext;
 
     public PublishNotificationToConnectedHubCommandHandler(
-        IConfiguration configuration, 
+        IConfiguration configuration,
         IRedisContext redisContext)
     {
         _configuration = configuration;
@@ -40,15 +40,15 @@ public class PublishNotificationToConnectedHubCommandHandler :
         }
 
         await subscriber.PublishAsync(channel, new PubSubMessage
+        {
+            Id = request.Notification!.Id,
+            Message = new SendNotificationToClientCommand
             {
-                Id = request.Notification!.Id,
-                Message = new SendNotificationToClientCommand
-                {
-                    Notification = request.Notification,
-                    ReceiverIds = request.ReceiverIds,
-                },
-                MessageType = MessageType.Notification
-            }.Serialize()
+                Notification = request.Notification,
+                ReceiverIds = request.ReceiverIds,
+            },
+            MessageType = MessageType.Notification
+        }.Serialize()
         );
 
         Console.WriteLine("Event published to redis\n");

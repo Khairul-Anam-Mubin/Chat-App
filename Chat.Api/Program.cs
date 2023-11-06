@@ -1,8 +1,8 @@
 using Chat.Api.Middlewares;
 using Chat.Application.Shared;
 using Chat.Framework.Extensions;
-using Chat.Notification;
-using Chat.Notification.Hubs;
+using Chat.Notification.Infrastructure;
+using Chat.Notification.Infrastructure.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 

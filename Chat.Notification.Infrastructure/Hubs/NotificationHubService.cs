@@ -1,9 +1,9 @@
-using Chat.Application.Interfaces;
 using Chat.Framework.Attributes;
+using Chat.Notification.Domain.Interfaces;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Chat.Notification.Hubs;
+namespace Chat.Notification.Infrastructure.Hubs;
 
 [ServiceRegister(typeof(INotificationHubService), ServiceLifetime.Singleton)]
 public class NotificationHubService : INotificationHubService
@@ -12,14 +12,14 @@ public class NotificationHubService : INotificationHubService
     private readonly IHubContext<NotificationHub> _hubContext;
 
     public NotificationHubService(
-        IHubContext<NotificationHub> hubContext, 
+        IHubContext<NotificationHub> hubContext,
         IHubConnectionService hubConnectionService)
     {
         _hubConnectionService = hubConnectionService;
         _hubContext = hubContext;
     }
 
-    public async Task SendAsync<T>(string userId, T message, string method = "ReceivedChat")
+    public async Task SendAsync<T>(string userId, T message, string method)
     {
         var connectionId = _hubConnectionService.GetConnectionId(userId);
 

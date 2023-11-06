@@ -1,15 +1,14 @@
-﻿using Chat.Application.Interfaces;
-using Chat.Domain.Commands;
-using Chat.Framework.Attributes;
+﻿using Chat.Framework.Attributes;
 using Chat.Framework.CQRS;
 using Chat.Framework.Database.Interfaces;
 using Chat.Framework.Database.Models;
 using Chat.Framework.Extensions;
 using Chat.Framework.Interfaces;
+using Chat.Notification.Domain.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Chat.Notification.PubSub;
+namespace Chat.Notification.Infrastructure.PubSub;
 
 [ServiceRegister(typeof(IInitialService), ServiceLifetime.Singleton)]
 public sealed class PubSubMessageSubscriber : IInitialService
@@ -18,11 +17,11 @@ public sealed class PubSubMessageSubscriber : IInitialService
     private readonly IRedisContext _redisContext;
     private readonly IConfiguration _configuration;
     private readonly ICommandService _commandService;
-    
+
     public PubSubMessageSubscriber(
         IRedisContext redisContext,
         IConfiguration configuration,
-        ICommandService commandService, 
+        ICommandService commandService,
         IHubConnectionService hubConnectionService)
     {
         _redisContext = redisContext;
@@ -51,13 +50,7 @@ public sealed class PubSubMessageSubscriber : IInitialService
 
             Console.WriteLine($"PubSubMessage.Id : {pubSubMessage?.Id}, PubSubMessageType: {pubSubMessage?.MessageType.ToString()} , message : {message}\n");
 
-            if (pubSubMessage?.MessageType == MessageType.Notification)
-            {
-                var sendNotificationToClientCommand =
-                    pubSubMessage.Message.SmartCast<SendNotificationToClientCommand>();
-
-                _commandService.GetResponseAsync(sendNotificationToClientCommand!).Wait();
-            }
+            Task.Factory.StartNew(() => _commandService.GetResponseAsync(pubSubMessage!));
 
         });
     }

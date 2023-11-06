@@ -1,12 +1,11 @@
-﻿using Chat.Domain.Shared.Entities;
-using Chat.Framework.CQRS;
+﻿using Chat.Framework.CQRS;
 
-namespace Chat.Domain.Commands;
+namespace Chat.Notification.Domain.Commands;
 
 public class PublishNotificationToConnectedHubCommand : ACommand
 {
     public string HubInstanceId { get; set; } = string.Empty;
-    public Notification? Notification { get; set; }
+    public Chat.Domain.Shared.Entities.Notification? Notification { get; set; }
     public List<string> ReceiverIds { get; set; }
 
     public PublishNotificationToConnectedHubCommand()

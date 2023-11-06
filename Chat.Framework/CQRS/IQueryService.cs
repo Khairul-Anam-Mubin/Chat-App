@@ -5,9 +5,9 @@ namespace Chat.Framework.CQRS;
 public interface IQueryService
 {
     Task<TResponse> GetResponseAsync<TQuery, TResponse>(TQuery query)
-        where TQuery : class, IQuery 
+        where TQuery : class
         where TResponse : class, IResponse;
 
     Task<IQueryResponse> GetResponseAsync<TQuery>(TQuery query)
-        where TQuery : class, IQuery;
+        where TQuery : class;
 }

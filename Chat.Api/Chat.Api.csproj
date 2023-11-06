@@ -19,7 +19,8 @@
 	  <ProjectReference Include="..\Chat.FileStore.Presentation\Chat.FileStore.Presentation.csproj" />
 	  <ProjectReference Include="..\Chat.Identity.Persistence\Chat.Identity.Persistence.csproj" />
 	  <ProjectReference Include="..\Chat.Identity.Presentation\Chat.Identity.Presentation.csproj" />
-	  <ProjectReference Include="..\Chat.Notification\Chat.Notification.csproj" />
+	  <ProjectReference Include="..\Chat.Notification.Infrastructure\Chat.Notification.Infrastructure.csproj" />
+	  <ProjectReference Include="..\Chat.Notification.Persistence\Chat.Notification.Persistence.csproj" />
 	  <ProjectReference Include="..\Chat.Persistence\Chat.Persistence.csproj" />
 	  <ProjectReference Include="..\Chat.Presentation.Shared\Chat.Presentation.Shared.csproj" />
   </ItemGroup>

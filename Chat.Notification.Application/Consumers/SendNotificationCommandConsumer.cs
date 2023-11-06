@@ -1,25 +1,24 @@
-﻿using Chat.Application.Interfaces;
-using Chat.Domain.Commands;
-using Chat.Domain.Shared.Commands;
-using Chat.Domain.Shared.Entities;
+﻿using Chat.Domain.Shared.Commands;
 using Chat.Framework.Attributes;
 using Chat.Framework.CQRS;
 using Chat.Framework.Mediators;
 using Chat.Framework.MessageBrokers;
 using Chat.Framework.Models;
+using Chat.Notification.Domain.Commands;
+using Chat.Notification.Domain.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Chat.Application.Consumers;
+namespace Chat.Notification.Application.Consumers;
 
 [ServiceRegister(typeof(IRequestHandler<SendNotificationCommand, Response>), ServiceLifetime.Transient)]
-public class SendNotificationCommandConsumer : 
+public class SendNotificationCommandConsumer :
     ACommandConsumer<SendNotificationCommand, Response>
 {
     private readonly IHubConnectionService _hubConnectionService;
     private readonly ICommandService _commandService;
 
     public SendNotificationCommandConsumer(
-        IHubConnectionService hubConnectionService, 
+        IHubConnectionService hubConnectionService,
         ICommandService commandService)
     {
         _hubConnectionService = hubConnectionService;
@@ -69,7 +68,7 @@ public class SendNotificationCommandConsumer :
         return Response.Create();
     }
 
-    private async Task PublishNotificationToConnectedHubAsync(string hubId, List<string> receiverIds, Notification notification)
+    private async Task PublishNotificationToConnectedHubAsync(string hubId, List<string> receiverIds, Chat.Domain.Shared.Entities.Notification notification)
     {
         var publishNotificationToConnectedHubCommand = new PublishNotificationToConnectedHubCommand
         {
@@ -81,7 +80,7 @@ public class SendNotificationCommandConsumer :
         await _commandService.GetResponseAsync(publishNotificationToConnectedHubCommand);
     }
 
-    private async Task SendNotificationToClientAsync(List<string> receiverIds, Notification notification)
+    private async Task SendNotificationToClientAsync(List<string> receiverIds, Chat.Domain.Shared.Entities.Notification notification)
     {
         var sendNotificationToClientCommand = new SendNotificationToClientCommand
         {

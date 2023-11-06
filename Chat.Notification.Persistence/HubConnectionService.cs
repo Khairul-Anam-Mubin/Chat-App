@@ -1,11 +1,11 @@
-using Chat.Application.Interfaces;
 using Chat.Framework.Attributes;
 using Chat.Framework.Database.Interfaces;
 using Chat.Framework.Database.Models;
+using Chat.Notification.Domain.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Chat.Persistence.Repositories;
+namespace Chat.Notification.Persistence;
 
 [ServiceRegister(typeof(IHubConnectionService), ServiceLifetime.Singleton)]
 public class HubConnectionService : IHubConnectionService
@@ -39,7 +39,7 @@ public class HubConnectionService : IHubConnectionService
         _connectionIdUserIdMapper[connectionId] = userId;
 
         var channel = GetCurrentHubInstanceId();
-        
+
         await _redisContext.SetDataAsync(_databaseInfo, GetPreparedKey(userId), channel);
     }
 
