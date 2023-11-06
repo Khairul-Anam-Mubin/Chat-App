@@ -23,7 +23,7 @@ public class UpdateLatestChatCommandHandler :
     {
         var response = command.CreateResponse();
 
-        var latestChatModel = await _latestChatRepository.GetLatestChatAsync(command.LatestChatModel.UserId, command.LatestChatModel.SendTo);
+        var latestChatModel = await _latestChatRepository.GetLatestChatAsync(command.LatestChatModel!.UserId, command.LatestChatModel.SendTo);
         if (latestChatModel == null)
         {
             latestChatModel = command.LatestChatModel;

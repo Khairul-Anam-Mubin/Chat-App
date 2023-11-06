@@ -37,6 +37,8 @@ public sealed class PubSubMessageSubscriber : IInitialService
 
         var channel = _hubConnectionService.GetCurrentHubInstanceId();
 
+        Console.WriteLine($"Subscribing to redis channel : {channel}\n");
+
         await subscriber.SubscribeAsync(channel, (redisChannel, message) =>
         {
             Console.WriteLine($"Content received form channel : {redisChannel}\n");

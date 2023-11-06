@@ -39,22 +39,14 @@ public class AddContactCommandHandler : IRequestHandler<AddContactCommand, Respo
         
         if (queryResponse == null || queryResponse.Profiles.Count < 2)
         {
-            throw new Exception("User profile query error");
+            throw new Exception("User Not Exists");
         }
 
         var userProfiles = queryResponse.Profiles;
 
-        var userProfile = userProfiles.FirstOrDefault(x => x.Id == command.UserId);
-        if (userProfile == null)
-        {
-            throw new Exception("User profile error");
-        }
-
-        var contactUserProfile = userProfiles.FirstOrDefault(x => x.Email == command.ContactEmail);
-        if (contactUserProfile == null)
-        {
-            throw new Exception("ContactModel User Profile error");
-        }
+        var userProfile = userProfiles.First(x => x.Id == command.UserId);
+        
+        var contactUserProfile = userProfiles.First(x => x.Email == command.ContactEmail);
 
         var userContact = new ContactModel
         {
@@ -67,10 +59,10 @@ public class AddContactCommandHandler : IRequestHandler<AddContactCommand, Respo
 
         if (!await _contactRepository.SaveAsync(userContact))
         {
-            throw new Exception("Saving User contact error");
+            throw new Exception("Contact Saving Failed");
         }
 
-        response.Message = "ContactModel added successfully";
+        response.Message = "Contact Added Successfully";
 
         return (Response)response;
     }

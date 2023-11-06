@@ -27,6 +27,11 @@ public class RedisContext : IRedisContext
         return _redisClientManager.GetConnectionMultiplexer(databaseInfo).GetSubscriber();
     }
 
+    public async Task PublishAsync<T>(DatabaseInfo databaseInfo, string channel, T data)
+    {
+        await GetSubscriber(databaseInfo).PublishAsync(channel, data.Serialize());
+    }
+
     public async Task<bool> SetDataAsync<T>(DatabaseInfo databaseInfo, string key, T value)
     {
         return await GetDatabase(databaseInfo).StringSetAsync(key, value.Serialize());
