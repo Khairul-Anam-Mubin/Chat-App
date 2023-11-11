@@ -1,6 +1,8 @@
-using Chat.Contact.Domain.Commands;
-using Chat.Contact.Domain.Queries;
+using Chat.Contact.Application.Commands;
+using Chat.Contact.Application.DTOs;
+using Chat.Contact.Application.Queries;
 using Chat.Framework.CQRS;
+using Chat.Framework.RequestResponse;
 using Chat.Presentation.Shared.Controllers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -37,6 +39,6 @@ public class ContactController : ACommonController
     [HttpPost, Route("get")]
     public async Task<IActionResult> AddContactAsync(ContactQuery query)
     {
-        return Ok(await _queryExecutor.ExecuteAsync<ContactQuery, IQueryResponse>(query));
+        return Ok(await _queryExecutor.ExecuteAsync<ContactQuery, IPaginationResponse<ContactDto>>(query));
     }
 }

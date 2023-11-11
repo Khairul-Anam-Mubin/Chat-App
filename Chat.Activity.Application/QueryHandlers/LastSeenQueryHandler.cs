@@ -1,15 +1,16 @@
+using Chat.Activity.Application.DTOs;
 using Chat.Activity.Application.Extensions;
+using Chat.Activity.Application.Queries;
 using Chat.Activity.Domain.Interfaces.Repositories;
-using Chat.Activity.Domain.Queries;
 using Chat.Framework.Attributes;
-using Chat.Framework.CQRS;
 using Chat.Framework.Mediators;
+using Chat.Framework.RequestResponse;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Chat.Activity.Application.QueryHandlers;
 
-[ServiceRegister(typeof(IHandler<LastSeenQuery, IQueryResponse>), ServiceLifetime.Singleton)]
-public class LastSeenQueryHandler : IHandler<LastSeenQuery, IQueryResponse>
+[ServiceRegister(typeof(IHandler<LastSeenQuery, IPaginationResponse<LastSeenDto>>), ServiceLifetime.Singleton)]
+public class LastSeenQueryHandler : IHandler<LastSeenQuery, IPaginationResponse<LastSeenDto>>
 {
     private readonly ILastSeenRepository _lastSeenRepository;
 
@@ -18,7 +19,7 @@ public class LastSeenQueryHandler : IHandler<LastSeenQuery, IQueryResponse>
         _lastSeenRepository = lastSeenRepository;
     }
 
-    public async Task<IQueryResponse> HandleAsync(LastSeenQuery query)
+    public async Task<IPaginationResponse<LastSeenDto>> HandleAsync(LastSeenQuery query)
     {
         var response = query.CreateResponse();
 

@@ -4,7 +4,7 @@ using Chat.Framework.Database.Models;
 using Chat.Framework.Extensions;
 using Chat.Framework.Mediators;
 using Chat.Framework.RequestResponse;
-using Chat.Notification.Domain.Commands;
+using Chat.Notification.Application.Commands;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Chat.Notification.Application.CommandHandlers;

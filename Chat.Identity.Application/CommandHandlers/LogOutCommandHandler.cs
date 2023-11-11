@@ -1,7 +1,7 @@
 using Chat.Framework.Attributes;
 using Chat.Framework.Mediators;
 using Chat.Framework.RequestResponse;
-using Chat.Identity.Domain.Commands;
+using Chat.Identity.Application.Commands;
 using Chat.Identity.Domain.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 

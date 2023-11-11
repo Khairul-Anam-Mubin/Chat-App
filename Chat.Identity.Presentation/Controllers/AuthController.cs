@@ -1,5 +1,5 @@
 using Chat.Framework.CQRS;
-using Chat.Identity.Domain.Commands;
+using Chat.Identity.Application.Commands;
 using Chat.Presentation.Shared.Controllers;
 using Microsoft.AspNetCore.Mvc;
 

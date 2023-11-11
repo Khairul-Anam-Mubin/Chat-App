@@ -1,5 +1,5 @@
 using Chat.Application.Shared.Providers;
-using Chat.FileStore.Domain.Commands;
+using Chat.FileStore.Application.Commands;
 using Chat.FileStore.Domain.Interfaces;
 using Chat.FileStore.Domain.Models;
 using Chat.Framework.Attributes;

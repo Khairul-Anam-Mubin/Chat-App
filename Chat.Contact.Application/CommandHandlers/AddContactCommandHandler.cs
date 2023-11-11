@@ -1,4 +1,4 @@
-using Chat.Contact.Domain.Commands;
+using Chat.Contact.Application.Commands;
 using Chat.Contact.Domain.Interfaces;
 using Chat.Contact.Domain.Models;
 using Chat.Domain.Shared.Queries;
@@ -36,7 +36,7 @@ public class AddContactCommandHandler :
         };
 
         var queryResponse = 
-            await _messageRequestClient.GetResponseAsync<UserProfileQuery, UserProfileQueryResponse>(userProfileQuery);
+            await _messageRequestClient.GetResponseAsync<UserProfileQuery, UserProfileResponse>(userProfileQuery);
         
         if (queryResponse == null || queryResponse.Profiles.Count < 2)
         {

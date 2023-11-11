@@ -4,7 +4,7 @@ using Chat.Framework.CQRS;
 using Chat.Framework.Mediators;
 using Chat.Framework.MessageBrokers;
 using Chat.Framework.RequestResponse;
-using Chat.Notification.Domain.Commands;
+using Chat.Notification.Application.Commands;
 using Chat.Notification.Domain.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 

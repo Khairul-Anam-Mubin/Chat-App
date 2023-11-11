@@ -35,9 +35,9 @@ public class QueryExecutor : IQueryExecutor
         }
     }
 
-    public async Task<IQueryResponse> ExecuteAsync<TQuery>(TQuery query) 
+    public async Task<IPaginationResponse> ExecuteAsync<TQuery>(TQuery query) 
         where TQuery : class
     {
-        return await ExecuteAsync<TQuery, IQueryResponse>(query);
+        return await ExecuteAsync<TQuery, IPaginationResponse>(query);
     }
 }

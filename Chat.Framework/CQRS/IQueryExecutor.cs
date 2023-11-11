@@ -8,6 +8,6 @@ public interface IQueryExecutor
         where TQuery : class
         where TResponse : class, IResponse;
 
-    Task<IQueryResponse> ExecuteAsync<TQuery>(TQuery query)
+    Task<IPaginationResponse> ExecuteAsync<TQuery>(TQuery query)
         where TQuery : class;
 }

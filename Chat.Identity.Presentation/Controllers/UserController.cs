@@ -1,6 +1,6 @@
 ﻿using Chat.Domain.Shared.Queries;
 using Chat.Framework.CQRS;
-using Chat.Identity.Domain.Commands;
+using Chat.Identity.Application.Commands;
 using Chat.Presentation.Shared.Controllers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -31,7 +31,7 @@ public class UserController : ACommonController
     [Route("profiles")]
     public async Task<IActionResult> UserProfileAsync(UserProfileQuery query)
     {
-        var response = await _queryExecutor.ExecuteAsync<UserProfileQuery, UserProfileQueryResponse>(query);
+        var response = await _queryExecutor.ExecuteAsync<UserProfileQuery, UserProfileResponse>(query);
         return Ok(response);
     }
 

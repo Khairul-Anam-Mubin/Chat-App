@@ -1,4 +1,5 @@
-using Chat.Activity.Domain.Queries;
+using Chat.Activity.Application.DTOs;
+using Chat.Activity.Application.Queries;
 using Chat.Domain.Shared.Commands;
 using Chat.Framework.CQRS;
 using Chat.Framework.RequestResponse;
@@ -28,7 +29,7 @@ public class ActivityController : ACommonController
     [HttpPost, Route("last-seen")]
     public async Task<IActionResult> GetLastSeenModelAsync(LastSeenQuery query)
     {
-        return Ok(await _queryExecutor.ExecuteAsync<LastSeenQuery, IQueryResponse>(query));
+        return Ok(await _queryExecutor.ExecuteAsync<LastSeenQuery, IPaginationResponse<LastSeenDto>>(query));
     }
 
     [HttpPost, Route("track")]

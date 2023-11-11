@@ -1,4 +1,4 @@
-using Chat.Domain.Commands;
+using Chat.Application.Commands;
 using Chat.Domain.Interfaces;
 using Chat.Framework.Attributes;
 using Chat.Framework.Mediators;

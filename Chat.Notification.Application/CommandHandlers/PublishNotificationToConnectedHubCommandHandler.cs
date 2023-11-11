@@ -3,7 +3,7 @@ using Chat.Framework.Database.Interfaces;
 using Chat.Framework.Database.Models;
 using Chat.Framework.Mediators;
 using Chat.Framework.RequestResponse;
-using Chat.Notification.Domain.Commands;
+using Chat.Notification.Application.Commands;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 

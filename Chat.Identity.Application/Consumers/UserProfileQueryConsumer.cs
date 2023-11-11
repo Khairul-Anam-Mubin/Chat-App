@@ -1,7 +1,6 @@
 using Chat.Domain.Shared.Queries;
 using Chat.Framework.Attributes;
 using Chat.Framework.CQRS;
-using Chat.Framework.Extensions;
 using Chat.Framework.Mediators;
 using Chat.Framework.MessageBrokers;
 using Chat.Identity.Application.Extensions;
@@ -11,8 +10,8 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Chat.Identity.Application.Consumers;
 
-[ServiceRegister(typeof(IHandler<UserProfileQuery, UserProfileQueryResponse>), ServiceLifetime.Transient)]
-public class UserProfileQueryConsumer : AQueryConsumer<UserProfileQuery, UserProfileQueryResponse>
+[ServiceRegister(typeof(IHandler<UserProfileQuery, UserProfileResponse>), ServiceLifetime.Transient)]
+public class UserProfileQueryConsumer : AQueryConsumer<UserProfileQuery, UserProfileResponse>
 {
     private readonly IUserRepository _userRepository;
 
@@ -21,10 +20,10 @@ public class UserProfileQueryConsumer : AQueryConsumer<UserProfileQuery, UserPro
         _userRepository = userRepository;
     }
 
-    protected override async Task<UserProfileQueryResponse> OnConsumeAsync(UserProfileQuery query, 
+    protected override async Task<UserProfileResponse> OnConsumeAsync(UserProfileQuery query, 
         IMessageContext<UserProfileQuery>? context = null)
     {
-        var response = new UserProfileQueryResponse();
+        var response = new UserProfileResponse();
 
         var userModels = new List<UserModel>();
 
@@ -42,7 +41,7 @@ public class UserProfileQueryConsumer : AQueryConsumer<UserProfileQuery, UserPro
         {
             foreach (var userModel in userModels)
             {
-                response.AddItem(userModel.ToUserProfile().SmartCast<object>()!);
+                response.AddItem(userModel.ToUserProfile());
             }
 
             return response;

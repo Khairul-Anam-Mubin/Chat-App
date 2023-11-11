@@ -1,15 +1,15 @@
 using Chat.FileStore.Application.DTOs;
+using Chat.FileStore.Application.Queries;
 using Chat.FileStore.Domain.Interfaces;
-using Chat.FileStore.Domain.Queries;
 using Chat.Framework.Attributes;
-using Chat.Framework.CQRS;
 using Chat.Framework.Mediators;
+using Chat.Framework.RequestResponse;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Chat.FileStore.Application.QueryHandlers;
 
-[ServiceRegister(typeof(IHandler<FileDownloadQuery, IQueryResponse>), ServiceLifetime.Singleton)]
-public class FileDownloadQueryHandler : IHandler<FileDownloadQuery, IQueryResponse>
+[ServiceRegister(typeof(IHandler<FileDownloadQuery, IPaginationResponse<FileDownloadResult>>), ServiceLifetime.Singleton)]
+public class FileDownloadQueryHandler : IHandler<FileDownloadQuery, IPaginationResponse<FileDownloadResult>>
 {
     private readonly IFileRepository _fileRepository;
 
@@ -18,7 +18,7 @@ public class FileDownloadQueryHandler : IHandler<FileDownloadQuery, IQueryRespon
         _fileRepository = fileRepository;
     }
 
-    public async Task<IQueryResponse> HandleAsync(FileDownloadQuery query)
+    public async Task<IPaginationResponse<FileDownloadResult>> HandleAsync(FileDownloadQuery query)
     {
         var response = query.CreateResponse();
 

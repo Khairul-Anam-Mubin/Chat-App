@@ -1,16 +1,17 @@
+using Chat.Contact.Application.DTOs;
 using Chat.Contact.Application.Extensions;
+using Chat.Contact.Application.Queries;
 using Chat.Contact.Domain.Interfaces;
 using Chat.Contact.Domain.Models;
-using Chat.Contact.Domain.Queries;
 using Chat.Framework.Attributes;
-using Chat.Framework.CQRS;
 using Chat.Framework.Mediators;
+using Chat.Framework.RequestResponse;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Chat.Contact.Application.QueryHandlers;
 
-[ServiceRegister(typeof(IHandler<ContactQuery, IQueryResponse>), ServiceLifetime.Singleton)]
-public class ContactQueryHandler : IHandler<ContactQuery, IQueryResponse>
+[ServiceRegister(typeof(IHandler<ContactQuery, IPaginationResponse<ContactDto>>), ServiceLifetime.Singleton)]
+public class ContactQueryHandler : IHandler<ContactQuery, IPaginationResponse<ContactDto>>
 {
     private readonly IContactRepository _contactRepository;
 
@@ -19,7 +20,7 @@ public class ContactQueryHandler : IHandler<ContactQuery, IQueryResponse>
         _contactRepository = contactRepository;
     }
 
-    public async Task<IQueryResponse> HandleAsync(ContactQuery query)
+    public async Task<IPaginationResponse<ContactDto>> HandleAsync(ContactQuery query)
     {
         var response = query.CreateResponse();
 
