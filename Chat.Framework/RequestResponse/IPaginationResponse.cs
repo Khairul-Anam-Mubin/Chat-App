@@ -1,7 +1,5 @@
 ﻿namespace Chat.Framework.RequestResponse;
 
-public interface IPaginationResponse : IPaginationResponse<object> { }
-
 public interface IPaginationResponse<TItem> : IResponse
 {
     int Offset { get; set; }
