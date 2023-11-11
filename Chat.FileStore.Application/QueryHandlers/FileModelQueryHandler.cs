@@ -7,8 +7,8 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Chat.FileStore.Application.QueryHandlers;
 
-[ServiceRegister(typeof(IRequestHandler<FileModelQuery, QueryResponse>), ServiceLifetime.Singleton)]
-public class FileModelQueryHandler : IRequestHandler<FileModelQuery, QueryResponse>
+[ServiceRegister(typeof(IRequestHandler<FileModelQuery, IQueryResponse>), ServiceLifetime.Singleton)]
+public class FileModelQueryHandler : IRequestHandler<FileModelQuery, IQueryResponse>
 {
     private readonly IFileRepository _fileRepository;
 
@@ -17,7 +17,7 @@ public class FileModelQueryHandler : IRequestHandler<FileModelQuery, QueryRespon
         _fileRepository = fileRepository;
     }
 
-    public async Task<QueryResponse> HandleAsync(FileModelQuery query)
+    public async Task<IQueryResponse> HandleAsync(FileModelQuery query)
     {
         var response = query.CreateResponse();
 
@@ -32,6 +32,6 @@ public class FileModelQueryHandler : IRequestHandler<FileModelQuery, QueryRespon
 
         response.AddItem(fileModel);
 
-        return (QueryResponse)response;
+        return response;
     }
 }

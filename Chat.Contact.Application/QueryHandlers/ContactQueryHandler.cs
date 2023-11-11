@@ -9,8 +9,8 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Chat.Contact.Application.QueryHandlers;
 
-[ServiceRegister(typeof(IRequestHandler<ContactQuery, QueryResponse>), ServiceLifetime.Singleton)]
-public class ContactQueryHandler : IRequestHandler<ContactQuery, QueryResponse>
+[ServiceRegister(typeof(IRequestHandler<ContactQuery, IQueryResponse>), ServiceLifetime.Singleton)]
+public class ContactQueryHandler : IRequestHandler<ContactQuery, IQueryResponse>
 {
     private readonly IContactRepository _contactRepository;
 
@@ -19,7 +19,7 @@ public class ContactQueryHandler : IRequestHandler<ContactQuery, QueryResponse>
         _contactRepository = contactRepository;
     }
 
-    public async Task<QueryResponse> HandleAsync(ContactQuery query)
+    public async Task<IQueryResponse> HandleAsync(ContactQuery query)
     {
         var response = query.CreateResponse();
 
@@ -43,6 +43,6 @@ public class ContactQueryHandler : IRequestHandler<ContactQuery, QueryResponse>
             response.AddItem(contact.ToContactDto(query.UserId));
         }
 
-        return (QueryResponse)response;
+        return response;
     }
 }

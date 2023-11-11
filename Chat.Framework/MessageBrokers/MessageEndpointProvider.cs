@@ -4,7 +4,17 @@ public class MessageEndpointProvider
 {
     public static Uri GetSendEndpointUri<TMessage>(TMessage message)
     {
-        var queueName = typeof(TMessage).Name;
+        return GetSendEndpointUri(message!.GetType());
+    }
+
+    public static Uri GetSendEndpointUri<TMessage>()
+    {
+        return GetSendEndpointUri(typeof(TMessage));
+    }
+
+    public static Uri GetSendEndpointUri(Type type)
+    {
+        var queueName = type.Name;
 
         return new Uri($"queue:{queueName}");
     }

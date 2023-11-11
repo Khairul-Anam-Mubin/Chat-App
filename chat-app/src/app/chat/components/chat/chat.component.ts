@@ -23,7 +23,7 @@ import { ChatProcessor } from '../../helpers/chat-processor';
   styleUrls: ['./chat.component.css']
 })
 export class ChatComponent implements OnInit{
-  
+
   chatTitle : any = "";
   lastSeen : any = "";
   inputMessage : any = "";
@@ -32,14 +32,13 @@ export class ChatComponent implements OnInit{
   sendToUserProfile : any;
   sendToUserId : any = "";
   chats : any;
-  isActive : any; 
+  isActive : any;
   query: ChatQuery = new ChatQuery();
   totalChats:any;
   canExecuteChatQuery: any = true;
   sendToUserBlobImageUrl: any = '';
   sharedSecret: any;
   encryptionDecryptionHelper: IEncryptionDecryption | undefined;
-
   constructor(
     private elementRef : ElementRef,
     private userService : UserService,
@@ -50,7 +49,7 @@ export class ChatComponent implements OnInit{
     private fileService: FileService,
     private router : Router,
     private securityService: SecurtiyService) {}
-  
+
   ngOnInit(): void {
     this.encryptionDecryptionHelper = EncrytptionDecryptionFactory.getEncryptionDecryption();
     this.chats = [];
@@ -60,7 +59,6 @@ export class ChatComponent implements OnInit{
 
     this.query.sendTo = this.sendToUserId;
     this.query.userId = this.currentUserId;
-    
     this.userService.getUserProfileById(this.sendToUserId)
     .pipe(take(1))
     .subscribe(res => {
@@ -131,7 +129,7 @@ export class ChatComponent implements OnInit{
       chatContainer.scrollTop = chatContainer.scrollHeight - chatContainer.clientHeight;
     });
   }
-  
+
 
   onChatScroll(event: any): void {
     console.log("clientHeight : " + event.target.clientHeight + "\nscrolltop : " + event.target.scrollTop + "\nscrollheight : " + event.target.scrollHeight);

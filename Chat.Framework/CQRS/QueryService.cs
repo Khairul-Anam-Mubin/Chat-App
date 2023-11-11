@@ -22,7 +22,7 @@ public class QueryService : IQueryService
         {
             var response = await _requestMediator.SendAsync<TQuery, TResponse>(query);
             
-            response.Status = ResponseStatus.Success;
+            response.Status ??= ResponseStatus.Success;
 
             return response;
         }
@@ -30,11 +30,7 @@ public class QueryService : IQueryService
         {
             Console.WriteLine(e.Message);
 
-            var response = new Response
-            {
-                Message = e.Message,
-                Status = ResponseStatus.Error
-            };
+            var response = Response.Error(e);
 
             return (response as TResponse)!;
         }
@@ -43,6 +39,6 @@ public class QueryService : IQueryService
     public async Task<IQueryResponse> GetResponseAsync<TQuery>(TQuery query) 
         where TQuery : class
     {
-        return await GetResponseAsync<TQuery, QueryResponse>(query);
+        return await GetResponseAsync<TQuery, IQueryResponse>(query);
     }
 }

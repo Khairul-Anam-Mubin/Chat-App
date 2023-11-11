@@ -25,7 +25,7 @@ public class CommandService : ICommandService
         {
             var response = await _requestMediator.SendAsync<TCommand, TResponse>(command);
 
-            response.Status = ResponseStatus.Success;
+            response.Status ??= ResponseStatus.Success;
 
             return response;
         }
@@ -33,11 +33,7 @@ public class CommandService : ICommandService
         {
             Console.WriteLine(e.Message);
 
-            var response = new Response
-            {
-                Message = e.Message,
-                Status = ResponseStatus.Error
-            };
+            var response = Response.Error(e);
 
             return (response as TResponse)!;
         }
@@ -46,6 +42,6 @@ public class CommandService : ICommandService
     public async Task<IResponse> GetResponseAsync<TCommand>(TCommand command) 
         where TCommand : class
     {
-        return await GetResponseAsync<TCommand, Response>(command);
+        return await GetResponseAsync<TCommand, IResponse>(command);
     }
 }

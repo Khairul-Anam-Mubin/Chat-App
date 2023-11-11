@@ -2,7 +2,7 @@
 
 namespace Chat.Notification.Domain.Commands;
 
-public class PublishNotificationToConnectedHubCommand : ACommand
+public class PublishNotificationToConnectedHubCommand
 {
     public string HubInstanceId { get; set; } = string.Empty;
     public Chat.Domain.Shared.Entities.Notification? Notification { get; set; }

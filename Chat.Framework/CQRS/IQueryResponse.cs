@@ -4,7 +4,6 @@ namespace Chat.Framework.CQRS;
 
 public interface IQueryResponse : IResponse
 {
-    string Name { get; set; }
     int Offset { get; set; }
     int Limit { get; set; }
     int TotalCount { get; set; }

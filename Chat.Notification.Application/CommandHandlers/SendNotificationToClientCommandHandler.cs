@@ -1,4 +1,5 @@
 ﻿using Chat.Framework.Attributes;
+using Chat.Framework.Interfaces;
 using Chat.Framework.Mediators;
 using Chat.Framework.Models;
 using Chat.Notification.Domain.Commands;
@@ -7,9 +8,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Chat.Notification.Application.CommandHandlers;
 
-[ServiceRegister(typeof(IRequestHandler<SendNotificationToClientCommand, Response>), ServiceLifetime.Transient)]
+[ServiceRegister(typeof(IRequestHandler<SendNotificationToClientCommand, IResponse>), ServiceLifetime.Transient)]
 public class SendNotificationToClientCommandHandler :
-    IRequestHandler<SendNotificationToClientCommand, Response>
+    IRequestHandler<SendNotificationToClientCommand, IResponse>
 {
     private readonly INotificationHubService _notificationHubService;
 
@@ -18,7 +19,7 @@ public class SendNotificationToClientCommandHandler :
         _notificationHubService = notificationHubService;
     }
 
-    public async Task<Response> HandleAsync(SendNotificationToClientCommand request)
+    public async Task<IResponse> HandleAsync(SendNotificationToClientCommand request)
     {
         var notification = request.Notification;
         var receiverIds = request.ReceiverIds;
@@ -28,6 +29,6 @@ public class SendNotificationToClientCommandHandler :
             await _notificationHubService.SendAsync(receiverId, notification, notification!.NotificationType.ToString());
         }
 
-        return Response.Create();
+        return Response.Success();
     }
 }

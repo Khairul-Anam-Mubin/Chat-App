@@ -8,8 +8,8 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Chat.Activity.Application.QueryHandlers;
 
-[ServiceRegister(typeof(IRequestHandler<LastSeenQuery, QueryResponse>), ServiceLifetime.Singleton)]
-public class LastSeenQueryHandler : IRequestHandler<LastSeenQuery, QueryResponse>
+[ServiceRegister(typeof(IRequestHandler<LastSeenQuery, IQueryResponse>), ServiceLifetime.Singleton)]
+public class LastSeenQueryHandler : IRequestHandler<LastSeenQuery, IQueryResponse>
 {
     private readonly ILastSeenRepository _lastSeenRepository;
 
@@ -18,7 +18,7 @@ public class LastSeenQueryHandler : IRequestHandler<LastSeenQuery, QueryResponse
         _lastSeenRepository = lastSeenRepository;
     }
 
-    public async Task<QueryResponse> HandleAsync(LastSeenQuery query)
+    public async Task<IQueryResponse> HandleAsync(LastSeenQuery query)
     {
         var response = query.CreateResponse();
 
@@ -28,6 +28,6 @@ public class LastSeenQueryHandler : IRequestHandler<LastSeenQuery, QueryResponse
             response.AddItem(lastSeenModel.ToLastSeenDto());
         }
 
-        return (QueryResponse)response;
+        return response;
     }
 }

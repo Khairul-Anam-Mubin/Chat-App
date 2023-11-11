@@ -4,7 +4,6 @@ namespace Chat.Framework.CQRS;
 
 public class QueryResponse : Response, IQueryResponse
 {
-    public string Name { get; set; } = string.Empty;
     public int Offset { get; set; }
     public int Limit { get; set; }
     public int TotalCount { get; set; }

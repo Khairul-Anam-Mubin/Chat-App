@@ -1,15 +1,16 @@
 using Chat.Domain.Commands;
 using Chat.Domain.Interfaces;
 using Chat.Framework.Attributes;
+using Chat.Framework.Interfaces;
 using Chat.Framework.Mediators;
 using Chat.Framework.Models;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Chat.Application.CommandHandlers;
 
-[ServiceRegister(typeof(IRequestHandler<UpdateLatestChatCommand, Response>), ServiceLifetime.Singleton)]
+[ServiceRegister(typeof(IRequestHandler<UpdateLatestChatCommand, IResponse>), ServiceLifetime.Singleton)]
 public class UpdateLatestChatCommandHandler : 
-    IRequestHandler<UpdateLatestChatCommand, Response>
+    IRequestHandler<UpdateLatestChatCommand, IResponse>
 {
         
     private readonly ILatestChatRepository _latestChatRepository;
@@ -19,9 +20,9 @@ public class UpdateLatestChatCommandHandler :
         _latestChatRepository = latestChatRepository;
     }
 
-    public async Task<Response> HandleAsync(UpdateLatestChatCommand command)
+    public async Task<IResponse> HandleAsync(UpdateLatestChatCommand command)
     {
-        var response = command.CreateResponse();
+        var response = Response.Success();
 
         var latestChatModel = await _latestChatRepository.GetLatestChatAsync(command.LatestChatModel!.UserId, command.LatestChatModel.SendTo);
         if (latestChatModel == null)
@@ -48,6 +49,6 @@ public class UpdateLatestChatCommandHandler :
 
         await _latestChatRepository.SaveAsync(latestChatModel);
 
-        return (Response)response;
+        return response;
     }
 }

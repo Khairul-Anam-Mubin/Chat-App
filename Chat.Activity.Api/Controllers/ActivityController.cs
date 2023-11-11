@@ -1,6 +1,7 @@
 using Chat.Activity.Domain.Queries;
 using Chat.Domain.Shared.Commands;
 using Chat.Framework.CQRS;
+using Chat.Framework.Interfaces;
 using Chat.Framework.Models;
 using Chat.Presentation.Shared.Controllers;
 using Microsoft.AspNetCore.Authorization;
@@ -28,12 +29,12 @@ public class ActivityController : ACommonController
     [HttpPost, Route("last-seen")]
     public async Task<IActionResult> GetLastSeenModelAsync(LastSeenQuery query)
     {
-        return Ok(await _queryService.GetResponseAsync<LastSeenQuery, QueryResponse>(query));
+        return Ok(await _queryService.GetResponseAsync<LastSeenQuery, IQueryResponse>(query));
     }
 
     [HttpPost, Route("track")]
     public async Task<IActionResult> UpdateLastSeenAsync(UpdateLastSeenCommand command)
     {
-        return Ok(await _commandService.GetResponseAsync<UpdateLastSeenCommand, Response>(command));
+        return Ok(await _commandService.GetResponseAsync<UpdateLastSeenCommand, IResponse>(command));
     }
 }

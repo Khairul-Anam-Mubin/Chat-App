@@ -4,6 +4,7 @@ using Chat.FileStore.Domain.Interfaces;
 using Chat.FileStore.Domain.Models;
 using Chat.Framework.Attributes;
 using Chat.Framework.Extensions;
+using Chat.Framework.Interfaces;
 using Chat.Framework.Mediators;
 using Chat.Framework.Models;
 using Microsoft.AspNetCore.Http;
@@ -11,8 +12,8 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Chat.FileStore.Application.CommandHandlers;
 
-[ServiceRegister(typeof(IRequestHandler<UploadFileCommand, Response>), ServiceLifetime.Singleton)]
-public class UploadFileCommandHandler : IRequestHandler<UploadFileCommand, Response>
+[ServiceRegister(typeof(IRequestHandler<UploadFileCommand, IResponse>), ServiceLifetime.Singleton)]
+public class UploadFileCommandHandler : IRequestHandler<UploadFileCommand, IResponse>
 {
     private readonly IFileRepository _fileRepository;
     private readonly IHttpContextAccessor _httpContextAccessor;
@@ -23,9 +24,9 @@ public class UploadFileCommandHandler : IRequestHandler<UploadFileCommand, Respo
         _httpContextAccessor = httpContextAccessor;
     }
 
-    public async Task<Response> HandleAsync(UploadFileCommand command)
+    public async Task<IResponse> HandleAsync(UploadFileCommand command)
     {
-        var response = command.CreateResponse();
+        var response = Response.Success();
 
         var file = command.FormFile;
         var pathToSave = "C:\\workstation\\Training\\Chat-WebApp\\Chat.FileStore.Persistence\\Store";
@@ -66,6 +67,6 @@ public class UploadFileCommandHandler : IRequestHandler<UploadFileCommand, Respo
         response.Message = "File uploaded successfully";
         response.SetData("FileId", fileModel.Id);
         
-        return (Response)response;
+        return response;
     }
 }

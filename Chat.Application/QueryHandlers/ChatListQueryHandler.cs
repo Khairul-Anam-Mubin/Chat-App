@@ -8,8 +8,8 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Chat.Application.QueryHandlers;
 
-[ServiceRegister(typeof(IRequestHandler<ChatListQuery, QueryResponse>), ServiceLifetime.Singleton)]
-public class ChatListQueryHandler : IRequestHandler<ChatListQuery, QueryResponse>
+[ServiceRegister(typeof(IRequestHandler<ChatListQuery, IQueryResponse>), ServiceLifetime.Singleton)]
+public class ChatListQueryHandler : IRequestHandler<ChatListQuery, IQueryResponse>
 {
     private readonly ILatestChatRepository _latestChatRepository;
 
@@ -18,7 +18,7 @@ public class ChatListQueryHandler : IRequestHandler<ChatListQuery, QueryResponse
         _latestChatRepository = latestChatRepository;
     }
 
-    public async Task<QueryResponse> HandleAsync(ChatListQuery query)
+    public async Task<IQueryResponse> HandleAsync(ChatListQuery query)
     {
         var response = query.CreateResponse();
 
@@ -28,6 +28,6 @@ public class ChatListQueryHandler : IRequestHandler<ChatListQuery, QueryResponse
             response.AddItem(latestChatModel.ToLatestChatDto(query.UserId));
         }
 
-        return (QueryResponse)response;
+        return response;
     }
 }

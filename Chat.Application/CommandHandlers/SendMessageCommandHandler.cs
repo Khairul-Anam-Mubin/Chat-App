@@ -7,6 +7,7 @@ using Chat.Domain.Shared.Constants;
 using Chat.Domain.Shared.Entities;
 using Chat.Framework.Attributes;
 using Chat.Framework.CQRS;
+using Chat.Framework.Interfaces;
 using Chat.Framework.Mediators;
 using Chat.Framework.MessageBrokers;
 using Chat.Framework.Models;
@@ -14,10 +15,10 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Chat.Application.CommandHandlers;
 
-[ServiceRegister(typeof(IRequestHandler<SendMessageCommand, Response>), 
+[ServiceRegister(typeof(IRequestHandler<SendMessageCommand, IResponse>), 
     ServiceLifetime.Transient)]
 public class SendMessageCommandHandler : 
-    IRequestHandler<SendMessageCommand, Response>
+    IRequestHandler<SendMessageCommand, IResponse>
 {
     private readonly IChatRepository _chatRepository;
     private readonly ICommandService _commandService;
@@ -33,7 +34,7 @@ public class SendMessageCommandHandler :
         _commandBus = commandBus;
     }
 
-    public async Task<Response> HandleAsync(SendMessageCommand command)
+    public async Task<IResponse> HandleAsync(SendMessageCommand command)
     { 
         var chatModel = command.ChatModel;
 
@@ -55,7 +56,7 @@ public class SendMessageCommandHandler :
 
         await UpdateLatestChatModelAsync(chatModel);
         
-        var response = Response.Create();
+        var response = Response.Success();
         
         response.SetData("Message", chatModel.ToChatDto());
 
@@ -89,8 +90,7 @@ public class SendMessageCommandHandler :
 
         var updateLatestChatCommand = new UpdateLatestChatCommand
         {
-            LatestChatModel = latestChatModel,
-            FireAndForget = true
+            LatestChatModel = latestChatModel
         };
 
         return _commandService.GetResponseAsync(updateLatestChatCommand);

@@ -3,6 +3,7 @@ using Chat.Contact.Domain.Interfaces;
 using Chat.Contact.Domain.Models;
 using Chat.Domain.Shared.Queries;
 using Chat.Framework.Attributes;
+using Chat.Framework.Interfaces;
 using Chat.Framework.Mediators;
 using Chat.Framework.MessageBrokers;
 using Chat.Framework.Models;
@@ -10,8 +11,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Chat.Contact.Application.CommandHandlers;
 
-[ServiceRegister(typeof(IRequestHandler<AddContactCommand, Response>), ServiceLifetime.Transient)]
-public class AddContactCommandHandler : IRequestHandler<AddContactCommand, Response>
+[ServiceRegister(typeof(IRequestHandler<AddContactCommand, IResponse>), ServiceLifetime.Transient)]
+public class AddContactCommandHandler : 
+    IRequestHandler<AddContactCommand, IResponse>
 {
     private readonly IContactRepository _contactRepository;
     private readonly IMessageRequestClient _messageRequestClient;
@@ -24,9 +26,9 @@ public class AddContactCommandHandler : IRequestHandler<AddContactCommand, Respo
         _messageRequestClient = messageRequestClient;
     }
 
-    public async Task<Response> HandleAsync(AddContactCommand command)
+    public async Task<IResponse> HandleAsync(AddContactCommand command)
     {
-        var response = command.CreateResponse();
+        var response = Response.Success();
 
         var userProfileQuery = new UserProfileQuery
         {
@@ -64,6 +66,6 @@ public class AddContactCommandHandler : IRequestHandler<AddContactCommand, Respo
 
         response.Message = "Contact Added Successfully";
 
-        return (Response)response;
+        return response;
     }
 }

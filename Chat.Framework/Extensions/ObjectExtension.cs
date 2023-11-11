@@ -1,4 +1,5 @@
 using System.Text.Json;
+using StackExchange.Redis;
 
 namespace Chat.Framework.Extensions;
 
@@ -39,9 +40,21 @@ public static class ObjectExtension
             Console.WriteLine(e);
         }
 
+        if (obj is RedisValue)
+        {
+            try
+            {
+                return obj.ToString().Deserialize<T>();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+        }
+
         try
         {
-            return obj.ToString().Deserialize<T>();
+            return obj.Serialize().Deserialize<T>();
         }
         catch (Exception e)
         {

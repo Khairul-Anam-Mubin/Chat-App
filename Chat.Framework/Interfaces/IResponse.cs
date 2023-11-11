@@ -5,9 +5,9 @@ namespace Chat.Framework.Interfaces;
 public interface IResponse : IMetaDataDictionary
 {
     string Message { get; set; }
-    ResponseStatus Status { get; set; }
-    void SetErrorMessage(string message);
-    void SetSuccessMessage(string message);
+    ResponseStatus? Status { get; set; }
+    IResponse ErrorMessage(string message);
+    IResponse SuccessMessage(string message);
 }
 
 public interface IResponse<TResponse> : IResponse

@@ -1,4 +1,5 @@
 ﻿using Chat.Framework.CQRS;
+using Chat.Framework.Interfaces;
 using Chat.Framework.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,8 +14,8 @@ public abstract class ACommonController : ControllerBase
         CommandService = commandService;
     }
 
-    protected async Task<Response> GetCommandResponseAsync<TCommand>(TCommand command) where TCommand : class, ICommand
+    protected async Task<IResponse> GetCommandResponseAsync<TCommand>(TCommand command) where TCommand : class
     {
-        return await CommandService.GetResponseAsync<TCommand, Response>(command);
+        return await CommandService.GetResponseAsync(command);
     }
 }

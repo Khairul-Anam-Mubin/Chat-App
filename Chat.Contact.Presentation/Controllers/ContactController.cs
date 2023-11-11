@@ -37,6 +37,6 @@ public class ContactController : ACommonController
     [HttpPost, Route("get")]
     public async Task<IActionResult> AddContactAsync(ContactQuery query)
     {
-        return Ok(await _queryService.GetResponseAsync<ContactQuery, QueryResponse>(query));
+        return Ok(await _queryService.GetResponseAsync<ContactQuery, IQueryResponse>(query));
     }
 }

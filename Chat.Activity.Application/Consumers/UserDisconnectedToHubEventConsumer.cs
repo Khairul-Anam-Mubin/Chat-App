@@ -25,9 +25,7 @@ public class UserDisconnectedToHubEventConsumer : AMessageConsumer<UserDisconnec
         var updateLastSeenCommand = new UpdateLastSeenCommand
         {
             UserId = userId,
-            ApiUrl = "https://localhost:50502/api/Activity/track",
-            IsActive = isActive,
-            FireAndForget = true
+            IsActive = isActive
         };
         await _commandService.GetResponseAsync<UpdateLastSeenCommand, Response>(updateLastSeenCommand);
     }

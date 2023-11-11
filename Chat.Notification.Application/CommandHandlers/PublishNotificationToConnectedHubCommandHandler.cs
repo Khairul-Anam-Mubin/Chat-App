@@ -1,6 +1,7 @@
 ﻿using Chat.Framework.Attributes;
 using Chat.Framework.Database.Interfaces;
 using Chat.Framework.Database.Models;
+using Chat.Framework.Interfaces;
 using Chat.Framework.Mediators;
 using Chat.Framework.Models;
 using Chat.Notification.Domain.Commands;
@@ -9,9 +10,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Chat.Notification.Application.CommandHandlers;
 
-[ServiceRegister(typeof(IRequestHandler<PublishNotificationToConnectedHubCommand, Response>), ServiceLifetime.Transient)]
+[ServiceRegister(typeof(IRequestHandler<PublishNotificationToConnectedHubCommand, IResponse>), ServiceLifetime.Transient)]
 public class PublishNotificationToConnectedHubCommandHandler :
-    IRequestHandler<PublishNotificationToConnectedHubCommand, Response>
+    IRequestHandler<PublishNotificationToConnectedHubCommand, IResponse>
 {
     private readonly IRedisContext _redisContext;
     private readonly DatabaseInfo _databaseInfo;
@@ -25,14 +26,14 @@ public class PublishNotificationToConnectedHubCommandHandler :
             .Get<DatabaseInfo>();
     }
 
-    public async Task<Response> HandleAsync(PublishNotificationToConnectedHubCommand request)
+    public async Task<IResponse> HandleAsync(PublishNotificationToConnectedHubCommand request)
     {
         var channel = request.HubInstanceId;
 
         if (string.IsNullOrEmpty(channel))
         {
             Console.WriteLine($"Channel not found. So publish event to redis skipped\n");
-            return Response.Create();
+            return Response.Success();
         }
 
         var pubSubMessage = new PubSubMessage
@@ -50,6 +51,6 @@ public class PublishNotificationToConnectedHubCommandHandler :
 
         Console.WriteLine("Event published to redis\n");
 
-        return Response.Create();
+        return Response.Success();
     }
 }

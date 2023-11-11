@@ -8,8 +8,8 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Chat.FileStore.Application.QueryHandlers;
 
-[ServiceRegister(typeof(IRequestHandler<FileDownloadQuery, QueryResponse>), ServiceLifetime.Singleton)]
-public class FileDownloadQueryHandler : IRequestHandler<FileDownloadQuery, QueryResponse>
+[ServiceRegister(typeof(IRequestHandler<FileDownloadQuery, IQueryResponse>), ServiceLifetime.Singleton)]
+public class FileDownloadQueryHandler : IRequestHandler<FileDownloadQuery, IQueryResponse>
 {
     private readonly IFileRepository _fileRepository;
 
@@ -18,7 +18,7 @@ public class FileDownloadQueryHandler : IRequestHandler<FileDownloadQuery, Query
         _fileRepository = fileRepository;
     }
 
-    public async Task<QueryResponse> HandleAsync(FileDownloadQuery query)
+    public async Task<IQueryResponse> HandleAsync(FileDownloadQuery query)
     {
         var response = query.CreateResponse();
 
@@ -44,7 +44,7 @@ public class FileDownloadQueryHandler : IRequestHandler<FileDownloadQuery, Query
 
         response.AddItem(fileDownloadResult);
 
-        return (QueryResponse)response;
+        return response;
     }
 
     private string GetContentType(string fileExtension)

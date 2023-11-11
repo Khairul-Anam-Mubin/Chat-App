@@ -3,7 +3,7 @@ using Chat.Framework.CQRS;
 
 namespace Chat.Domain.Commands;
 
-public class UpdateLatestChatCommand : ACommand
+public class UpdateLatestChatCommand
 {
     public LatestChatModel? LatestChatModel {get; set;}
 }

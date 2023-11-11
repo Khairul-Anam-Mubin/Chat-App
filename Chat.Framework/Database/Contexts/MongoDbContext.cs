@@ -28,7 +28,7 @@ public class MongoDbContext : IMongoDbContext
         }
         catch (Exception)
         {
-            Console.WriteLine($"Get Collection : {typeof(T).Name} from Database : {databaseInfo.DatabaseName} Error");
+            Console.WriteLine($"Get Collection : {typeof(T).Name} from Database : {databaseInfo.DatabaseName} ErrorMessage");
             return null;
         }
     }

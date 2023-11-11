@@ -1,4 +1,3 @@
-using Chat.Api.Middlewares;
 using Chat.Application.Shared;
 using Chat.Framework.Extensions;
 using Chat.Notification.Infrastructure;
@@ -19,7 +18,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.StartInitialServices();
-app.UseMiddleware<LastSeenMiddleware>();
 app.UseCors("CorsPolicy");
 app.UseHttpsRedirection();
 app.UseAuthentication();

@@ -49,6 +49,6 @@ public class FileController : ACommonController
     [Route("get")]
     public async Task<IActionResult> GetFileModelAsync(FileModelQuery query)
     {
-        return Ok(await _queryService.GetResponseAsync<FileModelQuery, QueryResponse>(query));
+        return Ok(await _queryService.GetResponseAsync<FileModelQuery, IQueryResponse>(query));
     }
 }
