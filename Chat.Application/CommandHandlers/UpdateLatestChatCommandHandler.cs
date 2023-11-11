@@ -1,16 +1,15 @@
 using Chat.Domain.Commands;
 using Chat.Domain.Interfaces;
 using Chat.Framework.Attributes;
-using Chat.Framework.Interfaces;
 using Chat.Framework.Mediators;
-using Chat.Framework.Models;
+using Chat.Framework.RequestResponse;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Chat.Application.CommandHandlers;
 
-[ServiceRegister(typeof(IRequestHandler<UpdateLatestChatCommand, IResponse>), ServiceLifetime.Singleton)]
+[ServiceRegister(typeof(IHandler<UpdateLatestChatCommand, IResponse>), ServiceLifetime.Singleton)]
 public class UpdateLatestChatCommandHandler : 
-    IRequestHandler<UpdateLatestChatCommand, IResponse>
+    IHandler<UpdateLatestChatCommand, IResponse>
 {
         
     private readonly ILatestChatRepository _latestChatRepository;

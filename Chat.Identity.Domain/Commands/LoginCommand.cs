@@ -1,5 +1,3 @@
-using Chat.Framework.CQRS;
-
 namespace Chat.Identity.Domain.Commands;
 
 public class LoginCommand

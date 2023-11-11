@@ -5,7 +5,7 @@ namespace Chat.Framework.CQRS;
 
 public abstract class ACommandConsumer<TCommand, TResponse> : 
     AMessageConsumer<TCommand>,
-    IRequestHandler<TCommand, TResponse>
+    IHandler<TCommand, TResponse>
     where TCommand : class
     where TResponse : class
 {

@@ -5,7 +5,7 @@ namespace Chat.Framework.CQRS;
 
 public abstract class AQueryConsumer<TQuery, TResponse> :
     AMessageConsumer<TQuery>,
-    IRequestHandler<TQuery, TResponse>
+    IHandler<TQuery, TResponse>
     where TQuery : class
     where TResponse : class
 {

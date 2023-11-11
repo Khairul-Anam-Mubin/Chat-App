@@ -1,21 +1,20 @@
 ﻿using Chat.Framework.CQRS;
-using Chat.Framework.Interfaces;
-using Chat.Framework.Models;
+using Chat.Framework.RequestResponse;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Chat.Presentation.Shared.Controllers;
 
 public abstract class ACommonController : ControllerBase
 {
-    protected readonly ICommandService CommandService;
+    protected readonly ICommandExecutor CommandExecutor;
 
-    protected ACommonController(ICommandService commandService)
+    protected ACommonController(ICommandExecutor commandExecutor)
     {
-        CommandService = commandService;
+        CommandExecutor = commandExecutor;
     }
 
     protected async Task<IResponse> GetCommandResponseAsync<TCommand>(TCommand command) where TCommand : class
     {
-        return await CommandService.GetResponseAsync(command);
+        return await CommandExecutor.ExecuteAsync(command);
     }
 }

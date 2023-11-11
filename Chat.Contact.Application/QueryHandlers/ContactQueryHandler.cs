@@ -9,8 +9,8 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Chat.Contact.Application.QueryHandlers;
 
-[ServiceRegister(typeof(IRequestHandler<ContactQuery, IQueryResponse>), ServiceLifetime.Singleton)]
-public class ContactQueryHandler : IRequestHandler<ContactQuery, IQueryResponse>
+[ServiceRegister(typeof(IHandler<ContactQuery, IQueryResponse>), ServiceLifetime.Singleton)]
+public class ContactQueryHandler : IHandler<ContactQuery, IQueryResponse>
 {
     private readonly IContactRepository _contactRepository;
 

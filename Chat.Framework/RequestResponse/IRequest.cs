@@ -1,9 +1,6 @@
-﻿namespace Chat.Framework.Interfaces;
+﻿namespace Chat.Framework.RequestResponse;
 
-public interface IRequest
-{ 
-
-}
+public interface IRequest {}
 
 public interface IRequest<TRequest> : IRequest
 {

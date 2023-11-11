@@ -21,8 +21,8 @@ public static class ServiceConfiguration
         services.AddAllAssemblies("Chat");
         services.AddAttributeRegisteredServices();
 
-        services.AddTransient<IRequestMediator, RequestMediator>();
-        services.AddTransient<IQueryService, QueryService>();
+        services.AddTransient<IMediator, Mediator>();
+        services.AddTransient<IQueryExecutor, QueryExecutor>();
 
         services.AddAuthentication(options =>
         {

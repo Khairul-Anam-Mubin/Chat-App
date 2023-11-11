@@ -8,8 +8,8 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Chat.Activity.Application.QueryHandlers;
 
-[ServiceRegister(typeof(IRequestHandler<LastSeenQuery, IQueryResponse>), ServiceLifetime.Singleton)]
-public class LastSeenQueryHandler : IRequestHandler<LastSeenQuery, IQueryResponse>
+[ServiceRegister(typeof(IHandler<LastSeenQuery, IQueryResponse>), ServiceLifetime.Singleton)]
+public class LastSeenQueryHandler : IHandler<LastSeenQuery, IQueryResponse>
 {
     private readonly ILastSeenRepository _lastSeenRepository;
 

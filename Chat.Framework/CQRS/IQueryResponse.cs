@@ -1,19 +1,22 @@
-﻿using Chat.Framework.Interfaces;
+﻿using Chat.Framework.RequestResponse;
 
 namespace Chat.Framework.CQRS;
 
-public interface IQueryResponse : IResponse
+public interface IQueryResponse : IQueryResponse<object> {}
+
+public interface IQueryResponse<TItem> : IResponse
 {
     int Offset { get; set; }
     int Limit { get; set; }
     int TotalCount { get; set; }
-    List<object> Items { get; set; }
 
-    void AddItem(object item);
+    List<TItem> Items { get; set; }
 
-    void AddItems(List<object> items);
+    void AddItem(TItem item);
 
-    void SetItems(List<object> items);
+    void AddItems(List<TItem> items);
 
-    List<T> GetItems<T>();
+    void SetItems(List<TItem> items);
+
+    List<TItem> GetItems();
 }

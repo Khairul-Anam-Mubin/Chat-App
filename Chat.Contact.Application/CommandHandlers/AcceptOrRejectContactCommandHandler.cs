@@ -1,20 +1,19 @@
 using Chat.Contact.Domain.Commands;
 using Chat.Contact.Domain.Interfaces;
 using Chat.Framework.Attributes;
-using Chat.Framework.Interfaces;
 using Chat.Framework.Mediators;
-using Chat.Framework.Models;
+using Chat.Framework.RequestResponse;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Chat.Contact.Application.CommandHandlers;
 
-[ServiceRegister(typeof(IRequestHandler<AcceptOrRejectContactRequestCommand, IResponse>), ServiceLifetime.Singleton)]
-public class AcceptOrRejectContactRequestCommandHandler : 
-    IRequestHandler<AcceptOrRejectContactRequestCommand, IResponse>
+[ServiceRegister(typeof(IHandler<AcceptOrRejectContactRequestCommand, IResponse>), ServiceLifetime.Singleton)]
+public class AcceptOrRejectContactCommandHandler : 
+    IHandler<AcceptOrRejectContactRequestCommand, IResponse>
 {
     private readonly IContactRepository _contactRepository;
 
-    public AcceptOrRejectContactRequestCommandHandler(IContactRepository contactRepository)
+    public AcceptOrRejectContactCommandHandler(IContactRepository contactRepository)
     {
         _contactRepository = contactRepository;
     }

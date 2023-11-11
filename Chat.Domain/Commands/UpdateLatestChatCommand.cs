@@ -1,5 +1,4 @@
 using Chat.Domain.Models;
-using Chat.Framework.CQRS;
 
 namespace Chat.Domain.Commands;
 

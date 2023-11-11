@@ -1,8 +1,7 @@
 using Chat.Activity.Domain.Queries;
 using Chat.Domain.Shared.Commands;
 using Chat.Framework.CQRS;
-using Chat.Framework.Interfaces;
-using Chat.Framework.Models;
+using Chat.Framework.RequestResponse;
 using Chat.Presentation.Shared.Controllers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -14,27 +13,27 @@ namespace Chat.Activity.Api.Controllers;
 [Authorize]
 public class ActivityController : ACommonController
 {
-    private readonly IQueryService _queryService;
-    private readonly ICommandService _commandService;
+    private readonly IQueryExecutor _queryExecutor;
+    private readonly ICommandExecutor _commandExecutor;
 
     public ActivityController(
-        ICommandService commandService, 
-        IQueryService queryService) : 
-        base(commandService)
+        ICommandExecutor commandExecutor, 
+        IQueryExecutor queryExecutor) : 
+        base(commandExecutor)
     {
-        _commandService = commandService;
-        _queryService = queryService;
+        _commandExecutor = commandExecutor;
+        _queryExecutor = queryExecutor;
     }
 
     [HttpPost, Route("last-seen")]
     public async Task<IActionResult> GetLastSeenModelAsync(LastSeenQuery query)
     {
-        return Ok(await _queryService.GetResponseAsync<LastSeenQuery, IQueryResponse>(query));
+        return Ok(await _queryExecutor.ExecuteAsync<LastSeenQuery, IQueryResponse>(query));
     }
 
     [HttpPost, Route("track")]
     public async Task<IActionResult> UpdateLastSeenAsync(UpdateLastSeenCommand command)
     {
-        return Ok(await _commandService.GetResponseAsync<UpdateLastSeenCommand, IResponse>(command));
+        return Ok(await _commandExecutor.ExecuteAsync<UpdateLastSeenCommand, IResponse>(command));
     }
 }

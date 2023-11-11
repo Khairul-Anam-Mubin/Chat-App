@@ -1,7 +1,6 @@
 using Chat.Framework.Attributes;
-using Chat.Framework.Interfaces;
 using Chat.Framework.Mediators;
-using Chat.Framework.Models;
+using Chat.Framework.RequestResponse;
 using Chat.Identity.Application.Extensions;
 using Chat.Identity.Domain.Commands;
 using Chat.Identity.Domain.Interfaces;
@@ -9,8 +8,8 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Chat.Identity.Application.CommandHandlers;
 
-[ServiceRegister(typeof(IRequestHandler<LoginCommand, IResponse>), ServiceLifetime.Singleton)]
-public class LoginCommandHandler : IRequestHandler<LoginCommand, IResponse>
+[ServiceRegister(typeof(IHandler<LoginCommand, IResponse>), ServiceLifetime.Singleton)]
+public class LoginCommandHandler : IHandler<LoginCommand, IResponse>
 {
     private readonly IUserRepository _userRepository;
     private readonly ITokenService _tokenService;

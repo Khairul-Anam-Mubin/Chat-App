@@ -3,15 +3,14 @@ using Chat.Activity.Domain.Models;
 using Chat.Domain.Shared.Commands;
 using Chat.Framework.Attributes;
 using Chat.Framework.CQRS;
-using Chat.Framework.Interfaces;
 using Chat.Framework.Mediators;
 using Chat.Framework.MessageBrokers;
-using Chat.Framework.Models;
+using Chat.Framework.RequestResponse;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Chat.Activity.Application.CommandHandlers;
 
-[ServiceRegister(typeof(IRequestHandler<UpdateLastSeenCommand, IResponse>), ServiceLifetime.Singleton)]
+[ServiceRegister(typeof(IHandler<UpdateLastSeenCommand, IResponse>), ServiceLifetime.Singleton)]
 public class UpdateLastSeenCommandConsumer : ACommandConsumer<UpdateLastSeenCommand, IResponse>
 {
     private readonly ILastSeenRepository _lastSeenRepository;

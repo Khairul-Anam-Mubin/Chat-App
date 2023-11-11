@@ -1,6 +1,4 @@
-﻿using Chat.Framework.CQRS;
-
-namespace Chat.Notification.Domain.Commands;
+﻿namespace Chat.Notification.Domain.Commands;
 
 public class PublishNotificationToConnectedHubCommand
 {

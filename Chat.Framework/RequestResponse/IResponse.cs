@@ -1,6 +1,7 @@
 using Chat.Framework.Enums;
+using Chat.Framework.Interfaces;
 
-namespace Chat.Framework.Interfaces;
+namespace Chat.Framework.RequestResponse;
 
 public interface IResponse : IMetaDataDictionary
 {

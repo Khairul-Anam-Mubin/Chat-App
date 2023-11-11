@@ -22,10 +22,12 @@ public abstract class AQuery : MetaDataDictionary, IQuery
         };
     }
 
-    public IQueryResponse CreateResponse(IQueryResponse response)
+    public IQueryResponse<TItem> CreateResponse<TItem>()
     {
-        response.Offset = Offset;
-        response.Limit = Limit;
-        return response;
+        return new QueryResponse<TItem>
+        {
+            Offset = Offset,
+            Limit = Limit
+        };
     }
 }

@@ -3,17 +3,16 @@ using Chat.Contact.Domain.Interfaces;
 using Chat.Contact.Domain.Models;
 using Chat.Domain.Shared.Queries;
 using Chat.Framework.Attributes;
-using Chat.Framework.Interfaces;
 using Chat.Framework.Mediators;
 using Chat.Framework.MessageBrokers;
-using Chat.Framework.Models;
+using Chat.Framework.RequestResponse;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Chat.Contact.Application.CommandHandlers;
 
-[ServiceRegister(typeof(IRequestHandler<AddContactCommand, IResponse>), ServiceLifetime.Transient)]
+[ServiceRegister(typeof(IHandler<AddContactCommand, IResponse>), ServiceLifetime.Transient)]
 public class AddContactCommandHandler : 
-    IRequestHandler<AddContactCommand, IResponse>
+    IHandler<AddContactCommand, IResponse>
 {
     private readonly IContactRepository _contactRepository;
     private readonly IMessageRequestClient _messageRequestClient;

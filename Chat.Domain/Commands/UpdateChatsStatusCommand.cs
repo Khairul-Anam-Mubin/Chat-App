@@ -1,5 +1,3 @@
-using Chat.Framework.CQRS;
-
 namespace Chat.Domain.Commands;
 
 public class UpdateChatsStatusCommand

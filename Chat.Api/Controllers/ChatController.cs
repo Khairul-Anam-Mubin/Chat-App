@@ -1,3 +1,4 @@
+using Chat.Application.DTOs;
 using Chat.Domain.Commands;
 using Chat.Domain.Queries;
 using Chat.Framework.CQRS;
@@ -12,12 +13,12 @@ namespace Chat.Api.Controllers;
 [Authorize]
 public class ChatController : ACommonController
 {
-    private readonly IQueryService _queryService;
+    private readonly IQueryExecutor _queryExecutor;
 
-    public ChatController(ICommandService commandService, IQueryService queryService) 
-        : base(commandService)
+    public ChatController(ICommandExecutor commandExecutor, IQueryExecutor queryExecutor) 
+        : base(commandExecutor)
     {
-        _queryService = queryService;
+        _queryExecutor = queryExecutor;
     }
 
     [HttpPost, Route("send")]
@@ -35,13 +36,13 @@ public class ChatController : ACommonController
     [HttpPost, Route("list")]
     public async Task<IActionResult> GetChatListAsync(ChatListQuery query)
     {
-        return Ok(await _queryService.GetResponseAsync(query));
+        return Ok(await _queryExecutor.ExecuteAsync(query));
     }
 
     [HttpPost, Route("get")]
     public async Task<IActionResult> GetChatsAsync(ChatQuery query)
     {
-        return Ok(await _queryService.GetResponseAsync<ChatQuery, IQueryResponse>(query));
+        return Ok(await _queryExecutor.ExecuteAsync<ChatQuery, IQueryResponse<ChatDto>>(query));
     }
         
 }

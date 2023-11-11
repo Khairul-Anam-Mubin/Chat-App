@@ -1,7 +1,7 @@
 using Chat.Framework.Enums;
-using Chat.Framework.Interfaces;
+using Chat.Framework.Models;
 
-namespace Chat.Framework.Models;
+namespace Chat.Framework.RequestResponse;
 
 public class Response : MetaDataDictionary, IResponse
 {

@@ -1,11 +1,6 @@
-﻿using Chat.Framework.Interfaces;
+﻿namespace Chat.Framework.RequestResponse;
 
-namespace Chat.Framework.Models;
-
-public class Request : IRequest
-{
-
-}
+public class Request : IRequest {}
 
 public class RequestEnvelope<TRequest> : Request, IRequest<TRequest>
 {

@@ -1,15 +1,14 @@
 using Chat.Framework.Attributes;
-using Chat.Framework.Interfaces;
 using Chat.Framework.Mediators;
-using Chat.Framework.Models;
+using Chat.Framework.RequestResponse;
 using Chat.Identity.Domain.Commands;
 using Chat.Identity.Domain.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Chat.Identity.Application.CommandHandlers;
 
-[ServiceRegister(typeof(IRequestHandler<LogOutCommand, IResponse>), ServiceLifetime.Singleton)]
-public class LogOutCommandHandler : IRequestHandler<LogOutCommand, IResponse>
+[ServiceRegister(typeof(IHandler<LogOutCommand, IResponse>), ServiceLifetime.Singleton)]
+public class LogOutCommandHandler : IHandler<LogOutCommand, IResponse>
 {
     private readonly ITokenService _tokenService;
 

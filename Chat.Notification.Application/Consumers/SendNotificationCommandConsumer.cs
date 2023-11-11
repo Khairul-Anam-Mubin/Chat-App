@@ -1,29 +1,28 @@
 ﻿using Chat.Domain.Shared.Commands;
 using Chat.Framework.Attributes;
 using Chat.Framework.CQRS;
-using Chat.Framework.Interfaces;
 using Chat.Framework.Mediators;
 using Chat.Framework.MessageBrokers;
-using Chat.Framework.Models;
+using Chat.Framework.RequestResponse;
 using Chat.Notification.Domain.Commands;
 using Chat.Notification.Domain.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Chat.Notification.Application.Consumers;
 
-[ServiceRegister(typeof(IRequestHandler<SendNotificationCommand, IResponse>), ServiceLifetime.Transient)]
+[ServiceRegister(typeof(IHandler<SendNotificationCommand, IResponse>), ServiceLifetime.Transient)]
 public class SendNotificationCommandConsumer :
     ACommandConsumer<SendNotificationCommand, IResponse>
 {
     private readonly IHubConnectionService _hubConnectionService;
-    private readonly ICommandService _commandService;
+    private readonly ICommandExecutor _commandExecutor;
 
     public SendNotificationCommandConsumer(
         IHubConnectionService hubConnectionService,
-        ICommandService commandService)
+        ICommandExecutor commandExecutor)
     {
         _hubConnectionService = hubConnectionService;
-        _commandService = commandService;
+        _commandExecutor = commandExecutor;
     }
 
     protected override async Task<IResponse> OnConsumeAsync(SendNotificationCommand command, IMessageContext<SendNotificationCommand>? context = null)
@@ -76,7 +75,7 @@ public class SendNotificationCommandConsumer :
             ReceiverIds = receiverIds
         };
 
-        await _commandService.GetResponseAsync(publishNotificationToConnectedHubCommand);
+        await _commandExecutor.ExecuteAsync(publishNotificationToConnectedHubCommand);
     }
 
     private async Task SendNotificationToClientAsync(List<string> receiverIds, Chat.Domain.Shared.Entities.Notification notification)
@@ -87,6 +86,6 @@ public class SendNotificationCommandConsumer :
             ReceiverIds = receiverIds
         };
 
-        await _commandService.GetResponseAsync(sendNotificationToClientCommand);
+        await _commandExecutor.ExecuteAsync(sendNotificationToClientCommand);
     }
 }

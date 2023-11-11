@@ -11,7 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Chat.Identity.Application.Consumers;
 
-[ServiceRegister(typeof(IRequestHandler<UserProfileQuery, UserProfileQueryResponse>), ServiceLifetime.Transient)]
+[ServiceRegister(typeof(IHandler<UserProfileQuery, UserProfileQueryResponse>), ServiceLifetime.Transient)]
 public class UserProfileQueryConsumer : AQueryConsumer<UserProfileQuery, UserProfileQueryResponse>
 {
     private readonly IUserRepository _userRepository;

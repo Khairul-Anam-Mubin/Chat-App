@@ -12,14 +12,14 @@ namespace Chat.Contact.Presentation.Controllers;
 [Authorize]
 public class ContactController : ACommonController
 {
-    private readonly IQueryService _queryService;
+    private readonly IQueryExecutor _queryExecutor;
 
     public ContactController(
-        ICommandService commandService, 
-        IQueryService queryService)
-        : base(commandService)
+        ICommandExecutor commandExecutor, 
+        IQueryExecutor queryExecutor)
+        : base(commandExecutor)
     {
-        _queryService = queryService;
+        _queryExecutor = queryExecutor;
     }
 
     [HttpPost, Route("add")]
@@ -37,6 +37,6 @@ public class ContactController : ACommonController
     [HttpPost, Route("get")]
     public async Task<IActionResult> AddContactAsync(ContactQuery query)
     {
-        return Ok(await _queryService.GetResponseAsync<ContactQuery, IQueryResponse>(query));
+        return Ok(await _queryExecutor.ExecuteAsync<ContactQuery, IQueryResponse>(query));
     }
 }

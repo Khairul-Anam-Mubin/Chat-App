@@ -9,8 +9,8 @@ namespace Chat.Identity.Presentation.Controllers;
 [Route("api/[controller]")]
 public class AuthController : ACommonController
 {
-    public AuthController(ICommandService commandService)
-        : base(commandService)
+    public AuthController(ICommandExecutor commandExecutor)
+        : base(commandExecutor)
     {
 
     }

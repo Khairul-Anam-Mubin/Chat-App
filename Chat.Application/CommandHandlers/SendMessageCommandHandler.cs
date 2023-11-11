@@ -7,30 +7,29 @@ using Chat.Domain.Shared.Constants;
 using Chat.Domain.Shared.Entities;
 using Chat.Framework.Attributes;
 using Chat.Framework.CQRS;
-using Chat.Framework.Interfaces;
 using Chat.Framework.Mediators;
 using Chat.Framework.MessageBrokers;
-using Chat.Framework.Models;
+using Chat.Framework.RequestResponse;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Chat.Application.CommandHandlers;
 
-[ServiceRegister(typeof(IRequestHandler<SendMessageCommand, IResponse>), 
+[ServiceRegister(typeof(IHandler<SendMessageCommand, IResponse>), 
     ServiceLifetime.Transient)]
 public class SendMessageCommandHandler : 
-    IRequestHandler<SendMessageCommand, IResponse>
+    IHandler<SendMessageCommand, IResponse>
 {
     private readonly IChatRepository _chatRepository;
-    private readonly ICommandService _commandService;
+    private readonly ICommandExecutor _commandExecutor;
     private readonly ICommandBus _commandBus;
 
     public SendMessageCommandHandler(
         IChatRepository chatRepository,
-        ICommandService commandService,
+        ICommandExecutor commandExecutor,
         ICommandBus commandBus)
     {
         _chatRepository = chatRepository;
-        _commandService = commandService;
+        _commandExecutor = commandExecutor;
         _commandBus = commandBus;
     }
 
@@ -93,6 +92,6 @@ public class SendMessageCommandHandler :
             LatestChatModel = latestChatModel
         };
 
-        return _commandService.GetResponseAsync(updateLatestChatCommand);
+        return _commandExecutor.ExecuteAsync(updateLatestChatCommand);
     }
 }

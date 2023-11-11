@@ -8,8 +8,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Chat.Application.QueryHandlers;
 
-[ServiceRegister(typeof(IRequestHandler<ChatListQuery, IQueryResponse>), ServiceLifetime.Singleton)]
-public class ChatListQueryHandler : IRequestHandler<ChatListQuery, IQueryResponse>
+[ServiceRegister(typeof(IHandler<ChatListQuery, IQueryResponse>), ServiceLifetime.Singleton)]
+public class ChatListQueryHandler : 
+    IHandler<ChatListQuery, IQueryResponse>
 {
     private readonly ILatestChatRepository _latestChatRepository;
 

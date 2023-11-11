@@ -1,5 +1,3 @@
-using Chat.Framework.CQRS;
-
 namespace Chat.Contact.Domain.Commands;
 
 public class AddContactCommand

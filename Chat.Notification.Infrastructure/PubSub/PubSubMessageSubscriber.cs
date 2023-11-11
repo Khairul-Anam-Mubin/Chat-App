@@ -16,17 +16,17 @@ public sealed class PubSubMessageSubscriber : IInitialService
     private readonly IHubConnectionService _hubConnectionService;
     private readonly IRedisContext _redisContext;
     private readonly IConfiguration _configuration;
-    private readonly ICommandService _commandService;
+    private readonly ICommandExecutor _commandExecutor;
 
     public PubSubMessageSubscriber(
         IRedisContext redisContext,
         IConfiguration configuration,
-        ICommandService commandService,
+        ICommandExecutor commandExecutor,
         IHubConnectionService hubConnectionService)
     {
         _redisContext = redisContext;
         _configuration = configuration;
-        _commandService = commandService;
+        _commandExecutor = commandExecutor;
         _hubConnectionService = hubConnectionService;
     }
 
@@ -52,7 +52,7 @@ public sealed class PubSubMessageSubscriber : IInitialService
 
             Console.WriteLine($"PubSubMessage.Id : {pubSubMessage?.Id}, PubSubMessageType: {pubSubMessage?.MessageType.ToString()} , message : {message}\n");
 
-            Task.Factory.StartNew(() => _commandService.GetResponseAsync(pubSubMessage!));
+            Task.Factory.StartNew(() => _commandExecutor.ExecuteAsync(pubSubMessage!));
 
         });
     }

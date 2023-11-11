@@ -1,7 +1,6 @@
 using Chat.Framework.Attributes;
-using Chat.Framework.Interfaces;
 using Chat.Framework.Mediators;
-using Chat.Framework.Models;
+using Chat.Framework.RequestResponse;
 using Chat.Identity.Application.Extensions;
 using Chat.Identity.Domain.Commands;
 using Chat.Identity.Domain.Interfaces;
@@ -9,9 +8,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Chat.Identity.Application.CommandHandlers;
 
-[ServiceRegister(typeof(IRequestHandler<UpdateUserProfileCommand, IResponse>), ServiceLifetime.Singleton)]
+[ServiceRegister(typeof(IHandler<UpdateUserProfileCommand, IResponse>), ServiceLifetime.Singleton)]
 public class UpdateUserProfileCommandHandler : 
-    IRequestHandler<UpdateUserProfileCommand, IResponse>
+    IHandler<UpdateUserProfileCommand, IResponse>
 {
     private readonly IUserRepository _userRepository;
 

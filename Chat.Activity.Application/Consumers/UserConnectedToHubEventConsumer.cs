@@ -1,20 +1,19 @@
 ﻿using Chat.Domain.Shared.Commands;
 using Chat.Domain.Shared.Events;
 using Chat.Framework.CQRS;
-using Chat.Framework.Extensions;
 using Chat.Framework.MessageBrokers;
-using Chat.Framework.Models;
+using Chat.Framework.RequestResponse;
 
 namespace Chat.Activity.Application.Consumers;
 
 public class UserConnectedToHubEventConsumer : AMessageConsumer<UserConnectedToHubEvent>
 {
-    private readonly ICommandService _commandService;
+    private readonly ICommandExecutor _commandExecutor;
 
     public UserConnectedToHubEventConsumer(
-        ICommandService commandService)
+        ICommandExecutor commandExecutor)
     {
-        _commandService = commandService;
+        _commandExecutor = commandExecutor;
     }
 
     public override async Task Consume(IMessageContext<UserConnectedToHubEvent> context)
@@ -30,6 +29,6 @@ public class UserConnectedToHubEventConsumer : AMessageConsumer<UserConnectedToH
             IsActive = isActive
         };
 
-        await _commandService.GetResponseAsync<UpdateLastSeenCommand, Response>(updateLastSeenCommand);
+        await _commandExecutor.ExecuteAsync<UpdateLastSeenCommand, Response>(updateLastSeenCommand);
     }
 }

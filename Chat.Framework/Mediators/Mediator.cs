@@ -3,11 +3,11 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Chat.Framework.Mediators;
 
-public class RequestMediator : IRequestMediator
+public class Mediator : IMediator
 {
     private readonly IServiceProvider _serviceProvider;
 
-    public RequestMediator(IServiceProvider serviceProvider)
+    public Mediator(IServiceProvider serviceProvider)
     {
         _serviceProvider = serviceProvider;
     }
@@ -42,35 +42,35 @@ public class RequestMediator : IRequestMediator
         return request?.GetType().Name + GetHandlerNameSuffix();
     }
 
-    protected virtual IRequestHandler<TRequest, TResponse>? GetHandler<TRequest, TResponse>(string handlerName)
+    protected virtual IHandler<TRequest, TResponse>? GetHandler<TRequest, TResponse>(string handlerName)
     {
         try
         {
-            return _serviceProvider.GetRequiredService<IRequestHandler<TRequest, TResponse>>();
+            return _serviceProvider.GetRequiredService<IHandler<TRequest, TResponse>>();
         }
         catch (Exception e)
         {
             Console.WriteLine(e.Message);
         }
 
-        var handler = _serviceProvider.GetService<IRequestHandler>(handlerName);
+        var handler = _serviceProvider.GetService<IHandler>(handlerName);
 
-        return (IRequestHandler<TRequest, TResponse>?)handler; // todo: will use smart cast later
+        return (IHandler<TRequest, TResponse>?)handler; // todo: will use smart cast later
     }
 
-    protected virtual IRequestHandler<TRequest>? GetHandler<TRequest>(string handlerName)
+    protected virtual IHandler<TRequest>? GetHandler<TRequest>(string handlerName)
     {
         try
         {
-            return _serviceProvider.GetRequiredService<IRequestHandler<TRequest>>();
+            return _serviceProvider.GetRequiredService<IHandler<TRequest>>();
         }
         catch (Exception e)
         {
             Console.WriteLine(e.Message);
         }
 
-        var handler = _serviceProvider.GetService<IRequestHandler>(handlerName);
+        var handler = _serviceProvider.GetService<IHandler>(handlerName);
 
-        return (IRequestHandler<TRequest>?)handler; // todo: will use smart cast later
+        return (IHandler<TRequest>?)handler; // todo: will use smart cast later
     }
 }

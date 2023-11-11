@@ -1,17 +1,16 @@
 using Chat.Application.Shared.Helpers;
 using Chat.Application.Shared.Providers;
 using Chat.Framework.Attributes;
-using Chat.Framework.Interfaces;
 using Chat.Framework.Mediators;
-using Chat.Framework.Models;
+using Chat.Framework.RequestResponse;
 using Chat.Identity.Domain.Commands;
 using Chat.Identity.Domain.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Chat.Identity.Application.CommandHandlers;
 
-[ServiceRegister(typeof(IRequestHandler<RefreshTokenCommand, IResponse>), ServiceLifetime.Singleton)]
-public class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, IResponse>
+[ServiceRegister(typeof(IHandler<RefreshTokenCommand, IResponse>), ServiceLifetime.Singleton)]
+public class RefreshTokenCommandHandler : IHandler<RefreshTokenCommand, IResponse>
 {
     private readonly ITokenService _tokenService;
 

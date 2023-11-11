@@ -1,3 +1,4 @@
+using Chat.Application.DTOs;
 using Chat.Application.Extensions;
 using Chat.Domain.Interfaces;
 using Chat.Domain.Queries;
@@ -8,8 +9,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Chat.Application.QueryHandlers;
 
-[ServiceRegister(typeof(IRequestHandler<ChatQuery, IQueryResponse>), ServiceLifetime.Singleton)]
-public class ChatQueryHandler : IRequestHandler<ChatQuery, IQueryResponse>
+[ServiceRegister(typeof(IHandler<ChatQuery, IQueryResponse<ChatDto>>), ServiceLifetime.Singleton)]
+public class ChatQueryHandler : 
+    IHandler<ChatQuery, IQueryResponse<ChatDto>>
 {
     private readonly IChatRepository _chatRepository;
 
@@ -18,11 +20,13 @@ public class ChatQueryHandler : IRequestHandler<ChatQuery, IQueryResponse>
         _chatRepository = chatRepository;
     }
 
-    public async Task<IQueryResponse> HandleAsync(ChatQuery query)
+    public async Task<IQueryResponse<ChatDto>> HandleAsync(ChatQuery query)
     {
-        var response = query.CreateResponse();
+        var response = query.CreateResponse<ChatDto>();
 
-        var chatModels = await _chatRepository.GetChatModelsAsync(query.UserId, query.SendTo, query.Offset, query.Limit);
+        var chatModels = 
+            await _chatRepository.GetChatModelsAsync(query.UserId, query.SendTo, query.Offset, query.Limit);
+        
         foreach (var chatModel in chatModels)
         {
             response.AddItem(chatModel.ToChatDto());   

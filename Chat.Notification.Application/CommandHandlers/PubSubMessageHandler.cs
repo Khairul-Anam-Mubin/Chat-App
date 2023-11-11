@@ -2,22 +2,21 @@
 using Chat.Framework.CQRS;
 using Chat.Framework.Database.Models;
 using Chat.Framework.Extensions;
-using Chat.Framework.Interfaces;
 using Chat.Framework.Mediators;
-using Chat.Framework.Models;
+using Chat.Framework.RequestResponse;
 using Chat.Notification.Domain.Commands;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Chat.Notification.Application.CommandHandlers;
 
-[ServiceRegister(typeof(IRequestHandler<PubSubMessage, IResponse>), ServiceLifetime.Transient)]
-public class PubSubMessageHandler : IRequestHandler<PubSubMessage, IResponse>
+[ServiceRegister(typeof(IHandler<PubSubMessage, IResponse>), ServiceLifetime.Transient)]
+public class PubSubMessageHandler : IHandler<PubSubMessage, IResponse>
 {
-    private readonly ICommandService _commandService;
+    private readonly ICommandExecutor _commandExecutor;
 
-    public PubSubMessageHandler(ICommandService commandService)
+    public PubSubMessageHandler(ICommandExecutor commandExecutor)
     {
-        _commandService = commandService;
+        _commandExecutor = commandExecutor;
     }
 
     public async Task<IResponse> HandleAsync(PubSubMessage pubSubMessage)
@@ -27,7 +26,7 @@ public class PubSubMessageHandler : IRequestHandler<PubSubMessage, IResponse>
             var sendNotificationToClientCommand =
                 pubSubMessage.Message.SmartCast<SendNotificationToClientCommand>();
 
-            await _commandService.GetResponseAsync(sendNotificationToClientCommand!);
+            await _commandExecutor.ExecuteAsync(sendNotificationToClientCommand!);
         }
 
         return Response.Success();
