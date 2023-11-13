@@ -3,7 +3,7 @@ using Chat.Framework.RequestResponse;
 
 namespace Chat.FileStore.Application.Queries;
 
-public class FileDownloadQuery : PaginationQuery<FileDownloadResult>
+public class FileDownloadQuery : APaginationQuery<FileDownloadResult>
 {
     public string FileId { get; set; } = string.Empty;
 }

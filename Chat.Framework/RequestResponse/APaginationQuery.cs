@@ -2,7 +2,7 @@ using Chat.Framework.Models;
 
 namespace Chat.Framework.RequestResponse;
 
-public abstract class PaginationQuery<TItem> : MetaDataDictionary, IPaginationQuery<TItem>
+public abstract class APaginationQuery<TItem> : MetaDataDictionary, IPaginationQuery<TItem>
 {
     public int Offset { get; set; }
     public int Limit { get; set; }

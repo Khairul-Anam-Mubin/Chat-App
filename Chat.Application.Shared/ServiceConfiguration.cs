@@ -23,6 +23,7 @@ public static class ServiceConfiguration
 
         services.AddTransient<IMediator, Mediator>();
         services.AddTransient<IQueryExecutor, QueryExecutor>();
+        services.AddTransient<ICommandExecutor, CommandExecutor>();
 
         services.AddAuthentication(options =>
         {

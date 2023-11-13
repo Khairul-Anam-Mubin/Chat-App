@@ -29,7 +29,7 @@ public class ActivityController : ACommonController
     [HttpPost, Route("last-seen")]
     public async Task<IActionResult> GetLastSeenModelAsync(LastSeenQuery query)
     {
-        return Ok(await _queryExecutor.ExecuteAsync<LastSeenQuery, IPaginationResponse<LastSeenDto>>(query));
+        return Ok(await _queryExecutor.ExecuteAsync<LastSeenQuery, LastSeenQueryResponse>(query));
     }
 
     [HttpPost, Route("track")]

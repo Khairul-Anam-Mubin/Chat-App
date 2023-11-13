@@ -9,8 +9,8 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Chat.Activity.Application.QueryHandlers;
 
-[ServiceRegister(typeof(IHandler<LastSeenQuery, IPaginationResponse<LastSeenDto>>), ServiceLifetime.Singleton)]
-public class LastSeenQueryHandler : IHandler<LastSeenQuery, IPaginationResponse<LastSeenDto>>
+[ServiceRegister(typeof(IHandler<LastSeenQuery, LastSeenQueryResponse>), ServiceLifetime.Singleton)]
+public class LastSeenQueryHandler : IHandler<LastSeenQuery, LastSeenQueryResponse>
 {
     private readonly ILastSeenRepository _lastSeenRepository;
 
@@ -19,14 +19,14 @@ public class LastSeenQueryHandler : IHandler<LastSeenQuery, IPaginationResponse<
         _lastSeenRepository = lastSeenRepository;
     }
 
-    public async Task<IPaginationResponse<LastSeenDto>> HandleAsync(LastSeenQuery query)
+    public async Task<LastSeenQueryResponse> HandleAsync(LastSeenQuery query)
     {
-        var response = query.CreateResponse();
+        var response = new LastSeenQueryResponse();
 
         var lastSeenModels = await _lastSeenRepository.GetLastSeenModelsByUserIdsAsync(query.UserIds);
         foreach (var lastSeenModel in lastSeenModels)
         {
-            response.AddItem(lastSeenModel.ToLastSeenDto());
+            response.Items.Add(lastSeenModel.ToLastSeenDto());
         }
 
         return response;

@@ -1,12 +1,9 @@
-using Chat.Framework.Attributes;
 using Chat.Framework.Enums;
 using Chat.Framework.Mediators;
 using Chat.Framework.RequestResponse;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Chat.Framework.CQRS;
 
-[ServiceRegister(typeof(ICommandExecutor), ServiceLifetime.Transient)]
 public class CommandExecutor : ICommandExecutor
 {
     private readonly IMediator _mediator;
