@@ -5,6 +5,8 @@ using Chat.Notification.Infrastructure.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.AddGlobalConfig();
+
 AssemblyCache.Instance.AddAllAssemblies("Chat");
 
 builder.Services

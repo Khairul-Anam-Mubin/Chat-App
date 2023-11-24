@@ -3,6 +3,7 @@ using Chat.Domain.Models;
 using Chat.Framework.Database.Interfaces;
 using Chat.Framework.Database.Models;
 using Chat.Framework.Database.Repositories;
+using Chat.Framework.Extensions;
 using Microsoft.Extensions.Configuration;
 using MongoDB.Driver;
 
@@ -11,7 +12,7 @@ namespace Chat.Infrastructure.Repositories;
 public class ChatRepository : RepositoryBase<ChatModel>, IChatRepository
 {
     public ChatRepository(IMongoDbContext mongoDbContext, IConfiguration configuration)
-    : base(configuration.GetSection("DatabaseInfo").Get<DatabaseInfo>(), mongoDbContext)
+    : base(configuration.GetConfig<DatabaseInfo>()!, mongoDbContext)
     {}
 
     public async Task<List<ChatModel>> GetChatModelsAsync(string userId, string sendTo, int offset, int limit)

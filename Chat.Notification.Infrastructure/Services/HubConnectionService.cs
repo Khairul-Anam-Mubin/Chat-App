@@ -1,5 +1,6 @@
 using Chat.Framework.Database.Interfaces;
 using Chat.Framework.Database.Models;
+using Chat.Framework.Extensions;
 using Chat.Notification.Domain.Interfaces;
 using Microsoft.Extensions.Configuration;
 
@@ -17,7 +18,7 @@ public class HubConnectionService : IHubConnectionService
     {
         _hubInstanceId = Guid.NewGuid().ToString();
         _redisContext = redisContext;
-        _databaseInfo = configuration.GetSection("RedisConfig:DatabaseInfo").Get<DatabaseInfo>();
+        _databaseInfo = configuration.GetConfig<DatabaseInfo>("RedisConfig")!;
         _connectionIdUserIdMapper = new Dictionary<string, string>();
         _userIdConnectionIdMapper = new Dictionary<string, string>();
     }

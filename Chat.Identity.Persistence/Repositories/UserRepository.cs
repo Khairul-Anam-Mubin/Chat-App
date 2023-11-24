@@ -1,6 +1,8 @@
+using Amazon.Runtime.Internal;
 using Chat.Framework.Database.Interfaces;
 using Chat.Framework.Database.Models;
 using Chat.Framework.Database.Repositories;
+using Chat.Framework.Extensions;
 using Chat.Identity.Domain.Interfaces;
 using Chat.Identity.Domain.Models;
 using Microsoft.Extensions.Configuration;
@@ -11,7 +13,7 @@ namespace Chat.Identity.Infrastructure.Repositories;
 public class UserRepository : RepositoryBase<UserModel>, IUserRepository
 {
     public UserRepository(IMongoDbContext mongoDbContext, IConfiguration configuration)
-    : base(configuration.GetSection("DatabaseInfo").Get<DatabaseInfo>(), mongoDbContext)
+    : base(configuration.GetConfig<DatabaseInfo>()!, mongoDbContext)
     {}
 
     public async Task<bool> IsUserExistAsync(UserModel userModel)

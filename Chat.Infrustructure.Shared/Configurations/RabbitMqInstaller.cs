@@ -1,4 +1,5 @@
 ﻿using Chat.Framework;
+using Chat.Framework.Extensions;
 using Chat.Framework.MessageBrokers;
 using Chat.Framework.ServiceInstaller;
 using MassTransit;
@@ -11,7 +12,7 @@ public class RabbitMqInstaller : IServiceInstaller
 {
     public void Install(IServiceCollection services, IConfiguration configuration)
     {
-        services.AddSingleton(configuration.GetSection("MessageBrokerConfig").Get<MessageBrokerConfig>());
+        services.AddSingleton(configuration.GetConfig<MessageBrokerConfig>());
 
         services.AddMassTransit(busConfigurator =>
         {

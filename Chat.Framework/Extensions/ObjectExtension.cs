@@ -40,7 +40,7 @@ public static class ObjectExtension
             Console.WriteLine(e);
         }
 
-        if (obj is RedisValue)
+        if (obj is RedisValue ob)
         {
             try
             {

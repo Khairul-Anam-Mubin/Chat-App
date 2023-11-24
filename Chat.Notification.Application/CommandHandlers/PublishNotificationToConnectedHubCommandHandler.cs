@@ -1,5 +1,6 @@
 ﻿using Chat.Framework.Database.Interfaces;
 using Chat.Framework.Database.Models;
+using Chat.Framework.Extensions;
 using Chat.Framework.Mediators;
 using Chat.Framework.RequestResponse;
 using Chat.Notification.Application.Commands;
@@ -18,8 +19,7 @@ public class PublishNotificationToConnectedHubCommandHandler :
         IRedisContext redisContext)
     {
         _redisContext = redisContext;
-        _databaseInfo = configuration.GetSection("RedisConfig:DatabaseInfo")
-            .Get<DatabaseInfo>();
+        _databaseInfo = configuration.GetConfig<DatabaseInfo>("RedisConfig")!;
     }
 
     public async Task<IResponse> HandleAsync(PublishNotificationToConnectedHubCommand request)

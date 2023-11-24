@@ -1,4 +1,6 @@
 ﻿using System.Text;
+using Chat.Framework;
+using Chat.Framework.Extensions;
 using Chat.Framework.ServiceInstaller;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
@@ -12,6 +14,7 @@ public class AuthenticationInstaller : IServiceInstaller
 {
     public void Install(IServiceCollection services, IConfiguration configuration)
     {
+        var tokenConfig = configuration.TryGetConfig<TokenConfig>();
         services.AddAuthentication(options => 
         {
             options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -26,10 +29,10 @@ public class AuthenticationInstaller : IServiceInstaller
                 ValidateIssuerSigningKey = true,
 
                 ClockSkew = TimeSpan.Zero,
-                ValidIssuer = configuration["TokenConfig:Issuer"],
-                ValidAudience = configuration["TokenConfig:Audience"],
+                ValidIssuer = tokenConfig.Issuer,
+                ValidAudience = tokenConfig.Audience,
                 IssuerSigningKey =
-                    new SymmetricSecurityKey(Encoding.UTF32.GetBytes(configuration["TokenConfig:SecretKey"]))
+                    new SymmetricSecurityKey(Encoding.UTF32.GetBytes(tokenConfig.SecretKey))
             };
             options.Events = new JwtBearerEvents
             {

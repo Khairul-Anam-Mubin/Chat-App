@@ -29,8 +29,7 @@ public sealed class PubSubMessageSubscriber : IInitialService
 
     public async Task InitializeAsync()
     {
-        var subscriber = _redisContext.GetSubscriber(
-            _configuration.GetSection("RedisConfig:DatabaseInfo").Get<DatabaseInfo>());
+        var subscriber = _redisContext.GetSubscriber(_configuration.GetConfig<DatabaseInfo>("RedisConfig")!);
 
         var channel = _hubConnectionService.GetCurrentHubInstanceId();
 

@@ -26,4 +26,45 @@ public static class WebApplicationExtension
         
         return app;
     }
+
+    public static WebApplicationBuilder AddGlobalConfig(this WebApplicationBuilder builder, string globalConfigPath = "")
+    {
+        var configuration = builder.Configuration;
+        
+        var configPath = configuration["GlobalConfigPath"];
+
+        if (!string.IsNullOrEmpty(globalConfigPath))
+        {
+            configPath = globalConfigPath;
+        }
+
+        if (string.IsNullOrEmpty(configPath))
+        {
+            throw new Exception("Config Path Not Found");
+        }
+
+        var configText = File.ReadAllText(configPath);
+
+        if (string.IsNullOrEmpty(configText))
+        {
+            throw new Exception("File is empty");
+        }
+
+        var configDictionary = configText.Deserialize<Dictionary<string, object>>();
+
+        if (configDictionary == null)
+        {
+            throw new Exception("ConfigDictionary is null");
+        }
+
+        foreach (var kv in configDictionary)
+        {
+            if (string.IsNullOrEmpty(configuration[kv.Key]))
+            {
+                configuration[kv.Key] = kv.Value.Serialize();
+            }
+        }
+
+        return builder;
+    }
 }

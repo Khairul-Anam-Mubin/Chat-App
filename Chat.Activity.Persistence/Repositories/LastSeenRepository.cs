@@ -3,6 +3,7 @@ using Chat.Activity.Domain.Models;
 using Chat.Framework.Database.Interfaces;
 using Chat.Framework.Database.Models;
 using Chat.Framework.Database.Repositories;
+using Chat.Framework.Extensions;
 using Microsoft.Extensions.Configuration;
 using MongoDB.Driver;
 
@@ -11,7 +12,7 @@ namespace Chat.Activity.Infrastructure.Repositories;
 public class LastSeenRepository : RepositoryBase<LastSeenModel>, ILastSeenRepository
 {
     public LastSeenRepository(IMongoDbContext mongoDbContext, IConfiguration configuration) 
-        : base(configuration.GetSection("DatabaseInfo").Get<DatabaseInfo>(), mongoDbContext) 
+        : base(configuration.GetConfig<DatabaseInfo>()!, mongoDbContext) 
     {}
 
     public async Task<LastSeenModel?> GetLastSeenModelByUserIdAsync(string userId)
