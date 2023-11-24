@@ -1,13 +1,14 @@
-using Chat.Application.Shared;
+using Chat.Framework;
 using Chat.Framework.Extensions;
-using Chat.Notification.Infrastructure;
+using Chat.Framework.ServiceInstaller;
 using Chat.Notification.Infrastructure.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
+AssemblyCache.Instance.AddAllAssemblies("Chat");
+
 builder.Services
-    .AddCommonServices(builder.Configuration) 
-    .AddNotifications();
+    .InstallServices(builder.Configuration, AssemblyCache.Instance.GetAddedAssemblies());
 
 var app = builder.Build();
 

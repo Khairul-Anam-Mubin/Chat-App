@@ -1,16 +1,13 @@
 using Chat.Contact.Domain.Interfaces;
 using Chat.Contact.Domain.Models;
-using Chat.Framework.Attributes;
 using Chat.Framework.Database.Interfaces;
 using Chat.Framework.Database.Models;
 using Chat.Framework.Database.Repositories;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
 
-namespace Chat.Contact.Persistence.Repositories;
+namespace Chat.Contact.Infrastructure.Repositories;
 
-[ServiceRegister(typeof(IContactRepository), ServiceLifetime.Singleton)]
 public class ContactRepository : RepositoryBase<ContactModel>, IContactRepository
 {
     public ContactRepository(IMongoDbContext mongoDbContext, IConfiguration configuration)

@@ -1,13 +1,10 @@
 using Chat.Contact.Application.Commands;
 using Chat.Contact.Domain.Interfaces;
-using Chat.Framework.Attributes;
 using Chat.Framework.Mediators;
 using Chat.Framework.RequestResponse;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Chat.Contact.Application.CommandHandlers;
 
-[ServiceRegister(typeof(IHandler<AcceptOrRejectContactRequestCommand, IResponse>), ServiceLifetime.Singleton)]
 public class AcceptOrRejectContactCommandHandler : 
     IHandler<AcceptOrRejectContactRequestCommand, IResponse>
 {

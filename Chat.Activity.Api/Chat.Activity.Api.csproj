@@ -8,9 +8,9 @@
 
   <ItemGroup>
 	  <ProjectReference Include="..\Chat.Activity.Application\Chat.Activity.Application.csproj" />
-	  <ProjectReference Include="..\Chat.Activity.Persistence\Chat.Activity.Persistence.csproj" />
+	  <ProjectReference Include="..\Chat.Activity.Persistence\Chat.Activity.Infrastructure.csproj" />
 	  <ProjectReference Include="..\Chat.Application.Shared\Chat.Application.Shared.csproj" />
-	  <ProjectReference Include="..\Chat.Presentation.Shared\Chat.Presentation.Shared.csproj" />
+	  <ProjectReference Include="..\Chat.Infrustructure.Shared\Chat.Infrastructure.Shared.csproj" />
   </ItemGroup>
 
 </Project>

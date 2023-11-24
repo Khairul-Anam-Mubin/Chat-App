@@ -35,11 +35,6 @@ public static class ServiceProviderExtension
 
         return resolvedService;
     }
-        
-    public static List<Assembly> GetAddedAssemblies(this IServiceProvider serviceProvider)
-    {
-        return ServiceCollectionExtension.GetAddedAssemblies();
-    }
 
     private static bool TryForServiceCache<T>(T service)
     {

@@ -2,15 +2,12 @@ using Chat.Contact.Application.Commands;
 using Chat.Contact.Domain.Interfaces;
 using Chat.Contact.Domain.Models;
 using Chat.Domain.Shared.Queries;
-using Chat.Framework.Attributes;
 using Chat.Framework.Mediators;
 using Chat.Framework.MessageBrokers;
 using Chat.Framework.RequestResponse;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Chat.Contact.Application.CommandHandlers;
 
-[ServiceRegister(typeof(IHandler<AddContactCommand, IResponse>), ServiceLifetime.Transient)]
 public class AddContactCommandHandler : 
     IHandler<AddContactCommand, IResponse>
 {

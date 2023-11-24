@@ -1,14 +1,11 @@
 using Chat.FileStore.Application.Queries;
 using Chat.FileStore.Domain.Interfaces;
 using Chat.FileStore.Domain.Models;
-using Chat.Framework.Attributes;
 using Chat.Framework.Mediators;
 using Chat.Framework.RequestResponse;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Chat.FileStore.Application.QueryHandlers;
 
-[ServiceRegister(typeof(IHandler<FileModelQuery, IPaginationResponse<FileModel>>), ServiceLifetime.Singleton)]
 public class FileModelQueryHandler : IHandler<FileModelQuery, IPaginationResponse<FileModel>>
 {
     private readonly IFileRepository _fileRepository;

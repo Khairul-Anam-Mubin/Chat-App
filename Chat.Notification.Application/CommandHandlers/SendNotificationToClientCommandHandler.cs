@@ -1,13 +1,10 @@
-﻿using Chat.Framework.Attributes;
-using Chat.Framework.Mediators;
+﻿using Chat.Framework.Mediators;
 using Chat.Framework.RequestResponse;
 using Chat.Notification.Application.Commands;
 using Chat.Notification.Domain.Interfaces;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Chat.Notification.Application.CommandHandlers;
 
-[ServiceRegister(typeof(IHandler<SendNotificationToClientCommand, IResponse>), ServiceLifetime.Transient)]
 public class SendNotificationToClientCommandHandler :
     IHandler<SendNotificationToClientCommand, IResponse>
 {

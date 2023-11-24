@@ -29,6 +29,6 @@ public class UserConnectedToHubEventConsumer : AMessageConsumer<UserConnectedToH
             IsActive = isActive
         };
 
-        await _commandExecutor.ExecuteAsync<UpdateLastSeenCommand, Response>(updateLastSeenCommand);
+        await _commandExecutor.ExecuteAsync<UpdateLastSeenCommand, IResponse>(updateLastSeenCommand);
     }
 }

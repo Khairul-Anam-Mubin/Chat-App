@@ -1,16 +1,12 @@
 using Chat.Domain.Shared.Queries;
-using Chat.Framework.Attributes;
 using Chat.Framework.CQRS;
-using Chat.Framework.Mediators;
 using Chat.Framework.MessageBrokers;
 using Chat.Identity.Application.Extensions;
 using Chat.Identity.Domain.Interfaces;
 using Chat.Identity.Domain.Models;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Chat.Identity.Application.Consumers;
 
-[ServiceRegister(typeof(IHandler<UserProfileQuery, UserProfileResponse>), ServiceLifetime.Transient)]
 public class UserProfileQueryConsumer : AQueryConsumer<UserProfileQuery, UserProfileResponse>
 {
     private readonly IUserRepository _userRepository;

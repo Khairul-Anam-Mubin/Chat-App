@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -7,7 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Chat.Notification.Persistence\Chat.Notification.Persistence.csproj" />
+    <ProjectReference Include="..\Chat.Infrustructure.Shared\Chat.Infrastructure.Shared.csproj" />
+    <ProjectReference Include="..\Chat.Notification.Application\Chat.Notification.Application.csproj" />
   </ItemGroup>
 
 </Project>

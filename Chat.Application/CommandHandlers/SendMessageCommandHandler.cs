@@ -5,17 +5,13 @@ using Chat.Domain.Models;
 using Chat.Domain.Shared.Commands;
 using Chat.Domain.Shared.Constants;
 using Chat.Domain.Shared.Entities;
-using Chat.Framework.Attributes;
 using Chat.Framework.CQRS;
 using Chat.Framework.Mediators;
 using Chat.Framework.MessageBrokers;
 using Chat.Framework.RequestResponse;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Chat.Application.CommandHandlers;
 
-[ServiceRegister(typeof(IHandler<SendMessageCommand, IResponse>), 
-    ServiceLifetime.Transient)]
 public class SendMessageCommandHandler : 
     IHandler<SendMessageCommand, IResponse>
 {

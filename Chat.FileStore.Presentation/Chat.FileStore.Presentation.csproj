@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Chat.FileStore.Persistence\Chat.FileStore.Persistence.csproj" />
+    <ProjectReference Include="..\Chat.FileStore.Persistence\Chat.FileStore.Infrastructure.csproj" />
     <ProjectReference Include="..\Chat.Presentation.Shared\Chat.Presentation.Shared.csproj" />
   </ItemGroup>
 

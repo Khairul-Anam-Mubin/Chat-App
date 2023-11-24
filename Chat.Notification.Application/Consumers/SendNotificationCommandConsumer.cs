@@ -1,16 +1,12 @@
 ﻿using Chat.Domain.Shared.Commands;
-using Chat.Framework.Attributes;
 using Chat.Framework.CQRS;
-using Chat.Framework.Mediators;
 using Chat.Framework.MessageBrokers;
 using Chat.Framework.RequestResponse;
 using Chat.Notification.Application.Commands;
 using Chat.Notification.Domain.Interfaces;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Chat.Notification.Application.Consumers;
 
-[ServiceRegister(typeof(IHandler<SendNotificationCommand, IResponse>), ServiceLifetime.Transient)]
 public class SendNotificationCommandConsumer :
     ACommandConsumer<SendNotificationCommand, IResponse>
 {
@@ -37,7 +33,7 @@ public class SendNotificationCommandConsumer :
 
             if (string.IsNullOrEmpty(hubInstanceId))
             {
-                Console.WriteLine($"Receiver : {receiver} is not connected with any hub");
+                Console.WriteLine($"Receiver : {receiverId} is not connected with any hub");
                 continue;
             }
 

@@ -1,13 +1,10 @@
-using Chat.Framework.Attributes;
 using Chat.Framework.Mediators;
 using Chat.Framework.RequestResponse;
 using Chat.Identity.Application.Commands;
 using Chat.Identity.Domain.Interfaces;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Chat.Identity.Application.CommandHandlers;
 
-[ServiceRegister(typeof(IHandler<LogOutCommand, IResponse>), ServiceLifetime.Singleton)]
 public class LogOutCommandHandler : IHandler<LogOutCommand, IResponse>
 {
     private readonly ITokenService _tokenService;

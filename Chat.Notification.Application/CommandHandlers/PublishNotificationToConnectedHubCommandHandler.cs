@@ -1,15 +1,12 @@
-﻿using Chat.Framework.Attributes;
-using Chat.Framework.Database.Interfaces;
+﻿using Chat.Framework.Database.Interfaces;
 using Chat.Framework.Database.Models;
 using Chat.Framework.Mediators;
 using Chat.Framework.RequestResponse;
 using Chat.Notification.Application.Commands;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Chat.Notification.Application.CommandHandlers;
 
-[ServiceRegister(typeof(IHandler<PublishNotificationToConnectedHubCommand, IResponse>), ServiceLifetime.Transient)]
 public class PublishNotificationToConnectedHubCommandHandler :
     IHandler<PublishNotificationToConnectedHubCommand, IResponse>
 {

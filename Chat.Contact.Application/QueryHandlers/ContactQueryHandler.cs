@@ -3,14 +3,11 @@ using Chat.Contact.Application.Extensions;
 using Chat.Contact.Application.Queries;
 using Chat.Contact.Domain.Interfaces;
 using Chat.Contact.Domain.Models;
-using Chat.Framework.Attributes;
 using Chat.Framework.Mediators;
 using Chat.Framework.RequestResponse;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Chat.Contact.Application.QueryHandlers;
 
-[ServiceRegister(typeof(IHandler<ContactQuery, IPaginationResponse<ContactDto>>), ServiceLifetime.Singleton)]
 public class ContactQueryHandler : IHandler<ContactQuery, IPaginationResponse<ContactDto>>
 {
     private readonly IContactRepository _contactRepository;

@@ -1,15 +1,12 @@
-﻿using Chat.Framework.Attributes;
-using Chat.Framework.CQRS;
+﻿using Chat.Framework.CQRS;
 using Chat.Framework.Database.Models;
 using Chat.Framework.Extensions;
 using Chat.Framework.Mediators;
 using Chat.Framework.RequestResponse;
 using Chat.Notification.Application.Commands;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Chat.Notification.Application.CommandHandlers;
 
-[ServiceRegister(typeof(IHandler<PubSubMessage, IResponse>), ServiceLifetime.Transient)]
 public class PubSubMessageHandler : IHandler<PubSubMessage, IResponse>
 {
     private readonly ICommandExecutor _commandExecutor;

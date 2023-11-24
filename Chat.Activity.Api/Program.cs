@@ -1,10 +1,12 @@
-using Chat.Application.Shared;
+using Chat.Framework;
+using Chat.Framework.ServiceInstaller;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder
-    .Services
-    .AddCommonServices(builder.Configuration);
+AssemblyCache.Instance.AddAllAssemblies("Chat");
+
+builder.Services
+    .InstallServices(builder.Configuration, AssemblyCache.Instance.GetAddedAssemblies());
 
 var app = builder.Build();
 

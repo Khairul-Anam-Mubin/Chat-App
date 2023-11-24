@@ -3,17 +3,14 @@ using System.Text;
 using Chat.Application.Shared.Helpers;
 using Chat.Domain.Shared.Constants;
 using Chat.Domain.Shared.Entities;
-using Chat.Framework.Attributes;
 using Chat.Identity.Application.Extensions;
 using Chat.Identity.Domain.Interfaces;
 using Chat.Identity.Domain.Models;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Chat.Identity.Application.Services;
 
-[ServiceRegister(typeof(ITokenService), ServiceLifetime.Singleton)]
 public class TokenService : ITokenService
 {
     private readonly TokenConfig _tokenConfig;

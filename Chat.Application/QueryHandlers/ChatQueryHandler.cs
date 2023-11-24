@@ -2,14 +2,11 @@ using Chat.Application.DTOs;
 using Chat.Application.Extensions;
 using Chat.Application.Queries;
 using Chat.Domain.Interfaces;
-using Chat.Framework.Attributes;
 using Chat.Framework.Mediators;
 using Chat.Framework.RequestResponse;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Chat.Application.QueryHandlers;
 
-[ServiceRegister(typeof(IHandler<ChatQuery, IPaginationResponse<ChatDto>>), ServiceLifetime.Singleton)]
 public class ChatQueryHandler : 
     IHandler<ChatQuery, IPaginationResponse<ChatDto>>
 {

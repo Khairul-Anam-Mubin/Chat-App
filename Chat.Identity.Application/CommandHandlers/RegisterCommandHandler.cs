@@ -1,14 +1,11 @@
-using Chat.Framework.Attributes;
 using Chat.Framework.Mediators;
 using Chat.Framework.RequestResponse;
 using Chat.Identity.Application.Commands;
 using Chat.Identity.Application.Extensions;
 using Chat.Identity.Domain.Interfaces;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Chat.Identity.Application.CommandHandlers;
 
-[ServiceRegister(typeof(IHandler<RegisterCommand, IResponse>), ServiceLifetime.Singleton)]
 public class RegisterCommandHandler : IHandler<RegisterCommand, IResponse>
 {
     private readonly IUserRepository _userRepository;

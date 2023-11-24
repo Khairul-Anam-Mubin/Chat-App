@@ -1,13 +1,10 @@
 using Chat.Application.Commands;
 using Chat.Domain.Interfaces;
-using Chat.Framework.Attributes;
 using Chat.Framework.Mediators;
 using Chat.Framework.RequestResponse;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Chat.Application.CommandHandlers;
 
-[ServiceRegister(typeof(IHandler<UpdateChatsStatusCommand, IResponse>), ServiceLifetime.Singleton)]
 public class UpdateChatsStatusCommandHandler : 
     IHandler<UpdateChatsStatusCommand, IResponse>
 {

@@ -2,16 +2,13 @@ using Chat.Application.Shared.Providers;
 using Chat.FileStore.Application.Commands;
 using Chat.FileStore.Domain.Interfaces;
 using Chat.FileStore.Domain.Models;
-using Chat.Framework.Attributes;
 using Chat.Framework.Extensions;
 using Chat.Framework.Mediators;
 using Chat.Framework.RequestResponse;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Chat.FileStore.Application.CommandHandlers;
 
-[ServiceRegister(typeof(IHandler<UploadFileCommand, IResponse>), ServiceLifetime.Singleton)]
 public class UploadFileCommandHandler : IHandler<UploadFileCommand, IResponse>
 {
     private readonly IFileRepository _fileRepository;

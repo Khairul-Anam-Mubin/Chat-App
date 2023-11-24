@@ -1,16 +1,13 @@
-﻿using Chat.Framework.Attributes;
-using Chat.Framework.CQRS;
+﻿using Chat.Framework.CQRS;
 using Chat.Framework.Database.Interfaces;
 using Chat.Framework.Database.Models;
 using Chat.Framework.Extensions;
 using Chat.Framework.Interfaces;
 using Chat.Notification.Domain.Interfaces;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Chat.Notification.Infrastructure.PubSub;
 
-[ServiceRegister(typeof(IInitialService), ServiceLifetime.Singleton)]
 public sealed class PubSubMessageSubscriber : IInitialService
 {
     private readonly IHubConnectionService _hubConnectionService;

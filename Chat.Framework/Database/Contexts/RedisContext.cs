@@ -1,13 +1,10 @@
-﻿using Chat.Framework.Attributes;
-using Chat.Framework.Database.Interfaces;
+﻿using Chat.Framework.Database.Interfaces;
 using Chat.Framework.Database.Models;
 using Chat.Framework.Extensions;
-using Microsoft.Extensions.DependencyInjection;
 using StackExchange.Redis;
 
 namespace Chat.Framework.Database.Contexts;
 
-[ServiceRegister(typeof(IRedisContext), ServiceLifetime.Singleton)]
 public class RedisContext : IRedisContext
 {
     private readonly IRedisClientManager _redisClientManager;

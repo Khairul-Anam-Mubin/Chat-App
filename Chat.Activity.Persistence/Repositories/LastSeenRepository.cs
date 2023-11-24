@@ -1,16 +1,13 @@
 using Chat.Activity.Domain.Interfaces.Repositories;
 using Chat.Activity.Domain.Models;
-using Chat.Framework.Attributes;
 using Chat.Framework.Database.Interfaces;
 using Chat.Framework.Database.Models;
 using Chat.Framework.Database.Repositories;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
 
-namespace Chat.Activity.Persistence.Repositories;
+namespace Chat.Activity.Infrastructure.Repositories;
 
-[ServiceRegister(typeof(ILastSeenRepository), ServiceLifetime.Singleton)]
 public class LastSeenRepository : RepositoryBase<LastSeenModel>, ILastSeenRepository
 {
     public LastSeenRepository(IMongoDbContext mongoDbContext, IConfiguration configuration) 

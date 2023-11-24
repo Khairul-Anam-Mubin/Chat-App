@@ -3,7 +3,7 @@ using Chat.Framework.RequestResponse;
 
 namespace Chat.Activity.Application.Queries;
 
-public class LastSeenQuery : APaginationQuery<LastSeenDto>
+public class LastSeenQuery
 {
     public List<string> UserIds { get; set; }
 

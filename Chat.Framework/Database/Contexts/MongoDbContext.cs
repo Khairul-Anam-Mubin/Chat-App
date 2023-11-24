@@ -1,14 +1,11 @@
-using Chat.Framework.Attributes;
 using Chat.Framework.Database.Interfaces;
 using Chat.Framework.Database.Models;
 using Chat.Framework.Extensions;
-using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace Chat.Framework.Database.Contexts;
 
-[ServiceRegister(typeof(IMongoDbContext), ServiceLifetime.Singleton)]
 public class MongoDbContext : IMongoDbContext
 {
     protected readonly IMongoClientManager MongoClientManager;

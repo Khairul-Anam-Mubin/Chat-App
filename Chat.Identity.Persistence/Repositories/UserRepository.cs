@@ -1,16 +1,13 @@
-using Chat.Framework.Attributes;
 using Chat.Framework.Database.Interfaces;
 using Chat.Framework.Database.Models;
 using Chat.Framework.Database.Repositories;
 using Chat.Identity.Domain.Interfaces;
 using Chat.Identity.Domain.Models;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
 
-namespace Chat.Identity.Persistence.Repositories;
+namespace Chat.Identity.Infrastructure.Repositories;
 
-[ServiceRegister(typeof(IUserRepository), ServiceLifetime.Singleton)]
 public class UserRepository : RepositoryBase<UserModel>, IUserRepository
 {
     public UserRepository(IMongoDbContext mongoDbContext, IConfiguration configuration)
