@@ -16,15 +16,11 @@ public class LogOutCommandHandler : IHandler<LogOutCommand, IResponse>
     
     public async Task<IResponse> HandleAsync(LogOutCommand command)
     {
-        var response = Response.Success();
-
         if (!await _tokenService.RevokeAllTokenByAppIdAsync(command.AppId))
         {
-            throw new Exception("Log out error");
+            return Response.Error("Log out error");
         }
-        
-        response.Message = "Logged out successfully!!";
-        
-        return response;
+
+        return Response.Success("Logged out successfully!!");
     }
 }

@@ -37,7 +37,7 @@ public static class ObjectExtension
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            Console.WriteLine(e.Message);
         }
 
         if (obj is RedisValue ob)
@@ -48,7 +48,7 @@ public static class ObjectExtension
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                Console.WriteLine(e.Message);
             }
         }
 
@@ -58,7 +58,7 @@ public static class ObjectExtension
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            Console.WriteLine(e.Message);
         }
 
         return default;

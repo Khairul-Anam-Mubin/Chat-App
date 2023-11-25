@@ -12,7 +12,10 @@ public class RabbitMqInstaller : IServiceInstaller
 {
     public void Install(IServiceCollection services, IConfiguration configuration)
     {
-        services.AddSingleton(configuration.GetConfig<MessageBrokerConfig>());
+        services.AddSingleton(configuration.TryGetConfig<MessageBrokerConfig>());
+        services.AddTransient<IEventBus, EventBus>();
+        services.AddTransient<ICommandBus, CommandBus>();
+        services.AddTransient<IMessageRequestClient, MessageRequestClient>();
 
         services.AddMassTransit(busConfigurator =>
         {
@@ -36,9 +39,5 @@ public class RabbitMqInstaller : IServiceInstaller
                 configurator.ConfigureEndpoints(context);
             });
         });
-
-        services.AddTransient<IEventBus, EventBus>();
-        services.AddTransient<ICommandBus, CommandBus>();
-        services.AddTransient<IMessageRequestClient, MessageRequestClient>();
     }
 }

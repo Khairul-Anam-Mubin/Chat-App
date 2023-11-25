@@ -1,16 +1,12 @@
-using Chat.Framework;
 using Chat.Framework.Extensions;
-using Chat.Framework.ServiceInstaller;
 using Chat.Notification.Infrastructure.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.AddGlobalConfig();
-
-AssemblyCache.Instance.AddAllAssemblies("Chat");
-
-builder.Services
-    .InstallServices(builder.Configuration, AssemblyCache.Instance.GetAddedAssemblies());
+builder
+    .AddGlobalConfig()
+    .AddAllAssemblies()
+    .InstallServices();
 
 var app = builder.Build();
 

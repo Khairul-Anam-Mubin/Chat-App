@@ -35,7 +35,7 @@ public class SendMessageCommandHandler :
 
         if (chatModel is null)
         {
-            throw new Exception("ChatModel not set");
+            return Response.Error("ChatModel not set");
         }
 
         chatModel.Id = Guid.NewGuid().ToString();
@@ -44,7 +44,7 @@ public class SendMessageCommandHandler :
 
         if (!await _chatRepository.SaveAsync(chatModel))
         {
-            throw new Exception("ChatModel Creation Failed");
+            return Response.Error("ChatModel Creation Failed");
         }
 
         await SendChatNotificationAsync(chatModel);

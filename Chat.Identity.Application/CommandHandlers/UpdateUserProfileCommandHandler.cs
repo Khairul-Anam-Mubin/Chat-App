@@ -18,14 +18,12 @@ public class UpdateUserProfileCommandHandler :
 
     public async Task<IResponse> HandleAsync(UpdateUserProfileCommand command)
     {
-        var response = Response.Success();
-
         var requestUpdateModel = command.UserModel;
         
         var userModel = await _userRepository.GetUserByEmailAsync(requestUpdateModel.Email);
         if (userModel == null)
         {
-            throw new Exception("UserModel not found");
+            return Response.Error("UserModel not found");
         }
         
         var updateInfoCount = 0;
@@ -64,7 +62,9 @@ public class UpdateUserProfileCommandHandler :
         {
             await _userRepository.SaveAsync(userModel);
         }
-        
+
+        var response = Response.Success();
+
         response.Message = "User Updated Successfully!!";
         response.SetData("UserProfile", userModel.ToUserProfile());
         

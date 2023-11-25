@@ -22,7 +22,7 @@ public class AcceptOrRejectContactCommandHandler :
         var contact = await _contactRepository.GetByIdAsync(command.ContactId);
         if (contact == null)
         {
-            throw new Exception("Contact not found");
+            return Response.Error("Contact not found");
         }
 
         if (command.IsAcceptRequest)
@@ -30,7 +30,7 @@ public class AcceptOrRejectContactCommandHandler :
             contact.IsPending = false;
             if (!await _contactRepository.SaveAsync(contact))
             {
-                throw new Exception("Contact save problem");
+                return Response.Error("Contact save problem");
             }
             response.Message = "Contact added";
         }
@@ -38,7 +38,7 @@ public class AcceptOrRejectContactCommandHandler :
         {
             if (!await _contactRepository.DeleteByIdAsync(command.ContactId))
             {
-                throw new Exception("Delete contact problem");
+                return Response.Error("Delete contact problem");
             }
             response.Message = "Contact rejected";
         }

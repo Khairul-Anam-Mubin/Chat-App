@@ -29,7 +29,7 @@ public class UploadFileCommandHandler : IHandler<UploadFileCommand, IResponse>
         
         if (file.Length <= 0)
         {
-            throw new Exception("File Length 0");
+            return Response.Error("File Length 0");
         }
 
         var fileName = file.FileName;
@@ -57,7 +57,7 @@ public class UploadFileCommandHandler : IHandler<UploadFileCommand, IResponse>
         
         if (!await _fileRepository.SaveAsync(fileModel))
         {
-            throw new Exception("File Save error to db");
+            return Response.Error("File Save error to db");
         }
         
         response.Message = "File uploaded successfully";

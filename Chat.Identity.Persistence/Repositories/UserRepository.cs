@@ -1,4 +1,3 @@
-using Amazon.Runtime.Internal;
 using Chat.Framework.Database.Interfaces;
 using Chat.Framework.Database.Models;
 using Chat.Framework.Database.Repositories;

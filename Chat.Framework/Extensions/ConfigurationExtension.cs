@@ -6,9 +6,9 @@ public static class ConfigurationExtension
 {
     public static T? GetConfig<T>(this IConfiguration configuration, string key)
     {
-        var config = configuration[key];
+        var config = configuration.GetSection(key).Get<T>();
 
-        return string.IsNullOrEmpty(config) ? default : config.Deserialize<T>();
+        return config is null? GlobalConfig.Instance.GetConfig<T>(key) : config;
     }
 
     public static T? GetConfig<T>(this IConfiguration configuration)
@@ -22,6 +22,7 @@ public static class ConfigurationExtension
         var key = typeof(T).Name;
         return GetConfig<T>(configuration, key) ?? throw new Exception("Config null");
     }
+
     public static T TryGetConfig<T>(this IConfiguration configuration, string key)
     {
         return GetConfig<T>(configuration, key) ?? throw new Exception("Config null");

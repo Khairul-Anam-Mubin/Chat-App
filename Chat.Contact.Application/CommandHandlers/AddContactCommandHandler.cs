@@ -35,9 +35,9 @@ public class AddContactCommandHandler :
         var queryResponse = 
             await _messageRequestClient.GetResponseAsync<UserProfileQuery, UserProfileResponse>(userProfileQuery);
         
-        if (queryResponse == null || queryResponse.Profiles.Count < 2)
+        if (queryResponse.Profiles.Count < 2)
         {
-            throw new Exception("User Not Exists");
+            return Response.Error("User Not Exists");
         }
 
         var userProfiles = queryResponse.Profiles;

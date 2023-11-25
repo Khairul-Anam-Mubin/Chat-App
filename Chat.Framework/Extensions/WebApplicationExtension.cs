@@ -1,4 +1,5 @@
 ﻿using Chat.Framework.Interfaces;
+using Chat.Framework.ServiceInstaller;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -57,14 +58,26 @@ public static class WebApplicationExtension
             throw new Exception("ConfigDictionary is null");
         }
 
-        foreach (var kv in configDictionary)
-        {
-            if (string.IsNullOrEmpty(configuration[kv.Key]))
-            {
-                configuration[kv.Key] = kv.Value.Serialize();
-            }
-        }
+        GlobalConfig.Instance.AddConfigFromDictionary(configDictionary);
 
+        return builder;
+    }
+
+    public static WebApplicationBuilder AddAllAssemblies(this WebApplicationBuilder builder, string assemblyPrefix = "")
+    {
+        if (string.IsNullOrEmpty(assemblyPrefix))
+        {
+            assemblyPrefix = builder.Configuration.TryGetConfig<string>("AssemblyPrefix");
+        }
+        
+        AssemblyCache.Instance.AddAllAssemblies(assemblyPrefix);
+        
+        return builder;
+    }
+
+    public static WebApplicationBuilder InstallServices(this WebApplicationBuilder builder)
+    {
+        builder.Services.InstallServices(builder.Configuration, AssemblyCache.Instance.GetAddedAssemblies());
         return builder;
     }
 }

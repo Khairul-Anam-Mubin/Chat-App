@@ -22,7 +22,8 @@ public class FileModelQueryHandler : IHandler<FileModelQuery, IPaginationRespons
         var fileModel = await _fileRepository.GetByIdAsync(query.FileId);
         if (fileModel == null)
         {
-            throw new Exception("File not found");
+            response.ErrorMessage("File not found");
+            return response;
         }
 
         var path = Directory.GetCurrentDirectory();

@@ -19,18 +19,16 @@ public class LoginCommandHandler : IHandler<LoginCommand, IResponse>
 
     public async Task<IResponse> HandleAsync(LoginCommand command)
     {
-        var response = Response.Success();
-
         var user = await _userRepository.GetUserByEmailAsync(command.Email);
 
         if (user == null)
         {
-            throw new Exception("Email error!!");
+            return Response.Error("Email error!!");
         }
 
         if (user.Password != command.Password)
         {
-            throw new Exception("Password error!!");
+            return Response.Error("Password error!!");
         }
 
         var userProfile = user.ToUserProfile();
@@ -38,9 +36,11 @@ public class LoginCommandHandler : IHandler<LoginCommand, IResponse>
         var token = await _tokenService.CreateTokenAsync(userProfile, command.AppId);
         if (token == null)
         {
-            throw new Exception("Token Creation Failed");
+            return Response.Error("Token Creation Failed");
         }
 
+        var response = Response.Success();
+        
         response.SetData("Token", token);
         response.Message = "Logged in successfully";
 

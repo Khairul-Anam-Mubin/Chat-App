@@ -17,11 +17,9 @@ public class RegisterCommandHandler : IHandler<RegisterCommand, IResponse>
 
     public async Task<IResponse> HandleAsync(RegisterCommand command)
     {
-        var response = Response.Success();
-
         if (await _userRepository.IsUserExistAsync(command.UserModel))
         {
-            throw new Exception("User email or id already exists!!");
+            return Response.Error("User email or id already exists!!");
         }
         
         command.UserModel.Id = Guid.NewGuid().ToString();
@@ -29,8 +27,10 @@ public class RegisterCommandHandler : IHandler<RegisterCommand, IResponse>
         
         if (!await _userRepository.SaveAsync(command.UserModel))
         {
-            throw new Exception("Some anonymous problem occured!!");
+            return Response.Error("Some anonymous problem occurred!!");
         }
+
+        var response = Response.Success();
         
         response.Message = "User Created Successfully!!";
         response.SetData("UserProfile", command.UserModel.ToUserProfile());

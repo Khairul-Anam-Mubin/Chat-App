@@ -1,4 +1,3 @@
-using Amazon.Runtime.Internal;
 using Chat.FileStore.Domain.Interfaces;
 using Chat.FileStore.Domain.Models;
 using Chat.Framework.Database.Interfaces;
