@@ -1,12 +1,15 @@
 using Chat.Framework.Database.Interfaces;
 using Chat.Framework.Database.Models;
+using Chat.Framework.Database.ORM.Builders;
+using Chat.Framework.Database.ORM.Composers;
+using Chat.Framework.Database.ORM.Interfaces;
 using Chat.Framework.Extensions;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace Chat.Framework.Database.Contexts;
 
-public class MongoDbContext : IMongoDbContext
+public class MongoDbContext : IDbContext
 {
     protected readonly IMongoClientManager MongoClientManager;
 
@@ -21,6 +24,7 @@ public class MongoDbContext : IMongoDbContext
         {
             var client = MongoClientManager.GetClient(databaseInfo);
             var database = client?.GetDatabase(databaseInfo.DatabaseName);
+
             return database?.GetCollection<T>(typeof(T).Name);
         }
         catch (Exception)
@@ -39,8 +43,10 @@ public class MongoDbContext : IMongoDbContext
             {
                 throw new Exception("Collection null");
             }
+
             var filter = Builders<T>.Filter.Eq("Id", item.Id);
             await collection.ReplaceOneAsync(filter, item, new ReplaceOptions { IsUpsert = true });
+            
             Console.WriteLine($"Successfully Save Item : {item.Serialize()}\n");
             return true;
         }
@@ -78,27 +84,12 @@ public class MongoDbContext : IMongoDbContext
 
     public async Task<T?> GetByIdAsync<T>(DatabaseInfo databaseInfo, string id) where T : class, IEntity
     {
-        try
-        {
-            var collection = GetCollection<T>(databaseInfo);
-            if (collection == null)
-            {
-                throw new Exception("Collection null");
-            }
-            var filter = Builders<T>.Filter.Eq("Id", id);
-            var items = await collection.FindAsync<T>(filter);
-            var item = await items.FirstOrDefaultAsync();
-            Console.WriteLine($"Successfully Get Item : {item.Serialize()}\n");
-            return item;
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Problem Get Item, id : {id}\n{ex.Message}\n");
-            return default;
-        }
+        var filterBuilder = new FilterBuilder<T>();
+        var idFilter = filterBuilder.Eq(entity => entity.Id, id);
+        return await GetOneAsync<T>(databaseInfo, idFilter);
     }
 
-    public async Task<List<T>> GetAllAsync<T>(DatabaseInfo databaseInfo) where T : class, IEntity
+    public async Task<List<T>> GetManyAsync<T>(DatabaseInfo databaseInfo) where T : class, IEntity
     {
         try
         {
@@ -120,7 +111,7 @@ public class MongoDbContext : IMongoDbContext
         }
     }
 
-    public async Task<T?> GetByFilterDefinitionAsync<T>(DatabaseInfo databaseInfo, FilterDefinition<T> filterDefinition) where T : class, IEntity
+    public async Task<T?> GetOneAsync<T>(DatabaseInfo databaseInfo, ICompoundFilter filter) where T : class, IEntity
     {
         try
         {
@@ -129,6 +120,8 @@ public class MongoDbContext : IMongoDbContext
             {
                 throw new Exception("Collection null");
             }
+
+            var filterDefinition = new MongoDbFilterComposer<T>().Compose(filter);
             var items = await collection.FindAsync<T>(filterDefinition);
             var item = await items.FirstAsync();
             Console.WriteLine($"Successfully Get Item by filter : {item.Serialize()}\n");
@@ -141,7 +134,7 @@ public class MongoDbContext : IMongoDbContext
         }
     }
 
-    public async Task<bool> DeleteManyByFilterDefinitionAsync<T>(DatabaseInfo databaseInfo, FilterDefinition<T> filterDefinition) where T : class, IEntity
+    public async Task<bool> DeleteManyAsync<T>(DatabaseInfo databaseInfo, ICompoundFilter filter) where T : class, IEntity
     {
         try
         {
@@ -150,6 +143,8 @@ public class MongoDbContext : IMongoDbContext
             {
                 throw new Exception("Collection null");
             }
+
+            var filterDefinition = new MongoDbFilterComposer<T>().Compose(filter);
             var res = await collection.DeleteManyAsync(filterDefinition);
             if (res != null && res.DeletedCount > 0)
             {
@@ -165,7 +160,7 @@ public class MongoDbContext : IMongoDbContext
         }
     }
 
-    public async Task<List<T>> GetEntitiesByFilterDefinitionAsync<T>(DatabaseInfo databaseInfo, FilterDefinition<T> filterDefinition) where T : class, IEntity
+    public async Task<List<T>> GetManyAsync<T>(DatabaseInfo databaseInfo, ICompoundFilter filter) where T : class, IEntity
     {
         try
         {
@@ -174,6 +169,8 @@ public class MongoDbContext : IMongoDbContext
             {
                 throw new Exception("Collection null");
             }
+
+            var filterDefinition = new MongoDbFilterComposer<T>().Compose(filter);
             var itemsCursor = await collection.FindAsync<T>(filterDefinition);
             var items = await itemsCursor.ToListAsync();
             Console.WriteLine($"Successfully Get Items by filter count : {items.Count}\n");
@@ -186,7 +183,8 @@ public class MongoDbContext : IMongoDbContext
         }
     }
 
-    public async Task<List<T>> GetEntitiesByFilterDefinitionAsync<T>(DatabaseInfo databaseInfo, FilterDefinition<T> filterDefinition, SortDefinition<T> sortDefinition, int offset, int limit) where T : class, IEntity
+
+    public async Task<List<T>> GetManyAsync<T>(DatabaseInfo databaseInfo, ICompoundFilter filter, ISort sort, int offset, int limit) where T : class, IEntity
     {
         try
         {
@@ -195,13 +193,17 @@ public class MongoDbContext : IMongoDbContext
             {
                 throw new Exception("Collection null");
             }
-            
+
+            var filterDefinition = new MongoDbFilterComposer<T>().Compose(filter);
+            var sortDefinition = new MongoDbSortComposer<T>().Compose(sort);
+
             var itemsCursor = await collection
                 .Find(filterDefinition)
                 .Sort(sortDefinition)
                 .Skip(offset)
                 .Limit(limit)
                 .ToCursorAsync();
+
             var items = await itemsCursor.ToListAsync();
             Console.WriteLine($"Successfully Get Items by filter count : {items.Count}\n");
             return items;
@@ -213,15 +215,33 @@ public class MongoDbContext : IMongoDbContext
         }
     }
 
-    public async Task<bool> UpdateOneByFilterDefinitionAsync<T>(DatabaseInfo databaseInfo,
-        FilterDefinition<T> filterDefinition, UpdateDefinition<T> updateDefinition) where T : class, IEntity
+    public async Task<bool> UpdateOneAsync<T>(DatabaseInfo databaseInfo, ICompoundFilter filter, IUpdateDefinition updateDefinition) where T : class, IEntity
     {
         var collection = GetCollection<T>(databaseInfo);
         if (collection == null)
         {
             throw new Exception("Collection null");
         }
-        var result = await collection.UpdateOneAsync(filterDefinition, updateDefinition);
+
+        var filterDefinition = new MongoDbFilterComposer<T>().Compose(filter);
+        var mongoDbUpdateDefinition = new MongoDbUpdateDefinitionComposer<T>().Compose(updateDefinition);
+        var result = await collection.UpdateOneAsync(filterDefinition, mongoDbUpdateDefinition);
+
+        return result.IsModifiedCountAvailable;
+    }
+
+    public async Task<bool> UpdateManyAsync<T>(DatabaseInfo databaseInfo, ICompoundFilter filter, IUpdateDefinition updateDefinition) where T : class, IEntity
+    {
+        var collection = GetCollection<T>(databaseInfo);
+        if (collection == null)
+        {
+            throw new Exception("Collection null");
+        }
+
+        var filterDefinition = new MongoDbFilterComposer<T>().Compose(filter);
+        var mongoDbUpdateDefinition = new MongoDbUpdateDefinitionComposer<T>().Compose(updateDefinition);
+        var result = await collection.UpdateManyAsync(filterDefinition, mongoDbUpdateDefinition);
+
         return result.IsModifiedCountAvailable;
     }
 
@@ -238,12 +258,9 @@ public class MongoDbContext : IMongoDbContext
             writeModels.Add(replaceOneModel);
         }
         var collection = GetCollection<T>(databaseInfo);
-        if (collection == null)
-        {
-            throw new Exception("Collection null");
-        }
+        if (collection == null) throw new Exception("Collection null");
         var writeResult = await collection.BulkWriteAsync(writeModels);
-        return writeResult != null && writeResult.IsAcknowledged;
+        return writeResult is { IsAcknowledged: true };
     }
 
     public async Task<string?> CreateIndexAsync<T>(DatabaseInfo databaseInfo, List<FieldOrder> fieldOrders)
@@ -253,7 +270,7 @@ public class MongoDbContext : IMongoDbContext
             value => (int)value.SortDirection);
 
         var collection = GetCollection<T>(databaseInfo) ?? throw new Exception("Collection null");
-            
+
         var document = new BsonDocument(fieldOrdersDictionary);
         var indexName = await collection.Indexes.CreateOneAsync(
             new CreateIndexModel<T>(

@@ -57,7 +57,7 @@ public class AddContactCommandHandler :
 
         if (!await _contactRepository.SaveAsync(userContact))
         {
-            throw new Exception("Contact Saving Failed");
+            return Response.Error("Contact Saving Failed");
         }
 
         response.Message = "Contact Added Successfully";

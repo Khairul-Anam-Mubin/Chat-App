@@ -5,10 +5,10 @@ namespace Chat.Framework.Database.Repositories;
 
 public abstract class RepositoryBase<TEntity> : IRepository<TEntity> where TEntity : class, IEntity
 {
-    protected readonly IMongoDbContext DbContext;
+    protected readonly IDbContext DbContext;
     protected readonly DatabaseInfo DatabaseInfo;
 
-    protected RepositoryBase(DatabaseInfo databaseInfo, IMongoDbContext dbContext)
+    protected RepositoryBase(DatabaseInfo databaseInfo, IDbContext dbContext)
     {
         DatabaseInfo = databaseInfo;
         DbContext = dbContext;

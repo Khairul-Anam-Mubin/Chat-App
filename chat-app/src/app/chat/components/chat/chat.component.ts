@@ -63,7 +63,7 @@ export class ChatComponent implements OnInit{
     .pipe(take(1))
     .subscribe(res => {
       if (res.status === ResponseStatus.success) {
-        this.sendToUserProfile = res.items[0];
+        this.sendToUserProfile = res.items.find((item: any) => item.id === this.sendToUserId);
         this.sharedSecret = this.securityService.getSharedSecretKey(this.sendToUserProfile.publicKey);
         this.chatTitle = this.sendToUserProfile.firstName + " " + this.sendToUserProfile.lastName;
         this.getChats(this.query);

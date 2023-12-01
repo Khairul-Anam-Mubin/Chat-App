@@ -1,4 +1,4 @@
-﻿using Chat.Framework.Enums;
+﻿using Chat.Framework.Database.ORM.Enums;
 
 namespace Chat.Framework.Database.Models;
 

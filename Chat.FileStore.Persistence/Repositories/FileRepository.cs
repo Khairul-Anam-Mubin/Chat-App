@@ -10,7 +10,7 @@ namespace Chat.FileStore.Infrastructure.Repositories;
 
 public class FileRepository : RepositoryBase<FileModel>, IFileRepository
 {
-    public FileRepository(IMongoDbContext mongoDbContext, IConfiguration configuration)
-    : base(configuration.GetConfig<DatabaseInfo>()!, mongoDbContext)
+    public FileRepository(IDbContext dbContext, IConfiguration configuration)
+    : base(configuration.GetConfig<DatabaseInfo>()!, dbContext)
     {}
 }

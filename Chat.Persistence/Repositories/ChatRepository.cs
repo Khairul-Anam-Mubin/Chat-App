@@ -2,43 +2,47 @@ using Chat.Domain.Interfaces;
 using Chat.Domain.Models;
 using Chat.Framework.Database.Interfaces;
 using Chat.Framework.Database.Models;
+using Chat.Framework.Database.ORM.Builders;
 using Chat.Framework.Database.Repositories;
 using Chat.Framework.Extensions;
 using Microsoft.Extensions.Configuration;
-using MongoDB.Driver;
 
 namespace Chat.Infrastructure.Repositories;
 
 public class ChatRepository : RepositoryBase<ChatModel>, IChatRepository
 {
-    public ChatRepository(IMongoDbContext mongoDbContext, IConfiguration configuration)
-    : base(configuration.GetConfig<DatabaseInfo>()!, mongoDbContext)
+    public ChatRepository(IDbContext dbContext, IConfiguration configuration)
+    : base(configuration.GetConfig<DatabaseInfo>()!, dbContext)
     {}
 
     public async Task<List<ChatModel>> GetChatModelsAsync(string userId, string sendTo, int offset, int limit)
     {
-        var userIdFilter = Builders<ChatModel>.Filter.Eq(chatModel => chatModel.UserId, userId);
-        var sendToFilter = Builders<ChatModel>.Filter.Eq(chatModel => chatModel.SendTo, sendTo);
-        var andFilter = Builders<ChatModel>.Filter.And(userIdFilter, sendToFilter);
+        var filterBuilder = new FilterBuilder<ChatModel>();
+        var sortBuilder = new SortBuilder<ChatModel>();
+
+        var userIdFilter = filterBuilder.Eq(o => o.UserId, userId);
+        var sendToFilter = filterBuilder.Eq(o => o.SendTo, sendTo);
+        var andFilter = filterBuilder.And(userIdFilter, sendToFilter);
         
-        var alterUserIdFilter = Builders<ChatModel>.Filter.Eq(chatModel => chatModel.UserId, sendTo);
-        var alterSendToFilter = Builders<ChatModel>.Filter.Eq(chatModel => chatModel.SendTo, userId);
-        var alterAndFilter = Builders<ChatModel>.Filter.And(alterUserIdFilter, alterSendToFilter);
+        var alterUserIdFilter = filterBuilder.Eq(o => o.UserId, sendTo);
+        var alterSendToFilter = filterBuilder.Eq(o => o.SendTo, userId);
+        var alterAndFilter = filterBuilder.And(alterUserIdFilter, alterSendToFilter);
         
-        var orFilter = Builders<ChatModel>.Filter.Or(andFilter, alterAndFilter);
+        var orFilter = filterBuilder.Or(andFilter, alterAndFilter);
         
-        var sortDef = Builders<ChatModel>.Sort.Descending("SentAt");
+        var sort = sortBuilder.Descending(o => o.SentAt).Build();
         
-        return await DbContext.GetEntitiesByFilterDefinitionAsync(DatabaseInfo, orFilter, sortDef, offset, limit);
+        return await DbContext.GetManyAsync<ChatModel>(DatabaseInfo, orFilter, sort, offset, limit);
     }
 
     public async Task<List<ChatModel>> GetSenderAndReceiverSpecificChatModelsAsync(string senderId, string receiverId)
     {
-        var senderFilter = Builders<ChatModel>.Filter.Eq(chatModel => chatModel.UserId, senderId);
-        var receiverFilter = Builders<ChatModel>.Filter.Eq(chatModel => chatModel.SendTo, receiverId);
-        var statusFilter = Builders<ChatModel>.Filter.Ne(chatModel => chatModel.Status, "Seen");
-        var andFilter = Builders<ChatModel>.Filter.And(senderFilter, receiverFilter);
+        var filterBuilder = new FilterBuilder<ChatModel>();
+
+        var senderFilter = filterBuilder.Eq(o => o.UserId, senderId);
+        var receiverFilter = filterBuilder.Eq(o => o.SendTo, receiverId);
+        var andFilter = filterBuilder.And(senderFilter, receiverFilter);
         
-        return await DbContext.GetEntitiesByFilterDefinitionAsync(DatabaseInfo, andFilter);
+        return await DbContext.GetManyAsync<ChatModel>(DatabaseInfo, andFilter);
     }
 }

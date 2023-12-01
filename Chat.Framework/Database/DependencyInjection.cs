@@ -10,7 +10,7 @@ public static class DependencyInjection
     public static IServiceCollection AddMongoDb(this IServiceCollection services)
     {
         services.AddSingleton<IMongoClientManager, MongoClientManager>();
-        services.AddSingleton<IMongoDbContext, MongoDbContext>();
+        services.AddSingleton<IDbContext, MongoDbContext>();
         return services;
     }
 
