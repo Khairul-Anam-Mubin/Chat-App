@@ -4,7 +4,7 @@ namespace Chat.Framework.Database.ORM.Interfaces;
 
 public interface IFilter
 {
-    string FieldKey { get; set; }
-    Operator Operator { get; set; }
-    object FieldValue { get; set; }
+    List<ISimpleFilter> SimpleFilters { get; set; }
+    List<IFilter> CompoundFilters { get; set; }
+    CompoundLogic Logic { get; set; }
 }

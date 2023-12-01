@@ -1,8 +1,8 @@
 ﻿namespace Chat.Framework.Database.ORM.Interfaces;
 
-public interface IUpdateDefinition
+public interface IUpdate
 {
     List<IUpdateField> Fields { get; set; }
 
-    IUpdateDefinition Add(IUpdateField field);
+    IUpdate Add(IUpdateField field);
 }

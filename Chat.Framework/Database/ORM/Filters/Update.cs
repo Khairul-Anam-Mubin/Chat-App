@@ -2,21 +2,21 @@
 
 namespace Chat.Framework.Database.ORM.Filters;
 
-public class UpdateDefinition : IUpdateDefinition
+public class Update : IUpdate
 {
     public List<IUpdateField> Fields { get; set; }
 
-    public UpdateDefinition(List<IUpdateField> fields)
+    public Update(List<IUpdateField> fields)
     {
         Fields = fields;
     }
 
-    public UpdateDefinition()
+    public Update()
     {
         Fields = new List<IUpdateField>();
     }
 
-    public IUpdateDefinition Add(IUpdateField field)
+    public IUpdate Add(IUpdateField field)
     {
         Fields.Add(field);
         return this;

@@ -1,35 +1,37 @@
 ﻿using Chat.Framework.Database.ORM.Enums;
 using Chat.Framework.Database.ORM.Interfaces;
+using Chat.Framework.Extensions;
 using MongoDB.Driver;
 
 namespace Chat.Framework.Database.ORM.Composers;
 
 public class MongoDbFilterComposer<T> : IFilterComposer<FilterDefinition<T>>
 {
-    public FilterDefinition<T> Compose(IFilter filter)
+    public FilterDefinition<T> Compose(ISimpleFilter simpleFilter)
     {
-        var definition = filter.Operator switch
+        var definition = simpleFilter.Operator switch
         {
-            Operator.Equal => Builders<T>.Filter.Eq(filter.FieldKey, filter.FieldValue),
-            Operator.NotEqual => Builders<T>.Filter.Ne(filter.FieldKey, filter.FieldValue),
+            Operator.Equal => Builders<T>.Filter.Eq(simpleFilter.FieldKey, simpleFilter.FieldValue),
+            Operator.NotEqual => Builders<T>.Filter.Ne(simpleFilter.FieldKey, simpleFilter.FieldValue),
+            Operator.In => Builders<T>.Filter.In(simpleFilter.FieldKey, simpleFilter.FieldValue.SmartCast<List<object>>()),
             _ => Builders<T>.Filter.Empty
         };
 
         return definition;
     }
 
-    public FilterDefinition<T> Compose(ICompoundFilter compoundFilter)
+    public FilterDefinition<T> Compose(IFilter filter)
     {
         var filters = new List<FilterDefinition<T>>();
 
-        foreach (var filter in compoundFilter.CompoundFilters)
+        foreach (var compoundFilter in filter.CompoundFilters)
         {
-            filters.Add(Compose(filter));
+            filters.Add(Compose(compoundFilter));
         }
 
-        foreach (var filter in compoundFilter.Filters)
+        foreach (var simpleFilter in filter.SimpleFilters)
         {
-            filters.Add(Compose(filter));
+            filters.Add(Compose(simpleFilter));
         }
 
         if (filters.Count == 0)
@@ -42,7 +44,7 @@ public class MongoDbFilterComposer<T> : IFilterComposer<FilterDefinition<T>>
             return filters.First();
         }
 
-        var filterDefinition = compoundFilter.Logic switch
+        var filterDefinition = filter.Logic switch
         {
             CompoundLogic.Or => Builders<T>.Filter.Or(filters),
             CompoundLogic.And => Builders<T>.Filter.And(filters),

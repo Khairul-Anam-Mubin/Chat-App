@@ -4,12 +4,12 @@ using MongoDB.Driver;
 
 namespace Chat.Framework.Database.ORM.Composers;
 
-public class MongoDbUpdateDefinitionComposer<T> : IUpdateDefinitionComposer<UpdateDefinition<T>>
+public class MongoDbUpdateComposer<T> : IUpdateComposer<UpdateDefinition<T>>
 {
-    public UpdateDefinition<T> Compose(IUpdateDefinition updateDefinition)
+    public UpdateDefinition<T> Compose(IUpdate update)
     {
         var updateDefinitions = new List<UpdateDefinition<T>>();
-        foreach (var field in updateDefinition.Fields)
+        foreach (var field in update.Fields)
         {
             switch (field.Operation)
             {

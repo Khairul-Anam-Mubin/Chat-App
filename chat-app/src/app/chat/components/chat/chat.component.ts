@@ -43,7 +43,7 @@ export class ChatComponent implements OnInit{
     private elementRef : ElementRef,
     private userService : UserService,
     private commandService : CommandService,
-    private queryServie : QueryService,
+    private queryService : QueryService,
     private signalRService: SignalRService,
     private chatSocketService: ChatSocketService,
     private fileService: FileService,
@@ -87,7 +87,7 @@ export class ChatComponent implements OnInit{
   }
 
   getChats(query : ChatQuery) {
-    this.queryServie.execute(query)
+    this.queryService.execute(query)
     .pipe(take(1))
     .subscribe(res => {
       if (res.status === ResponseStatus.success) {
@@ -158,7 +158,7 @@ export class ChatComponent implements OnInit{
   getLastSeenStatus() {
     var lastSeenQuery = new LastSeenQuery();
     lastSeenQuery.userIds = [this.sendToUserId];
-    this.queryServie.execute(lastSeenQuery)
+    this.queryService.execute(lastSeenQuery)
     .pipe(take(1))
     .subscribe(response => {
       this.lastSeen = response.items[0].status;

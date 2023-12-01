@@ -7,16 +7,16 @@ namespace Chat.Framework.Database.ORM.Builders;
 
 public class UpdateBuilder<TEntity>
 {
-    private readonly IUpdateDefinition _updateDefinition;
+    private readonly IUpdate _update;
 
     public UpdateBuilder()
     {
-        _updateDefinition = new UpdateDefinition();
+        _update = new Update();
     }
 
     public UpdateBuilder<TEntity> Set(string fieldKey, object? value)
     {
-        _updateDefinition.Add(new UpdateField(fieldKey, Operation.Set, value));
+        _update.Add(new UpdateField(fieldKey, Operation.Set, value));
         return this;
     }
 
@@ -25,8 +25,8 @@ public class UpdateBuilder<TEntity>
         return Set(ExpressionHelper.GetFieldKey(field), value);
     }
 
-    public IUpdateDefinition Build()
+    public IUpdate Build()
     {
-        return _updateDefinition;
+        return _update;
     }
 }
