@@ -1,5 +1,5 @@
 ﻿using Chat.Framework.Database.Interfaces;
-using Chat.Framework.Database.Models;
+using Chat.Framework.Database.ORM;
 using Chat.Framework.Extensions;
 using StackExchange.Redis;
 

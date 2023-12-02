@@ -1,5 +1,5 @@
 using Chat.Domain.Models;
-using Chat.Framework.Database.Interfaces;
+using Chat.Framework.Database.ORM.Interfaces;
 
 namespace Chat.Domain.Interfaces;
 

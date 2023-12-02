@@ -1,4 +1,4 @@
-namespace Chat.Framework.Database.Models;
+namespace Chat.Framework.Database.ORM;
 
 public class DatabaseInfo
 {

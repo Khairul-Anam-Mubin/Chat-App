@@ -1,8 +1,7 @@
 using Chat.FileStore.Domain.Interfaces;
 using Chat.FileStore.Domain.Models;
-using Chat.Framework.Database.Interfaces;
-using Chat.Framework.Database.Models;
-using Chat.Framework.Database.Repositories;
+using Chat.Framework.Database.ORM;
+using Chat.Framework.Database.ORM.Interfaces;
 using Chat.Framework.Extensions;
 using Microsoft.Extensions.Configuration;
 

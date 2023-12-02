@@ -3,10 +3,10 @@ using Chat.Framework.Extensions;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
-namespace Chat.Framework.Database.ORM.Composers;
+namespace Chat.Framework.Database.ORM.MongoDb.Composers;
 
 public class MongoDbIndexComposer<T> : IIndexComposer<CreateIndexModel<T>>
-{ 
+{
     public CreateIndexModel<T> Compose(IIndex index)
     {
         var indexKeysDictionary = index.IndexKeys.ToDictionary(

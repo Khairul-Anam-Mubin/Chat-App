@@ -1,4 +1,4 @@
-using Chat.Framework.Database.Interfaces;
+using Chat.Framework.Database.ORM.Interfaces;
 
 namespace Chat.FileStore.Domain.Models;
 

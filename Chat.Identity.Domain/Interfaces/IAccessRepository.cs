@@ -1,4 +1,4 @@
-using Chat.Framework.Database.Interfaces;
+using Chat.Framework.Database.ORM.Interfaces;
 using Chat.Identity.Domain.Models;
 
 namespace Chat.Identity.Domain.Interfaces;

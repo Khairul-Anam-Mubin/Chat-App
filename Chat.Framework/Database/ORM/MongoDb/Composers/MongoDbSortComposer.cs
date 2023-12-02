@@ -2,7 +2,7 @@
 using MongoDB.Driver;
 using SortDirection = Chat.Framework.Database.ORM.Enums.SortDirection;
 
-namespace Chat.Framework.Database.ORM.Composers;
+namespace Chat.Framework.Database.ORM.MongoDb.Composers;
 
 public class MongoDbSortComposer<T> : ISortComposer<SortDefinition<T>>
 {

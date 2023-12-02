@@ -1,4 +1,4 @@
-namespace Chat.Framework.Database.Interfaces;
+namespace Chat.Framework.Database.ORM.Interfaces;
 
 public interface IEntity
 {

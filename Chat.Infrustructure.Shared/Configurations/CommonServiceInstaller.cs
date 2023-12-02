@@ -2,7 +2,7 @@
 using Chat.Framework.Attributes;
 using Chat.Framework.CQRS;
 using Chat.Framework.Database;
-using Chat.Framework.Database.Models;
+using Chat.Framework.Database.ORM;
 using Chat.Framework.Extensions;
 using Chat.Framework.Mediators;
 using Chat.Framework.ServiceInstaller;

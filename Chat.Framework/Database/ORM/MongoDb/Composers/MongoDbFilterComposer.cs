@@ -3,7 +3,7 @@ using Chat.Framework.Database.ORM.Interfaces;
 using Chat.Framework.Extensions;
 using MongoDB.Driver;
 
-namespace Chat.Framework.Database.ORM.Composers;
+namespace Chat.Framework.Database.ORM.MongoDb.Composers;
 
 public class MongoDbFilterComposer<T> : IFilterComposer<FilterDefinition<T>>
 {

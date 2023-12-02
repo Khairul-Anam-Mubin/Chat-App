@@ -1,9 +1,7 @@
 ﻿using System.Collections.Concurrent;
-using Chat.Framework.Database.Interfaces;
-using Chat.Framework.Database.Models;
 using MongoDB.Driver;
 
-namespace Chat.Framework.Database.Clients;
+namespace Chat.Framework.Database.ORM.MongoDb;
 
 public class MongoClientManager : IMongoClientManager
 {
@@ -28,5 +26,15 @@ public class MongoClientManager : IMongoClientManager
         _dbClients.TryAdd(connectionString, mongoClient);
 
         return mongoClient;
+    }
+
+    public IMongoDatabase GetDatabase(DatabaseInfo databaseInfo)
+    {
+        return GetClient(databaseInfo).GetDatabase(databaseInfo.DatabaseName);
+    }
+
+    public IMongoCollection<T> GetCollection<T>(DatabaseInfo databaseInfo)
+    {
+        return GetDatabase(databaseInfo).GetCollection<T>(typeof(T).Name);
     }
 }

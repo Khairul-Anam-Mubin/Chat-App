@@ -1,7 +1,6 @@
-using Chat.Framework.Database.Interfaces;
-using Chat.Framework.Database.Models;
+using Chat.Framework.Database.ORM;
 using Chat.Framework.Database.ORM.Builders;
-using Chat.Framework.Database.Repositories;
+using Chat.Framework.Database.ORM.Interfaces;
 using Chat.Framework.Extensions;
 using Chat.Identity.Domain.Interfaces;
 using Chat.Identity.Domain.Models;

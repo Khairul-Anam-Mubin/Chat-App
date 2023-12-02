@@ -1,6 +1,7 @@
 ﻿using Chat.Framework.CQRS;
 using Chat.Framework.Database.Interfaces;
 using Chat.Framework.Database.Models;
+using Chat.Framework.Database.ORM;
 using Chat.Framework.Extensions;
 using Chat.Framework.Interfaces;
 using Chat.Notification.Domain.Interfaces;

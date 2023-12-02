@@ -1,6 +1,5 @@
 ﻿using Chat.Activity.Domain.Models;
-using Chat.Framework.Database.Interfaces;
-using Chat.Framework.Database.Models;
+using Chat.Framework.Database.ORM;
 using Chat.Framework.Database.ORM.Builders;
 using Chat.Framework.Database.ORM.Interfaces;
 using Chat.Framework.Extensions;
@@ -11,20 +10,19 @@ namespace Chat.Activity.Infrastructure.Migrations;
 public class LastSeenModelIndexCreator : IIndexCreator
 {
     private readonly DatabaseInfo _databaseInfo;
-    private readonly IDbContext _dbContext;
+    private readonly IIndexManager _indexManager;
 
-    public LastSeenModelIndexCreator(IConfiguration configuration, IDbContext dbContext)
+    public LastSeenModelIndexCreator(IConfiguration configuration, IIndexManager indexManager)
     {
         _databaseInfo = configuration.TryGetConfig<DatabaseInfo>();
-        _dbContext = dbContext;
+        _indexManager = indexManager;
     }
 
     public void CreateIndexes()
     {
-        _dbContext.CreateIndexAsync<LastSeenModel>(_databaseInfo,
+        _indexManager.CreateOne<LastSeenModel>(_databaseInfo,
             new IndexBuilder<LastSeenModel>()
                 .Ascending(o => o.UserId)
-                .Build())
-            .Wait();
+                .Build());
     }
 }

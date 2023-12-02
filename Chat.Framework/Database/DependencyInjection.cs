@@ -1,6 +1,8 @@
 ﻿using Chat.Framework.Database.Clients;
 using Chat.Framework.Database.Contexts;
 using Chat.Framework.Database.Interfaces;
+using Chat.Framework.Database.ORM.Interfaces;
+using Chat.Framework.Database.ORM.MongoDb;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Chat.Framework.Database;
@@ -11,6 +13,7 @@ public static class DependencyInjection
     {
         services.AddSingleton<IMongoClientManager, MongoClientManager>();
         services.AddSingleton<IDbContext, MongoDbContext>();
+        services.AddTransient<IIndexManager, MongoDbIndexManager>();
         return services;
     }
 

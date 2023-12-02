@@ -1,6 +1,6 @@
 ﻿using System.Collections.Concurrent;
 using Chat.Framework.Database.Interfaces;
-using Chat.Framework.Database.Models;
+using Chat.Framework.Database.ORM;
 using StackExchange.Redis;
 
 namespace Chat.Framework.Database.Clients;

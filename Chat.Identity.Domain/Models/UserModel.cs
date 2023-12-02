@@ -1,5 +1,5 @@
 using Chat.Domain.Shared.Entities;
-using Chat.Framework.Database.Interfaces;
+using Chat.Framework.Database.ORM.Interfaces;
 
 namespace Chat.Identity.Domain.Models;
 

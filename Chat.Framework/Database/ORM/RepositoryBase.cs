@@ -1,7 +1,6 @@
-﻿using Chat.Framework.Database.Interfaces;
-using Chat.Framework.Database.Models;
+﻿using Chat.Framework.Database.ORM.Interfaces;
 
-namespace Chat.Framework.Database.Repositories;
+namespace Chat.Framework.Database.ORM;
 
 public abstract class RepositoryBase<TEntity> : IRepository<TEntity> where TEntity : class, IEntity
 {

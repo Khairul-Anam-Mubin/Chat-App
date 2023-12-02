@@ -1,9 +1,8 @@
 using Chat.Contact.Domain.Interfaces;
 using Chat.Contact.Domain.Models;
-using Chat.Framework.Database.Interfaces;
-using Chat.Framework.Database.Models;
+using Chat.Framework.Database.ORM;
 using Chat.Framework.Database.ORM.Builders;
-using Chat.Framework.Database.Repositories;
+using Chat.Framework.Database.ORM.Interfaces;
 using Chat.Framework.Extensions;
 using Microsoft.Extensions.Configuration;
 

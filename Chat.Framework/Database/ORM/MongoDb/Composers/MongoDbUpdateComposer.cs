@@ -2,7 +2,7 @@
 using Chat.Framework.Database.ORM.Interfaces;
 using MongoDB.Driver;
 
-namespace Chat.Framework.Database.ORM.Composers;
+namespace Chat.Framework.Database.ORM.MongoDb.Composers;
 
 public class MongoDbUpdateComposer<T> : IUpdateComposer<UpdateDefinition<T>>
 {
