@@ -12,11 +12,9 @@
 
   <ItemGroup>
 	  <ProjectReference Include="..\Chat.Application\Chat.Application.csproj" />
-	  <ProjectReference Include="..\Chat.Contact.Infrastructure\Chat.Contact.Infrastructure.csproj" />
+	  <ProjectReference Include="..\Chat.Contact.Persistence\Chat.Contact.Infrastructure.csproj" />
 	  <ProjectReference Include="..\Chat.Domain\Chat.Domain.csproj" />
-	  <ProjectReference Include="..\Chat.FileStore.Infrastructure\Chat.FileStore.Infrastructure.csproj" />
-	  <ProjectReference Include="..\Chat.Identity.Infrastructure\Chat.Identity.Infrastructure.csproj" />
-	  <ProjectReference Include="..\Chat.Infrastructure\Chat.Infrastructure.csproj" />
+	  <ProjectReference Include="..\Chat.FileStore.Persistence\Chat.FileStore.Infrastructure.csproj" />
 	  <ProjectReference Include="..\Chat.Infrustructure.Shared\Chat.Infrastructure.Shared.csproj" />
 	  <ProjectReference Include="..\Chat.Notification.Infrastructure\Chat.Notification.Infrastructure.csproj" />
   </ItemGroup>

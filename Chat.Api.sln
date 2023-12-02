@@ -17,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat.Activity.Domain", "Cha
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat.Activity.Application", "Chat.Activity.Application\Chat.Activity.Application.csproj", "{4EE0F15C-1EC1-4D51-B15D-A7A06706BBAD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat.Activity.Infrastructure", "Chat.Activity.Persistence\Chat.Activity.Infrastructure.csproj", "{7C893C70-C5FE-4676-84FE-1EF46AB21C87}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat.Activity.Infrastructure", "Chat.Activity.Infrastructure\Chat.Activity.Infrastructure.csproj", "{7C893C70-C5FE-4676-84FE-1EF46AB21C87}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ActivityModule", "ActivityModule", "{7FD0C201-7D97-400B-870C-C63CEF8D2404}"
 EndProject
@@ -25,7 +25,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat.Identity.Domain", "Cha
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat.Identity.Application", "Chat.Identity.Application\Chat.Identity.Application.csproj", "{4356FFF6-CF9F-4190-9BA2-33CB7B91A325}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat.Identity.Infrastructure", "Chat.Identity.Persistence\Chat.Identity.Infrastructure.csproj", "{2146D478-8682-4327-A250-11885039641B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat.Identity.Infrastructure", "Chat.Identity.Infrastructure\Chat.Identity.Infrastructure.csproj", "{2146D478-8682-4327-A250-11885039641B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IdentityModule", "IdentityModule", "{70BBA365-2DBB-4EB6-B870-205934DB08FB}"
 EndProject
@@ -35,7 +35,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat.Contact.Domain", "Chat
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat.Contact.Application", "Chat.Contact.Application\Chat.Contact.Application.csproj", "{249F8232-E45D-45DD-9D4A-D8420B2C8B6C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat.Contact.Infrastructure", "Chat.Contact.Persistence\Chat.Contact.Infrastructure.csproj", "{4044AB2C-F51F-47DE-813B-7327BCEFE17D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat.Contact.Infrastructure", "Chat.Contact.Infrastructure\Chat.Contact.Infrastructure.csproj", "{4044AB2C-F51F-47DE-813B-7327BCEFE17D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FileStoreModule", "FileStoreModule", "{5B66DF56-6D08-421A-BD15-5CA82346BB7B}"
 EndProject
@@ -43,7 +43,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat.FileStore.Domain", "Ch
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat.FileStore.Application", "Chat.FileStore.Application\Chat.FileStore.Application.csproj", "{04338BBC-A4F3-4C26-8369-AACABB39FFFE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat.FileStore.Infrastructure", "Chat.FileStore.Persistence\Chat.FileStore.Infrastructure.csproj", "{6C28C2FD-FA6F-4194-9493-6B20EC92BB09}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat.FileStore.Infrastructure", "Chat.FileStore.Infrastructure\Chat.FileStore.Infrastructure.csproj", "{6C28C2FD-FA6F-4194-9493-6B20EC92BB09}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ChatModule", "ChatModule", "{271BD1F3-D957-4912-AAD7-96E4BECA1613}"
 EndProject
@@ -51,7 +51,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat.Domain", "Chat.Domain\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat.Application", "Chat.Application\Chat.Application.csproj", "{E94A226A-DFEF-4D9A-9661-65133FB06878}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat.Infrastructure", "Chat.Persistence\Chat.Infrastructure.csproj", "{E9BD821F-BD8C-4206-9F0B-7398C2984D1A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat.Infrastructure", "Chat.Infrastructure\Chat.Infrastructure.csproj", "{E9BD821F-BD8C-4206-9F0B-7398C2984D1A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NotificationModule", "NotificationModule", "{E4B5A3DD-B0D6-40B8-B516-DC8B0E939ACF}"
 EndProject
