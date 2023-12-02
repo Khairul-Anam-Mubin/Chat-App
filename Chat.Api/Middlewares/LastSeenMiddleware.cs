@@ -1,12 +1,10 @@
 using Chat.Application.Shared.Helpers;
 using Chat.Application.Shared.Providers;
-using Chat.Framework.Attributes;
 using Chat.Framework.Extensions;
 using Chat.Identity.Domain.Interfaces;
 
 namespace Chat.Api.Middlewares;
 
-[ServiceRegister(typeof(LastSeenMiddleware), ServiceLifetime.Transient)]
 public class LastSeenMiddleware : IMiddleware
 {
     private readonly ITokenService _tokenService;

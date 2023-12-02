@@ -1,4 +1,5 @@
-﻿using Chat.Framework.Interfaces;
+﻿using Chat.Framework.Database.ORM.Interfaces;
+using Chat.Framework.Interfaces;
 using Chat.Framework.ServiceInstaller;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
@@ -7,6 +8,42 @@ namespace Chat.Framework.Extensions;
 
 public static class WebApplicationExtension
 {
+    public static WebApplication DoCreateIndexes(this WebApplication application, bool doCreateIndexes = false)
+    {
+        if (doCreateIndexes == false)
+        {
+            doCreateIndexes = application.Configuration.TryGetConfig<bool>("EnableIndexCreation");
+        }
+
+        if (doCreateIndexes)
+        {
+            var indexCreators = application.Services.GetServices<IIndexCreator>().ToList();
+
+            Console.WriteLine($"Index Creation Started. IndexCreator Found : {indexCreators.Count}");
+
+            indexCreators.ForEach(indexCreator =>
+            {
+                indexCreator.CreateIndexes();
+            });
+        }
+        return application;
+    }
+
+    public static WebApplication DoMigration(this WebApplication application, bool doMigration = false)
+    {
+        if (doMigration == false)
+        {
+            doMigration = application.Configuration.TryGetConfig<bool>("EnableMigration");
+        }
+
+        if (doMigration)
+        {
+            
+        }
+
+        return application;
+    }
+
     public static WebApplication StartInitialServices(this WebApplication app)
     {
         var initialServices = app.Services.GetServices<IInitialService>().ToList();

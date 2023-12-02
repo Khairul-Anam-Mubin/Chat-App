@@ -8,14 +8,14 @@ public class MongoDbComposerFacade<T>
     private readonly MongoDbFilterComposer<T> _filterComposer;
     private readonly MongoDbSortComposer<T> _sortComposer;
     private readonly MongoDbUpdateComposer<T> _updateComposer;
-    private readonly MongoDbIndexKeysComposer<T> _indexKeysComposer;
+    private readonly MongoDbIndexComposer<T> _indexComposer;
 
     public MongoDbComposerFacade()
     {
         _filterComposer = new MongoDbFilterComposer<T>();
         _sortComposer = new MongoDbSortComposer<T>();
         _updateComposer = new MongoDbUpdateComposer<T>();
-        _indexKeysComposer = new MongoDbIndexKeysComposer<T>();
+        _indexComposer = new MongoDbIndexComposer<T>();
     }
 
     public FilterDefinition<T> Compose(ISimpleFilter simpleFilter)
@@ -38,8 +38,8 @@ public class MongoDbComposerFacade<T>
         return _updateComposer.Compose(update);
     }
 
-    public CreateIndexModel<T> ComposeToCreateIndexModel(ISort sort)
+    public CreateIndexModel<T> Compose(IIndex index)
     {
-        return _indexKeysComposer.Compose(sort);
+        return _indexComposer.Compose(index);
     }
 }

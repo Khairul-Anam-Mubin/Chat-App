@@ -16,10 +16,10 @@ public interface IDbContext
 
     Task<T?> GetByIdAsync<T>(DatabaseInfo databaseInfo, string id) where T : class, IEntity;
     Task<T?> GetOneAsync<T>(DatabaseInfo databaseInfo, IFilter filter) where T : class, IEntity;
-
     Task<List<T>> GetManyAsync<T>(DatabaseInfo databaseInfo) where T : class, IEntity;
     Task<List<T>> GetManyAsync<T>(DatabaseInfo databaseInfo, IFilter filter) where T : class, IEntity;
     Task<List<T>> GetManyAsync<T>(DatabaseInfo databaseInfo, IFilter filter, ISort sort, int offset, int limit) where T: class, IEntity;
 
-    Task<string?> CreateIndexAsync<T>(DatabaseInfo databaseInfo, ISort sort) where T : class, IEntity;
+    Task<string?> CreateIndexAsync<T>(DatabaseInfo databaseInfo, IIndex index) where T : class, IEntity;
+    Task DropAllIndexesAsync<T>(DatabaseInfo databaseInfo) where T : class, IEntity;
 }

@@ -5,13 +5,13 @@ using MongoDB.Driver;
 
 namespace Chat.Framework.Database.ORM.Composers;
 
-public class MongoDbIndexKeysComposer<T> : ISortComposer<CreateIndexModel<T>>
-{
-    public CreateIndexModel<T> Compose(ISort sort)
+public class MongoDbIndexComposer<T> : IIndexComposer<CreateIndexModel<T>>
+{ 
+    public CreateIndexModel<T> Compose(IIndex index)
     {
-        var indexKeysDictionary = sort.SortFields.ToDictionary(
+        var indexKeysDictionary = index.IndexKeys.ToDictionary(
             key => key.FieldKey,
-        value => value.SortDirection.SmartCast<int>());
+            value => value.SortDirection.SmartCast<int>());
 
         var document = new BsonDocument(indexKeysDictionary);
 

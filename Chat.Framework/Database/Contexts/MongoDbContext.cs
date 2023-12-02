@@ -274,16 +274,33 @@ public class MongoDbContext : IDbContext
         return result.IsModifiedCountAvailable;
     }
 
-    public async Task<string?> CreateIndexAsync<T>(DatabaseInfo databaseInfo, ISort sort) where T : class, IEntity
+    public async Task<string?> CreateIndexAsync<T>(DatabaseInfo databaseInfo, IIndex index) where T : class, IEntity
     {
-        var composer = new MongoDbComposerFacade<T>();
+        try
+        {
+            var composer = new MongoDbComposerFacade<T>();
 
+            var collection = GetCollection<T>(databaseInfo);
+
+            var createIndexModel = composer.Compose(index);
+
+            var indexName = await collection.Indexes.CreateOneAsync(createIndexModel);
+
+            Console.WriteLine($"Index Created : {indexName}");
+
+            return indexName;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+        }
+        
+        return string.Empty;
+    }
+
+    public async Task DropAllIndexesAsync<T>(DatabaseInfo databaseInfo) where T : class, IEntity
+    {
         var collection = GetCollection<T>(databaseInfo);
-
-        var createIndexModel = composer.ComposeToCreateIndexModel(sort);
-
-        var indexName = await collection.Indexes.CreateOneAsync(createIndexModel);
-
-        return indexName;
+        await collection.Indexes.DropAllAsync();
     }
 }

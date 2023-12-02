@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Collections.Concurrent;
+using System.Reflection;
 
 namespace Chat.Framework;
 
@@ -7,7 +8,7 @@ public sealed class AssemblyCache
     private static readonly object LockObj = new();
     private static AssemblyCache? _instance;
 
-    private readonly Dictionary<string, Assembly> _assemblyLists;
+    private readonly ConcurrentDictionary<string, Assembly> _assemblyLists;
 
     public static AssemblyCache Instance
     {
@@ -83,7 +84,7 @@ public sealed class AssemblyCache
             return;
         }
 
-        _assemblyLists.Add(assembly.FullName, assembly);
+        _assemblyLists.TryAdd(assembly.FullName, assembly);
         Console.WriteLine($"Added Assembly {assembly.FullName}\n");
     }
 

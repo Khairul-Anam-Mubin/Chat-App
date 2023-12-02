@@ -1,6 +1,8 @@
 ﻿using Chat.Activity.Application;
 using Chat.Activity.Domain.Interfaces.Repositories;
+using Chat.Activity.Infrastructure.Migrations;
 using Chat.Activity.Infrastructure.Repositories;
+using Chat.Framework.Database.ORM.Interfaces;
 using Chat.Framework.ServiceInstaller;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,5 +16,7 @@ public class ActivityInstaller : IServiceInstaller
         services
             .AddActivityApplication()
             .AddSingleton<ILastSeenRepository, LastSeenRepository>();
+
+        services.AddTransient<IIndexCreator, LastSeenModelIndexCreator>();
     }
 }

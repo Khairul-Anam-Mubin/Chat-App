@@ -3,12 +3,26 @@ using Chat.Notification.Infrastructure.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
+#region Service Configuration
+
 builder
     .AddGlobalConfig()
     .AddAllAssemblies()
     .InstallServices();
 
+#endregion
+
 var app = builder.Build();
+
+#region StartUp Services
+
+app.DoCreateIndexes();
+app.DoMigration();
+app.StartInitialServices();
+
+#endregion
+
+#region Middlewares
 
 if (app.Environment.IsDevelopment())
 {
@@ -16,7 +30,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.StartInitialServices();
 app.UseCors("CorsPolicy");
 app.UseHttpsRedirection();
 app.UseAuthentication();
@@ -27,5 +40,7 @@ app.UseEndpoints(endpoints =>
     endpoints.MapControllers();
     endpoints.MapHub<NotificationHub>("/NotificationHub");
 });
+
+#endregion
 
 app.Run();
