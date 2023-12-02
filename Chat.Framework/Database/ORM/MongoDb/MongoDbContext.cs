@@ -1,4 +1,5 @@
 using Chat.Framework.Database.ORM.Builders;
+using Chat.Framework.Database.ORM.Filters;
 using Chat.Framework.Database.ORM.Interfaces;
 using Chat.Framework.Database.ORM.MongoDb.Composers;
 using Chat.Framework.Extensions;
@@ -118,35 +119,14 @@ public class MongoDbContext : IDbContext
 
     public async Task<T?> GetByIdAsync<T>(DatabaseInfo databaseInfo, string id) where T : class, IEntity
     {
-        var filterBuilder = new FilterBuilder<T>();
-
-        var idFilter = filterBuilder.Eq(entity => entity.Id, id);
+        var idFilter = new FilterBuilder<T>().Eq(entity => entity.Id, id);
 
         return await GetOneAsync<T>(databaseInfo, idFilter);
     }
 
     public async Task<List<T>> GetManyAsync<T>(DatabaseInfo databaseInfo) where T : class, IEntity
     {
-        try
-        {
-            var collection = _mongoClientManager.GetCollection<T>(databaseInfo);
-
-            var filter = Builders<T>.Filter.Empty;
-
-            var itemsCursor = await collection.FindAsync<T>(filter);
-
-            var items = await itemsCursor.ToListAsync();
-
-            Console.WriteLine($"Successfully Get items, Count: {items.Count}\n");
-
-            return items;
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Problem Get Items\n{ex.Message}\n");
-
-            return new List<T>();
-        }
+        return await GetManyAsync<T>(databaseInfo, new FilterBuilder<T>().None());
     }
 
     public async Task<T?> GetOneAsync<T>(DatabaseInfo databaseInfo, IFilter filter) where T : class, IEntity
@@ -263,5 +243,30 @@ public class MongoDbContext : IDbContext
         var result = await collection.UpdateManyAsync(filterDefinition, updateDefinition);
 
         return result.IsModifiedCountAvailable;
+    }
+
+    public async Task<long> CountAsync<T>(DatabaseInfo databaseInfo) where T : class, IEntity
+    {
+        return await CountAsync<T>(databaseInfo, new FilterBuilder<T>().None());
+    }
+
+    public async Task<long> CountAsync<T>(DatabaseInfo databaseInfo, IFilter filter) where T : class, IEntity
+    {
+        try
+        {
+            var collection = _mongoClientManager.GetCollection<T>(databaseInfo);
+
+            var composer = new MongoDbComposerFacade<T>();
+
+            var filterDefinition = composer.Compose(filter);
+
+            return await collection.CountDocumentsAsync(filterDefinition);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+
+        return 0;
     }
 }

@@ -7,7 +7,7 @@ public class Filter : IFilter
 {
     public List<ISimpleFilter> SimpleFilters { get; set; }
     public List<IFilter> CompoundFilters { get; set; }
-    public CompoundLogic Logic { get; set; }
+    public CompoundLogic? Logic { get; set; }
 
     public Filter()
     {

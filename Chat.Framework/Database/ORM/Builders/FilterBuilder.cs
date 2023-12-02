@@ -7,6 +7,11 @@ namespace Chat.Framework.Database.ORM.Builders;
 
 public class FilterBuilder<TEntity>
 {
+    public IFilter None()
+    {
+        return new Filter();
+    }
+
     public IFilter Eq<TField>(Expression<Func<TEntity, TField>> field, TField value)
     {
         return Eq(ExpressionHelper.GetFieldKey(field), value!);

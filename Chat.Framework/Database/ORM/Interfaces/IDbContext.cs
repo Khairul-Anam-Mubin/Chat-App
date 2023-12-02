@@ -16,4 +16,7 @@ public interface IDbContext
     Task<List<T>> GetManyAsync<T>(DatabaseInfo databaseInfo) where T : class, IEntity;
     Task<List<T>> GetManyAsync<T>(DatabaseInfo databaseInfo, IFilter filter) where T : class, IEntity;
     Task<List<T>> GetManyAsync<T>(DatabaseInfo databaseInfo, IFilter filter, ISort sort, int offset, int limit) where T : class, IEntity;
+
+    Task<long> CountAsync<T>(DatabaseInfo databaseInfo) where T : class, IEntity;
+    Task<long> CountAsync<T>(DatabaseInfo databaseInfo, IFilter filter) where T : class, IEntity;
 }

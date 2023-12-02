@@ -4,9 +4,5 @@ public enum Operator
 {
     Equal,
     NotEqual,
-    GreaterThan,
-    GreaterThanOrEqual,
-    LessThan,
-    LessThanOrEqual,
     In
 }

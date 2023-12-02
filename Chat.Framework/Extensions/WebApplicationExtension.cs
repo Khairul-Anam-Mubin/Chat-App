@@ -38,7 +38,21 @@ public static class WebApplicationExtension
 
         if (doMigration)
         {
+            var enabledMigrationJobs = application.Configuration.GetConfig<List<string>>("MigrationJobs");
+
+            if (enabledMigrationJobs is null)
+            {
+                return application;
+            }
+
+            var migrationJobs = application.Services.GetServices<IMigrationJob>()
+                .Where(job => enabledMigrationJobs.Contains(job.GetType().Name))
+                .ToList();
             
+            migrationJobs.ForEach(job =>
+            {
+                job.MigrateAsync();
+            });
         }
 
         return application;
