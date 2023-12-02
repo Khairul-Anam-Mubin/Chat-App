@@ -1,4 +1,4 @@
-﻿namespace Chat.Framework;
+﻿namespace Chat.Domain.Shared.Entities;
 
 public class TokenConfig
 {

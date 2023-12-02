@@ -1,5 +1,5 @@
 ﻿using System.Text;
-using Chat.Framework;
+using Chat.Domain.Shared.Entities;
 using Chat.Framework.Extensions;
 using Chat.Framework.ServiceInstaller;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
