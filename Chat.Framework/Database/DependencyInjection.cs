@@ -1,6 +1,7 @@
 ﻿using Chat.Framework.Database.Clients;
 using Chat.Framework.Database.Contexts;
 using Chat.Framework.Database.Interfaces;
+using Chat.Framework.Database.ORM.Factories;
 using Chat.Framework.Database.ORM.Interfaces;
 using Chat.Framework.Database.ORM.MongoDb;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,8 +13,9 @@ public static class DependencyInjection
     public static IServiceCollection AddMongoDb(this IServiceCollection services)
     {
         services.AddSingleton<IMongoClientManager, MongoClientManager>();
-        services.AddSingleton<IDbContext, MongoDbContext>();
         services.AddTransient<IIndexManager, MongoDbIndexManager>();
+        services.AddSingleton<MongoDbContext>();
+        services.AddTransient<IDbContextFactory, DbContextFactory>();
         return services;
     }
 
@@ -21,6 +23,7 @@ public static class DependencyInjection
     {
         services.AddSingleton<IRedisClientManager, RedisClientManager>();
         services.AddSingleton<IRedisContext, RedisContext>();
+        services.AddTransient<IDbContextFactory, DbContextFactory>();
         return services;
     }
 }

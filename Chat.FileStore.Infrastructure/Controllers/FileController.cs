@@ -43,9 +43,15 @@ public class FileController : ACommonController
             FileId = fileId
         };
         var response = await _queryExecutor.ExecuteAsync<FileDownloadQuery, IPaginationResponse<FileDownloadResult>>(query);
-        var fileDownloadResult = response.Items.First();
 
-        return File(fileDownloadResult.FileBytes, fileDownloadResult.ContentType);
+        if (response == null)
+        {
+            return NotFound();
+        }
+        
+        var fileDownloadResult = response.Items.FirstOrDefault();
+
+        return File(fileDownloadResult?.FileBytes, fileDownloadResult?.ContentType);
     }
 
     [HttpPost]

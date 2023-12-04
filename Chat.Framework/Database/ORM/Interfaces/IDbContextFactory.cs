@@ -4,5 +4,5 @@ namespace Chat.Framework.Database.ORM.Interfaces;
 
 public interface IDbContextFactory
 {
-    IDbContext? GetDbContext(Context context);
+    IDbContext GetDbContext(Context context);
 }

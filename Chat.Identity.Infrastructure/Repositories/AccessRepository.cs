@@ -1,17 +1,16 @@
 using Chat.Framework.Database.ORM;
 using Chat.Framework.Database.ORM.Builders;
+using Chat.Framework.Database.ORM.Enums;
 using Chat.Framework.Database.ORM.Interfaces;
-using Chat.Framework.Extensions;
 using Chat.Identity.Domain.Interfaces;
 using Chat.Identity.Domain.Models;
-using Microsoft.Extensions.Configuration;
 
 namespace Chat.Identity.Infrastructure.Repositories;
 
 public class AccessRepository : RepositoryBase<AccessModel>, IAccessRepository
 {
-    public AccessRepository(IDbContext dbContext, IConfiguration configuration):
-        base(configuration.GetConfig<DatabaseInfo>()!, dbContext)
+    public AccessRepository(IDbContextFactory dbContextFactory, DatabaseInfo databaseInfo)
+        : base(databaseInfo, dbContextFactory.GetDbContext(Context.Mongo))
     { }
 
     public async Task<bool> DeleteAllTokenByAppId(string appId)

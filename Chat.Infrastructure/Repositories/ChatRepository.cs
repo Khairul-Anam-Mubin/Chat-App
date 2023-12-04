@@ -2,17 +2,16 @@ using Chat.Domain.Interfaces;
 using Chat.Domain.Models;
 using Chat.Framework.Database.ORM;
 using Chat.Framework.Database.ORM.Builders;
+using Chat.Framework.Database.ORM.Enums;
 using Chat.Framework.Database.ORM.Interfaces;
-using Chat.Framework.Extensions;
-using Microsoft.Extensions.Configuration;
 
 namespace Chat.Infrastructure.Repositories;
 
 public class ChatRepository : RepositoryBase<ChatModel>, IChatRepository
 {
-    public ChatRepository(IDbContext dbContext, IConfiguration configuration)
-    : base(configuration.GetConfig<DatabaseInfo>()!, dbContext)
-    {}
+    public ChatRepository(IDbContextFactory dbContextFactory, DatabaseInfo databaseInfo)
+        : base(databaseInfo, dbContextFactory.GetDbContext(Context.Mongo))
+    { }
 
     public async Task<List<ChatModel>> GetChatModelsAsync(string userId, string sendTo, int offset, int limit)
     {

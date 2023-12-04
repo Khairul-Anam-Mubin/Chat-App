@@ -14,12 +14,12 @@ public class DbContextFactory : IDbContextFactory
         _serviceProvider = serviceProvider;
     }
 
-    public IDbContext? GetDbContext(Context context)
+    public IDbContext GetDbContext(Context context)
     {
         return context switch
         {
-            Context.Mongo => _serviceProvider.GetService<MongoDbContext>(),
-            _ => _serviceProvider.GetService<MongoDbContext>()
+            Context.Mongo => _serviceProvider.GetRequiredService<MongoDbContext>(),
+            _ => _serviceProvider.GetRequiredService<MongoDbContext>()
         };
     }
 }

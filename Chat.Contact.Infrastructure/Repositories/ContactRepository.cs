@@ -2,17 +2,16 @@ using Chat.Contact.Domain.Interfaces;
 using Chat.Contact.Domain.Models;
 using Chat.Framework.Database.ORM;
 using Chat.Framework.Database.ORM.Builders;
+using Chat.Framework.Database.ORM.Enums;
 using Chat.Framework.Database.ORM.Interfaces;
-using Chat.Framework.Extensions;
-using Microsoft.Extensions.Configuration;
 
 namespace Chat.Contact.Infrastructure.Repositories;
 
 public class ContactRepository : RepositoryBase<ContactModel>, IContactRepository
 {
-    public ContactRepository(IDbContext dbContext, IConfiguration configuration)
-    : base(configuration.GetConfig<DatabaseInfo>()!, dbContext)
-    {}
+    public ContactRepository(IDbContextFactory dbContextFactory, DatabaseInfo databaseInfo)
+        : base(databaseInfo, dbContextFactory.GetDbContext(Context.Mongo))
+    { }
 
     public async Task<List<ContactModel>> GetUserContactsAsync(string userId)
     {
