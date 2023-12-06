@@ -31,7 +31,7 @@ public class SendNotificationCommandConsumer :
         {
             var hubInstanceId = await _hubConnectionService.GetUserConnectedHubInstanceIdAsync(receiverId);
 
-            if (string.IsNullOrEmpty(hubInstanceId))
+            if (string.IsNullOrEmpty(hubInstanceId)) // TODO: Will do push notification for them
             {
                 Console.WriteLine($"Receiver : {receiverId} is not connected with any hub");
                 continue;

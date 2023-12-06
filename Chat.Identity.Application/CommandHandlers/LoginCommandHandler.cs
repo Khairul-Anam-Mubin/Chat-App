@@ -31,6 +31,11 @@ public class LoginCommandHandler : IHandler<LoginCommand, IResponse>
             return Response.Error("Password error!!");
         }
 
+        if (!user.IsEmailVerified)
+        {
+            return Response.Error("Plz verify your email.!!");
+        }
+
         var userProfile = user.ToUserProfile();
 
         var token = await _tokenService.CreateTokenAsync(userProfile, command.AppId);

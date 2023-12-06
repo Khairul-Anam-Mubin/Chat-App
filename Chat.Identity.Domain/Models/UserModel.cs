@@ -6,4 +6,10 @@ namespace Chat.Identity.Domain.Models;
 public class UserModel : UserProfile, IEntity
 {
     public string Password { get; set; } = string.Empty;
+    public bool IsEmailVerified { get; set; }
+
+    public UserModel()
+    {
+        IsEmailVerified = false;
+    }
 }

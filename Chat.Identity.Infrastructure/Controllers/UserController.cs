@@ -1,5 +1,7 @@
 ﻿using Chat.Domain.Shared.Queries;
 using Chat.Framework.CQRS;
+using Chat.Framework.Mediators;
+using Chat.Framework.RequestResponse;
 using Chat.Identity.Application.Commands;
 using Chat.Infrastructure.Shared.Controllers;
 using Microsoft.AspNetCore.Authorization;
@@ -13,10 +15,12 @@ namespace Chat.Identity.Infrastructure.Controllers;
 public class UserController : ACommonController
 {
     private readonly IQueryExecutor _queryExecutor;
+    private readonly IMediator _mediator;
 
-    public UserController(ICommandExecutor commandExecutor, IQueryExecutor queryExecutor) : base(commandExecutor)
+    public UserController(ICommandExecutor commandExecutor, IQueryExecutor queryExecutor, IMediator mediator) : base(commandExecutor)
     {
         _queryExecutor = queryExecutor;
+        _mediator = mediator;
     }
 
     [HttpPost]
@@ -40,5 +44,17 @@ public class UserController : ACommonController
     public async Task<IActionResult> UpdateUserAsync(UpdateUserProfileCommand command)
     {
         return Ok(await GetCommandResponseAsync(command));
+    }
+
+    [HttpGet]
+    [Route("verify-account")]
+    [AllowAnonymous]
+    public async Task<IActionResult> VerifyAccountAsync([FromQuery] string userId)
+    {
+        var verifyCommand = new VerifyAccountCommand();
+        verifyCommand.UserId = userId;
+
+        var response = await _mediator.SendAsync<VerifyAccountCommand, IResponse>(verifyCommand);
+        return Ok(response);
     }
 }

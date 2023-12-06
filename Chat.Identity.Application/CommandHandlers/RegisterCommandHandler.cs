@@ -1,18 +1,26 @@
+using Chat.Domain.Shared.Commands;
+using Chat.Framework.EmailSenders;
 using Chat.Framework.Mediators;
+using Chat.Framework.MessageBrokers;
 using Chat.Framework.RequestResponse;
 using Chat.Identity.Application.Commands;
 using Chat.Identity.Application.Extensions;
 using Chat.Identity.Domain.Interfaces;
+using Chat.Identity.Domain.Models;
 
 namespace Chat.Identity.Application.CommandHandlers;
 
 public class RegisterCommandHandler : IHandler<RegisterCommand, IResponse>
 {
     private readonly IUserRepository _userRepository;
+    private readonly ICommandBus _commandBus;
 
-    public RegisterCommandHandler(IUserRepository userRepository)
+    public RegisterCommandHandler(
+        IUserRepository userRepository,
+        ICommandBus commandBus)
     {
         _userRepository = userRepository;
+        _commandBus = commandBus;
     }
 
     public async Task<IResponse> HandleAsync(RegisterCommand command)
@@ -24,7 +32,8 @@ public class RegisterCommandHandler : IHandler<RegisterCommand, IResponse>
         
         command.UserModel.Id = Guid.NewGuid().ToString();
         command.UserModel.UserName = $"{command.UserModel.FirstName}_{command.UserModel.LastName}";
-        
+        command.UserModel.IsEmailVerified = false;
+
         if (!await _userRepository.SaveAsync(command.UserModel))
         {
             return Response.Error("Some anonymous problem occurred!!");
@@ -33,8 +42,27 @@ public class RegisterCommandHandler : IHandler<RegisterCommand, IResponse>
         var response = Response.Success();
         
         response.Message = "User Created Successfully!!";
+
         response.SetData("UserProfile", command.UserModel.ToUserProfile());
         
+        await SendVerificationEmailAsync(command.UserModel);
+        
         return response;
+    }
+
+    private async Task SendVerificationEmailAsync(UserModel userModel)
+    {
+        var email = new Email
+        {
+            To = new List<string> { userModel.Email },
+            IsHtmlContent = true,
+            Content = $"<h1>Account Registration Successfully.</h1><br><button><a href=\"https://localhost:6001/api/User/verify-account?userId={userModel.Id}\">Click to verify account</a></button><br><br><p>Thanks</p>",
+            Subject = "User registration complete"
+        };
+
+        await _commandBus.SendAsync(new SendEmailCommand
+        {
+            Email = email
+        });
     }
 }

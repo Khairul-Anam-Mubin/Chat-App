@@ -59,12 +59,14 @@ public class SmtpEmailSender : IEmailSender
             Port = _emailConfig.Port,
             UseDefaultCredentials = false,
             Credentials = new NetworkCredential(_emailConfig.UserName, _emailConfig.Password),
-            EnableSsl = true
+            EnableSsl = true,
+            DeliveryMethod = SmtpDeliveryMethod.Network
         };
 
         try
         {
             client.Send(message);
+            Console.WriteLine("Email Send Successfully");
         }
         catch (Exception ex)
         {
