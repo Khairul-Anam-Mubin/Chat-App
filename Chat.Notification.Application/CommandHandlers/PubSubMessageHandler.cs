@@ -2,12 +2,12 @@
 using Chat.Framework.Database.Models;
 using Chat.Framework.Extensions;
 using Chat.Framework.Mediators;
-using Chat.Framework.RequestResponse;
+using Chat.Framework.Results;
 using Chat.Notification.Application.Commands;
 
 namespace Chat.Notification.Application.CommandHandlers;
 
-public class PubSubMessageHandler : IHandler<PubSubMessage, IResponse>
+public class PubSubMessageHandler : IHandler<PubSubMessage, IResult>
 {
     private readonly ICommandExecutor _commandExecutor;
 
@@ -16,7 +16,7 @@ public class PubSubMessageHandler : IHandler<PubSubMessage, IResponse>
         _commandExecutor = commandExecutor;
     }
 
-    public async Task<IResponse> HandleAsync(PubSubMessage pubSubMessage)
+    public async Task<IResult> HandleAsync(PubSubMessage pubSubMessage)
     {
         if (pubSubMessage?.MessageType == MessageType.Notification)
         {
@@ -26,6 +26,6 @@ public class PubSubMessageHandler : IHandler<PubSubMessage, IResponse>
             await _commandExecutor.ExecuteAsync(sendNotificationToClientCommand!);
         }
 
-        return Response.Success();
+        return Result.Success();
     }
 }

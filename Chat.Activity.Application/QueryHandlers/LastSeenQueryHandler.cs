@@ -1,11 +1,13 @@
+using Chat.Activity.Application.DTOs;
 using Chat.Activity.Application.Extensions;
 using Chat.Activity.Application.Queries;
 using Chat.Activity.Domain.Interfaces.Repositories;
-using Chat.Framework.Mediators;
+using Chat.Framework.CQRS;
+using Chat.Framework.Results;
 
 namespace Chat.Activity.Application.QueryHandlers;
 
-public class LastSeenQueryHandler : IHandler<LastSeenQuery, LastSeenQueryResponse>
+public class LastSeenQueryHandler : IQueryHandler<LastSeenQuery, List<LastSeenDto>>
 {
     private readonly ILastSeenRepository _lastSeenRepository;
 
@@ -14,16 +16,17 @@ public class LastSeenQueryHandler : IHandler<LastSeenQuery, LastSeenQueryRespons
         _lastSeenRepository = lastSeenRepository;
     }
 
-    public async Task<LastSeenQueryResponse> HandleAsync(LastSeenQuery query)
+    public async Task<IResult<List<LastSeenDto>>> HandleAsync(LastSeenQuery query)
     {
-        var response = new LastSeenQueryResponse();
-
-        var lastSeenModels = await _lastSeenRepository.GetLastSeenModelsByUserIdsAsync(query.UserIds);
+        var lastSeenModels = 
+            await _lastSeenRepository.GetLastSeenModelsByUserIdsAsync(query.UserIds);
+        
+        var lastSeenModelDtoList = new List<LastSeenDto>();
         foreach (var lastSeenModel in lastSeenModels)
         {
-            response.Items.Add(lastSeenModel.ToLastSeenDto());
+            lastSeenModelDtoList.Add(lastSeenModel.ToLastSeenDto());
         }
 
-        return response;
+        return Result<List<LastSeenDto>>.Success(lastSeenModelDtoList);
     }
 }

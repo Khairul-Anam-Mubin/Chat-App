@@ -1,8 +1,9 @@
 using Chat.Domain.Models;
+using Chat.Framework.CQRS;
 
 namespace Chat.Application.Commands;
 
-public class SendMessageCommand
+public class SendMessageCommand : ICommand
 {
     public ChatModel? ChatModel { get; set; }
 }

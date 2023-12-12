@@ -2,13 +2,14 @@ using Chat.Application.DTOs;
 using Chat.Application.Extensions;
 using Chat.Application.Queries;
 using Chat.Domain.Interfaces;
-using Chat.Framework.Mediators;
-using Chat.Framework.RequestResponse;
+using Chat.Framework.CQRS;
+using Chat.Framework.Pagination;
+using Chat.Framework.Results;
 
 namespace Chat.Application.QueryHandlers;
 
 public class ChatListQueryHandler : 
-    IHandler<ChatListQuery, IPaginationResponse<LatestChatDto>>
+    IQueryHandler<ChatListQuery, IPaginationResponse<LatestChatDto>>
 {
     private readonly ILatestChatRepository _latestChatRepository;
 
@@ -17,7 +18,7 @@ public class ChatListQueryHandler :
         _latestChatRepository = latestChatRepository;
     }
 
-    public async Task<IPaginationResponse<LatestChatDto>> HandleAsync(ChatListQuery query)
+    public async Task<IResult<IPaginationResponse<LatestChatDto>>> HandleAsync(ChatListQuery query)
     {
         var response = query.CreateResponse();
 
@@ -27,6 +28,6 @@ public class ChatListQueryHandler :
             response.AddItem(latestChatModel.ToLatestChatDto(query.UserId));
         }
 
-        return response;
+        return Result<IPaginationResponse<LatestChatDto>>.Success(response);
     }
 }

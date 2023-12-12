@@ -3,7 +3,7 @@ using Chat.FileStore.Application.DTOs;
 using Chat.FileStore.Application.Queries;
 using Chat.FileStore.Domain.Models;
 using Chat.Framework.CQRS;
-using Chat.Framework.RequestResponse;
+using Chat.Framework.Pagination;
 using Chat.Infrastructure.Shared.Controllers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -42,13 +42,15 @@ public class FileController : ACommonController
         {
             FileId = fileId
         };
-        var response = await _queryExecutor.ExecuteAsync<FileDownloadQuery, IPaginationResponse<FileDownloadResult>>(query);
+        var result = await _queryExecutor.ExecuteAsync<FileDownloadQuery, IPaginationResponse<FileDownloadResult>>(query);
 
-        if (response == null)
+        var response = result.Response;
+
+        if (response is null)
         {
             return NotFound();
         }
-        
+
         var fileDownloadResult = response.Items.FirstOrDefault();
 
         return File(fileDownloadResult?.FileBytes, fileDownloadResult?.ContentType);

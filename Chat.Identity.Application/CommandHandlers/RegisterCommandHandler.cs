@@ -1,8 +1,8 @@
 using Chat.Domain.Shared.Commands;
+using Chat.Framework.CQRS;
 using Chat.Framework.EmailSenders;
-using Chat.Framework.Mediators;
 using Chat.Framework.MessageBrokers;
-using Chat.Framework.RequestResponse;
+using Chat.Framework.Results;
 using Chat.Identity.Application.Commands;
 using Chat.Identity.Application.Extensions;
 using Chat.Identity.Domain.Interfaces;
@@ -10,7 +10,7 @@ using Chat.Identity.Domain.Models;
 
 namespace Chat.Identity.Application.CommandHandlers;
 
-public class RegisterCommandHandler : IHandler<RegisterCommand, IResponse>
+public class RegisterCommandHandler : ICommandHandler<RegisterCommand>
 {
     private readonly IUserRepository _userRepository;
     private readonly ICommandBus _commandBus;
@@ -23,11 +23,11 @@ public class RegisterCommandHandler : IHandler<RegisterCommand, IResponse>
         _commandBus = commandBus;
     }
 
-    public async Task<IResponse> HandleAsync(RegisterCommand command)
+    public async Task<IResult> HandleAsync(RegisterCommand command)
     {
         if (await _userRepository.IsUserExistAsync(command.UserModel))
         {
-            return Response.Error("User email or id already exists!!");
+            return Result.Error("User email or id already exists!!");
         }
         
         command.UserModel.Id = Guid.NewGuid().ToString();
@@ -36,10 +36,10 @@ public class RegisterCommandHandler : IHandler<RegisterCommand, IResponse>
 
         if (!await _userRepository.SaveAsync(command.UserModel))
         {
-            return Response.Error("Some anonymous problem occurred!!");
+            return Result.Error("Some anonymous problem occurred!!");
         }
 
-        var response = Response.Success();
+        var response = Result.Success();
         
         response.Message = "User Created Successfully!!";
 

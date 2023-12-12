@@ -1,14 +1,14 @@
 ﻿using Chat.Domain.Shared.Commands;
 using Chat.Framework.CQRS;
 using Chat.Framework.MessageBrokers;
-using Chat.Framework.RequestResponse;
+using Chat.Framework.Results;
 using Chat.Notification.Application.Commands;
 using Chat.Notification.Domain.Interfaces;
 
 namespace Chat.Notification.Application.Consumers;
 
 public class SendNotificationCommandConsumer :
-    ACommandConsumer<SendNotificationCommand, IResponse>
+    ACommandConsumer<SendNotificationCommand>
 {
     private readonly IHubConnectionService _hubConnectionService;
     private readonly ICommandExecutor _commandExecutor;
@@ -21,7 +21,7 @@ public class SendNotificationCommandConsumer :
         _commandExecutor = commandExecutor;
     }
 
-    protected override async Task<IResponse> OnConsumeAsync(SendNotificationCommand command, IMessageContext<SendNotificationCommand>? context = null)
+    protected override async Task<IResult> OnConsumeAsync(SendNotificationCommand command, IMessageContext<SendNotificationCommand>? context = null)
     {
         var receiver = command.Receiver!;
 
@@ -59,7 +59,7 @@ public class SendNotificationCommandConsumer :
             }
         }
 
-        return Response.Success();
+        return Result.Success();
     }
 
     private async Task PublishNotificationToConnectedHubAsync(string hubId, List<string> receiverIds, Chat.Domain.Shared.Entities.Notification notification)

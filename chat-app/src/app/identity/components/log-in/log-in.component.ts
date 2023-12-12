@@ -14,7 +14,7 @@ import { SecurtiyService } from 'src/app/core/services/security-service';
   styleUrls: ['./log-in.component.css']
 })
 export class LogInComponent implements OnInit {
-  
+
   logInFormControl = this.fb.group({
     email : ['', [Validators.required, Validators.email]],
     password : ['', [Validators.required, Validators.minLength(6)]]
@@ -29,13 +29,13 @@ export class LogInComponent implements OnInit {
     private securityService: SecurtiyService) {}
 
   ngOnInit() {
-    
+
   }
 
   onSubmit() {
     localStorage.clear();
     const password = this.getFormValue("password");
-    
+
     var logInCommand = this.authService.getLogInCommand(this.getFormValue("email"), this.getFormValue("password"));
     this.commandService.execute(logInCommand).pipe(take(1)).subscribe(response => {
       console.log(response);
@@ -47,8 +47,8 @@ export class LogInComponent implements OnInit {
         .subscribe(response => {
           if (response.status === ResponseStatus.success) {
             console.log("received user profile", response);
-            this.userService.setUserProfileToStore(response.items[0]);
-            this.router.navigateByUrl("user/" + response.items[0].id);
+            this.userService.setUserProfileToStore(response.response.items[0]);
+            this.router.navigateByUrl("user/" + response.response.items[0].id);
             this.securityService.createAndSavePrivateKey(password);
           }
         });

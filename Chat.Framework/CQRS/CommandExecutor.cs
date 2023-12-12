@@ -1,6 +1,6 @@
 using Chat.Framework.Enums;
 using Chat.Framework.Mediators;
-using Chat.Framework.RequestResponse;
+using Chat.Framework.Results;
 
 namespace Chat.Framework.CQRS;
 
@@ -13,31 +13,38 @@ public class CommandExecutor : ICommandExecutor
         _mediator = mediator;
     }
 
-    public async Task<TResponse> ExecuteAsync<TCommand, TResponse>(TCommand command)
-        where TCommand : class
-        where TResponse : class, IResponse
+    public async Task<IResult> ExecuteAsync<TCommand>(TCommand command) 
+        where TCommand : class, ICommand
     {
         try
         {
-            var response = await _mediator.SendAsync<TCommand, TResponse>(command);
-
-            response.Status ??= ResponseStatus.Success;
-
-            return response;
+            var result = await _mediator.SendAsync<TCommand, IResult>(command);
+            result.Status ??= ResponseStatus.Success;
+            return result;
         }
         catch (Exception e)
         {
-            Console.WriteLine(e.Message);
+            Console.WriteLine(e);
 
-            var response = Response.Error(e);
-
-            return (response as TResponse)!;
+            return Result.Error(e.Message);
         }
     }
 
-    public async Task<IResponse> ExecuteAsync<TCommand>(TCommand command) 
-        where TCommand : class
+    public async Task<IResult<TResponse>> ExecuteAsync<TCommand, TResponse>(TCommand command) 
+        where TCommand : class, ICommand
+        where TResponse : class
     {
-        return await ExecuteAsync<TCommand, IResponse>(command);
+        try
+        {
+            var result = await _mediator.SendAsync<TCommand, IResult<TResponse>>(command);
+            result.Status ??= ResponseStatus.Success;
+            return result;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+
+            return Result<TResponse>.Error(e.Message);
+        }
     }
 }

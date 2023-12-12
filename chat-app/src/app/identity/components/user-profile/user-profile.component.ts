@@ -17,7 +17,7 @@ import { UpdateUserProfileCommand } from '../../commands/update-user-profile-com
   styleUrls: ['./user-profile.component.css']
 })
 export class UserProfileComponent implements OnInit{
-  
+
   isCurrentUser: boolean = false;
   currentUserId: any;
   isEditable : boolean = false;
@@ -42,7 +42,7 @@ export class UserProfileComponent implements OnInit{
     private router: Router,
     private fileService : FileService,
     private fb: FormBuilder) {}
-    
+
   ngOnInit(): void {
     console.log("[UserProfileComponent] ngOnInit");
     this.currentUserId = this.userService.getCurrentUserId();
@@ -54,19 +54,19 @@ export class UserProfileComponent implements OnInit{
     }
     this.getUserProfile(this.currentUserId);
   }
-  
+
   getUserProfile(userId : any) {
     this.userService.getUserProfileById(userId)
     .pipe(take(1))
     .subscribe(response => {
-      this.userProfile = response.items[0];
+      this.userProfile = response.response.items[0];
       this.setFormData();
       if (this.userProfile.profilePictureId) {
         this.fileService.getFileModelByFileId(this.userProfile.profilePictureId)
         .pipe(take(1))
         .subscribe(response => {
           console.log(response);
-          this.profilePictureDetails = response.items[0];
+          this.profilePictureDetails = response.response.items[0];
           this.fileService.downloadFile(this.userProfile.profilePictureId)
           .pipe(take(1))
           .subscribe(response => {

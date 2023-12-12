@@ -2,14 +2,15 @@ using Chat.Application.Shared.Providers;
 using Chat.FileStore.Application.Commands;
 using Chat.FileStore.Domain.Interfaces;
 using Chat.FileStore.Domain.Models;
+using Chat.Framework.CQRS;
 using Chat.Framework.Extensions;
-using Chat.Framework.Mediators;
-using Chat.Framework.RequestResponse;
+using Chat.Framework.Results;
 using Microsoft.AspNetCore.Http;
+using IResult = Chat.Framework.Results.IResult;
 
 namespace Chat.FileStore.Application.CommandHandlers;
 
-public class UploadFileCommandHandler : IHandler<UploadFileCommand, IResponse>
+public class UploadFileCommandHandler : ICommandHandler<UploadFileCommand>
 {
     private readonly IFileRepository _fileRepository;
     private readonly IHttpContextAccessor _httpContextAccessor;
@@ -20,16 +21,16 @@ public class UploadFileCommandHandler : IHandler<UploadFileCommand, IResponse>
         _httpContextAccessor = httpContextAccessor;
     }
 
-    public async Task<IResponse> HandleAsync(UploadFileCommand command)
+    public async Task<IResult> HandleAsync(UploadFileCommand command)
     {
-        var response = Response.Success();
+        var response = Result.Success();
 
         var file = command.FormFile;
         var pathToSave = "C:\\workstation\\Training\\Chat-WebApp\\Chat.FileStore.Persistence\\Store";
         
         if (file.Length <= 0)
         {
-            return Response.Error("File Length 0");
+            return Result.Error("File Length 0");
         }
 
         var fileName = file.FileName;
@@ -57,7 +58,7 @@ public class UploadFileCommandHandler : IHandler<UploadFileCommand, IResponse>
         
         if (!await _fileRepository.SaveAsync(fileModel))
         {
-            return Response.Error("File Save error to db");
+            return Result.Error("File Save error to db");
         }
         
         response.Message = "File uploaded successfully";

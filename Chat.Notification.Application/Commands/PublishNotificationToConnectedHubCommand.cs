@@ -1,6 +1,8 @@
-﻿namespace Chat.Notification.Application.Commands;
+﻿using Chat.Framework.CQRS;
 
-public class PublishNotificationToConnectedHubCommand
+namespace Chat.Notification.Application.Commands;
+
+public class PublishNotificationToConnectedHubCommand : ICommand
 {
     public string HubInstanceId { get; set; } = string.Empty;
     public Chat.Domain.Shared.Entities.Notification? Notification { get; set; }

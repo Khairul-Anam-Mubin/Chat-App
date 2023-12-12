@@ -2,11 +2,11 @@
 using Chat.Framework.CQRS;
 using Chat.Framework.EmailSenders;
 using Chat.Framework.MessageBrokers;
-using Chat.Framework.RequestResponse;
+using Chat.Framework.Results;
 
 namespace Chat.Contact.Application.Consumers;
 
-public class SendEmailCommandConsumer : ACommandConsumer<SendEmailCommand, IResponse>
+public class SendEmailCommandConsumer : ACommandConsumer<SendEmailCommand>
 {
     private readonly IEmailSender _emailSender;
 
@@ -15,16 +15,16 @@ public class SendEmailCommandConsumer : ACommandConsumer<SendEmailCommand, IResp
         _emailSender = emailSender;
     }
         
-    protected override async Task<IResponse> OnConsumeAsync(
+    protected override async Task<IResult> OnConsumeAsync(
         SendEmailCommand command, IMessageContext<SendEmailCommand>? context = null)
     {
         if (command.Email is null)
         {
-            return Response.Error("Email model error");
+            return Result.Error("Email model error");
         }
 
         await _emailSender.SendAsync(command.Email);
 
-        return Response.Success("Email Sent");
+        return Result.Success("Email Sent");
     }
 }

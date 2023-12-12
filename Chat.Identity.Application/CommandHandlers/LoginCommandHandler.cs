@@ -1,39 +1,47 @@
+using Chat.Framework.CQRS;
 using Chat.Framework.Mediators;
-using Chat.Framework.RequestResponse;
+using Chat.Framework.Results;
 using Chat.Identity.Application.Commands;
 using Chat.Identity.Application.Extensions;
 using Chat.Identity.Domain.Interfaces;
 
 namespace Chat.Identity.Application.CommandHandlers;
 
-public class LoginCommandHandler : IHandler<LoginCommand, IResponse>
+public class LoginCommandHandler : ICommandHandler<LoginCommand>
 {
     private readonly IUserRepository _userRepository;
     private readonly ITokenService _tokenService;
-
-    public LoginCommandHandler(IUserRepository userRepository, ITokenService tokenService)
+    private readonly IMediator _mediator;
+    private readonly ICommandExecutor _commandExecutor;
+    public LoginCommandHandler(IUserRepository userRepository, ITokenService tokenService, IMediator mediator, ICommandExecutor commandExecutor)
     {
         _userRepository = userRepository;
         _tokenService = tokenService;
+        _mediator = mediator;
+        _commandExecutor = commandExecutor;
     }
 
-    public async Task<IResponse> HandleAsync(LoginCommand command)
+    public async Task<IResult> HandleAsync(LoginCommand command)
     {
+
+        var testCommand = new TestCommand();
+        var res = await _commandExecutor.ExecuteAsync<TestCommand, TestCommandResponse>(testCommand);
+
         var user = await _userRepository.GetUserByEmailAsync(command.Email);
 
         if (user == null)
         {
-            return Response.Error("Email error!!");
+            return Result.Error("Email error!!");
         }
 
         if (user.Password != command.Password)
         {
-            return Response.Error("Password error!!");
+            return Result.Error("Password error!!");
         }
 
         if (!user.IsEmailVerified)
         {
-            return Response.Error("Plz verify your email.!!");
+            return Result.Error("Plz verify your email.!!");
         }
 
         var userProfile = user.ToUserProfile();
@@ -41,10 +49,10 @@ public class LoginCommandHandler : IHandler<LoginCommand, IResponse>
         var token = await _tokenService.CreateTokenAsync(userProfile, command.AppId);
         if (token == null)
         {
-            return Response.Error("Token Creation Failed");
+            return Result.Error("Token Creation Failed");
         }
 
-        var response = Response.Success();
+        var response = Result.Success();
         
         response.SetData("Token", token);
         response.Message = "Logged in successfully";

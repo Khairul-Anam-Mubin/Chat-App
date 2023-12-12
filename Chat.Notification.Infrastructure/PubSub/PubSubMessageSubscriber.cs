@@ -4,6 +4,8 @@ using Chat.Framework.Database.Models;
 using Chat.Framework.Database.ORM;
 using Chat.Framework.Extensions;
 using Chat.Framework.Interfaces;
+using Chat.Framework.Mediators;
+using Chat.Framework.Results;
 using Chat.Notification.Domain.Interfaces;
 using Microsoft.Extensions.Configuration;
 
@@ -15,17 +17,19 @@ public sealed class PubSubMessageSubscriber : IInitialService
     private readonly IRedisContext _redisContext;
     private readonly IConfiguration _configuration;
     private readonly ICommandExecutor _commandExecutor;
+    private readonly IMediator _mediator;
 
     public PubSubMessageSubscriber(
         IRedisContext redisContext,
         IConfiguration configuration,
         ICommandExecutor commandExecutor,
-        IHubConnectionService hubConnectionService)
+        IHubConnectionService hubConnectionService, IMediator mediator)
     {
         _redisContext = redisContext;
         _configuration = configuration;
         _commandExecutor = commandExecutor;
         _hubConnectionService = hubConnectionService;
+        _mediator = mediator;
     }
 
     public async Task InitializeAsync()
@@ -49,7 +53,7 @@ public sealed class PubSubMessageSubscriber : IInitialService
 
             Console.WriteLine($"PubSubMessage.Id : {pubSubMessage?.Id}, PubSubMessageType: {pubSubMessage?.MessageType.ToString()} , message : {message}\n");
 
-            Task.Factory.StartNew(() => _commandExecutor.ExecuteAsync(pubSubMessage!));
+            Task.Factory.StartNew(() => _mediator.SendAsync<PubSubMessage, IResult>(pubSubMessage!));
 
         });
     }

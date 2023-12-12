@@ -2,7 +2,7 @@ using Chat.Contact.Application.Commands;
 using Chat.Contact.Application.DTOs;
 using Chat.Contact.Application.Queries;
 using Chat.Framework.CQRS;
-using Chat.Framework.RequestResponse;
+using Chat.Framework.Pagination;
 using Chat.Infrastructure.Shared.Controllers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

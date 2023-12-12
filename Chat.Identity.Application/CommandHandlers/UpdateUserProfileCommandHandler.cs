@@ -1,5 +1,5 @@
-using Chat.Framework.Mediators;
-using Chat.Framework.RequestResponse;
+using Chat.Framework.CQRS;
+using Chat.Framework.Results;
 using Chat.Identity.Application.Commands;
 using Chat.Identity.Application.Extensions;
 using Chat.Identity.Domain.Interfaces;
@@ -7,7 +7,7 @@ using Chat.Identity.Domain.Interfaces;
 namespace Chat.Identity.Application.CommandHandlers;
 
 public class UpdateUserProfileCommandHandler : 
-    IHandler<UpdateUserProfileCommand, IResponse>
+    ICommandHandler<UpdateUserProfileCommand>
 {
     private readonly IUserRepository _userRepository;
 
@@ -16,14 +16,14 @@ public class UpdateUserProfileCommandHandler :
         _userRepository = userRepository;
     }
 
-    public async Task<IResponse> HandleAsync(UpdateUserProfileCommand command)
+    public async Task<IResult> HandleAsync(UpdateUserProfileCommand command)
     {
         var requestUpdateModel = command.UserModel;
         
         var userModel = await _userRepository.GetUserByEmailAsync(requestUpdateModel.Email);
         if (userModel == null)
         {
-            return Response.Error("UserModel not found");
+            return Result.Error("UserModel not found");
         }
         
         var updateInfoCount = 0;
@@ -63,7 +63,7 @@ public class UpdateUserProfileCommandHandler :
             await _userRepository.SaveAsync(userModel);
         }
 
-        var response = Response.Success();
+        var response = Result.Success();
 
         response.Message = "User Updated Successfully!!";
         response.SetData("UserProfile", userModel.ToUserProfile());

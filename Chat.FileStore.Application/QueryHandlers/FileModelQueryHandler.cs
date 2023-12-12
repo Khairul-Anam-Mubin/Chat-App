@@ -1,12 +1,13 @@
 using Chat.FileStore.Application.Queries;
 using Chat.FileStore.Domain.Interfaces;
 using Chat.FileStore.Domain.Models;
-using Chat.Framework.Mediators;
-using Chat.Framework.RequestResponse;
+using Chat.Framework.CQRS;
+using Chat.Framework.Pagination;
+using Chat.Framework.Results;
 
 namespace Chat.FileStore.Application.QueryHandlers;
 
-public class FileModelQueryHandler : IHandler<FileModelQuery, IPaginationResponse<FileModel>>
+public class FileModelQueryHandler : IQueryHandler<FileModelQuery, IPaginationResponse<FileModel>>
 {
     private readonly IFileRepository _fileRepository;
 
@@ -15,15 +16,14 @@ public class FileModelQueryHandler : IHandler<FileModelQuery, IPaginationRespons
         _fileRepository = fileRepository;
     }
 
-    public async Task<IPaginationResponse<FileModel>> HandleAsync(FileModelQuery query)
+    public async Task<IResult<IPaginationResponse<FileModel>>> HandleAsync(FileModelQuery query)
     {
         var response = query.CreateResponse();
 
         var fileModel = await _fileRepository.GetByIdAsync(query.FileId);
         if (fileModel == null)
         {
-            response.ErrorMessage("File not found");
-            return response;
+            return Result<IPaginationResponse<FileModel>>.Error(response, "File not found");
         }
 
         var path = Directory.GetCurrentDirectory();
@@ -31,6 +31,6 @@ public class FileModelQueryHandler : IHandler<FileModelQuery, IPaginationRespons
 
         response.AddItem(fileModel);
 
-        return response;
+        return Result<IPaginationResponse<FileModel>>.Success(response);
     }
 }

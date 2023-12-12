@@ -1,5 +1,5 @@
 ﻿using Chat.Domain.Shared.Entities;
-using Chat.Framework.RequestResponse;
+using Chat.Framework.Pagination;
 
 namespace Chat.Domain.Shared.Queries;
 

@@ -3,11 +3,11 @@ using Chat.Activity.Domain.Models;
 using Chat.Domain.Shared.Commands;
 using Chat.Framework.CQRS;
 using Chat.Framework.MessageBrokers;
-using Chat.Framework.RequestResponse;
+using Chat.Framework.Results;
 
 namespace Chat.Activity.Application.CommandHandlers;
 
-public class UpdateLastSeenCommandConsumer : ACommandConsumer<UpdateLastSeenCommand, IResponse>
+public class UpdateLastSeenCommandConsumer : ACommandConsumer<UpdateLastSeenCommand>
 {
     private readonly ILastSeenRepository _lastSeenRepository;
 
@@ -16,9 +16,10 @@ public class UpdateLastSeenCommandConsumer : ACommandConsumer<UpdateLastSeenComm
         _lastSeenRepository = lastSeenRepository;
     }
 
-    protected override async Task<IResponse> OnConsumeAsync(UpdateLastSeenCommand command, IMessageContext<UpdateLastSeenCommand>? context = null)
+    protected override async Task<IResult> OnConsumeAsync(UpdateLastSeenCommand command, IMessageContext<UpdateLastSeenCommand>? context = null)
     {
-        var lastSeenModel = await _lastSeenRepository.GetLastSeenModelByUserIdAsync(command.UserId) ?? new LastSeenModel
+        var lastSeenModel = 
+            await _lastSeenRepository.GetLastSeenModelByUserIdAsync(command.UserId) ?? new LastSeenModel
         {
             Id = Guid.NewGuid().ToString(),
             UserId = command.UserId,
@@ -29,10 +30,10 @@ public class UpdateLastSeenCommandConsumer : ACommandConsumer<UpdateLastSeenComm
 
         if (!await _lastSeenRepository.SaveAsync(lastSeenModel))
         {
-            return Response.Error("Save Last Seen Model ErrorMessage");
+            return Result.Error("Save Last Seen Model ErrorMessage");
         }
         
-        var response = Response.Success("Last seen time set successfully");
+        var response = Result.Success("Last seen time set successfully");
         response.SetData("LastSeenAt", lastSeenModel.LastSeenAt);
 
         return response;

@@ -1,6 +1,7 @@
 using Chat.Domain.Shared.Queries;
 using Chat.Framework.CQRS;
 using Chat.Framework.MessageBrokers;
+using Chat.Framework.Results;
 using Chat.Identity.Application.Extensions;
 using Chat.Identity.Domain.Interfaces;
 using Chat.Identity.Domain.Models;
@@ -16,7 +17,7 @@ public class UserProfileQueryConsumer : AQueryConsumer<UserProfileQuery, UserPro
         _userRepository = userRepository;
     }
 
-    protected override async Task<UserProfileResponse> OnConsumeAsync(UserProfileQuery query, 
+    protected override async Task<IResult<UserProfileResponse>> OnConsumeAsync(UserProfileQuery query, 
         IMessageContext<UserProfileQuery>? context = null)
     {
         var response = new UserProfileResponse();
@@ -40,7 +41,7 @@ public class UserProfileQueryConsumer : AQueryConsumer<UserProfileQuery, UserPro
                 response.AddItem(userModel.ToUserProfile());
             }
 
-            return response;
+            return Result<UserProfileResponse>.Success(response);
         }
 
         foreach (var userModel in userModels)
@@ -48,6 +49,6 @@ public class UserProfileQueryConsumer : AQueryConsumer<UserProfileQuery, UserPro
             response.Profiles.Add(userModel.ToUserProfile());
         }
 
-        return response;
+        return Result<UserProfileResponse>.Success(response);
     }
 }

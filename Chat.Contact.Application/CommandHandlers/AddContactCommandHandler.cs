@@ -2,14 +2,14 @@ using Chat.Contact.Application.Commands;
 using Chat.Contact.Domain.Interfaces;
 using Chat.Contact.Domain.Models;
 using Chat.Domain.Shared.Queries;
-using Chat.Framework.Mediators;
+using Chat.Framework.CQRS;
 using Chat.Framework.MessageBrokers;
-using Chat.Framework.RequestResponse;
+using Chat.Framework.Results;
 
 namespace Chat.Contact.Application.CommandHandlers;
 
 public class AddContactCommandHandler : 
-    IHandler<AddContactCommand, IResponse>
+    ICommandHandler<AddContactCommand>
 {
     private readonly IContactRepository _contactRepository;
     private readonly IMessageRequestClient _messageRequestClient;
@@ -22,9 +22,9 @@ public class AddContactCommandHandler :
         _messageRequestClient = messageRequestClient;
     }
 
-    public async Task<IResponse> HandleAsync(AddContactCommand command)
+    public async Task<IResult> HandleAsync(AddContactCommand command)
     {
-        var response = Response.Success();
+        var response = Result.Success();
 
         var userProfileQuery = new UserProfileQuery
         {
@@ -37,7 +37,7 @@ public class AddContactCommandHandler :
         
         if (queryResponse.Profiles.Count < 2)
         {
-            return Response.Error("User Not Exists");
+            return Result.Error("User Not Exists");
         }
 
         var userProfiles = queryResponse.Profiles;
@@ -57,7 +57,7 @@ public class AddContactCommandHandler :
 
         if (!await _contactRepository.SaveAsync(userContact))
         {
-            return Response.Error("Contact Saving Failed");
+            return Result.Error("Contact Saving Failed");
         }
 
         response.Message = "Contact Added Successfully";

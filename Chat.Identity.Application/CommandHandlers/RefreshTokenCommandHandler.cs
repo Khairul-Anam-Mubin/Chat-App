@@ -1,13 +1,13 @@
 using Chat.Application.Shared.Helpers;
 using Chat.Application.Shared.Providers;
-using Chat.Framework.Mediators;
-using Chat.Framework.RequestResponse;
+using Chat.Framework.CQRS;
+using Chat.Framework.Results;
 using Chat.Identity.Application.Commands;
 using Chat.Identity.Domain.Interfaces;
 
 namespace Chat.Identity.Application.CommandHandlers;
 
-public class RefreshTokenCommandHandler : IHandler<RefreshTokenCommand, IResponse>
+public class RefreshTokenCommandHandler : ICommandHandler<RefreshTokenCommand>
 {
     private readonly ITokenService _tokenService;
 
@@ -16,33 +16,33 @@ public class RefreshTokenCommandHandler : IHandler<RefreshTokenCommand, IRespons
         _tokenService = tokenService;
     }
 
-    public async Task<IResponse> HandleAsync(RefreshTokenCommand command)
+    public async Task<IResult> HandleAsync(RefreshTokenCommand command)
     {
         if (!TokenHelper.IsTokenValid(command.Token.AccessToken, _tokenService.GetTokenValidationParameters(true, true, false)))
         {
-            return Response.Error("Invalid access token");
+            return Result.Error("Invalid access token");
         }
 
         if (!TokenHelper.IsExpired(command.Token.AccessToken))
         {
-            return Response.Error("AccessToken not expired yet!");
+            return Result.Error("AccessToken not expired yet!");
         }
         
         var accessModel = await _tokenService.GetAccessModelByRefreshTokenAsync(command.Token.RefreshToken);
         if (accessModel == null || accessModel.AccessToken != command.Token.AccessToken)
         {
-            return Response.Error("Refresh or AccessToken ErrorMessage");
+            return Result.Error("Refresh or AccessToken ErrorMessage");
         }
         
         if (command.AppId != accessModel.AppId)
         {
-            return Response.Error("AppId ErrorMessage");
+            return Result.Error("AppId ErrorMessage");
         }
         
         if (accessModel.Expired)
         {
             await _tokenService.RevokeAllTokensByUserId(accessModel.UserId);
-            return Response.Error("Suspicious Token refresh attempt");
+            return Result.Error("Suspicious Token refresh attempt");
         }
         
         accessModel.Expired = true;
@@ -54,10 +54,10 @@ public class RefreshTokenCommandHandler : IHandler<RefreshTokenCommand, IRespons
         var token = await _tokenService.CreateTokenAsync(userProfile, command.AppId);
         if (token == null)
         {
-            return Response.Error("Token ErrorMessage");
+            return Result.Error("Token ErrorMessage");
         }
 
-        var response = Response.Success();
+        var response = Result.Success();
 
         response.SetData("Token", token);
         

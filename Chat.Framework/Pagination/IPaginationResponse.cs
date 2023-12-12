@@ -1,6 +1,6 @@
-﻿namespace Chat.Framework.RequestResponse;
+﻿namespace Chat.Framework.Pagination;
 
-public interface IPaginationResponse<TItem> : IResponse
+public interface IPaginationResponse<TItem>
 {
     int Offset { get; set; }
     int Limit { get; set; }

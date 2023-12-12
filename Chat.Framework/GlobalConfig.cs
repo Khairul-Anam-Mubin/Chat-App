@@ -22,13 +22,13 @@ public sealed class GlobalConfig
             return _instance;
         }
     }
-    
+
+    private readonly ConcurrentDictionary<string, object> _globalConfig;
+
     private GlobalConfig()
     {
         _globalConfig = new ConcurrentDictionary<string, object>();
     }
-
-    private readonly ConcurrentDictionary<string, object> _globalConfig;
 
     public void AddConfigFromPath(string configPath)
     {

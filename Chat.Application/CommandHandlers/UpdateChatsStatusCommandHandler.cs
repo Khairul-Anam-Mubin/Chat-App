@@ -1,12 +1,12 @@
 using Chat.Application.Commands;
 using Chat.Domain.Interfaces;
-using Chat.Framework.Mediators;
-using Chat.Framework.RequestResponse;
+using Chat.Framework.CQRS;
+using Chat.Framework.Results;
 
 namespace Chat.Application.CommandHandlers;
 
 public class UpdateChatsStatusCommandHandler : 
-    IHandler<UpdateChatsStatusCommand, IResponse>
+    ICommandHandler<UpdateChatsStatusCommand>
 {
         
     private readonly ILatestChatRepository _latestChatRepository;
@@ -18,12 +18,12 @@ public class UpdateChatsStatusCommandHandler :
         _chatRepository = chatRepository;
     }
 
-    public async Task<IResponse> HandleAsync(UpdateChatsStatusCommand command)
+    public async Task<IResult> HandleAsync(UpdateChatsStatusCommand command)
     {
         var latestChatModel = await _latestChatRepository.GetLatestChatAsync(command.UserId, command.OpenedChatUserId);
         if (latestChatModel == null)
         {
-            return Response.Error("LatestChatModel not found");
+            return Result.Error("LatestChatModel not found");
         }
 
         if (latestChatModel.UserId != command.UserId)
@@ -40,6 +40,6 @@ public class UpdateChatsStatusCommandHandler :
 
         await _chatRepository.SaveAsync(chatModels);
 
-        return Response.Success();
+        return Result.Success();
     }
 }

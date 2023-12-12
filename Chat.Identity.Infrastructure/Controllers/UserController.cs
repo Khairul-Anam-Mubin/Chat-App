@@ -1,7 +1,6 @@
 ﻿using Chat.Domain.Shared.Queries;
 using Chat.Framework.CQRS;
 using Chat.Framework.Mediators;
-using Chat.Framework.RequestResponse;
 using Chat.Identity.Application.Commands;
 using Chat.Infrastructure.Shared.Controllers;
 using Microsoft.AspNetCore.Authorization;
@@ -51,10 +50,12 @@ public class UserController : ACommonController
     [AllowAnonymous]
     public async Task<IActionResult> VerifyAccountAsync([FromQuery] string userId)
     {
-        var verifyCommand = new VerifyAccountCommand();
-        verifyCommand.UserId = userId;
+        var verifyCommand = new VerifyAccountCommand
+        {
+            UserId = userId
+        };
 
-        var response = await _mediator.SendAsync<VerifyAccountCommand, IResponse>(verifyCommand);
+        var response = await GetCommandResponseAsync(verifyCommand);
         return Ok(response);
     }
 }

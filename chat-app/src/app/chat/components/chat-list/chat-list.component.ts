@@ -35,7 +35,7 @@ export class ChatListComponent implements OnInit{
    this.queryService.execute(chatLstQuery)
    .pipe(take(1))
    .subscribe(response => {
-    this.items = response.items;
+    this.items = response.response.items;
     let userIds = [];
     for (let i = 0; i < this.items.length; i++) {
       userIds.push(this.items[i].userId);
@@ -43,7 +43,7 @@ export class ChatListComponent implements OnInit{
     this.userService.getUserProfilesByIds(userIds)
     .pipe(take(1))
     .subscribe(response => {
-      this.chatUsers = response.items;
+      this.chatUsers = response.response.items;
       this.setChatList();
     });
    });

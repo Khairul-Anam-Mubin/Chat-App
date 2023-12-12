@@ -2,7 +2,6 @@
 using Chat.Domain.Shared.Events;
 using Chat.Framework.CQRS;
 using Chat.Framework.MessageBrokers;
-using Chat.Framework.RequestResponse;
 
 namespace Chat.Activity.Application.Consumers;
 
@@ -29,6 +28,6 @@ public class UserConnectedToHubEventConsumer : AMessageConsumer<UserConnectedToH
             IsActive = isActive
         };
 
-        await _commandExecutor.ExecuteAsync<UpdateLastSeenCommand, IResponse>(updateLastSeenCommand);
+        await _commandExecutor.ExecuteAsync(updateLastSeenCommand);
     }
 }

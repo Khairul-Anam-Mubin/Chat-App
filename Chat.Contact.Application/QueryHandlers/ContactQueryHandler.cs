@@ -3,12 +3,13 @@ using Chat.Contact.Application.Extensions;
 using Chat.Contact.Application.Queries;
 using Chat.Contact.Domain.Interfaces;
 using Chat.Contact.Domain.Models;
-using Chat.Framework.Mediators;
-using Chat.Framework.RequestResponse;
+using Chat.Framework.CQRS;
+using Chat.Framework.Pagination;
+using Chat.Framework.Results;
 
 namespace Chat.Contact.Application.QueryHandlers;
 
-public class ContactQueryHandler : IHandler<ContactQuery, IPaginationResponse<ContactDto>>
+public class ContactQueryHandler : IQueryHandler<ContactQuery, IPaginationResponse<ContactDto>>
 {
     private readonly IContactRepository _contactRepository;
 
@@ -17,7 +18,7 @@ public class ContactQueryHandler : IHandler<ContactQuery, IPaginationResponse<Co
         _contactRepository = contactRepository;
     }
 
-    public async Task<IPaginationResponse<ContactDto>> HandleAsync(ContactQuery query)
+    public async Task<IResult<IPaginationResponse<ContactDto>>> HandleAsync(ContactQuery query)
     {
         var response = query.CreateResponse();
 
@@ -41,6 +42,6 @@ public class ContactQueryHandler : IHandler<ContactQuery, IPaginationResponse<Co
             response.AddItem(contact.ToContactDto(query.UserId));
         }
 
-        return response;
+        return Result<IPaginationResponse<ContactDto>>.Success(response);
     }
 }

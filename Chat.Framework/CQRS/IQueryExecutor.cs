@@ -1,10 +1,10 @@
-﻿using Chat.Framework.RequestResponse;
+﻿using Chat.Framework.Results;
 
 namespace Chat.Framework.CQRS;
 
 public interface IQueryExecutor
 {
-    Task<TResponse> ExecuteAsync<TQuery, TResponse>(TQuery query)
-        where TQuery : class
-        where TResponse : class, IResponse;
+    Task<IResult<TResponse>> ExecuteAsync<TQuery, TResponse>(TQuery query)
+        where TQuery : class, IQuery
+        where TResponse : class;
 }

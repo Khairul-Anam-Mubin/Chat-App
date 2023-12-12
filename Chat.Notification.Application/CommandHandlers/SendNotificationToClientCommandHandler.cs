@@ -1,12 +1,12 @@
-﻿using Chat.Framework.Mediators;
-using Chat.Framework.RequestResponse;
+﻿using Chat.Framework.CQRS;
+using Chat.Framework.Results;
 using Chat.Notification.Application.Commands;
 using Chat.Notification.Domain.Interfaces;
 
 namespace Chat.Notification.Application.CommandHandlers;
 
 public class SendNotificationToClientCommandHandler :
-    IHandler<SendNotificationToClientCommand, IResponse>
+    ICommandHandler<SendNotificationToClientCommand>
 {
     private readonly INotificationHubService _notificationHubService;
 
@@ -15,7 +15,7 @@ public class SendNotificationToClientCommandHandler :
         _notificationHubService = notificationHubService;
     }
 
-    public async Task<IResponse> HandleAsync(SendNotificationToClientCommand request)
+    public async Task<IResult> HandleAsync(SendNotificationToClientCommand request)
     {
         var notification = request.Notification;
         var receiverIds = request.ReceiverIds;
@@ -25,6 +25,6 @@ public class SendNotificationToClientCommandHandler :
             await _notificationHubService.SendAsync(receiverId, notification, notification!.NotificationType.ToString());
         }
 
-        return Response.Success();
+        return Result.Success();
     }
 }

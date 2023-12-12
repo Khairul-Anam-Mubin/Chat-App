@@ -8,8 +8,6 @@ public sealed class AssemblyCache
     private static readonly object LockObj = new();
     private static AssemblyCache? _instance;
 
-    private readonly ConcurrentDictionary<string, Assembly> _assemblyLists;
-
     public static AssemblyCache Instance
     {
         get
@@ -25,6 +23,8 @@ public sealed class AssemblyCache
         }
     }
 
+    private readonly ConcurrentDictionary<string, Assembly> _assemblyLists;
+    
     private AssemblyCache()
     {
         _assemblyLists = new();

@@ -1,9 +1,10 @@
 using Chat.Contact.Application.DTOs;
-using Chat.Framework.RequestResponse;
+using Chat.Framework.CQRS;
+using Chat.Framework.Pagination;
 
 namespace Chat.Contact.Application.Queries;
 
-public class ContactQuery : APaginationQuery<ContactDto>
+public class ContactQuery : APaginationQuery<ContactDto> , IQuery
 {
     public string UserId { get; set; } = string.Empty;
     public bool IsRequestContacts { get; set; }

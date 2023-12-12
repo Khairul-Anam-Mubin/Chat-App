@@ -1,11 +1,11 @@
-﻿using Chat.Framework.Mediators;
-using Chat.Framework.RequestResponse;
+﻿using Chat.Framework.CQRS;
+using Chat.Framework.Results;
 using Chat.Identity.Application.Commands;
 using Chat.Identity.Domain.Interfaces;
 
 namespace Chat.Identity.Application.CommandHandlers;
 
-public class VerifyAccountCommandHandler : IHandler<VerifyAccountCommand, IResponse>
+public class VerifyAccountCommandHandler : ICommandHandler<VerifyAccountCommand>
 {
     private readonly IUserRepository _userRepository;
 
@@ -14,19 +14,19 @@ public class VerifyAccountCommandHandler : IHandler<VerifyAccountCommand, IRespo
         _userRepository = userRepository;
     }
 
-    public async Task<IResponse> HandleAsync(VerifyAccountCommand request)
+    public async Task<IResult> HandleAsync(VerifyAccountCommand request)
     {
         var userModel = await _userRepository.GetByIdAsync(request.UserId);
 
         if (userModel == null)
         {
-            return Response.Error("Account verification error");
+            return Result.Error("Account verification error");
         }
 
         userModel.IsEmailVerified = true;
 
         await _userRepository.SaveAsync(userModel);
 
-        return Response.Success("Account verified successfully.");
+        return Result.Success("Account verified successfully.");
     }
 }

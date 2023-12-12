@@ -6,14 +6,13 @@ using Chat.Domain.Shared.Commands;
 using Chat.Domain.Shared.Constants;
 using Chat.Domain.Shared.Entities;
 using Chat.Framework.CQRS;
-using Chat.Framework.Mediators;
 using Chat.Framework.MessageBrokers;
-using Chat.Framework.RequestResponse;
+using Chat.Framework.Results;
 
 namespace Chat.Application.CommandHandlers;
 
 public class SendMessageCommandHandler : 
-    IHandler<SendMessageCommand, IResponse>
+    ICommandHandler<SendMessageCommand>
 {
     private readonly IChatRepository _chatRepository;
     private readonly ICommandExecutor _commandExecutor;
@@ -29,13 +28,13 @@ public class SendMessageCommandHandler :
         _commandBus = commandBus;
     }
 
-    public async Task<IResponse> HandleAsync(SendMessageCommand command)
+    public async Task<IResult> HandleAsync(SendMessageCommand command)
     { 
         var chatModel = command.ChatModel;
 
         if (chatModel is null)
         {
-            return Response.Error("ChatModel not set");
+            return Result.Error("ChatModel not set");
         }
 
         chatModel.Id = Guid.NewGuid().ToString();
@@ -44,14 +43,14 @@ public class SendMessageCommandHandler :
 
         if (!await _chatRepository.SaveAsync(chatModel))
         {
-            return Response.Error("ChatModel Creation Failed");
+            return Result.Error("ChatModel Creation Failed");
         }
 
         await SendChatNotificationAsync(chatModel);
 
         await UpdateLatestChatModelAsync(chatModel);
         
-        var response = Response.Success();
+        var response = Result.Success();
         
         response.SetData("Message", chatModel.ToChatDto());
 

@@ -1,6 +1,6 @@
 using Chat.Framework.Interfaces;
 
-namespace Chat.Framework.RequestResponse;
+namespace Chat.Framework.Pagination;
 
 public interface IPaginationQuery<TItem> : IMetaDataDictionary
 {

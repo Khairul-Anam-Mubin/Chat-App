@@ -1,6 +1,6 @@
 using Chat.Framework.Models;
 
-namespace Chat.Framework.RequestResponse;
+namespace Chat.Framework.Pagination;
 
 public abstract class APaginationQuery<TItem> : MetaDataDictionary, IPaginationQuery<TItem>
 {

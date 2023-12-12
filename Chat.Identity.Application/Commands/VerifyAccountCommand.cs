@@ -1,6 +1,8 @@
-﻿namespace Chat.Identity.Application.Commands;
+﻿using Chat.Framework.CQRS;
 
-public class VerifyAccountCommand
+namespace Chat.Identity.Application.Commands;
+
+public class VerifyAccountCommand : ICommand
 {
     public string UserId { get; set; } = string.Empty;
 }
