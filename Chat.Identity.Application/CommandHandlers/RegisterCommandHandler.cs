@@ -4,7 +4,6 @@ using Chat.Framework.EmailSenders;
 using Chat.Framework.MessageBrokers;
 using Chat.Framework.Results;
 using Chat.Identity.Application.Commands;
-using Chat.Identity.Application.Extensions;
 using Chat.Identity.Domain.Interfaces;
 using Chat.Identity.Domain.Models;
 

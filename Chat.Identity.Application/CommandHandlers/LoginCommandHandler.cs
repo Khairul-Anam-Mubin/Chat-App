@@ -1,5 +1,4 @@
 using Chat.Framework.CQRS;
-using Chat.Framework.Mediators;
 using Chat.Framework.Results;
 using Chat.Identity.Application.Commands;
 using Chat.Identity.Application.Extensions;

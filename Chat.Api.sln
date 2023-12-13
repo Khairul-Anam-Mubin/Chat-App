@@ -19,7 +19,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat.Activity.Application",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat.Activity.Infrastructure", "Chat.Activity.Infrastructure\Chat.Activity.Infrastructure.csproj", "{7C893C70-C5FE-4676-84FE-1EF46AB21C87}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ActivityModule", "ActivityModule", "{7FD0C201-7D97-400B-870C-C63CEF8D2404}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Activity", "Activity", "{7FD0C201-7D97-400B-870C-C63CEF8D2404}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat.Identity.Domain", "Chat.Identity.Domain\Chat.Identity.Domain.csproj", "{6EADE35C-9377-40EB-AFEC-BAE9553966FE}"
 EndProject
@@ -27,9 +27,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat.Identity.Application",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat.Identity.Infrastructure", "Chat.Identity.Infrastructure\Chat.Identity.Infrastructure.csproj", "{2146D478-8682-4327-A250-11885039641B}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IdentityModule", "IdentityModule", "{70BBA365-2DBB-4EB6-B870-205934DB08FB}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Identity", "Identity", "{70BBA365-2DBB-4EB6-B870-205934DB08FB}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ContactModule", "ContactModule", "{9D9AD2C1-4432-48BC-95A3-41703AE2FB5A}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Contact", "Contact", "{9D9AD2C1-4432-48BC-95A3-41703AE2FB5A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat.Contact.Domain", "Chat.Contact.Domain\Chat.Contact.Domain.csproj", "{784B4EAD-D735-45A7-8D16-DDB8241B1723}"
 EndProject
@@ -37,7 +37,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat.Contact.Application", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat.Contact.Infrastructure", "Chat.Contact.Infrastructure\Chat.Contact.Infrastructure.csproj", "{4044AB2C-F51F-47DE-813B-7327BCEFE17D}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FileStoreModule", "FileStoreModule", "{5B66DF56-6D08-421A-BD15-5CA82346BB7B}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FileStore", "FileStore", "{5B66DF56-6D08-421A-BD15-5CA82346BB7B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat.FileStore.Domain", "Chat.FileStore.Domain\Chat.FileStore.Domain.csproj", "{7AC447FF-98F7-4D60-AE2B-40A7C7BFAF2F}"
 EndProject
@@ -45,7 +45,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat.FileStore.Application"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat.FileStore.Infrastructure", "Chat.FileStore.Infrastructure\Chat.FileStore.Infrastructure.csproj", "{6C28C2FD-FA6F-4194-9493-6B20EC92BB09}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ChatModule", "ChatModule", "{271BD1F3-D957-4912-AAD7-96E4BECA1613}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Chat", "Chat", "{271BD1F3-D957-4912-AAD7-96E4BECA1613}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat.Domain", "Chat.Domain\Chat.Domain.csproj", "{BB6463EC-2310-4204-90EB-31288B46815B}"
 EndProject
@@ -53,7 +53,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat.Application", "Chat.Ap
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat.Infrastructure", "Chat.Infrastructure\Chat.Infrastructure.csproj", "{E9BD821F-BD8C-4206-9F0B-7398C2984D1A}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NotificationModule", "NotificationModule", "{E4B5A3DD-B0D6-40B8-B516-DC8B0E939ACF}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Notification", "Notification", "{E4B5A3DD-B0D6-40B8-B516-DC8B0E939ACF}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat.Notification.Domain", "Chat.Notification.Domain\Chat.Notification.Domain.csproj", "{776E3003-63E3-4F16-8300-04AE254FC68D}"
 EndProject
@@ -61,7 +61,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat.Notification.Applicati
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat.Notification.Infrastructure", "Chat.Notification.Infrastructure\Chat.Notification.Infrastructure.csproj", "{76D4A9B1-435D-49FA-84EA-05720AAB4B96}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chat.Infrastructure.Shared", "Chat.Infrustructure.Shared\Chat.Infrastructure.Shared.csproj", "{5D7A8E2F-2EE6-4711-B8BF-BF402E34BD44}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat.Infrastructure.Shared", "Chat.Infrustructure.Shared\Chat.Infrastructure.Shared.csproj", "{5D7A8E2F-2EE6-4711-B8BF-BF402E34BD44}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Framework", "Framework", "{FD5B6871-EC4B-40FD-AC78-6867701C7BFB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{B52245CA-EB1A-4804-AFFE-EAE2265D7C3B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -171,7 +175,10 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{7B7DD4B3-4E1B-4AFC-9AF3-697201860D19} = {271BD1F3-D957-4912-AAD7-96E4BECA1613}
+		{0ED02D30-9139-4048-AB26-5D8406F9F517} = {FD5B6871-EC4B-40FD-AC78-6867701C7BFB}
 		{E391CA4F-6F15-4893-B3DB-104304A67896} = {7FD0C201-7D97-400B-870C-C63CEF8D2404}
+		{3174859C-1E27-4EE7-8E9C-D3FD38B7C4C2} = {B52245CA-EB1A-4804-AFFE-EAE2265D7C3B}
+		{6D562988-5E09-4F4E-994C-8C76EA00EFCD} = {B52245CA-EB1A-4804-AFFE-EAE2265D7C3B}
 		{865AD37C-B994-4429-86CB-38E5E8716DA3} = {7FD0C201-7D97-400B-870C-C63CEF8D2404}
 		{4EE0F15C-1EC1-4D51-B15D-A7A06706BBAD} = {7FD0C201-7D97-400B-870C-C63CEF8D2404}
 		{7C893C70-C5FE-4676-84FE-1EF46AB21C87} = {7FD0C201-7D97-400B-870C-C63CEF8D2404}
@@ -190,6 +197,7 @@ Global
 		{776E3003-63E3-4F16-8300-04AE254FC68D} = {E4B5A3DD-B0D6-40B8-B516-DC8B0E939ACF}
 		{0A3AB2DD-F4E9-4938-B732-D2EEB423B69F} = {E4B5A3DD-B0D6-40B8-B516-DC8B0E939ACF}
 		{76D4A9B1-435D-49FA-84EA-05720AAB4B96} = {E4B5A3DD-B0D6-40B8-B516-DC8B0E939ACF}
+		{5D7A8E2F-2EE6-4711-B8BF-BF402E34BD44} = {B52245CA-EB1A-4804-AFFE-EAE2265D7C3B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {80680230-D6F1-46D5-A086-2E31E4457929}

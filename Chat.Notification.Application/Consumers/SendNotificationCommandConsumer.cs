@@ -7,8 +7,7 @@ using Chat.Notification.Domain.Interfaces;
 
 namespace Chat.Notification.Application.Consumers;
 
-public class SendNotificationCommandConsumer :
-    ACommandConsumer<SendNotificationCommand>
+public class SendNotificationCommandConsumer : ACommandConsumer<SendNotificationCommand>
 {
     private readonly IHubConnectionService _hubConnectionService;
     private readonly ICommandExecutor _commandExecutor;

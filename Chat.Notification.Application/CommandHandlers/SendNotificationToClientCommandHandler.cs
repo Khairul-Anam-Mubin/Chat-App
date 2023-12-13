@@ -5,8 +5,7 @@ using Chat.Notification.Domain.Interfaces;
 
 namespace Chat.Notification.Application.CommandHandlers;
 
-public class SendNotificationToClientCommandHandler :
-    ICommandHandler<SendNotificationToClientCommand>
+public class SendNotificationToClientCommandHandler : ICommandHandler<SendNotificationToClientCommand>
 {
     private readonly INotificationHubService _notificationHubService;
 

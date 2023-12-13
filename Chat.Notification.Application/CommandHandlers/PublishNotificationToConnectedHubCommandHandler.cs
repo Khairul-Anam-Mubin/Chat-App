@@ -9,8 +9,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace Chat.Notification.Application.CommandHandlers;
 
-public class PublishNotificationToConnectedHubCommandHandler :
-    ICommandHandler<PublishNotificationToConnectedHubCommand>
+public class PublishNotificationToConnectedHubCommandHandler : ICommandHandler<PublishNotificationToConnectedHubCommand>
 {
     private readonly IRedisContext _redisContext;
     private readonly DatabaseInfo _databaseInfo;
