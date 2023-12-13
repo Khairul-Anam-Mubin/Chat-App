@@ -14,7 +14,7 @@ import { SecurtiyService } from 'src/app/core/services/security-service';
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent implements OnInit{
-  
+
   registerFormControl = this.fb.group({
     firstName : ['', [Validators.required, Validators.pattern('[a-zA-z ]*')]],
     lastName : ['', [Validators.required, Validators.pattern('[a-zA-z ]*')]],
@@ -32,12 +32,12 @@ export class RegisterComponent implements OnInit{
     private securityService: SecurtiyService) {}
 
   ngOnInit() {
-    
+
   }
 
-  onSubmit() {
+  async onSubmit() {
     this.securityService.createAndSavePrivateKey(this.getFormValue('password'));
-    var registerCommand = this.getRegisterCommand();
+    const registerCommand = this.getRegisterCommand();
     this.commandService.execute(registerCommand).pipe(take(1)).subscribe(response => {
       console.log(response);
       if (response.status === ResponseStatus.success) {
@@ -47,7 +47,7 @@ export class RegisterComponent implements OnInit{
   }
 
   getRegisterCommand() {
-    var userModel = new UserModel();
+    const userModel = new UserModel();
     userModel.firstName = this.getFormValue('firstName');
     userModel.lastName = this.getFormValue('lastName');
     userModel.birthDay = this.getFormValue('birthDay');
@@ -55,7 +55,7 @@ export class RegisterComponent implements OnInit{
     userModel.email = this.getFormValue('email');
     userModel.password = this.getFormValue('password');
     userModel.publicKey = this.securityService.getPublicKey(this.securityService.getPrivateKey());
-    var registerCommand = new RegisterCommand();
+    const registerCommand = new RegisterCommand();
     registerCommand.userModel = userModel;
     return registerCommand;
   }

@@ -1,5 +1,6 @@
 using Chat.Framework.CQRS;
 using Chat.Identity.Application.Commands;
+using Chat.Identity.Domain.Models;
 using Chat.Infrastructure.Shared.Controllers;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,17 +10,14 @@ namespace Chat.Identity.Infrastructure.Controllers;
 [Route("api/[controller]")]
 public class AuthController : ACommonController
 {
-    public AuthController(ICommandExecutor commandExecutor)
-        : base(commandExecutor)
-    {
-
-    }
+    public AuthController(ICommandExecutor commandExecutor, IQueryExecutor queryExecutor)
+        : base(commandExecutor, queryExecutor) {}
 
     [HttpPost]
     [Route("log-in")]
     public async Task<IActionResult> LoginUserAsync(LoginCommand command)
     {
-        return Ok(await GetCommandResponseAsync(command));
+        return Ok(await GetCommandResponseAsync<LoginCommand,Token>(command));
     }
 
     [HttpPost]
@@ -33,6 +31,6 @@ public class AuthController : ACommonController
     [Route("refresh-token")]
     public async Task<IActionResult> RefreshTokenAsync(RefreshTokenCommand command)
     {
-        return Ok(await GetCommandResponseAsync(command));
+        return Ok(await GetCommandResponseAsync<RefreshTokenCommand, Token>(command));
     }
 }

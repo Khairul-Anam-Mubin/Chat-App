@@ -14,15 +14,8 @@ namespace Chat.Contact.Infrastructure.Controllers;
 [Authorize]
 public class ContactController : ACommonController
 {
-    private readonly IQueryExecutor _queryExecutor;
-
-    public ContactController(
-        ICommandExecutor commandExecutor, 
-        IQueryExecutor queryExecutor)
-        : base(commandExecutor)
-    {
-        _queryExecutor = queryExecutor;
-    }
+    public ContactController(ICommandExecutor commandExecutor, IQueryExecutor queryExecutor)
+        : base(commandExecutor, queryExecutor) {}
 
     [HttpPost, Route("add")]
     public async Task<IActionResult> AddContactAsync(AddContactCommand command)
@@ -39,6 +32,6 @@ public class ContactController : ACommonController
     [HttpPost, Route("get")]
     public async Task<IActionResult> AddContactAsync(ContactQuery query)
     {
-        return Ok(await _queryExecutor.ExecuteAsync<ContactQuery, IPaginationResponse<ContactDto>>(query));
+        return Ok(await GetQueryResponseAsync<ContactQuery, IPaginationResponse<ContactDto>>(query));
     }
 }

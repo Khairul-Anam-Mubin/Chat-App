@@ -34,7 +34,7 @@ public class UserProfileQueryConsumer : AQueryConsumer<UserProfileQuery, UserPro
             userModels.AddRange(await _userRepository.GetUsersByEmailsAsync(query.Emails));
         }
 
-        if (context == null)
+        if (context is null)
         {
             foreach (var userModel in userModels)
             {

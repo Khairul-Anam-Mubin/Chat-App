@@ -150,7 +150,7 @@ export class ChatComponent implements OnInit{
     this.commandService.execute(sendMessageCommand)
     .pipe(take(1))
     .subscribe(response => {
-      this.chats = [ChatProcessor.process(response.metaData.Message, this.sharedSecret)].concat(this.chats);
+      this.chats = [ChatProcessor.process(response.response, this.sharedSecret)].concat(this.chats);
       this.setChatScrollStartFromBottom();
     });
   }

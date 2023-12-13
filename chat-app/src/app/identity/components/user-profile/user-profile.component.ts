@@ -121,7 +121,7 @@ export class UserProfileComponent implements OnInit{
     this.commandService.execute(updateUserProfileCommand)
     .pipe(take(1))
     .subscribe(response => {
-      this.userProfile = response.metaData.UserProfile;
+      this.userProfile = response.response;
       this.userService.setUserProfileToStore(this.userProfile);
       this.getUserProfile(this.userProfile.id);
     });
@@ -134,7 +134,7 @@ export class UserProfileComponent implements OnInit{
     .pipe(take(1))
     .subscribe(response => {
       console.log(response);
-      const fileId = response.metaData.FileId;
+      const fileId = response.response;
       const userProfile = new UserProfile();
       userProfile.email = this.userProfile.email;
       userProfile.profilePictureId = fileId;

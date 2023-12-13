@@ -8,8 +8,7 @@ using Chat.Framework.Results;
 
 namespace Chat.Application.QueryHandlers;
 
-public class ChatQueryHandler : 
-    IQueryHandler<ChatQuery, IPaginationResponse<ChatDto>>
+public class ChatQueryHandler : IQueryHandler<ChatQuery, IPaginationResponse<ChatDto>>
 {
     private readonly IChatRepository _chatRepository;
 

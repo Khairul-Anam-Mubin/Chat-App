@@ -21,13 +21,11 @@ public class FileModelQueryHandler : IQueryHandler<FileModelQuery, IPaginationRe
         var response = query.CreateResponse();
 
         var fileModel = await _fileRepository.GetByIdAsync(query.FileId);
-        if (fileModel == null)
+
+        if (fileModel is null)
         {
             return Result<IPaginationResponse<FileModel>>.Error(response, "File not found");
         }
-
-        var path = Directory.GetCurrentDirectory();
-        fileModel.Url = Path.Combine(path, fileModel.Url);
 
         response.AddItem(fileModel);
 

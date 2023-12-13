@@ -24,8 +24,6 @@ public class AddContactCommandHandler :
 
     public async Task<IResult> HandleAsync(AddContactCommand command)
     {
-        var response = Result.Success();
-
         var userProfileQuery = new UserProfileQuery
         {
             UserIds = new List<string> { command.UserId },
@@ -60,8 +58,6 @@ public class AddContactCommandHandler :
             return Result.Error("Contact Saving Failed");
         }
 
-        response.Message = "Contact Added Successfully";
-
-        return response;
+        return Result.Success("Contact Added Successfully");
     }
 }

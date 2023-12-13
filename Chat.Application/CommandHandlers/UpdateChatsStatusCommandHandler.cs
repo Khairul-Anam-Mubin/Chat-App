@@ -5,10 +5,8 @@ using Chat.Framework.Results;
 
 namespace Chat.Application.CommandHandlers;
 
-public class UpdateChatsStatusCommandHandler : 
-    ICommandHandler<UpdateChatsStatusCommand>
+public class UpdateChatsStatusCommandHandler : ICommandHandler<UpdateChatsStatusCommand>
 {
-        
     private readonly ILatestChatRepository _latestChatRepository;
     private readonly IChatRepository _chatRepository;
         
@@ -21,7 +19,8 @@ public class UpdateChatsStatusCommandHandler :
     public async Task<IResult> HandleAsync(UpdateChatsStatusCommand command)
     {
         var latestChatModel = await _latestChatRepository.GetLatestChatAsync(command.UserId, command.OpenedChatUserId);
-        if (latestChatModel == null)
+        
+        if (latestChatModel is null)
         {
             return Result.Error("LatestChatModel not found");
         }
@@ -32,7 +31,9 @@ public class UpdateChatsStatusCommandHandler :
             await _latestChatRepository.SaveAsync(latestChatModel);
         }
             
-        var chatModels = await _chatRepository.GetSenderAndReceiverSpecificChatModelsAsync(command.OpenedChatUserId, command.UserId);
+        var chatModels = 
+            await _chatRepository.GetSenderAndReceiverSpecificChatModelsAsync(command.OpenedChatUserId, command.UserId);
+        
         foreach (var chatModel in chatModels)
         {
             chatModel.Status = "Seen";

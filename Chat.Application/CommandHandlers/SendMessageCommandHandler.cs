@@ -1,4 +1,5 @@
 using Chat.Application.Commands;
+using Chat.Application.DTOs;
 using Chat.Application.Extensions;
 using Chat.Domain.Interfaces;
 using Chat.Domain.Models;
@@ -12,7 +13,7 @@ using Chat.Framework.Results;
 namespace Chat.Application.CommandHandlers;
 
 public class SendMessageCommandHandler : 
-    ICommandHandler<SendMessageCommand>
+    ICommandHandler<SendMessageCommand, ChatDto>
 {
     private readonly IChatRepository _chatRepository;
     private readonly ICommandExecutor _commandExecutor;
@@ -28,13 +29,13 @@ public class SendMessageCommandHandler :
         _commandBus = commandBus;
     }
 
-    public async Task<IResult> HandleAsync(SendMessageCommand command)
+    public async Task<IResult<ChatDto>> HandleAsync(SendMessageCommand command)
     { 
         var chatModel = command.ChatModel;
 
         if (chatModel is null)
         {
-            return Result.Error("ChatModel not set");
+            return Result<ChatDto>.Error("ChatModel not set");
         }
 
         chatModel.Id = Guid.NewGuid().ToString();
@@ -43,18 +44,14 @@ public class SendMessageCommandHandler :
 
         if (!await _chatRepository.SaveAsync(chatModel))
         {
-            return Result.Error("ChatModel Creation Failed");
+            return Result<ChatDto>.Error("ChatModel Creation Failed");
         }
 
         await SendChatNotificationAsync(chatModel);
 
         await UpdateLatestChatModelAsync(chatModel);
         
-        var response = Result.Success();
-        
-        response.SetData("Message", chatModel.ToChatDto());
-
-        return response;
+        return Result<ChatDto>.Success(chatModel.ToChatDto());
     }
 
     private Task SendChatNotificationAsync(ChatModel chatModel)

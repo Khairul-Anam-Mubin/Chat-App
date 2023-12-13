@@ -4,59 +4,50 @@ using Chat.Framework.Results;
 using Chat.Identity.Application.Commands;
 using Chat.Identity.Application.Extensions;
 using Chat.Identity.Domain.Interfaces;
+using Chat.Identity.Domain.Models;
 
 namespace Chat.Identity.Application.CommandHandlers;
 
-public class LoginCommandHandler : ICommandHandler<LoginCommand>
+public class LoginCommandHandler : ICommandHandler<LoginCommand, Token>
 {
     private readonly IUserRepository _userRepository;
     private readonly ITokenService _tokenService;
-    private readonly IMediator _mediator;
-    private readonly ICommandExecutor _commandExecutor;
-    public LoginCommandHandler(IUserRepository userRepository, ITokenService tokenService, IMediator mediator, ICommandExecutor commandExecutor)
+
+    public LoginCommandHandler(IUserRepository userRepository, ITokenService tokenService)
     {
         _userRepository = userRepository;
         _tokenService = tokenService;
-        _mediator = mediator;
-        _commandExecutor = commandExecutor;
     }
 
-    public async Task<IResult> HandleAsync(LoginCommand command)
+    public async Task<IResult<Token>> HandleAsync(LoginCommand command)
     {
-
-        var testCommand = new TestCommand();
-        var res = await _commandExecutor.ExecuteAsync<TestCommand, TestCommandResponse>(testCommand);
-
         var user = await _userRepository.GetUserByEmailAsync(command.Email);
 
-        if (user == null)
+        if (user is null)
         {
-            return Result.Error("Email error!!");
+            return Result<Token>.Error("Email error!!");
         }
 
         if (user.Password != command.Password)
         {
-            return Result.Error("Password error!!");
+            return Result<Token>.Error("Password error!!");
         }
 
         if (!user.IsEmailVerified)
         {
-            return Result.Error("Plz verify your email.!!");
+            // Todo: will send email for verification
+            return Result<Token>.Error("Plz verify your email.Check your inbox!!");
         }
 
         var userProfile = user.ToUserProfile();
 
         var token = await _tokenService.CreateTokenAsync(userProfile, command.AppId);
-        if (token == null)
+        
+        if (token is null)
         {
-            return Result.Error("Token Creation Failed");
+            return Result<Token>.Error("Token Creation Failed");
         }
 
-        var response = Result.Success();
-        
-        response.SetData("Token", token);
-        response.Message = "Logged in successfully";
-
-        return response;
+        return Result<Token>.Success(token, "Logged in successfully"); ;
     }
 }

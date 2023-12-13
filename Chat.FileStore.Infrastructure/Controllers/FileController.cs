@@ -16,12 +16,8 @@ namespace Chat.FileStore.Infrastructure.Controllers;
 [Authorize]
 public class FileController : ACommonController
 {
-    private readonly IQueryExecutor _queryExecutor;
-
-    public FileController(ICommandExecutor commandExecutor, IQueryExecutor queryExecutor) : base(commandExecutor)
-    {
-        _queryExecutor = queryExecutor;
-    }
+    public FileController(ICommandExecutor commandExecutor, IQueryExecutor queryExecutor) 
+        : base(commandExecutor, queryExecutor) {}
 
     [HttpPost]
     [Route("upload")]
@@ -31,7 +27,7 @@ public class FileController : ACommonController
         {
             FormFile = formFile
         };
-        return Ok(await GetCommandResponseAsync(fileUploadCommand));
+        return Ok(await GetCommandResponseAsync<UploadFileCommand, string>(fileUploadCommand));
     }
 
     [HttpGet]
@@ -42,7 +38,7 @@ public class FileController : ACommonController
         {
             FileId = fileId
         };
-        var result = await _queryExecutor.ExecuteAsync<FileDownloadQuery, IPaginationResponse<FileDownloadResult>>(query);
+        var result = await GetQueryResponseAsync<FileDownloadQuery, IPaginationResponse<FileDownloadResult>>(query);
 
         var response = result.Response;
 
@@ -60,6 +56,6 @@ public class FileController : ACommonController
     [Route("get")]
     public async Task<IActionResult> GetFileModelAsync(FileModelQuery query)
     {
-        return Ok(await _queryExecutor.ExecuteAsync<FileModelQuery, IPaginationResponse<FileModel>>(query));
+        return Ok(await GetQueryResponseAsync<FileModelQuery, IPaginationResponse<FileModel>>(query));
     }
 }

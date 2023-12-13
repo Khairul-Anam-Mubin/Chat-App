@@ -22,6 +22,7 @@ public class LastSeenQueryHandler : IQueryHandler<LastSeenQuery, List<LastSeenDt
             await _lastSeenRepository.GetLastSeenModelsByUserIdsAsync(query.UserIds);
         
         var lastSeenModelDtoList = new List<LastSeenDto>();
+
         foreach (var lastSeenModel in lastSeenModels)
         {
             lastSeenModelDtoList.Add(lastSeenModel.ToLastSeenDto());

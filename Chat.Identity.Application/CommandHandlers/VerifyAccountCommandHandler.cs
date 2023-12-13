@@ -18,7 +18,7 @@ public class VerifyAccountCommandHandler : ICommandHandler<VerifyAccountCommand>
     {
         var userModel = await _userRepository.GetByIdAsync(request.UserId);
 
-        if (userModel == null)
+        if (userModel is null)
         {
             return Result.Error("Account verification error");
         }

@@ -6,31 +6,34 @@ using Chat.Framework.CQRS;
 using Chat.Framework.Extensions;
 using Chat.Framework.Results;
 using Microsoft.AspNetCore.Http;
-using IResult = Chat.Framework.Results.IResult;
+using Microsoft.Extensions.Configuration;
 
 namespace Chat.FileStore.Application.CommandHandlers;
 
-public class UploadFileCommandHandler : ICommandHandler<UploadFileCommand>
+public class UploadFileCommandHandler : ICommandHandler<UploadFileCommand, string>
 {
     private readonly IFileRepository _fileRepository;
     private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly IConfiguration _configuration;
 
-    public UploadFileCommandHandler(IFileRepository fileRepository, IHttpContextAccessor httpContextAccessor)
+    public UploadFileCommandHandler(
+        IFileRepository fileRepository, 
+        IHttpContextAccessor httpContextAccessor, 
+        IConfiguration configuration)
     {
         _fileRepository = fileRepository;
         _httpContextAccessor = httpContextAccessor;
+        _configuration = configuration;
     }
 
-    public async Task<IResult> HandleAsync(UploadFileCommand command)
+    public async Task<IResult<string>> HandleAsync(UploadFileCommand command)
     {
-        var response = Result.Success();
-
         var file = command.FormFile;
-        var pathToSave = "C:\\workstation\\Training\\Chat-WebApp\\Chat.FileStore.Persistence\\Store";
+        var pathToSave = _configuration.TryGetConfig<string>("FileStorePath");
         
         if (file.Length <= 0)
         {
-            return Result.Error("File Length 0");
+            return Result<string>.Error("File Length 0");
         }
 
         var fileName = file.FileName;
@@ -58,12 +61,9 @@ public class UploadFileCommandHandler : ICommandHandler<UploadFileCommand>
         
         if (!await _fileRepository.SaveAsync(fileModel))
         {
-            return Result.Error("File Save error to db");
+            return Result<string>.Error("File Save error to db");
         }
         
-        response.Message = "File uploaded successfully";
-        response.SetData("FileId", fileModel.Id);
-        
-        return response;
+        return Result<string>.Success(fileModel.Id,"File uploaded successfully");
     }
 }

@@ -5,10 +5,8 @@ using Chat.Framework.Results;
 
 namespace Chat.Application.CommandHandlers;
 
-public class UpdateLatestChatCommandHandler : 
-    ICommandHandler<UpdateLatestChatCommand>
+public class UpdateLatestChatCommandHandler : ICommandHandler<UpdateLatestChatCommand>
 {
-        
     private readonly ILatestChatRepository _latestChatRepository;
         
     public UpdateLatestChatCommandHandler(ILatestChatRepository latestChatRepository)
@@ -18,8 +16,10 @@ public class UpdateLatestChatCommandHandler :
 
     public async Task<IResult> HandleAsync(UpdateLatestChatCommand command)
     {
-        var latestChatModel = await _latestChatRepository.GetLatestChatAsync(command.LatestChatModel!.UserId, command.LatestChatModel.SendTo);
-        if (latestChatModel == null)
+        var latestChatModel = 
+            await _latestChatRepository.GetLatestChatAsync(command.LatestChatModel!.UserId, command.LatestChatModel.SendTo);
+        
+        if (latestChatModel is null)
         {
             latestChatModel = command.LatestChatModel;
             latestChatModel.Id = Guid.NewGuid().ToString();

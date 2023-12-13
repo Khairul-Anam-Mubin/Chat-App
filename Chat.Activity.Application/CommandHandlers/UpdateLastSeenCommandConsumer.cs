@@ -30,12 +30,9 @@ public class UpdateLastSeenCommandConsumer : ACommandConsumer<UpdateLastSeenComm
 
         if (!await _lastSeenRepository.SaveAsync(lastSeenModel))
         {
-            return Result.Error("Save Last Seen Model ErrorMessage");
+            return Result.Error("Save Last Seen Model Error");
         }
         
-        var response = Result.Success("Last seen time set successfully");
-        response.SetData("LastSeenAt", lastSeenModel.LastSeenAt);
-
-        return response;
+        return Result.Success("Last seen time set successfully");
     }
 }

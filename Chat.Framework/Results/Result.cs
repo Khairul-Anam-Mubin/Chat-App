@@ -31,7 +31,25 @@ public class Result<TResponse> : Result, IResult<TResponse>
 {
     public TResponse? Response { get; set; }
 
-    public static IResult<TResponse> Success(TResponse? response = default, string message = "")
+    public static IResult<TResponse> Success(TResponse? response)
+    {
+        return new Result<TResponse>
+        {
+            Status = ResponseStatus.Success,
+            Response = response
+        };
+    }
+
+    public static IResult<TResponse> Error(TResponse? response)
+    {
+        return new Result<TResponse>
+        {
+            Status = ResponseStatus.Error,
+            Response = response,
+        };
+    }
+
+    public static IResult<TResponse> Success(TResponse? response, string message)
     {
         return new Result<TResponse>
         {
@@ -41,7 +59,7 @@ public class Result<TResponse> : Result, IResult<TResponse>
         };
     }
 
-    public static IResult<TResponse> Error(TResponse? response = default, string message = "")
+    public static IResult<TResponse> Error(TResponse? response, string message)
     {
         return new Result<TResponse>
         {

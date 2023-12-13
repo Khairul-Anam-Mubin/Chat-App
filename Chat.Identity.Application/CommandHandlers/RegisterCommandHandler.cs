@@ -39,12 +39,8 @@ public class RegisterCommandHandler : ICommandHandler<RegisterCommand>
             return Result.Error("Some anonymous problem occurred!!");
         }
 
-        var response = Result.Success();
-        
-        response.Message = "User Created Successfully!!";
+        var response = Result.Success("User Created Successfully!!");
 
-        response.SetData("UserProfile", command.UserModel.ToUserProfile());
-        
         await SendVerificationEmailAsync(command.UserModel);
         
         return response;

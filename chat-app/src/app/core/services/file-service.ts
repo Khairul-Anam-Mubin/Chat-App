@@ -22,7 +22,7 @@ export class FileService {
         const api = Configuration.identityApi + "/file/upload";
         const formData = new FormData();
         formData.append('formFile', file, file.name);
-        return this.httpClient.post<CommandResponse>(api, formData);
+        return this.httpClient.post<any>(api, formData);
     }
 
     downloadFile(fileId: any) {
@@ -35,7 +35,7 @@ export class FileService {
             })
         );
     }
-    
+
     getFileModelByFileId(fileId : any) {
         const fileModelQuery = new FileModelQuery();
         fileModelQuery.fileId = fileId;
@@ -44,7 +44,7 @@ export class FileService {
 }
 
 export class FileModelQuery extends QueryBase {
-    
+
     fileId : any;
 
     constructor() {

@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Store\**" />
+    <EmbeddedResource Remove="Store\**" />
+    <None Remove="Store\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Chat.FileStore.Application\Chat.FileStore.Application.csproj" />
     <ProjectReference Include="..\Chat.Infrustructure.Shared\Chat.Infrastructure.Shared.csproj" />
   </ItemGroup>

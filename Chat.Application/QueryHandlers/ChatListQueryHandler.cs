@@ -8,8 +8,7 @@ using Chat.Framework.Results;
 
 namespace Chat.Application.QueryHandlers;
 
-public class ChatListQueryHandler : 
-    IQueryHandler<ChatListQuery, IPaginationResponse<LatestChatDto>>
+public class ChatListQueryHandler : IQueryHandler<ChatListQuery, IPaginationResponse<LatestChatDto>>
 {
     private readonly ILatestChatRepository _latestChatRepository;
 
@@ -22,7 +21,9 @@ public class ChatListQueryHandler :
     {
         var response = query.CreateResponse();
 
-        var latestChatModels = await _latestChatRepository.GetLatestChatModelsAsync(query.UserId, query.Offset, query.Limit);
+        var latestChatModels = 
+            await _latestChatRepository.GetLatestChatModelsAsync(query.UserId, query.Offset, query.Limit);
+        
         foreach (var latestChatModel in latestChatModels)
         {
             response.AddItem(latestChatModel.ToLatestChatDto(query.UserId));

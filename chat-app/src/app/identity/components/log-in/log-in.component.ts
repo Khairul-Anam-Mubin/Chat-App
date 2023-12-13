@@ -36,11 +36,11 @@ export class LogInComponent implements OnInit {
     localStorage.clear();
     const password = this.getFormValue("password");
 
-    var logInCommand = this.authService.getLogInCommand(this.getFormValue("email"), this.getFormValue("password"));
+    const logInCommand = this.authService.getLogInCommand(this.getFormValue("email"), this.getFormValue("password"));
     this.commandService.execute(logInCommand).pipe(take(1)).subscribe(response => {
       console.log(response);
       if (response.status === ResponseStatus.success) {
-        this.authService.setTokenToStore(response.metaData.Token);
+        this.authService.setTokenToStore(response.response);
         localStorage.setItem("email", this.getFormValue("email"));
         this.userService.getUserProfileByEmail(this.getFormValue("email"))
         .pipe(take(1))

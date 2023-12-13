@@ -14,18 +14,14 @@ namespace Chat.Infrastructure.Controllers;
 [Authorize]
 public class ChatController : ACommonController
 {
-    private readonly IQueryExecutor _queryExecutor;
 
     public ChatController(ICommandExecutor commandExecutor, IQueryExecutor queryExecutor) 
-        : base(commandExecutor)
-    {
-        _queryExecutor = queryExecutor;
-    }
+        : base(commandExecutor, queryExecutor) {}
 
     [HttpPost, Route("send")]
     public async Task<IActionResult> SendMessageAsync(SendMessageCommand command)
     {
-        return Ok(await GetCommandResponseAsync(command));
+        return Ok(await GetCommandResponseAsync<SendMessageCommand, ChatDto>(command));
     }
 
     [HttpPost, Route("update-status")]
@@ -37,13 +33,13 @@ public class ChatController : ACommonController
     [HttpPost, Route("list")]
     public async Task<IActionResult> GetChatListAsync(ChatListQuery query)
     {
-        return Ok(await _queryExecutor.ExecuteAsync<ChatListQuery, IPaginationResponse<LatestChatDto>>(query));
+        return Ok(await GetQueryResponseAsync<ChatListQuery, IPaginationResponse<LatestChatDto>>(query));
     }
 
     [HttpPost, Route("get")]
     public async Task<IActionResult> GetChatsAsync(ChatQuery query)
     {
-        return Ok(await _queryExecutor.ExecuteAsync<ChatQuery, IPaginationResponse<ChatDto>>(query));
+        return Ok(await GetQueryResponseAsync<ChatQuery, IPaginationResponse<ChatDto>>(query));
     }
         
 }

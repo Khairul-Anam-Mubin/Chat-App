@@ -21,12 +21,13 @@ public class FileDownloadQueryHandler : IQueryHandler<FileDownloadQuery, IPagina
         var response = query.CreateResponse();
 
         var fileModel = await _fileRepository.GetByIdAsync(query.FileId);
-        if (fileModel == null)
+
+        if (fileModel is null)
         {
             return Result<IPaginationResponse<FileDownloadResult>>.Error(response, "File not found");
         }
 
-        var path = Path.Combine(Directory.GetCurrentDirectory(), fileModel.Url);
+        var path = fileModel.Url;
 
         var fileDownloadResult = new FileDownloadResult
         {
@@ -37,7 +38,7 @@ public class FileDownloadQueryHandler : IQueryHandler<FileDownloadQuery, IPagina
         await using (var fileStream = new FileStream(path, FileMode.Open))
         {
             fileDownloadResult.FileBytes = new byte[fileStream.Length];
-            await fileStream.ReadAsync(fileDownloadResult.FileBytes, 0, fileDownloadResult.FileBytes.Length);
+            _ = await fileStream.ReadAsync(fileDownloadResult.FileBytes, 0, fileDownloadResult.FileBytes.Length);
         }
 
         response.AddItem(fileDownloadResult);

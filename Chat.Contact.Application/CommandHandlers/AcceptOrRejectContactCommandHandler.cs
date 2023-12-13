@@ -17,10 +17,11 @@ public class AcceptOrRejectContactCommandHandler :
 
     public async Task<IResult> HandleAsync(AcceptOrRejectContactRequestCommand command)
     {
-        var response = Result.Success();
+        IResult result;
 
         var contact = await _contactRepository.GetByIdAsync(command.ContactId);
-        if (contact == null)
+        
+        if (contact is null)
         {
             return Result.Error("Contact not found");
         }
@@ -32,7 +33,8 @@ public class AcceptOrRejectContactCommandHandler :
             {
                 return Result.Error("Contact save problem");
             }
-            response.Message = "Contact added";
+
+            result = Result.Success("Contact Accepted");
         }
         else
         {
@@ -40,9 +42,10 @@ public class AcceptOrRejectContactCommandHandler :
             {
                 return Result.Error("Delete contact problem");
             }
-            response.Message = "Contact rejected";
+            
+            result = Result.Success("Contact rejected");
         }
 
-        return response;
+        return result;
     }
 }
