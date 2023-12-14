@@ -7,7 +7,7 @@ using Chat.Notification.Application.Commands;
 
 namespace Chat.Notification.Application.CommandHandlers;
 
-public class PubSubMessageHandler : IHandler<PubSubMessage, IResult>
+public class PubSubMessageHandler : IHandler<PubSubMessage>
 {
     private readonly ICommandExecutor _commandExecutor;
 
@@ -16,16 +16,18 @@ public class PubSubMessageHandler : IHandler<PubSubMessage, IResult>
         _commandExecutor = commandExecutor;
     }
 
-    public async Task<IResult> HandleAsync(PubSubMessage pubSubMessage)
+    public async Task HandleAsync(PubSubMessage pubSubMessage)
     {
-        if (pubSubMessage?.MessageType == MessageType.Notification)
+        switch (pubSubMessage.MessageType)
         {
-            var sendNotificationToClientCommand =
-                pubSubMessage.Message.SmartCast<SendNotificationToClientCommand>();
-
-            await _commandExecutor.ExecuteAsync(sendNotificationToClientCommand!);
+            case MessageType.Notification:
+                var sendNotificationToClientCommand =
+                    pubSubMessage.Message.SmartCast<SendNotificationToClientCommand>();
+                await _commandExecutor.ExecuteAsync(sendNotificationToClientCommand!);
+                break;
+            default:
+                Console.WriteLine("MessageType not specified");
+                break;
         }
-
-        return Result.Success();
     }
 }

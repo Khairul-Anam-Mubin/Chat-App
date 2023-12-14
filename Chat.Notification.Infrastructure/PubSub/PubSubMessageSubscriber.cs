@@ -1,5 +1,4 @@
-﻿using Chat.Framework.CQRS;
-using Chat.Framework.Database.Interfaces;
+﻿using Chat.Framework.Database.Interfaces;
 using Chat.Framework.Database.Models;
 using Chat.Framework.Database.ORM;
 using Chat.Framework.Extensions;
@@ -16,18 +15,15 @@ public sealed class PubSubMessageSubscriber : IInitialService
     private readonly IHubConnectionService _hubConnectionService;
     private readonly IRedisContext _redisContext;
     private readonly IConfiguration _configuration;
-    private readonly ICommandExecutor _commandExecutor;
     private readonly IMediator _mediator;
 
     public PubSubMessageSubscriber(
         IRedisContext redisContext,
         IConfiguration configuration,
-        ICommandExecutor commandExecutor,
         IHubConnectionService hubConnectionService, IMediator mediator)
     {
         _redisContext = redisContext;
         _configuration = configuration;
-        _commandExecutor = commandExecutor;
         _hubConnectionService = hubConnectionService;
         _mediator = mediator;
     }
@@ -45,7 +41,7 @@ public sealed class PubSubMessageSubscriber : IInitialService
             Console.WriteLine($"Content received form channel : {redisChannel}\n");
             var pubSubMessage = message.SmartCast<PubSubMessage>();
 
-            if (pubSubMessage == null)
+            if (pubSubMessage is null)
             {
                 Console.WriteLine("Message is null here");
                 return;
@@ -53,7 +49,7 @@ public sealed class PubSubMessageSubscriber : IInitialService
 
             Console.WriteLine($"PubSubMessage.Id : {pubSubMessage?.Id}, PubSubMessageType: {pubSubMessage?.MessageType.ToString()} , message : {message}\n");
 
-            Task.Factory.StartNew(() => _mediator.SendAsync<PubSubMessage, IResult>(pubSubMessage!));
+            Task.Factory.StartNew(() => _mediator.SendAsync(pubSubMessage));
 
         });
     }
