@@ -14,4 +14,6 @@ public interface IUserRepository : IRepository<UserModel>
     Task<List<UserModel>> GetUsersByUserIdsAsync(List<string> userIds);
 
     Task<List<UserModel>> GetUsersByEmailsAsync(List<string> emails);
+
+    Task<bool> UpdateEmailVerificationStatus(string userId, bool isVerified);
 }

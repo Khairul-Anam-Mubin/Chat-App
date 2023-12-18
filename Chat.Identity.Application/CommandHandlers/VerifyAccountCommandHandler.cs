@@ -25,7 +25,11 @@ public class VerifyAccountCommandHandler : ICommandHandler<VerifyAccountCommand>
 
         userModel.IsEmailVerified = true;
 
-        await _userRepository.SaveAsync(userModel);
+
+        if (!await _userRepository.UpdateEmailVerificationStatus(request.UserId, true))
+        {
+            return Result.Error("Account verification failed");
+        }
 
         return Result.Success("Account verified successfully.");
     }
