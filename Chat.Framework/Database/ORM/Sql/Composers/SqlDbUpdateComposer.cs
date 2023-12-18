@@ -1,33 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Chat.Framework.Database.ORM.Interfaces;
+﻿using Chat.Framework.Database.ORM.Interfaces;
 
-namespace Chat.Framework.Database.ORM.Sql.Composers
+namespace Chat.Framework.Database.ORM.Sql.Composers;
+
+public class SqlDbUpdateComposer : IUpdateComposer<SqlQuery>
 {
-    public class SqlDbUpdateComposer : IUpdateComposer<SqlQuery>
+    public SqlQuery Compose(IUpdate update)
     {
-        public SqlQuery Compose(IUpdate update)
+        if (!update.Fields.Any())
         {
-            if (!update.Fields.Any())
-            {
-                return new SqlQuery();
-            }
-
-            var sqlQuery = new SqlQuery();
-
-            for (var i = 0; i + 1 < update.Fields.Count; i++)
-            {
-                sqlQuery.Query += $"{update.Fields[i].FieldKey} = @{update.Fields[i].FieldKey}, ";
-                sqlQuery.DynamicParameters.TryAdd(update.Fields[i].FieldKey, update.Fields[i].FieldValue!);
-            }
-
-            sqlQuery.Query += $"{update.Fields.Last().FieldKey} = @{update.Fields.Last().FieldKey}";
-            sqlQuery.DynamicParameters.TryAdd(update.Fields.Last().FieldKey, update.Fields.Last().FieldValue!);
-
-            return sqlQuery;
+            return new SqlQuery();
         }
+
+        var sqlQuery = new SqlQuery();
+
+        for (var i = 0; i + 1 < update.Fields.Count; i++)
+        {
+            sqlQuery.Query += $"{update.Fields[i].FieldKey} = @{update.Fields[i].FieldKey}, ";
+            sqlQuery.DynamicParameters.TryAdd(update.Fields[i].FieldKey, update.Fields[i].FieldValue!);
+        }
+
+        sqlQuery.Query += $"{update.Fields.Last().FieldKey} = @{update.Fields.Last().FieldKey}";
+        sqlQuery.DynamicParameters.TryAdd(update.Fields.Last().FieldKey, update.Fields.Last().FieldValue!);
+
+        return sqlQuery;
     }
 }

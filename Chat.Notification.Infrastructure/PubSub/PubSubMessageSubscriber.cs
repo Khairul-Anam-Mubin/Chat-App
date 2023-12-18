@@ -4,7 +4,6 @@ using Chat.Framework.Database.ORM;
 using Chat.Framework.Extensions;
 using Chat.Framework.Interfaces;
 using Chat.Framework.Mediators;
-using Chat.Framework.Results;
 using Chat.Notification.Domain.Interfaces;
 using Microsoft.Extensions.Configuration;
 

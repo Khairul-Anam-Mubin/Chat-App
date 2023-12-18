@@ -63,4 +63,21 @@ public static class ObjectExtension
 
         return default;
     }
+
+    public static Dictionary<string, object?> ToDictionary(this object? obj)
+    {
+        var propertyValueDictionary = new Dictionary<string, object?>();
+
+        if (obj is null)
+        {
+            return propertyValueDictionary;
+        }
+
+        foreach (var prop in obj.GetType().GetProperties())
+        {
+            propertyValueDictionary.TryAdd(prop.Name, prop.GetValue(obj));
+        }
+
+        return propertyValueDictionary;
+    }
 }
