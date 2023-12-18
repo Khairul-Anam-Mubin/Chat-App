@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Text.Json;
 using StackExchange.Redis;
 
@@ -22,6 +23,15 @@ public static class ObjectExtension
         }
 
         return string.Empty;
+    }
+
+    public static List<T> SmartCastToList<T>(this object? obj)
+    {
+        if (obj is IEnumerable<T> objects)
+        {
+            return objects.Cast<T>().ToList();
+        }
+        return new List<T>();
     }
 
     public static T? SmartCast<T>(this object? obj)

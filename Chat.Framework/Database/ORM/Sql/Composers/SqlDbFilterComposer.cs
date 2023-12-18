@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using Chat.Framework.Database.ORM.Enums;
 using Chat.Framework.Database.ORM.Interfaces;
+using Chat.Framework.Extensions;
 
 namespace Chat.Framework.Database.ORM.Sql.Composers;
 
@@ -15,17 +16,53 @@ public class SqlDbFilterComposer : IFilterComposer<SqlQuery>
 
     public SqlQuery Compose(ISimpleFilter simpleFilter)
     {
-        var fieldKeyParameter = GetSqlParameterFieldKey(simpleFilter.FieldKey);
-
-        var query = simpleFilter.Operator switch
+        var query = new SqlQuery();
+        switch (simpleFilter.Operator)
         {
-            Operator.Equal => $"({simpleFilter.FieldKey} = @{fieldKeyParameter})",
-            Operator.NotEqual => $"({simpleFilter.FieldKey} != @{fieldKeyParameter})",
-            Operator.In => "",
-            _ => ""
-        };
+            case Operator.Equal:
+                var fieldKeyParameter = GetSqlParameterFieldKey(simpleFilter.FieldKey);
+                query.Query = $"({simpleFilter.FieldKey} = @{fieldKeyParameter})";
+                query.DynamicParameters.Add(fieldKeyParameter, simpleFilter.FieldValue);
+                break;
+            case Operator.NotEqual:
+                fieldKeyParameter = GetSqlParameterFieldKey(simpleFilter.FieldKey);
+                query.Query = $"({simpleFilter.FieldKey} != @{fieldKeyParameter})";
+                query.DynamicParameters.Add(fieldKeyParameter, simpleFilter.FieldValue);
+                break;
+            case Operator.In:
+                query = ComposeInQuery(simpleFilter);
+                break;
+        }
 
-        return new SqlQuery(query, new Dictionary<string, object>{{fieldKeyParameter, simpleFilter.FieldValue}});
+        return query;
+    }
+
+    private SqlQuery ComposeInQuery(ISimpleFilter filter)
+    {
+        var fieldValues = filter.FieldValue.SmartCastToList<object>();
+
+        if (!fieldValues.Any())
+        {
+            return new SqlQuery();
+        }
+
+        var sqlQuery = new SqlQuery($"({filter.FieldKey} IN (");
+
+        foreach (var value in fieldValues)
+        {
+            var fieldKey = GetSqlParameterFieldKey(filter.FieldKey);
+            if (value == fieldValues.Last())
+            {
+                sqlQuery.Query += $"@{fieldKey}))";
+            }
+            else
+            {
+                sqlQuery.Query += $"@{fieldKey}, ";
+            }
+
+            sqlQuery.DynamicParameters.Add(fieldKey, value);
+        }
+        return sqlQuery;
     }
 
     public SqlQuery Compose(IFilter filter)
