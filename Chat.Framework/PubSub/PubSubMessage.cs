@@ -1,13 +1,8 @@
-﻿namespace Chat.Framework.Database.Models;
+﻿namespace Chat.Framework.PubSub;
 
 public class PubSubMessage
 {
     public string Id { get; set; } = string.Empty;
     public MessageType MessageType { get; set; }
     public object? Message { get; set; }
-}
-
-public enum MessageType
-{
-    Notification = 0
 }

@@ -1,25 +1,17 @@
 ﻿using Chat.Framework.CQRS;
-using Chat.Framework.Database.Interfaces;
-using Chat.Framework.Database.Models;
-using Chat.Framework.Database.ORM;
-using Chat.Framework.Extensions;
+using Chat.Framework.PubSub;
 using Chat.Framework.Results;
 using Chat.Notification.Application.Commands;
-using Microsoft.Extensions.Configuration;
 
 namespace Chat.Notification.Application.CommandHandlers;
 
 public class PublishNotificationToConnectedHubCommandHandler : ICommandHandler<PublishNotificationToConnectedHubCommand>
 {
-    private readonly IRedisContext _redisContext;
-    private readonly DatabaseInfo _databaseInfo;
+    private readonly IPubSub _pubSub;
 
-    public PublishNotificationToConnectedHubCommandHandler(
-        IConfiguration configuration,
-        IRedisContext redisContext)
+    public PublishNotificationToConnectedHubCommandHandler(IPubSub pubSub)
     {
-        _redisContext = redisContext;
-        _databaseInfo = configuration.GetConfig<DatabaseInfo>("RedisConfig")!;
+        _pubSub = pubSub;
     }
 
     public async Task<IResult> HandleAsync(PublishNotificationToConnectedHubCommand request)
@@ -43,7 +35,7 @@ public class PublishNotificationToConnectedHubCommandHandler : ICommandHandler<P
             MessageType = MessageType.Notification
         };
 
-        await _redisContext.PublishAsync(_databaseInfo, channel, pubSubMessage);
+        await _pubSub.PublishAsync(channel, pubSubMessage);
 
         Console.WriteLine("Event published to redis\n");
 

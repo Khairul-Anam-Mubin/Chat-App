@@ -1,4 +1,5 @@
 ﻿using Chat.Framework.Interfaces;
+using Chat.Framework.PubSub;
 using Chat.Framework.ServiceInstaller;
 using Chat.Notification.Application;
 using Chat.Notification.Domain.Interfaces;
@@ -18,5 +19,6 @@ public class NotificationInstaller : IServiceInstaller
         services.AddSingleton<IHubConnectionService, HubConnectionService>();
         services.AddSingleton<INotificationHubService, NotificationHubService>();
         services.AddSingleton<IInitialService, PubSubMessageSubscriber>();
+        services.AddPubSub();
     }
 }

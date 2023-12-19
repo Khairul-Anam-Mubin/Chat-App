@@ -1,7 +1,7 @@
 ﻿using Chat.Framework.CQRS;
-using Chat.Framework.Database.Models;
 using Chat.Framework.Extensions;
 using Chat.Framework.Mediators;
+using Chat.Framework.PubSub;
 using Chat.Notification.Application.Commands;
 
 namespace Chat.Notification.Application.CommandHandlers;
