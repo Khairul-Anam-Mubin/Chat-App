@@ -11,12 +11,20 @@ namespace Chat.Framework.Database;
 
 public static class DependencyInjection
 {
+    public static IServiceCollection AddSqlDb(this IServiceCollection services)
+    {
+        services.AddSingleton<ISqlConnectionManager, SqlConnectionManager>();
+        services.AddSingleton<SqlDbContext>();
+        services.AddTransient<IDbContextFactory, DbContextFactory>();
+
+        return services;
+    }
+
     public static IServiceCollection AddMongoDb(this IServiceCollection services)
     {
         services.AddSingleton<IMongoClientManager, MongoClientManager>();
         services.AddTransient<IIndexManager, MongoDbIndexManager>();
         services.AddSingleton<MongoDbContext>();
-        services.AddSingleton<SqlDbContext>();
         services.AddTransient<IDbContextFactory, DbContextFactory>();
         return services;
     }

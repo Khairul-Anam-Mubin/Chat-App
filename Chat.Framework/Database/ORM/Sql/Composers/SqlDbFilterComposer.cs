@@ -7,11 +7,11 @@ namespace Chat.Framework.Database.ORM.Sql.Composers;
 
 public class SqlDbFilterComposer : IFilterComposer<SqlQuery>
 {
-    private readonly Dictionary<string, int> _fieldKeyCounter;
+    private readonly SqlParameterProvider _parameterProvider;
 
-    public SqlDbFilterComposer()
+    public SqlDbFilterComposer(SqlParameterProvider parameterProvider)
     {
-        _fieldKeyCounter = new();
+        _parameterProvider = parameterProvider;
     }
 
     public SqlQuery Compose(ISimpleFilter simpleFilter)
@@ -20,12 +20,12 @@ public class SqlDbFilterComposer : IFilterComposer<SqlQuery>
         switch (simpleFilter.Operator)
         {
             case Operator.Equal:
-                var fieldKeyParameter = GetSqlParameterFieldKey(simpleFilter.FieldKey);
+                var fieldKeyParameter = _parameterProvider.GetSqlParameterFieldKey(simpleFilter.FieldKey);
                 query.Query = $"({simpleFilter.FieldKey} = @{fieldKeyParameter})";
                 query.DynamicParameters.Add(fieldKeyParameter, simpleFilter.FieldValue);
                 break;
             case Operator.NotEqual:
-                fieldKeyParameter = GetSqlParameterFieldKey(simpleFilter.FieldKey);
+                fieldKeyParameter = _parameterProvider.GetSqlParameterFieldKey(simpleFilter.FieldKey);
                 query.Query = $"({simpleFilter.FieldKey} != @{fieldKeyParameter})";
                 query.DynamicParameters.Add(fieldKeyParameter, simpleFilter.FieldValue);
                 break;
@@ -50,7 +50,7 @@ public class SqlDbFilterComposer : IFilterComposer<SqlQuery>
 
         foreach (var value in fieldValues)
         {
-            var fieldKey = GetSqlParameterFieldKey(filter.FieldKey);
+            var fieldKey = _parameterProvider.GetSqlParameterFieldKey(filter.FieldKey);
             if (value == fieldValues.Last())
             {
                 sqlQuery.Query += $"@{fieldKey}))";
@@ -152,13 +152,5 @@ public class SqlDbFilterComposer : IFilterComposer<SqlQuery>
         sqlQuery.Query = builder.ToString();
 
         return sqlQuery;
-    }
-
-    private string GetSqlParameterFieldKey(string fieldKey)
-    {
-        _fieldKeyCounter.TryGetValue(fieldKey, out int value);
-        _fieldKeyCounter[fieldKey] = value + 1;
-        var sqlParamFieldKey = $"{fieldKey}{value + 1}";
-        return sqlParamFieldKey;
     }
 }

@@ -10,7 +10,7 @@ public class SqlDbComposerFacade
 
     public SqlDbComposerFacade()
     {
-        _filterComposer = new SqlDbFilterComposer();
+        _filterComposer = new SqlDbFilterComposer(new SqlParameterProvider());
         _updateComposer = new SqlDbUpdateComposer();
         _sortComposer = new SqlDbSortComposer();
     }

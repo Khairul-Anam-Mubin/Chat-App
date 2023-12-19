@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Text.Json;
 using StackExchange.Redis;
 
@@ -29,7 +28,7 @@ public static class ObjectExtension
     {
         if (obj is IEnumerable<T> objects)
         {
-            return objects.Cast<T>().ToList();
+            return objects.ToList();
         }
         return new List<T>();
     }

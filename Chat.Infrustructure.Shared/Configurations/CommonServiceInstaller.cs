@@ -19,6 +19,7 @@ public class CommonServiceInstaller : IServiceInstaller
 
         services.AddSingleton(configuration.TryGetConfig<DatabaseInfo>());
 
+        services.AddSqlDb();
         services.AddMongoDb();
         services.AddRedis();
 
