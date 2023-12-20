@@ -24,18 +24,18 @@ public class LoginCommandHandler : ICommandHandler<LoginCommand, Token>
 
         if (user is null)
         {
-            return Result<Token>.Error("Email error!!");
+            return Result.Error<Token>("Email error!!");
         }
 
         if (user.Password != command.Password)
         {
-            return Result<Token>.Error("Password error!!");
+            return Result.Error<Token>("Password error!!");
         }
 
         if (!user.IsEmailVerified)
         {
             // Todo: will send email for verification
-            return Result<Token>.Error("Plz verify your email.Check your inbox!!");
+            return Result.Error<Token>("Plz verify your email.Check your inbox!!");
         }
 
         var userProfile = user.ToUserProfile();
@@ -44,9 +44,9 @@ public class LoginCommandHandler : ICommandHandler<LoginCommand, Token>
         
         if (token is null)
         {
-            return Result<Token>.Error("Token Creation Failed");
+            return Result.Error<Token>("Token Creation Failed");
         }
 
-        return Result<Token>.Success(token, "Logged in successfully"); ;
+        return Result.Success(token, "Logged in successfully"); ;
     }
 }

@@ -26,12 +26,12 @@ public class RefreshTokenCommandHandler : ICommandHandler<RefreshTokenCommand, T
                     true, 
                     false)))
         {
-            return Result<Token>.Error("Invalid access token");
+            return Result.Error<Token>("Invalid access token");
         }
 
         if (!TokenHelper.IsExpired(command.Token.AccessToken))
         {
-            return Result<Token>.Error("AccessToken not expired yet!");
+            return Result.Error<Token>("AccessToken not expired yet!");
         }
         
         var accessModel = 
@@ -39,19 +39,19 @@ public class RefreshTokenCommandHandler : ICommandHandler<RefreshTokenCommand, T
 
         if (accessModel is null || accessModel.AccessToken != command.Token.AccessToken)
         {
-            return Result<Token>.Error("Refresh or AccessToken Error");
+            return Result.Error<Token>("Refresh or AccessToken Error");
         }
         
         if (command.AppId != accessModel.AppId)
         {
-            return Result<Token>.Error("AppId Error");
+            return Result.Error<Token>("AppId Error");
         }
         
         if (accessModel.Expired)
         {
             await _tokenService.RevokeAllTokensByUserId(accessModel.UserId);
             // Todo: will send email for suspicious attempt
-            return Result<Token>.Error("Suspicious Token refresh attempt");
+            return Result.Error<Token>("Suspicious Token refresh attempt");
         }
         
         accessModel.Expired = true;
@@ -64,9 +64,9 @@ public class RefreshTokenCommandHandler : ICommandHandler<RefreshTokenCommand, T
 
         if (token is null)
         {
-            return Result<Token>.Error("Token Creation Failed");
+            return Result.Error<Token>("Token Creation Failed");
         }
 
-        return Result<Token>.Success(token);
+        return Result.Success(token);
     }
 }

@@ -29,7 +29,7 @@ public class QueryExecutor : IQueryExecutor
         {
             Console.WriteLine(e.Message);
 
-            return Result<TResponse>.Error(e.Message);
+            return Result.Error<TResponse>(e.Message);
         }
     }
 }

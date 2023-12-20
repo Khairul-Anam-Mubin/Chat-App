@@ -35,7 +35,7 @@ public class SendMessageCommandHandler :
 
         if (chatModel is null)
         {
-            return Result<ChatDto>.Error("ChatModel not set");
+            return Result.Error<ChatDto>("ChatModel not set");
         }
 
         chatModel.Id = Guid.NewGuid().ToString();
@@ -44,14 +44,14 @@ public class SendMessageCommandHandler :
 
         if (!await _chatRepository.SaveAsync(chatModel))
         {
-            return Result<ChatDto>.Error("ChatModel Creation Failed");
+            return Result.Error<ChatDto>("ChatModel Creation Failed");
         }
 
         await SendChatNotificationAsync(chatModel);
 
         await UpdateLatestChatModelAsync(chatModel);
         
-        return Result<ChatDto>.Success(chatModel.ToChatDto());
+        return Result.Success(chatModel.ToChatDto());
     }
 
     private Task SendChatNotificationAsync(ChatModel chatModel)

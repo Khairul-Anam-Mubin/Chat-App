@@ -25,13 +25,8 @@ public class Result : MetaDataDictionary, IResult
             Message = message
         };
     }
-}
 
-public class Result<TResponse> : Result, IResult<TResponse>
-{
-    public TResponse? Response { get; set; }
-
-    public static IResult<TResponse> Success(TResponse? response)
+    public static IResult<TResponse> Success<TResponse>(TResponse? response)
     {
         return new Result<TResponse>
         {
@@ -40,7 +35,7 @@ public class Result<TResponse> : Result, IResult<TResponse>
         };
     }
 
-    public static IResult<TResponse> Error(TResponse? response)
+    public static IResult<TResponse> Error<TResponse>(TResponse? response)
     {
         return new Result<TResponse>
         {
@@ -49,7 +44,7 @@ public class Result<TResponse> : Result, IResult<TResponse>
         };
     }
 
-    public static IResult<TResponse> Success(TResponse? response, string message)
+    public static IResult<TResponse> Success<TResponse>(TResponse? response, string message)
     {
         return new Result<TResponse>
         {
@@ -59,7 +54,7 @@ public class Result<TResponse> : Result, IResult<TResponse>
         };
     }
 
-    public static IResult<TResponse> Error(TResponse? response, string message)
+    public static IResult<TResponse> Error<TResponse>(TResponse? response, string message)
     {
         return new Result<TResponse>
         {
@@ -69,7 +64,7 @@ public class Result<TResponse> : Result, IResult<TResponse>
         };
     }
 
-    public new static IResult<TResponse> Success(string message = "")
+    public static IResult<TResponse> Success<TResponse>(string message = "")
     {
         return new Result<TResponse>
         {
@@ -78,7 +73,7 @@ public class Result<TResponse> : Result, IResult<TResponse>
         };
     }
 
-    public new static IResult<TResponse> Error(string message = "")
+    public static IResult<TResponse> Error<TResponse>(string message = "")
     {
         return new Result<TResponse>
         {
@@ -86,4 +81,9 @@ public class Result<TResponse> : Result, IResult<TResponse>
             Message = message
         };
     }
+}
+
+public class Result<TResponse> : Result, IResult<TResponse>
+{
+    public TResponse? Response { get; set; }
 }

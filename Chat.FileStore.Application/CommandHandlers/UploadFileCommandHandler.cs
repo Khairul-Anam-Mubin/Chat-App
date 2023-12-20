@@ -33,7 +33,7 @@ public class UploadFileCommandHandler : ICommandHandler<UploadFileCommand, strin
         
         if (file.Length <= 0)
         {
-            return Result<string>.Error("File Length 0");
+            return Result.Error<string>("File Length 0");
         }
 
         var fileName = file.FileName;
@@ -61,9 +61,9 @@ public class UploadFileCommandHandler : ICommandHandler<UploadFileCommand, strin
         
         if (!await _fileRepository.SaveAsync(fileModel))
         {
-            return Result<string>.Error("File Save error to db");
+            return Result.Error<string>("File Save error to db");
         }
         
-        return Result<string>.Success(fileModel.Id,"File uploaded successfully");
+        return Result.Success(fileModel.Id,"File uploaded successfully");
     }
 }

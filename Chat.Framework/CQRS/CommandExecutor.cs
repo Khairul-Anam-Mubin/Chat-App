@@ -44,7 +44,7 @@ public class CommandExecutor : ICommandExecutor
         {
             Console.WriteLine(e);
 
-            return Result<TResponse>.Error(e.Message);
+            return Result.Error<TResponse>(e.Message);
         }
     }
 }

@@ -25,7 +25,7 @@ public class UpdateUserProfileCommandHandler :
         
         if (userModel is null)
         {
-            return Result<UserProfile>.Error("UserModel not found");
+            return Result.Error<UserProfile>("UserModel not found");
         }
         
         var updateInfoCount = 0;
@@ -65,6 +65,6 @@ public class UpdateUserProfileCommandHandler :
             await _userRepository.SaveAsync(userModel);
         }
 
-        return Result<UserProfile>.Success("User Updated Successfully!!");
+        return Result.Error<UserProfile>("User Updated Successfully!!");
     }
 }
