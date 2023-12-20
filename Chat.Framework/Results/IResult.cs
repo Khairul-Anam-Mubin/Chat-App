@@ -1,5 +1,4 @@
-﻿using Chat.Framework.Enums;
-using Chat.Framework.Interfaces;
+﻿using Chat.Framework.Interfaces;
 
 namespace Chat.Framework.Results;
 

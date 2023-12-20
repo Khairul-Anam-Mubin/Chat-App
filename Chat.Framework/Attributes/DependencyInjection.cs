@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
+using Chat.Framework.Extensions;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Chat.Framework.Attributes;
@@ -14,7 +15,7 @@ public static class DependencyInjection
 
             foreach (var type in exportedTypes)
             {
-                if (!type.IsClass || type.IsAbstract || type.IsInterface) continue;
+                if (!type.CanInstantiate()) continue;
 
                 var serviceRegisterAttributes = type.GetCustomAttributes<ServiceRegisterAttribute>().ToList();
 
@@ -22,7 +23,7 @@ public static class DependencyInjection
 
                 foreach (var serviceRegisterAttribute in serviceRegisterAttributes)
                 {
-                    if (serviceRegisterAttribute.ServiceType == null)
+                    if (serviceRegisterAttribute.ServiceType is null)
                     {
                         services.TryAdd(new ServiceDescriptor(type, type, serviceRegisterAttribute.ServiceLifetime));
                         continue;

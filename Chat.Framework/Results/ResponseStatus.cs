@@ -1,4 +1,4 @@
-namespace Chat.Framework.Enums;
+namespace Chat.Framework.Results;
 
 public enum ResponseStatus
 {
