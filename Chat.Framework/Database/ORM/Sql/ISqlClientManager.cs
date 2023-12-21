@@ -2,7 +2,7 @@
 
 namespace Chat.Framework.Database.ORM.Sql;
 
-public interface ISqlConnectionManager
+public interface ISqlClientManager
 {
     IDbConnection CreateConnection(DatabaseInfo databaseInfo);
 }

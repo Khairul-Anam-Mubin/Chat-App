@@ -8,11 +8,11 @@ namespace Chat.Framework.Database.ORM.Sql;
 
 public class SqlDbContext : IDbContext
 {
-    private readonly ISqlConnectionManager _connectionManager;
+    private readonly ISqlClientManager _clientManager;
 
-    public SqlDbContext(ISqlConnectionManager connectionManager)
+    public SqlDbContext(ISqlClientManager clientManager)
     {
-        _connectionManager = connectionManager;
+        _clientManager = clientManager;
     }
 
     public async Task<bool> SaveAsync<T>(DatabaseInfo databaseInfo, T item) where T : class, IEntity
@@ -59,7 +59,7 @@ public class SqlDbContext : IDbContext
                 cnt++;
             }
 
-            using var connection = _connectionManager.CreateConnection(databaseInfo);
+            using var connection = _clientManager.CreateConnection(databaseInfo);
 
             var rowsAffected = 
                 await connection.ExecuteAsync(query,new DynamicParameters(propertyValueDictionary));
@@ -110,7 +110,7 @@ public class SqlDbContext : IDbContext
     {
         try
         {
-            using var connection = _connectionManager.CreateConnection(databaseInfo);
+            using var connection = _clientManager.CreateConnection(databaseInfo);
 
             var tableName = typeof(T).Name;
 
@@ -164,7 +164,7 @@ public class SqlDbContext : IDbContext
     {
         try
         {
-            using var connection = _connectionManager.CreateConnection(databaseInfo);
+            using var connection = _clientManager.CreateConnection(databaseInfo);
 
             var tableName = typeof(T).Name;
 
@@ -209,7 +209,7 @@ public class SqlDbContext : IDbContext
     {
         try
         {
-            using var connection = _connectionManager.CreateConnection(databaseInfo);
+            using var connection = _clientManager.CreateConnection(databaseInfo);
 
             var tableName = typeof(T).Name;
 
@@ -242,7 +242,7 @@ public class SqlDbContext : IDbContext
 
             var query = $"SELECT * FROM {tableName}";
                 
-            using var connection = _connectionManager.CreateConnection(databaseInfo);
+            using var connection = _clientManager.CreateConnection(databaseInfo);
 
             var entities = await connection.QueryAsync<T>(query);
                 
@@ -260,7 +260,7 @@ public class SqlDbContext : IDbContext
     {
         try
         {
-            using var connection = _connectionManager.CreateConnection(databaseInfo);
+            using var connection = _clientManager.CreateConnection(databaseInfo);
 
             var tableName = typeof(T).Name;
 
@@ -289,7 +289,7 @@ public class SqlDbContext : IDbContext
     {
         try
         {
-            using var connection = _connectionManager.CreateConnection(databaseInfo);
+            using var connection = _clientManager.CreateConnection(databaseInfo);
 
             var tableName = typeof(T).Name;
 
@@ -329,7 +329,7 @@ public class SqlDbContext : IDbContext
     {
         try
         {
-            using var connection = _connectionManager.CreateConnection(databaseInfo);
+            using var connection = _clientManager.CreateConnection(databaseInfo);
 
             var tableName = typeof(T).Name;
 
@@ -350,7 +350,7 @@ public class SqlDbContext : IDbContext
     {
         try
         {
-            using var connection = _connectionManager.CreateConnection(databaseInfo);
+            using var connection = _clientManager.CreateConnection(databaseInfo);
 
             var tableName = typeof(T).Name;
 

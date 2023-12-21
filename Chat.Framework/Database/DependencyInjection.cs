@@ -13,7 +13,7 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddSqlDb(this IServiceCollection services)
     {
-        services.AddSingleton<ISqlConnectionManager, SqlConnectionManager>();
+        services.AddSingleton<ISqlClientManager, SqlClientManager>();
         services.AddSingleton<SqlDbContext>();
         services.AddTransient<IDbContextFactory, DbContextFactory>();
 
