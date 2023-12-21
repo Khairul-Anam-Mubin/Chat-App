@@ -29,6 +29,6 @@ public class ChatQueryHandler : IQueryHandler<ChatQuery, IPaginationResponse<Cha
             response.AddItem(chatModel.ToChatDto());   
         }
 
-        return Result<IPaginationResponse<ChatDto>>.Success(response);
+        return Result.Success(response);
     }
 }

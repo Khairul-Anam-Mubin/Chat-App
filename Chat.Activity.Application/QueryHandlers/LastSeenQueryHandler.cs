@@ -28,6 +28,6 @@ public class LastSeenQueryHandler : IQueryHandler<LastSeenQuery, List<LastSeenDt
             lastSeenModelDtoList.Add(lastSeenModel.ToLastSeenDto());
         }
 
-        return Result<List<LastSeenDto>>.Success(lastSeenModelDtoList);
+        return Result.Success(lastSeenModelDtoList);
     }
 }

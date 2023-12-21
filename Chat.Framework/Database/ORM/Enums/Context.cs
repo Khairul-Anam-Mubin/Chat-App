@@ -3,6 +3,5 @@
 public enum Context
 {
     Mongo,
-    Redis,
     Sql
 }

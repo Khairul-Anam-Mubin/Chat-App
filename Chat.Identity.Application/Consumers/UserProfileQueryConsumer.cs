@@ -41,7 +41,7 @@ public class UserProfileQueryConsumer : AQueryConsumer<UserProfileQuery, UserPro
                 response.AddItem(userModel.ToUserProfile());
             }
 
-            return Result<UserProfileResponse>.Success(response);
+            return Result.Success(response);
         }
 
         foreach (var userModel in userModels)
@@ -49,6 +49,6 @@ public class UserProfileQueryConsumer : AQueryConsumer<UserProfileQuery, UserPro
             response.Profiles.Add(userModel.ToUserProfile());
         }
 
-        return Result<UserProfileResponse>.Success(response);
+        return Result.Success(response);
     }
 }

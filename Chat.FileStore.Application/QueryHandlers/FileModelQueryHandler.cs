@@ -24,11 +24,11 @@ public class FileModelQueryHandler : IQueryHandler<FileModelQuery, IPaginationRe
 
         if (fileModel is null)
         {
-            return Result<IPaginationResponse<FileModel>>.Error(response, "File not found");
+            return Result.Error(response, "File not found");
         }
 
         response.AddItem(fileModel);
 
-        return Result<IPaginationResponse<FileModel>>.Success(response);
+        return Result.Success(response);
     }
 }

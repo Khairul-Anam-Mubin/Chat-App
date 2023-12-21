@@ -24,7 +24,7 @@ public class FileDownloadQueryHandler : IQueryHandler<FileDownloadQuery, IPagina
 
         if (fileModel is null)
         {
-            return Result<IPaginationResponse<FileDownloadResult>>.Error(response, "File not found");
+            return Result.Error(response, "File not found");
         }
 
         var path = fileModel.Url;
@@ -43,7 +43,7 @@ public class FileDownloadQueryHandler : IQueryHandler<FileDownloadQuery, IPagina
 
         response.AddItem(fileDownloadResult);
 
-        return Result<IPaginationResponse<FileDownloadResult>>.Success(response);
+        return Result.Success(response);
     }
 
     private string GetContentType(string fileExtension)

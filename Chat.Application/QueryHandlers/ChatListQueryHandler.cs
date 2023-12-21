@@ -29,6 +29,6 @@ public class ChatListQueryHandler : IQueryHandler<ChatListQuery, IPaginationResp
             response.AddItem(latestChatModel.ToLatestChatDto(query.UserId));
         }
 
-        return Result<IPaginationResponse<LatestChatDto>>.Success(response);
+        return Result.Success(response);
     }
 }

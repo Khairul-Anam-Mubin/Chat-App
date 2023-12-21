@@ -42,6 +42,6 @@ public class ContactQueryHandler : IQueryHandler<ContactQuery, IPaginationRespon
             response.AddItem(contact.ToContactDto(query.UserId));
         }
 
-        return Result<IPaginationResponse<ContactDto>>.Success(response);
+        return Result.Success(response);
     }
 }
