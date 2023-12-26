@@ -4,7 +4,7 @@ using Chat.Framework.EmailSenders;
 using Chat.Framework.MessageBrokers;
 using Chat.Framework.Results;
 
-namespace Chat.Contact.Application.Consumers;
+namespace Chat.Notification.Application.Consumers;
 
 public class SendEmailCommandConsumer : ACommandConsumer<SendEmailCommand>
 {

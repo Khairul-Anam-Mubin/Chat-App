@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Chat.Framework.ServiceInstaller;
+using Microsoft.Extensions.Configuration;
 
 namespace Chat.Framework.Extensions;
 
@@ -19,6 +20,16 @@ public static class WebApplicationBuilderExtension
         if (string.IsNullOrEmpty(configPath))
         {
             throw new Exception("Config Path Not Found");
+        }
+
+        try
+        {
+            configuration.AddJsonFile(configPath, false, true);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+            Console.WriteLine("Continuing with GlobalConfig Service");
         }
 
         var configText = File.ReadAllText(configPath);
