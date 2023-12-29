@@ -4,6 +4,7 @@ using Chat.Framework.CQRS;
 using Chat.Framework.Database;
 using Chat.Framework.Database.ORM;
 using Chat.Framework.Extensions;
+using Chat.Framework.Loggers;
 using Chat.Framework.Mediators;
 using Chat.Framework.ServiceInstaller;
 using Microsoft.Extensions.Configuration;
@@ -18,6 +19,8 @@ public class CommonServiceInstaller : IServiceInstaller
         services.AddAttributeRegisteredServices(AssemblyCache.Instance.GetAddedAssemblies());
 
         services.AddSingleton(configuration.TryGetConfig<DatabaseInfo>());
+
+        services.AddLogging(configuration);
 
         services.AddSqlDb();
         services.AddMongoDb();
