@@ -28,7 +28,7 @@ public class NotificationHubService : INotificationHubService
             Console.WriteLine("ConnectionId not found");
             return;
         }
-
+        
         await _hubContext.Clients.Client(connectionId).SendAsync(method, message);
 
         Console.WriteLine("==============message sent");

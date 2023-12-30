@@ -66,7 +66,7 @@ export class ContactComponent implements OnInit {
     .pipe(take(1))
     .subscribe(response => {
       console.log(response);
-      this.items = response.response.items;
+      this.items = response.value.items;
       const contactUserIds = [];
       for (let item of this.items) {
         contactUserIds.push(item.contactUserId);
@@ -77,7 +77,7 @@ export class ContactComponent implements OnInit {
         this.userService.getUserProfilesByIds(contactUserIds)
           .pipe(take(1))
           .subscribe(response => {
-            this.syncContactsWithProfiles(response.response.items);
+            this.syncContactsWithProfiles(response.value.items);
           });
       }
     });
@@ -104,7 +104,7 @@ export class ContactComponent implements OnInit {
     .subscribe(response => {
       // TODO : need to refactor here
       for (let i = 0; i < this.items.length; i++) {
-        for (let item of response.response) {
+        for (let item of response.value) {
           if (item.userId === this.items[i].contactUserId) {
             this.items[i].status = item.status;
             this.items[i].isActive = item.isActive;

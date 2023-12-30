@@ -63,7 +63,7 @@ export class ChatComponent implements OnInit{
     .pipe(take(1))
     .subscribe(res => {
       if (res.status === ResponseStatus.success) {
-        this.sendToUserProfile = res.response.items.find((item: any) => item.id === this.sendToUserId);
+        this.sendToUserProfile = res.value.items.find((item: any) => item.id === this.sendToUserId);
         this.sharedSecret = this.securityService.getSharedSecretKey(this.sendToUserProfile.publicKey);
         this.chatTitle = this.sendToUserProfile.firstName + " " + this.sendToUserProfile.lastName;
         this.getChats(this.query);
@@ -91,10 +91,10 @@ export class ChatComponent implements OnInit{
     .pipe(take(1))
     .subscribe(res => {
       if (res.status === ResponseStatus.success) {
-        if (res.response.items.length === 0) {
+        if (res.value.items.length === 0) {
           this.canExecuteChatQuery = false;
         } else {
-          this.chats = this.chats.concat(this.processChats(res.response.items));
+          this.chats = this.chats.concat(this.processChats(res.value.items));
           if (query.Offset === 0) {
             this.setChatScrollStartFromBottom();
             this.totalChats = res.totalCount;
@@ -150,7 +150,7 @@ export class ChatComponent implements OnInit{
     this.commandService.execute(sendMessageCommand)
     .pipe(take(1))
     .subscribe(response => {
-      this.chats = [ChatProcessor.process(response.response, this.sharedSecret)].concat(this.chats);
+      this.chats = [ChatProcessor.process(response.value, this.sharedSecret)].concat(this.chats);
       this.setChatScrollStartFromBottom();
     });
   }
@@ -161,8 +161,8 @@ export class ChatComponent implements OnInit{
     this.queryService.execute(lastSeenQuery)
     .pipe(take(1))
     .subscribe(response => {
-      this.lastSeen = response.response[0].status;
-      this.isActive = response.response[0].isActive;
+      this.lastSeen = response.value[0].status;
+      this.isActive = response.value[0].isActive;
     });
   }
 

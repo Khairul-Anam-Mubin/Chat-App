@@ -65,6 +65,6 @@ public class UpdateUserProfileCommandHandler :
             await _userRepository.SaveAsync(userModel);
         }
 
-        return Result.Error<UserProfile>("User Updated Successfully!!");
+        return Result.Success<UserProfile>("User Updated Successfully!!");
     }
 }

@@ -1,4 +1,6 @@
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json;
+using Chat.Framework.Results;
 using StackExchange.Redis;
 
 namespace Chat.Framework.Extensions;
@@ -82,11 +84,48 @@ public static class ObjectExtension
             return propertyValueDictionary;
         }
 
-        foreach (var prop in obj.GetType().GetProperties())
+        var properties = obj.GetType().GetProperties();
+
+        foreach (var prop in properties)
         {
             propertyValueDictionary.TryAdd(prop.Name, prop.GetValue(obj));
         }
 
         return propertyValueDictionary;
+    }
+
+    public static IResult GetValidationResult(this object? obj)
+    {
+        if (obj is null)
+        {
+            return Result.Error($"Object is null");
+        }
+
+        var result = new List<ValidationResult>();
+
+        var isValid = Validator.TryValidateObject(obj, new ValidationContext(obj), result);
+
+        if (isValid)
+        {
+            return Result.Success();
+        }
+
+        var message = result.FirstOrDefault()?.ErrorMessage;
+
+        if (string.IsNullOrEmpty(message))
+        {
+            message = string.Empty;
+        }
+
+        return Result.Error(message);
+    }
+
+    public static IResult<TResponse> GetValidationResult<TResponse>(this object? obj)
+    {
+        var result = obj.GetValidationResult();
+
+        return result.IsSuccess() ? 
+            Result.Success<TResponse>() : 
+            Result.Error<TResponse>(result.Message);
     }
 }

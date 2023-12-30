@@ -1,4 +1,5 @@
-﻿using Chat.Framework.Mediators;
+﻿using Chat.Framework.Extensions;
+using Chat.Framework.Mediators;
 using Chat.Framework.Results;
 
 namespace Chat.Framework.CQRS;
@@ -16,6 +17,13 @@ public class QueryExecutor : IQueryExecutor
         where TQuery : class, IQuery
         where TResponse : class
     {
+        var validationResult = query.GetValidationResult<TResponse>();
+
+        if (!validationResult.IsSuccess())
+        {
+            return validationResult;
+        }
+
         try
         {
             var response = await _mediator.SendAsync<TQuery, IResult<TResponse>>(query);

@@ -7,6 +7,7 @@ using Chat.Framework.Extensions;
 using Chat.Framework.Loggers;
 using Chat.Framework.Mediators;
 using Chat.Framework.ServiceInstaller;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -19,6 +20,11 @@ public class CommonServiceInstaller : IServiceInstaller
         services.AddAttributeRegisteredServices(AssemblyCache.Instance.GetAddedAssemblies());
 
         services.AddSingleton(configuration.TryGetConfig<DatabaseInfo>());
+
+        services.Configure<ApiBehaviorOptions>(options =>
+        {
+            options.SuppressModelStateInvalidFilter = true;
+        });
 
         services.AddLogging(configuration);
 

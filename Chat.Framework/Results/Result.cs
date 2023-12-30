@@ -7,6 +7,11 @@ public class Result : MetaDataDictionary, IResult
     public string Message { get; set; } = string.Empty;
     public ResponseStatus? Status { get; set; }
 
+    public bool IsSuccess()
+    {
+        return Status == ResponseStatus.Success;
+    }
+
     public static IResult Success(string message = "")
     {
         return new Result
@@ -30,7 +35,7 @@ public class Result : MetaDataDictionary, IResult
         return new Result<TResponse>
         {
             Status = ResponseStatus.Success,
-            Response = response
+            Value = response
         };
     }
 
@@ -39,7 +44,7 @@ public class Result : MetaDataDictionary, IResult
         return new Result<TResponse>
         {
             Status = ResponseStatus.Error,
-            Response = response,
+            Value = response,
         };
     }
 
@@ -48,7 +53,7 @@ public class Result : MetaDataDictionary, IResult
         return new Result<TResponse>
         {
             Status = ResponseStatus.Success,
-            Response = response,
+            Value = response,
             Message = message
         };
     }
@@ -58,7 +63,7 @@ public class Result : MetaDataDictionary, IResult
         return new Result<TResponse>
         {
             Status = ResponseStatus.Error,
-            Response = response,
+            Value = response,
             Message = message
         };
     }
@@ -84,5 +89,5 @@ public class Result : MetaDataDictionary, IResult
 
 public class Result<TResponse> : Result, IResult<TResponse>
 {
-    public TResponse? Response { get; set; }
+    public TResponse? Value { get; set; }
 }

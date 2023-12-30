@@ -1,3 +1,4 @@
+using Chat.Framework.Extensions;
 using Chat.Framework.Mediators;
 using Chat.Framework.Results;
 
@@ -15,6 +16,13 @@ public class CommandExecutor : ICommandExecutor
     public async Task<IResult> ExecuteAsync<TCommand>(TCommand command) 
         where TCommand : class, ICommand
     {
+        var validationResult = command.GetValidationResult();
+        
+        if (!validationResult.IsSuccess())
+        {
+            return validationResult;
+        }
+        
         try
         {
             var result = await _mediator.SendAsync<TCommand, IResult>(command);
@@ -33,6 +41,13 @@ public class CommandExecutor : ICommandExecutor
         where TCommand : class, ICommand
         where TResponse : class
     {
+        var validationResult = command.GetValidationResult<TResponse>();
+
+        if (!validationResult.IsSuccess())
+        {
+            return validationResult;
+        }
+
         try
         {
             var result = await _mediator.SendAsync<TCommand, IResult<TResponse>>(command);

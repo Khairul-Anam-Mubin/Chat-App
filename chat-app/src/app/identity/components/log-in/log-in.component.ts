@@ -40,15 +40,15 @@ export class LogInComponent implements OnInit {
     this.commandService.execute(logInCommand).pipe(take(1)).subscribe(response => {
       console.log(response);
       if (response.status === ResponseStatus.success) {
-        this.authService.setTokenToStore(response.response);
+        this.authService.setTokenToStore(response.value);
         localStorage.setItem("email", this.getFormValue("email"));
         this.userService.getUserProfileByEmail(this.getFormValue("email"))
         .pipe(take(1))
         .subscribe(response => {
           if (response.status === ResponseStatus.success) {
             console.log("received user profile", response);
-            this.userService.setUserProfileToStore(response.response.items[0]);
-            this.router.navigateByUrl("user/" + response.response.items[0].id);
+            this.userService.setUserProfileToStore(response.value.items[0]);
+            this.router.navigateByUrl("user/" + response.value.items[0].id);
             this.securityService.createAndSavePrivateKey(password);
           }
         });

@@ -14,7 +14,7 @@ public abstract class AQueryConsumer<TQuery, TResponse> :
     public override async Task Consume(IMessageContext<TQuery> context)
     {
         var response = await OnConsumeAsync(context.Message, context);
-        await context.RespondAsync(response.Response!);
+        await context.RespondAsync(response.Value!);
     }
 
     public async Task<IResult<TResponse>> HandleAsync(TQuery request)

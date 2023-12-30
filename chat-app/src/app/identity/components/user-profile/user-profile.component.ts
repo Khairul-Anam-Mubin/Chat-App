@@ -59,14 +59,14 @@ export class UserProfileComponent implements OnInit{
     this.userService.getUserProfileById(userId)
     .pipe(take(1))
     .subscribe(response => {
-      this.userProfile = response.response.items[0];
+      this.userProfile = response.value.items[0];
       this.setFormData();
       if (this.userProfile.profilePictureId) {
         this.fileService.getFileModelByFileId(this.userProfile.profilePictureId)
         .pipe(take(1))
         .subscribe(response => {
           console.log(response);
-          this.profilePictureDetails = response.response.items[0];
+          this.profilePictureDetails = response.value.items[0];
           this.fileService.downloadFile(this.userProfile.profilePictureId)
           .pipe(take(1))
           .subscribe(response => {
@@ -99,7 +99,7 @@ export class UserProfileComponent implements OnInit{
     this.userProfileFormControl.setValue({
       firstName: this.userProfile.firstName,
       lastName: this.userProfile.lastName,
-      birthDay: this.userProfile.birthDay.split('T')[0],
+      birthDay: this.userProfile.birthDay?  this.userProfile.birthDay.split('T')[0] : '',
       about: this.userProfile.about,
       email: this.userProfile.email
     });
@@ -121,7 +121,7 @@ export class UserProfileComponent implements OnInit{
     this.commandService.execute(updateUserProfileCommand)
     .pipe(take(1))
     .subscribe(response => {
-      this.userProfile = response.response;
+      this.userProfile = response.value;
       this.userService.setUserProfileToStore(this.userProfile);
       this.getUserProfile(this.userProfile.id);
     });
@@ -134,7 +134,7 @@ export class UserProfileComponent implements OnInit{
     .pipe(take(1))
     .subscribe(response => {
       console.log(response);
-      const fileId = response.response;
+      const fileId = response.value;
       const userProfile = new UserProfile();
       userProfile.email = this.userProfile.email;
       userProfile.profilePictureId = fileId;

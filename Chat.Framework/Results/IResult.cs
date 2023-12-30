@@ -4,11 +4,13 @@ namespace Chat.Framework.Results;
 
 public interface IResult : IMetaDataDictionary
 {
-    public string Message { get; set; }
-    public ResponseStatus? Status { get; set; }
+    string Message { get; set; }
+    ResponseStatus? Status { get; set; }
+
+    bool IsSuccess();
 }
 
 public interface IResult<TResponse> : IResult
 {
-    TResponse? Response { get; set; }
+    TResponse? Value { get; set; }
 }

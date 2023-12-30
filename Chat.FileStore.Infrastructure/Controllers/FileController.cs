@@ -40,7 +40,7 @@ public class FileController : ACommonController
         };
         var result = await GetQueryResponseAsync<FileDownloadQuery, IPaginationResponse<FileDownloadResult>>(query);
 
-        var response = result.Response;
+        var response = result.Value;
 
         if (response is null)
         {
