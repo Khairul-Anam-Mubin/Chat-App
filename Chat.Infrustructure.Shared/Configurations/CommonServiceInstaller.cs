@@ -10,6 +10,7 @@ using Chat.Framework.ServiceInstaller;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.FeatureManagement;
 
 namespace Chat.Infrastructure.Shared.Configurations;
 
@@ -27,6 +28,8 @@ public class CommonServiceInstaller : IServiceInstaller
         });
 
         services.AddLogging(configuration);
+
+        services.AddFeatureManagement(configuration.GetSection("FeatureFlags"));
 
         services.AddSqlDb();
         services.AddMongoDb();

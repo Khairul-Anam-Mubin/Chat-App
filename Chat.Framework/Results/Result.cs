@@ -30,6 +30,15 @@ public class Result : MetaDataDictionary, IResult
         };
     }
 
+    public static IResult Ignored(string message = "")
+    {
+        return new Result
+        {
+            Status = ResponseStatus.Ignored,
+            Message = message
+        };
+    }
+
     public static IResult<TResponse> Success<TResponse>(TResponse? response)
     {
         return new Result<TResponse>
