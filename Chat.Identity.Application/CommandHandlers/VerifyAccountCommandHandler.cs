@@ -16,16 +16,6 @@ public class VerifyAccountCommandHandler : ICommandHandler<VerifyAccountCommand>
 
     public async Task<IResult> HandleAsync(VerifyAccountCommand request)
     {
-        var userModel = await _userRepository.GetByIdAsync(request.UserId);
-
-        if (userModel is null)
-        {
-            return Result.Error("Account verification error");
-        }
-
-        userModel.IsEmailVerified = true;
-
-
         if (!await _userRepository.UpdateEmailVerificationStatus(request.UserId, true))
         {
             return Result.Error("Account verification failed");
