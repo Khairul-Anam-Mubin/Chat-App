@@ -1,36 +1,32 @@
 <form [formGroup]="registerFormControl" (ngSubmit)="onSubmit()" class="container w-50 mt-3">
   <div class="mb-3">
-    <label class="form-label">First Name</label>
-    <input formControlName="firstName" type="text" class="form-control" >
+    <label for="firstName" class="form-label">First Name</label>
+    <input formControlName="firstName" type="text" class="form-control" id="firstName">
   </div>
   <div class="mb-3">
-    <label class="form-label">Last Name</label>
-    <input formControlName="lastName" type="text" class="form-control" >
+    <label for="lastName" class="form-label">Last Name</label>
+    <input formControlName="lastName" type="text" class="form-control" id="lastName">
   </div>
   <div class="mb-3">
-    <label class="form-label">Birth Date</label>
-    <input formControlName="birthDay" type="date" class="form-control" >
+    <label for="birthDay" class="form-label">Birth Date</label>
+    <input formControlName="birthDay" type="date" class="form-control" id="birthDay">
   </div>
   <div class="mb-3">
-    <label class="form-label">About</label>
-    <input formControlName="about" type="text" class="form-control">
+    <label for="about" class="form-label">About</label>
+    <input formControlName="about" type="text" class="form-control" id="about">
   </div>
-  <!-- <div class="mb-3">
-    <label class="form-label">Profile Picture</label>
-    <input type="file" class="form-control">
-  </div> -->
   <div class="mb-3">
-    <label class="form-label">Email address</label>
-    <input formControlName="email" type="email" class="form-control">
+    <label for="email" class="form-label">Email address</label>
+    <input formControlName="email" type="email" class="form-control" id="email">
     <div class="form-text">We'll never share your email with anyone else.</div>
   </div>
   <div class="mb-3">
-    <label class="form-label">Password</label>
-    <input formControlName="password" type="password" class="form-control">
+    <label for="password" class="form-label">Password</label>
+    <input formControlName="password" type="password" class="form-control" id="password">
   </div>
   <div class="mb-3">
-    <label class="form-label">Confirm Password</label>
-    <input formControlName="confirmPassword" type="password" class="form-control">
+    <label for="confirmPassword" class="form-label">Confirm Password</label>
+    <input formControlName="confirmPassword" type="password" class="form-control" id="confirmPassword">
   </div>
   <button [disabled]="!registerFormControl.valid" type="submit" class="mb-3 btn btn-dark">Register</button>
 </form>
