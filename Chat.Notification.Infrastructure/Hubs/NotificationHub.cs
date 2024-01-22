@@ -41,7 +41,6 @@ public class NotificationHub : Hub
         }
 
         Console.WriteLine($"Connected UserId : {userProfile.Id}\n");
-
         await _hubConnectionService.AddConnectionAsync(connectionId, userProfile.Id);
 
         var connectedEvent = new UserConnectedToHubEvent

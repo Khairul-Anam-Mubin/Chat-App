@@ -23,7 +23,7 @@ public sealed class PubSubMessageSubscriber : IInitialService
 
     public async Task InitializeAsync()
     {
-        var channel = _hubConnectionService.GetCurrentHubInstanceId();
+        var channel = _hubConnectionService.GetCurrentHubId();
 
         Console.WriteLine($"Subscribing to redis channel : {channel}\n");
 

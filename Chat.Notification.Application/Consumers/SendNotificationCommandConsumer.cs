@@ -48,7 +48,7 @@ public class SendNotificationCommandConsumer : ACommandConsumer<SendNotification
 
         foreach (var keyPair in hubIdUserIdsMapper)
         {
-            if (_hubConnectionService.GetCurrentHubInstanceId() == keyPair.Key)
+            if (_hubConnectionService.GetCurrentHubId() == keyPair.Key)
             {
                 await SendNotificationToClientAsync(keyPair.Value, command.Notification!);
             }
