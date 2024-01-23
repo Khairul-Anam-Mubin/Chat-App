@@ -2,8 +2,9 @@ namespace Chat.Notification.Domain.Interfaces;
 
 public interface INotificationHubService
 {
-    Task SendAsync<T>(string userId, T message, string method);
-    
+    /// <summary>
+    /// Send message to a specific user and all the connections this user holds.
+    /// </summary>
     Task SendToUserAsync<T>(string userId, T message, string method);
 
     Task SendToConnectionAsync<T>(string connectionId, T message, string method);

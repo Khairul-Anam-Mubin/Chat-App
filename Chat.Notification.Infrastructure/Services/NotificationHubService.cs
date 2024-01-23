@@ -16,27 +16,7 @@ public class NotificationHubService : INotificationHubService
         _hubConnectionService = hubConnectionService;
         _hubContext = hubContext;
     }
-    [Obsolete]
-    public async Task SendAsync<T>(string userId, T message, string method)
-    {
-        var connectionId = _hubConnectionService.GetConnectionId(userId);
 
-        Console.WriteLine("==============Sending");
-
-        if (string.IsNullOrEmpty(connectionId))
-        {
-            Console.WriteLine("ConnectionId not found");
-            return;
-        }
-        
-        await _hubContext.Clients.Client(connectionId).SendAsync(method, message);
-
-        Console.WriteLine("==============message sent");
-    }
-
-    /// <summary>
-    /// Send message to a specific user and all the connections this user holds.
-    /// </summary>
     public async Task SendToUserAsync<T>(string userId, T message, string method)
     {
         var connectionIds = _hubConnectionService.GetConnectionIds(userId);

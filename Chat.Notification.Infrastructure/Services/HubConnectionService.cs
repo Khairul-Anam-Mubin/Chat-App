@@ -10,7 +10,6 @@ namespace Chat.Notification.Infrastructure.Services;
 public class HubConnectionService : IHubConnectionService
 {
     private readonly Dictionary<string, string> _connectionIdUserIdMapper;
-    private readonly Dictionary<string, string> _userIdConnectionIdMapper;
     private readonly ConcurrentDictionary<string, HashSet<string>> _userIdConnectionIdsMapper;
     private readonly IRedisContext _redisContext;
     private readonly DatabaseInfo _databaseInfo;
@@ -22,7 +21,6 @@ public class HubConnectionService : IHubConnectionService
         _redisContext = redisContext;
         _databaseInfo = configuration.GetConfig<DatabaseInfo>("RedisConfig")!;
         _connectionIdUserIdMapper = new Dictionary<string, string>();
-        _userIdConnectionIdMapper = new Dictionary<string, string>();
         _userIdConnectionIdsMapper = new ConcurrentDictionary<string, HashSet<string>>();
     }
 
@@ -37,40 +35,25 @@ public class HubConnectionService : IHubConnectionService
             _userIdConnectionIdsMapper.TryAdd(userId, new HashSet<string>{connectionId});
         }
 
-        if (_userIdConnectionIdMapper.TryGetValue(userId, out var prevConnectionId))
-        {
-            if (_connectionIdUserIdMapper.ContainsKey(prevConnectionId))
-            {
-                _connectionIdUserIdMapper.Remove(prevConnectionId);
-            }
-        }
-
-        _userIdConnectionIdMapper[userId] = connectionId;
         _connectionIdUserIdMapper[connectionId] = userId;
 
-        var channel = GetCurrentHubId();
+        // todo : add userId -> hubIds on redis
 
-        await _redisContext.SetDataAsync(_databaseInfo, GetPreparedKey(userId), channel);
-    }
-
-    public string GetConnectionId(string userId)
-    {
-        return _userIdConnectionIdMapper.TryGetValue(userId, out var value) ? value : string.Empty;
+        await Task.CompletedTask;
     }
 
     public List<string> GetConnectionIds(string userId)
     {
-        if (_userIdConnectionIdsMapper.TryGetValue(userId, out var connectionIds))
-        {
-            return connectionIds.ToList();
-        }
-
-        return new List<string>();
+        return _userIdConnectionIdsMapper.TryGetValue(userId, out var connectionIds) ? 
+            connectionIds.ToList() : 
+            new List<string>();
     }
 
     public string GetUserId(string connectionId)
     {
-        return _connectionIdUserIdMapper.TryGetValue(connectionId, out var value) ? value : string.Empty;
+        return _connectionIdUserIdMapper.TryGetValue(connectionId, out var value) ? 
+            value : 
+            string.Empty;
     }
 
     public async Task RemoveConnectionAsync(string connectionId)
@@ -86,28 +69,16 @@ public class HubConnectionService : IHubConnectionService
                     connectionIds.Remove(connectionId);
                 }
             }
-        }
-        
-        if (!string.IsNullOrEmpty(userId))
-        {
-            _connectionIdUserIdMapper.Remove(userId);
-            await _redisContext.DeleteDataAsync(_databaseInfo, GetPreparedKey(userId));
+
+            // todo : remove hubId form userId HashSet in redis
         }
 
         if (_connectionIdUserIdMapper.ContainsKey(connectionId))
         {
             _connectionIdUserIdMapper.Remove(connectionId);
         }
-    }
 
-    public bool IsUserConnectedWithCurrentHubInstance(string userId)
-    {
-        return _userIdConnectionIdMapper.ContainsKey(userId);
-    }
-
-    public async Task<bool> IsUserConnectedWithAnyHubInstanceAsync(string userId)
-    {
-        return await _redisContext.IsDataExistsAsync(_databaseInfo, GetPreparedKey(userId));
+        await Task.CompletedTask;
     }
 
     public string GetCurrentHubId()
@@ -115,18 +86,9 @@ public class HubConnectionService : IHubConnectionService
         return _hubInstanceId;
     }
 
-    public async Task<string?> GetUserConnectedHubInstanceIdAsync(string userId)
-    {
-        if (IsUserConnectedWithCurrentHubInstance(userId))
-        {
-            return GetCurrentHubId();
-        }
-
-        return await _redisContext.GetDataAsync<string>(_databaseInfo, GetPreparedKey(userId));
-    }
-
     public async Task<List<string>> GetUserConnectedHubIdsAsync(string userId)
     {
+        // todo : return the hubIds from redis
         await Task.CompletedTask;
         return new List<string>();
     }
