@@ -37,9 +37,7 @@ public class HubConnectionService : IHubConnectionService
 
         _connectionIdUserIdMapper[connectionId] = userId;
 
-        // todo : add userId -> hubIds on redis
-
-        await Task.CompletedTask;
+        await _redisContext.GetDatabase(_databaseInfo).SetAddAsync(GetSetKey(userId), GetCurrentHubId());
     }
 
     public List<string> GetConnectionIds(string userId)
@@ -70,15 +68,16 @@ public class HubConnectionService : IHubConnectionService
                 }
             }
 
-            // todo : remove hubId form userId HashSet in redis
+            if (connectionIds is not null && connectionIds.Count == 0)
+            {
+                await _redisContext.GetDatabase(_databaseInfo).SetRemoveAsync(GetSetKey(userId), GetCurrentHubId());
+            }
         }
 
         if (_connectionIdUserIdMapper.ContainsKey(connectionId))
         {
             _connectionIdUserIdMapper.Remove(connectionId);
         }
-
-        await Task.CompletedTask;
     }
 
     public string GetCurrentHubId()
@@ -88,13 +87,23 @@ public class HubConnectionService : IHubConnectionService
 
     public async Task<List<string>> GetUserConnectedHubIdsAsync(string userId)
     {
-        // todo : return the hubIds from redis
-        await Task.CompletedTask;
-        return new List<string>();
+        var redisDb = _redisContext.GetDatabase(_databaseInfo);
+        var hubIds = new List<string>();
+        var redisHubIds = await redisDb.SetMembersAsync(GetSetKey(userId));
+        foreach (var hubId in redisHubIds)
+        {
+            hubIds.Add(hubId.ToString());
+        }
+        return hubIds;
     }
 
     private string GetPreparedKey(string key)
     {
-        return $"HubData-{key}";
+        return $"HubSetData-{key}";
+    }
+
+    private string GetSetKey(string key)
+    {
+        return $"Set-{key}";
     }
 }
