@@ -24,37 +24,34 @@ public class SendNotificationCommandConsumer : ACommandConsumer<SendNotification
     {
         var receiver = command.Receiver!;
 
-        var hubIdUserIdsMapper = new Dictionary<string, List<string>>();
+        var hubIdUserIdsMapper = new Dictionary<string, HashSet<string>>();
 
         foreach (var receiverId in receiver.ReceiverIds)
         {
-            var hubInstanceId = await _hubConnectionService.GetUserConnectedHubInstanceIdAsync(receiverId);
+            var hubIds = await _hubConnectionService.GetUserConnectedHubIdsAsync(receiverId);
 
-            if (string.IsNullOrEmpty(hubInstanceId)) // TODO: Will do push notification for them
+            foreach (var hubId in hubIds)
             {
-                Console.WriteLine($"Receiver : {receiverId} is not connected with any hub");
-                continue;
-            }
-
-            if (hubIdUserIdsMapper.TryGetValue(hubInstanceId, out var value))
-            {
-                value.Add(receiverId);
-            }
-            else
-            {
-                hubIdUserIdsMapper.Add(hubInstanceId, new List<string> { receiverId });
+                if (hubIdUserIdsMapper.TryGetValue(hubId, out var userIds))
+                {
+                    userIds.Add(receiverId);
+                }
+                else
+                {
+                    hubIdUserIdsMapper.Add(hubId, new HashSet<string> { receiverId });
+                }
             }
         }
 
-        foreach (var keyPair in hubIdUserIdsMapper)
+        foreach (var kv in hubIdUserIdsMapper)
         {
-            if (_hubConnectionService.GetCurrentHubId() == keyPair.Key)
+            if (_hubConnectionService.GetCurrentHubId() == kv.Key)
             {
-                await SendNotificationToClientAsync(keyPair.Value, command.Notification!);
+                await SendNotificationToClientAsync(kv.Value.ToList(), command.Notification!);
             }
             else
             {
-                await PublishNotificationToConnectedHubAsync(keyPair.Key, keyPair.Value, command.Notification!);
+                await PublishNotificationToConnectedHubAsync(kv.Key, kv.Value.ToList(), command.Notification!);
             }
         }
 

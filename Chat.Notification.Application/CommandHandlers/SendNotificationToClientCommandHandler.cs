@@ -21,7 +21,7 @@ public class SendNotificationToClientCommandHandler : ICommandHandler<SendNotifi
 
         foreach (var receiverId in receiverIds)
         {
-            await _notificationHubService.SendAsync(receiverId, notification, notification!.NotificationType.ToString());
+            await _notificationHubService.SendToUserAsync(receiverId, notification, notification!.NotificationType.ToString());
         }
 
         return Result.Success();
