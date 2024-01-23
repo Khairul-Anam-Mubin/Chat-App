@@ -58,7 +58,7 @@ public class SendMessageCommandHandler :
     {
         var sendNotificationCommand = new SendNotificationCommand()
         {
-            Notification = new Notification
+            Notification = new NotificationData
             {
                 Id = chatModel.Id,
                 Content = chatModel,

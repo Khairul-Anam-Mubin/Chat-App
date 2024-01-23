@@ -6,20 +6,15 @@ namespace Chat.Notification.Infrastructure.Services;
 
 public class NotificationHubService : INotificationHubService
 {
-    private readonly IHubConnectionService _hubConnectionService;
     private readonly IHubContext<NotificationHub> _hubContext;
 
-    public NotificationHubService(
-        IHubContext<NotificationHub> hubContext,
-        IHubConnectionService hubConnectionService)
+    public NotificationHubService(IHubContext<NotificationHub> hubContext)
     {
-        _hubConnectionService = hubConnectionService;
         _hubContext = hubContext;
     }
 
-    public async Task SendToUserAsync<T>(string userId, T message, string method)
+    public async Task SendToConnectionsAsync<T>(List<string> connectionIds, T message, string method)
     {
-        var connectionIds = _hubConnectionService.GetConnectionIds(userId);
         foreach (var connectionId in connectionIds)
         {
             await SendToConnectionAsync(connectionId, message, method);

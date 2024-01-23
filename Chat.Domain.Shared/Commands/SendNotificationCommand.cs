@@ -7,7 +7,7 @@ namespace Chat.Domain.Shared.Commands;
 public class SendNotificationCommand : ICommand
 {
     [Required]
-    public Notification? Notification { get; set; }
+    public NotificationData? Notification { get; set; }
 
     [Required]
     public NotificationReceiver? Receiver { get; set; }

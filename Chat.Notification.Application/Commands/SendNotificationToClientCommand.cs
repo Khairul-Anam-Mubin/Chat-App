@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Chat.Domain.Shared.Entities;
 using Chat.Framework.CQRS;
 
 namespace Chat.Notification.Application.Commands;
@@ -6,7 +7,7 @@ namespace Chat.Notification.Application.Commands;
 public class SendNotificationToClientCommand : ICommand
 {
     [Required]
-    public Chat.Domain.Shared.Entities.Notification? Notification { get; set; }
+    public NotificationData? Notification { get; set; }
 
     [Required]
     public List<string> ReceiverIds { get; set; }

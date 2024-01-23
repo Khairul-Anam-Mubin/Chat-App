@@ -1,4 +1,5 @@
 ﻿using Chat.Domain.Shared.Commands;
+using Chat.Domain.Shared.Entities;
 using Chat.Framework.CQRS;
 using Chat.Framework.MessageBrokers;
 using Chat.Framework.Results;
@@ -58,7 +59,7 @@ public class SendNotificationCommandConsumer : ACommandConsumer<SendNotification
         return Result.Success();
     }
 
-    private async Task PublishNotificationToConnectedHubAsync(string hubId, List<string> receiverIds, Chat.Domain.Shared.Entities.Notification notification)
+    private async Task PublishNotificationToConnectedHubAsync(string hubId, List<string> receiverIds, NotificationData notification)
     {
         var publishNotificationToConnectedHubCommand = new PublishNotificationToConnectedHubCommand
         {
@@ -70,7 +71,7 @@ public class SendNotificationCommandConsumer : ACommandConsumer<SendNotification
         await _commandExecutor.ExecuteAsync(publishNotificationToConnectedHubCommand);
     }
 
-    private async Task SendNotificationToClientAsync(List<string> receiverIds, Chat.Domain.Shared.Entities.Notification notification)
+    private async Task SendNotificationToClientAsync(List<string> receiverIds, NotificationData notification)
     {
         var sendNotificationToClientCommand = new SendNotificationToClientCommand
         {

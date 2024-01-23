@@ -7,5 +7,10 @@ namespace Chat.Domain.Shared.Commands;
 public class SendEmailCommand : ICommand
 {
     [Required]
-    public Email? Email { get; set; }
+    public Email Email { get; set; }
+
+    public SendEmailCommand()
+    {
+        Email = new Email();
+    }
 }

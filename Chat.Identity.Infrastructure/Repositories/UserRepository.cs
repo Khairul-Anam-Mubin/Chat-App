@@ -12,8 +12,8 @@ namespace Chat.Identity.Infrastructure.Repositories;
 public class UserRepository : RepositoryBase<UserModel>, IUserRepository
 {
     public UserRepository(IDbContextFactory dbContextFactory, IConfiguration configuration)
-        : base(configuration.TryGetConfig<DatabaseInfo>("SqlDbConfig"), 
-            dbContextFactory.GetDbContext(Context.Sql)) {}
+        : base(configuration.TryGetConfig<DatabaseInfo>("DatabaseInfo"), 
+            dbContextFactory.GetDbContext(Context.Mongo)) {}
 
     public async Task<bool> IsUserExistAsync(UserModel userModel)
     {

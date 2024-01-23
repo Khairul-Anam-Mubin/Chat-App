@@ -2,7 +2,7 @@
 
 namespace Chat.Domain.Shared.Entities;
 
-public class Notification
+public class NotificationData
 {
     public string Id { get; set; } = string.Empty;
     public NotificationType NotificationType { get; set; }
