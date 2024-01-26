@@ -23,7 +23,14 @@ public class SendNotificationCommandConsumer : ACommandConsumer<SendNotification
 
     protected override async Task<IResult> OnConsumeAsync(SendNotificationCommand command, IMessageContext<SendNotificationCommand>? context = null)
     {
-        var receiver = command.Receiver!;
+        var receiver = command.Receiver;
+
+        var notification = command.Notification;
+
+        if (notification.IncludeSelf && !string.IsNullOrEmpty(notification.Sender))
+        {
+            receiver.ReceiverIds.Add(notification.Sender);
+        }
 
         var hubIdUserIdsMapper = new Dictionary<string, HashSet<string>>();
 

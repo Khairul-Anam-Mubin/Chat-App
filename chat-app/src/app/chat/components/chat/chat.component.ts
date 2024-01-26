@@ -140,7 +140,7 @@ export class ChatComponent implements OnInit{
 
   onClickSendMessage() {
     console.log(this.inputMessage);
-    var sendMessageCommand = new SendMessageCommand();
+    const sendMessageCommand = new SendMessageCommand();
     sendMessageCommand.chatModel.userId = this.currentUserId;
     sendMessageCommand.chatModel.sendTo = this.sendToUserId;
     sendMessageCommand.chatModel.message = this.inputMessage;
@@ -150,8 +150,7 @@ export class ChatComponent implements OnInit{
     this.commandService.execute(sendMessageCommand)
     .pipe(take(1))
     .subscribe(response => {
-      this.chats = [ChatProcessor.process(response.value, this.sharedSecret)].concat(this.chats);
-      this.setChatScrollStartFromBottom();
+      console.log('Message Received', response);
     });
   }
 

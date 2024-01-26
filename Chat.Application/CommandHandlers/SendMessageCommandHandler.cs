@@ -61,7 +61,8 @@ public class SendMessageCommandHandler :
             Notification = 
             new NotificationData(NotificationType.UserChat, chatModel, "ChatModel", chatModel.UserId)
             {
-                Id = chatModel.Id
+                Id = chatModel.Id,
+                IncludeSelf = true
             },
             Receiver = new NotificationReceiver
             {

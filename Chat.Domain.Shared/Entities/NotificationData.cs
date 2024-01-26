@@ -10,7 +10,7 @@ public class NotificationData
     public string ContentType { get; set; }
     public bool Polling { get; set; } 
     public string Sender { get; set; }
-
+    public bool IncludeSelf { get; set; }
     
     public NotificationData(NotificationType notificationType, object content, string contentType, string sender)
     {
@@ -20,5 +20,6 @@ public class NotificationData
         Content = content;
         ContentType = contentType;
         Sender = sender;
+        IncludeSelf = false;
     }
 }
