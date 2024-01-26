@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as signalR from '@microsoft/signalr';
 import { AuthService } from 'src/app/identity/services/auth.service';
-import { AlertService } from './alert-service';
-import { Subject } from 'rxjs';
 import { ChatSocketService } from 'src/app/chat/services/chat-socket-service';
 import { Configuration } from './configuration';
 import { HubConnection } from '@microsoft/signalr';
@@ -14,16 +12,32 @@ export class SignalRService {
 
   constructor(
     private authService: AuthService,
-    private chatSocketService : ChatSocketService) { }
+    private chatSocketService : ChatSocketService) { 
+
+    this.authService.authStateObservable().subscribe(state => {
+      if (state) {
+        if (state.action === 'LoggedIn') {
+          this.startConnection();
+        } else if (state.action === 'LoggedOut') {
+          this.stopConnection();
+        } else if (state.action === 'Refreshed') {
+          this.stopConnection();
+          this.startConnection();
+        }
+      }
+    });
+  }
 
   startConnection(): void {
-    const token = 'Bearer ' + this.authService.getAccessToken();
+    if (this.isConnected()) {
+      return;
+    }
+    
+    const token = this.authService.getAccessToken();
 
     console.log(token);
     
-    const options : any = {
-      accessTokenFactory : () => token
-    };
+    const options : any = { accessTokenFactory: () => token }
     
     const url = Configuration.notificationHub;
     
@@ -38,6 +52,19 @@ export class SignalRService {
       console.log("Received message with web socket", message);
       this.chatSocketService.chatSubject.next(message.content);
     });
+  }
+
+  stopConnection(): void {
+    if (this.isConnected()) {
+      this.hubConnection?.stop().catch((err: any) => console.log(err));
+    }
+  }
+
+  isConnected(): boolean {
+    if (this.hubConnection && this.hubConnection.state === signalR.HubConnectionState.Connected) {
+      return true;
+    }
+    return false;
   }
 
 }

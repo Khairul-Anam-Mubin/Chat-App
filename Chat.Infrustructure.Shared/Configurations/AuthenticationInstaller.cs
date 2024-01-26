@@ -40,11 +40,10 @@ public class AuthenticationInstaller : IServiceInstaller
                 {
                     var accessToken = context.Request.Query["access_token"];
                     var path = context.HttpContext.Request.Path;
-
+                    
                     if (string.IsNullOrEmpty(path) == false &&
                         string.IsNullOrEmpty(accessToken) == false)
                     {
-                        context.HttpContext.Request.Headers.Authorization = accessToken;
                         context.Token = accessToken;
                     }
 
@@ -83,10 +82,11 @@ public class AuthenticationInstaller : IServiceInstaller
 
         services.AddCors(options => options.AddPolicy("CorsPolicy", builder =>
         {
-            builder.AllowAnyHeader()
+            builder
                 .AllowAnyMethod()
-                .SetIsOriginAllowed(host => true)
-                .AllowCredentials();
+                .AllowAnyHeader()
+                .AllowCredentials()
+                .SetIsOriginAllowed((host) => true);
         }));
     }
 }

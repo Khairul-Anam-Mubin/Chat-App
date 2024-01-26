@@ -2,9 +2,9 @@ namespace Chat.Notification.Domain.Interfaces;
 
 public interface IHubConnectionService
 {
-    Task AddConnectionAsync(string connectionId, string userId);
+    Task AddConnectionToHubAsync(string connectionId, string userId);
 
-    Task RemoveConnectionAsync(string connectionId);
+    Task RemoveConnectionFromHubAsync(string connectionId);
 
     List<string> GetConnectionIds(string userId);
 

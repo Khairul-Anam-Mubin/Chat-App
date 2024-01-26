@@ -10,5 +10,11 @@ public class SendNotificationCommand : ICommand
     public NotificationData Notification { get; set; }
 
     [Required]
-    public NotificationReceiver Receiver { get; set; }
+    public List<string> ReceiverUserIds { get; set; }
+
+    public SendNotificationCommand(NotificationData notification, List<string> receiverUserIds)
+    {
+        Notification = notification;
+        ReceiverUserIds = receiverUserIds;
+    }
 }

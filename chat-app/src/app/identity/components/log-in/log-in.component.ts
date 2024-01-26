@@ -40,7 +40,7 @@ export class LogInComponent implements OnInit {
     this.commandService.execute(logInCommand).pipe(take(1)).subscribe(response => {
       console.log(response);
       if (response.status === ResponseStatus.success) {
-        this.authService.setTokenToStore(response.value);
+        this.authService.loggedIn(response.value);
         localStorage.setItem("email", this.getFormValue("email"));
         this.userService.getUserProfileByEmail(this.getFormValue("email"))
         .pipe(take(1))

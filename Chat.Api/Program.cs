@@ -32,14 +32,11 @@ if (app.Environment.IsDevelopment())
 
 app.UseCors("CorsPolicy");
 app.UseHttpsRedirection();
-app.UseAuthentication();
 app.UseRouting();
+app.UseAuthentication();
 app.UseAuthorization();
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapControllers();
-    endpoints.MapHub<NotificationHub>("/NotificationHub");
-});
+app.MapControllers();
+app.MapHub<NotificationHub>("/NotificationHub");
 
 #endregion
 

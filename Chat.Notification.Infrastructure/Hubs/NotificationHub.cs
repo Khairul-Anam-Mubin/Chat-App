@@ -4,10 +4,12 @@ using Chat.Framework.Extensions;
 using Chat.Framework.MessageBrokers;
 using Chat.Notification.Application;
 using Chat.Notification.Domain.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 
 namespace Chat.Notification.Infrastructure.Hubs;
 
+[Authorize]
 public class NotificationHub : Hub
 {
     private readonly IHubConnectionService _hubConnectionService;
@@ -26,16 +28,12 @@ public class NotificationHub : Hub
         await base.OnConnectedAsync();
 
         var connectionId = Context.ConnectionId;
-        var accessToken = Context?.GetHttpContext()?.Request?.Query["access_token"].ToString();
-        
-        var accessTokenFromHeader = Context?.GetHttpContext()?.GetAccessToken();
+        var accessToken = Context.GetHttpContext()?.GetAccessToken();
         
         if (string.IsNullOrEmpty(accessToken))
         {
             return;
         }
-
-        Console.WriteLine($"User Connected With Hub....Connection Id : {connectionId}");
 
         var userProfile = IdentityProvider.GetUserProfile(accessToken);
 
@@ -48,7 +46,7 @@ public class NotificationHub : Hub
 
         await Groups.AddToGroupAsync(connectionId, NotificationGroupProvider.GetGroupByUserId(userProfile.Id));
         
-        await _hubConnectionService.AddConnectionAsync(connectionId, userProfile.Id);
+        await _hubConnectionService.AddConnectionToHubAsync(connectionId, userProfile.Id);
 
         var connectedEvent = new UserConnectedToHubEvent
         {
@@ -65,25 +63,34 @@ public class NotificationHub : Hub
 
         var connectionId = Context.ConnectionId;
 
+        var accessToken = Context?.GetHttpContext()?.GetAccessToken();
+        
+        if (string.IsNullOrEmpty(accessToken))
+        {
+            return;
+        }
+        
+        var userProfile = IdentityProvider.GetUserProfile(accessToken);
+
+        if (string.IsNullOrEmpty(userProfile.Id))
+        {
+            return;
+        }
+
         Console.WriteLine($"User Disconnected to hub...Connection Id : {connectionId}");
 
-        var userId = _hubConnectionService.GetUserId(connectionId);
+        Console.WriteLine($"Disconnected...UserId : {userProfile.Id}\n");
 
-        Console.WriteLine($"Disconnected...UserId : {userId}\n");
+        await _hubConnectionService.RemoveConnectionFromHubAsync(connectionId);
 
-        await _hubConnectionService.RemoveConnectionAsync(connectionId);
+        await Groups.RemoveFromGroupAsync(connectionId, NotificationGroupProvider.GetGroupByUserId(userProfile.Id));
 
-        if (!string.IsNullOrEmpty(userId))
+        var disconnectedEvent = new UserDisconnectedToHubEvent
         {
-            await Groups.RemoveFromGroupAsync(connectionId, NotificationGroupProvider.GetGroupByUserId(userId));
+            UserId = userProfile.Id,
+            ConnectionId = connectionId
+        };
 
-            var disconnectedEvent = new UserDisconnectedToHubEvent
-            {
-                UserId = userId,
-                ConnectionId = connectionId
-            };
-
-            await _eventBus.PublishAsync(disconnectedEvent);
-        }
+        await _eventBus.PublishAsync(disconnectedEvent);
     }
 }

@@ -4,13 +4,22 @@ import { RefreshTokenCommand } from '../commands/refresh-token-command';
 import { Token } from '../models/token';
 import { LogOutCommand } from '../commands/logout-command';
 import {Guid} from "guid-typescript";
+import { Observable, Subject } from 'rxjs';
 @Injectable({
     providedIn: 'root',
 })
 export class AuthService {
+
+    private subject: Subject<any> = new Subject<any>();
+    
+    authStateObservable(): Observable<any> {
+        return this.subject.asObservable();
+    }
+
     canActivate() {
       return this.isLoggedIn();
     }
+
     isTokenExpired(token: string) {
         const expiry = (JSON.parse(atob(token.split('.')[1]))).exp;
         return (Math.floor((new Date).getTime() / 1000)) >= expiry;
@@ -34,6 +43,31 @@ export class AuthService {
     logOut() {
         localStorage.clear();
         sessionStorage.clear();
+
+        this.subject.next({
+            action: 'LoggedOut',
+            isLoggedIn: false
+        });
+    }
+
+    loggedIn(token: any) {
+        this.setTokenToStore(token);
+
+        this.subject.next({
+            action: 'LoggedIn',
+            token: token,
+            isLoggedIn: true
+        });
+    }
+
+    tokenRefreshed(token: any) {
+        this.setTokenToStore(token);
+
+        this.subject.next({
+            action: 'Refreshed',
+            token: token,
+            isLoggedIn: true
+        });
     }
 
     setTokenToStore(token: any) {
@@ -41,24 +75,16 @@ export class AuthService {
         localStorage.setItem("refreshToken", token.refreshToken);
     }
 
-    removeAccessToken() {
-        localStorage.removeItem("accessToken");
-    }
-
-    removeRefreshToken() {
-        localStorage.removeItem("refreshToken");
-    }
-
     getAppId() {
-        var appId = localStorage.getItem("appId");
+        const appId = localStorage.getItem("appId");
         if (appId) return appId;
         return this.setAppId();
     }
 
     getRefreshTokenCommand() {
-        var refreshTokenCommand = new RefreshTokenCommand();
+        const refreshTokenCommand = new RefreshTokenCommand();
         refreshTokenCommand.appId = this.getAppId();
-        var token = new Token();
+        const token = new Token();
         token.accessToken = this.getAccessToken();
         token.refreshToken = this.getRefreshToken();
         refreshTokenCommand.token = token;
@@ -66,7 +92,7 @@ export class AuthService {
     }
 
     getLogInCommand(email : string, password : string) {
-        var logInCommand = new LoginCommand();
+        const logInCommand = new LoginCommand();
         logInCommand.email = email;
         logInCommand.password = password;
         logInCommand.appId = this.getAppId();
@@ -74,13 +100,13 @@ export class AuthService {
     }
 
     getLogOutCommand() {
-        var logOutCommand = new LogOutCommand();
+        const logOutCommand = new LogOutCommand();
         logOutCommand.appId = this.getAppId();
         return logOutCommand;
     }
 
     private setAppId() {
-        var appId = Guid.create().toString();
+        const appId = Guid.create().toString();
         localStorage.setItem("appId", appId);
         return appId;
     }

@@ -1,19 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Chat.Domain.Shared.Commands;
 using Chat.Domain.Shared.Entities;
-using Chat.Framework.CQRS;
 
 namespace Chat.Notification.Application.Commands;
 
-public class SendNotificationToClientCommand : ICommand
+public class SendNotificationToClientCommand : SendNotificationCommand
 {
-    [Required]
-    public NotificationData? Notification { get; set; }
-
-    [Required]
-    public List<string> ReceiverIds { get; set; }
-
-    public SendNotificationToClientCommand()
-    {
-        ReceiverIds = new List<string>();
-    }
+    public SendNotificationToClientCommand(NotificationData notification, List<string> receiverUserIds) 
+        : base(notification, receiverUserIds) {}
 }

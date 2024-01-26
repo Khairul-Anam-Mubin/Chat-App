@@ -16,7 +16,7 @@ public class PublishNotificationToConnectedHubCommandHandler : ICommandHandler<P
 
     public async Task<IResult> HandleAsync(PublishNotificationToConnectedHubCommand request)
     {
-        var channel = request.HubInstanceId;
+        var channel = request.HubId;
 
         if (string.IsNullOrEmpty(channel))
         {
@@ -26,12 +26,8 @@ public class PublishNotificationToConnectedHubCommandHandler : ICommandHandler<P
 
         var pubSubMessage = new PubSubMessage
         {
-            Id = request.Notification!.Id,
-            Message = new SendNotificationToClientCommand
-            {
-                Notification = request.Notification,
-                ReceiverIds = request.ReceiverIds,
-            },
+            Id = request.Notification.Id,
+            Message = new SendNotificationToClientCommand(request.Notification, request.ReceiverUserIds),
             MessageType = MessageType.Notification
         };
 

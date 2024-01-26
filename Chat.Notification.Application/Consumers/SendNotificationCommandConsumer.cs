@@ -23,30 +23,24 @@ public class SendNotificationCommandConsumer : ACommandConsumer<SendNotification
 
     protected override async Task<IResult> OnConsumeAsync(SendNotificationCommand command, IMessageContext<SendNotificationCommand>? context = null)
     {
-        var receiver = command.Receiver;
-
         var notification = command.Notification;
-
-        if (notification.IncludeSelf && !string.IsNullOrEmpty(notification.Sender))
-        {
-            receiver.ReceiverIds.Add(notification.Sender);
-        }
+        var receiverUserIds = command.ReceiverUserIds;
 
         var hubIdUserIdsMapper = new Dictionary<string, HashSet<string>>();
 
-        foreach (var receiverId in receiver.ReceiverIds)
+        foreach (var receiverUserId in receiverUserIds)
         {
-            var hubIds = await _hubConnectionService.GetUserConnectedHubIdsAsync(receiverId);
+            var hubIds = await _hubConnectionService.GetUserConnectedHubIdsAsync(receiverUserId);
 
             foreach (var hubId in hubIds)
             {
                 if (hubIdUserIdsMapper.TryGetValue(hubId, out var userIds))
                 {
-                    userIds.Add(receiverId);
+                    userIds.Add(receiverUserId);
                 }
                 else
                 {
-                    hubIdUserIdsMapper.Add(hubId, new HashSet<string> { receiverId });
+                    hubIdUserIdsMapper.Add(hubId, new HashSet<string> { receiverUserId });
                 }
             }
         }
@@ -55,36 +49,29 @@ public class SendNotificationCommandConsumer : ACommandConsumer<SendNotification
         {
             if (_hubConnectionService.GetCurrentHubId() == hubId)
             {
-                await SendNotificationToClientAsync(userIds.ToList(), command.Notification!);
+                await SendNotificationToClientAsync(userIds.ToList(), notification);
             }
             else
             {
-                await PublishNotificationToConnectedHubAsync(hubId, userIds.ToList(), command.Notification!);
+                await PublishNotificationToConnectedHubAsync(hubId, userIds.ToList(), notification);
             }
         }
 
         return Result.Success();
     }
 
-    private async Task PublishNotificationToConnectedHubAsync(string hubId, List<string> receiverIds, NotificationData notification)
+    private async Task PublishNotificationToConnectedHubAsync(string hubId, List<string> receiverUserIds, NotificationData notification)
     {
-        var publishNotificationToConnectedHubCommand = new PublishNotificationToConnectedHubCommand
-        {
-            HubInstanceId = hubId,
-            Notification = notification,
-            ReceiverIds = receiverIds
-        };
+        var publishNotificationToConnectedHubCommand =
+            new PublishNotificationToConnectedHubCommand(hubId, notification, receiverUserIds);
 
         await _commandExecutor.ExecuteAsync(publishNotificationToConnectedHubCommand);
     }
 
-    private async Task SendNotificationToClientAsync(List<string> receiverIds, NotificationData notification)
+    private async Task SendNotificationToClientAsync(List<string> receiverUserIds, NotificationData notification)
     {
-        var sendNotificationToClientCommand = new SendNotificationToClientCommand
-        {
-            Notification = notification,
-            ReceiverIds = receiverIds
-        };
+        var sendNotificationToClientCommand = 
+            new SendNotificationToClientCommand(notification, receiverUserIds);
 
         await _commandExecutor.ExecuteAsync(sendNotificationToClientCommand);
     }

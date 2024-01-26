@@ -12,8 +12,7 @@ using Chat.Framework.Results;
 
 namespace Chat.Application.CommandHandlers;
 
-public class SendMessageCommandHandler : 
-    ICommandHandler<SendMessageCommand, ChatDto>
+public class SendMessageCommandHandler : ICommandHandler<SendMessageCommand, ChatDto>
 {
     private readonly IChatRepository _chatRepository;
     private readonly ICommandExecutor _commandExecutor;
@@ -56,20 +55,13 @@ public class SendMessageCommandHandler :
 
     private Task SendChatNotificationAsync(ChatModel chatModel)
     {
-        var sendNotificationCommand = new SendNotificationCommand()
+        var notificaton = new NotificationData(NotificationType.UserChat, chatModel, "ChatModel", chatModel.UserId)
         {
-            Notification = 
-            new NotificationData(NotificationType.UserChat, chatModel, "ChatModel", chatModel.UserId)
-            {
-                Id = chatModel.Id,
-                IncludeSelf = true
-            },
-            Receiver = new NotificationReceiver
-            {
-                ReceiverIds = new List<string> { chatModel.SendTo }
-            }
+            Id = chatModel.Id
         };
 
+        var sendNotificationCommand = new SendNotificationCommand(notificaton, new List<string> { chatModel.SendTo, chatModel.UserId });
+       
         return _commandBus.SendAsync(sendNotificationCommand);
     }
 

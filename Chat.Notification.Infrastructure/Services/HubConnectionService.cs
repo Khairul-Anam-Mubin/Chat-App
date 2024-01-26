@@ -9,7 +9,7 @@ namespace Chat.Notification.Infrastructure.Services;
 
 public class HubConnectionService : IHubConnectionService
 {
-    private readonly Dictionary<string, string> _connectionIdUserIdMapper;
+    private readonly ConcurrentDictionary<string, string> _connectionIdUserIdMapper;
     private readonly ConcurrentDictionary<string, HashSet<string>> _userIdConnectionIdsMapper;
     private readonly IRedisContext _redisContext;
     private readonly DatabaseInfo _databaseInfo;
@@ -20,11 +20,11 @@ public class HubConnectionService : IHubConnectionService
         _hubInstanceId = Guid.NewGuid().ToString();
         _redisContext = redisContext;
         _databaseInfo = configuration.GetConfig<DatabaseInfo>("RedisConfig")!;
-        _connectionIdUserIdMapper = new Dictionary<string, string>();
+        _connectionIdUserIdMapper = new ConcurrentDictionary<string, string>();
         _userIdConnectionIdsMapper = new ConcurrentDictionary<string, HashSet<string>>();
     }
 
-    public async Task AddConnectionAsync(string connectionId, string userId)
+    public async Task AddConnectionToHubAsync(string connectionId, string userId)
     {
         if (_userIdConnectionIdsMapper.TryGetValue(userId, out var connectionIds))
         {
@@ -54,7 +54,7 @@ public class HubConnectionService : IHubConnectionService
             string.Empty;
     }
 
-    public async Task RemoveConnectionAsync(string connectionId)
+    public async Task RemoveConnectionFromHubAsync(string connectionId)
     {
         var userId = GetUserId(connectionId);
         
@@ -76,7 +76,7 @@ public class HubConnectionService : IHubConnectionService
 
         if (_connectionIdUserIdMapper.ContainsKey(connectionId))
         {
-            _connectionIdUserIdMapper.Remove(connectionId);
+            _connectionIdUserIdMapper.Remove(connectionId, out var value);
         }
     }
 
@@ -95,11 +95,6 @@ public class HubConnectionService : IHubConnectionService
             hubIds.Add(hubId.ToString());
         }
         return hubIds;
-    }
-
-    private string GetPreparedKey(string key)
-    {
-        return $"HubSetData-{key}";
     }
 
     private string GetSetKey(string key)

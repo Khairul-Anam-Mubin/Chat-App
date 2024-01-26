@@ -63,7 +63,7 @@ export class AuthInterceptor implements HttpInterceptor {
             console.log(response);
             this.isRefreshing = false;
             if (response.status == ResponseStatus.success) {
-              this.authService.setTokenToStore(response.value);
+              this.authService.tokenRefreshed(response.value);
               this.refreshTokenSubject.next(this.authService.getAccessToken());
               return next.handle(this.addTokenToHeader(request, response.value.accessToken));
             }

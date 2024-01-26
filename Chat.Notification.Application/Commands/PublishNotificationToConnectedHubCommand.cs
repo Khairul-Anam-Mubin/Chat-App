@@ -1,22 +1,17 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Chat.Domain.Shared.Commands;
 using Chat.Domain.Shared.Entities;
-using Chat.Framework.CQRS;
 
 namespace Chat.Notification.Application.Commands;
 
-public class PublishNotificationToConnectedHubCommand : ICommand
+public class PublishNotificationToConnectedHubCommand : SendNotificationCommand
 {
     [Required]
-    public string HubInstanceId { get; set; } = string.Empty;
+    public string HubId { get; set; } = string.Empty;
 
-    [Required]
-    public NotificationData? Notification { get; set; }
-
-    [Required]
-    public List<string> ReceiverIds { get; set; }
-
-    public PublishNotificationToConnectedHubCommand()
+    public PublishNotificationToConnectedHubCommand(string hubId, NotificationData notification, List<string> receiverUserIds) 
+        : base(notification, receiverUserIds)
     {
-        ReceiverIds = new List<string>();
+        HubId = hubId;
     }
 }

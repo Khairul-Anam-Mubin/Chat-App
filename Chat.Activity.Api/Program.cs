@@ -31,13 +31,10 @@ if (app.Environment.IsDevelopment())
 
 app.UseCors("CorsPolicy");
 app.UseHttpsRedirection();
-app.UseAuthentication();
 app.UseRouting();
+app.UseAuthentication();
 app.UseAuthorization();
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapControllers();
-});
+app.MapControllers();
 
 #endregion
 
