@@ -58,13 +58,10 @@ public class SendMessageCommandHandler :
     {
         var sendNotificationCommand = new SendNotificationCommand()
         {
-            Notification = new NotificationData
+            Notification = 
+            new NotificationData(NotificationType.UserChat, chatModel, "ChatModel", chatModel.UserId)
             {
-                Id = chatModel.Id,
-                Content = chatModel,
-                ContentType = "ChatModel",
-                Sender = chatModel.UserId,
-                NotificationType = NotificationType.UserChat
+                Id = chatModel.Id
             },
             Receiver = new NotificationReceiver
             {

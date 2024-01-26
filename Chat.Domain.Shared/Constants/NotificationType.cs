@@ -3,5 +3,6 @@
 public enum NotificationType
 {
     Notification = 0,
-    UserChat = 1
+    UserChat = 1,
+    GroupChat = 2
 }

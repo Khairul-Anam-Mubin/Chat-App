@@ -44,15 +44,15 @@ public class SendNotificationCommandConsumer : ACommandConsumer<SendNotification
             }
         }
 
-        foreach (var kv in hubIdUserIdsMapper)
+        foreach (var (hubId, userIds) in hubIdUserIdsMapper)
         {
-            if (_hubConnectionService.GetCurrentHubId() == kv.Key)
+            if (_hubConnectionService.GetCurrentHubId() == hubId)
             {
-                await SendNotificationToClientAsync(kv.Value.ToList(), command.Notification!);
+                await SendNotificationToClientAsync(userIds.ToList(), command.Notification!);
             }
             else
             {
-                await PublishNotificationToConnectedHubAsync(kv.Key, kv.Value.ToList(), command.Notification!);
+                await PublishNotificationToConnectedHubAsync(hubId, userIds.ToList(), command.Notification!);
             }
         }
 

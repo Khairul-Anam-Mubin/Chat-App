@@ -49,7 +49,12 @@ public class FileController : ACommonController
 
         var fileDownloadResult = response.Items.FirstOrDefault();
 
-        return File(fileDownloadResult?.FileBytes, fileDownloadResult?.ContentType);
+        if (fileDownloadResult == null) 
+        {
+            return NotFound();
+        }
+
+        return File(fileDownloadResult.FileBytes, fileDownloadResult.ContentType);
     }
 
     [HttpPost]

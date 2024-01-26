@@ -1,6 +1,8 @@
 using Chat.Application.Shared.Providers;
 using Chat.Domain.Shared.Events;
+using Chat.Framework.Extensions;
 using Chat.Framework.MessageBrokers;
+using Chat.Notification.Application;
 using Chat.Notification.Domain.Interfaces;
 using Microsoft.AspNetCore.SignalR;
 
@@ -25,13 +27,15 @@ public class NotificationHub : Hub
 
         var connectionId = Context.ConnectionId;
         var accessToken = Context?.GetHttpContext()?.Request?.Query["access_token"].ToString();
-
-        Console.WriteLine($"User Connected With Hub....Connection Id : {connectionId}");
-
+        
+        var accessTokenFromHeader = Context?.GetHttpContext()?.GetAccessToken();
+        
         if (string.IsNullOrEmpty(accessToken))
         {
             return;
         }
+
+        Console.WriteLine($"User Connected With Hub....Connection Id : {connectionId}");
 
         var userProfile = IdentityProvider.GetUserProfile(accessToken);
 
@@ -41,6 +45,9 @@ public class NotificationHub : Hub
         }
 
         Console.WriteLine($"Connected UserId : {userProfile.Id}\n");
+
+        await Groups.AddToGroupAsync(connectionId, NotificationGroupProvider.GetGroupByUserId(userProfile.Id));
+        
         await _hubConnectionService.AddConnectionAsync(connectionId, userProfile.Id);
 
         var connectedEvent = new UserConnectedToHubEvent
@@ -68,6 +75,8 @@ public class NotificationHub : Hub
 
         if (!string.IsNullOrEmpty(userId))
         {
+            await Groups.RemoveFromGroupAsync(connectionId, NotificationGroupProvider.GetGroupByUserId(userId));
+
             var disconnectedEvent = new UserDisconnectedToHubEvent
             {
                 UserId = userId,

@@ -25,8 +25,10 @@ public class SendNotificationToClientCommandHandler : ICommandHandler<SendNotifi
 
         foreach (var receiverId in receiverIds)
         {
-            var connectionIds = _hubConnectionService.GetConnectionIds(receiverId);
-            await _notificationHubService.SendToConnectionsAsync(connectionIds, notification, notification!.NotificationType.ToString());
+            // var connectionIds = _hubConnectionService.GetConnectionIds(receiverId);
+            // await _notificationHubService.SendToConnectionsAsync(connectionIds, notification, NotificationClientMethod.NotificationReceived);
+            
+            await _notificationHubService.SendToGroupAsync(NotificationGroupProvider.GetGroupByUserId(receiverId), notification, NotificationClientMethod.NotificationReceived);
         }
 
         return Result.Success();
