@@ -4,7 +4,6 @@ using Chat.Application.Extensions;
 using Chat.Domain.Interfaces;
 using Chat.Domain.Models;
 using Chat.Domain.Shared.Commands;
-using Chat.Domain.Shared.Constants;
 using Chat.Domain.Shared.Entities;
 using Chat.Framework.CQRS;
 using Chat.Framework.MessageBrokers;

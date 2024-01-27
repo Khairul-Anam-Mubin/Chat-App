@@ -1,4 +1,4 @@
-﻿namespace Chat.Notification.Application;
+﻿namespace Chat.Notification.Application.Helpers;
 
 public class NotificationGroupProvider
 {

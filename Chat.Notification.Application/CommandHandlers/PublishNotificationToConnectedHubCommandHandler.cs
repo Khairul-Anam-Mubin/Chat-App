@@ -18,12 +18,6 @@ public class PublishNotificationToConnectedHubCommandHandler : ICommandHandler<P
     {
         var channel = request.HubId;
 
-        if (string.IsNullOrEmpty(channel))
-        {
-            Console.WriteLine($"Channel not found. So publish event to redis skipped\n");
-            return Result.Success();
-        }
-
         var pubSubMessage = new PubSubMessage
         {
             Id = request.Notification.Id,

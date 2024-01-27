@@ -1,8 +1,7 @@
 using Chat.Application.Shared.Providers;
 using Chat.Domain.Shared.Events;
-using Chat.Framework.Extensions;
 using Chat.Framework.MessageBrokers;
-using Chat.Notification.Application;
+using Chat.Notification.Application.Helpers;
 using Chat.Notification.Domain.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;

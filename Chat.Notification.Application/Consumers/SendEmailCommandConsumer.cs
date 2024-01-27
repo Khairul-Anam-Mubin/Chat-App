@@ -3,6 +3,7 @@ using Chat.Framework.CQRS;
 using Chat.Framework.EmailSenders;
 using Chat.Framework.MessageBrokers;
 using Chat.Framework.Results;
+using Chat.Notification.Application.Constants;
 using Microsoft.FeatureManagement;
 
 namespace Chat.Notification.Application.Consumers;

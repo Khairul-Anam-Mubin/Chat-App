@@ -1,6 +1,4 @@
-﻿using Chat.Domain.Shared.Constants;
-
-namespace Chat.Domain.Shared.Entities;
+﻿namespace Chat.Domain.Shared.Entities;
 
 public class NotificationData
 {
