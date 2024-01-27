@@ -28,14 +28,8 @@ public class NotificationHub : Hub
         await base.OnConnectedAsync();
 
         var connectionId = Context.ConnectionId;
-        var accessToken = Context.GetHttpContext()?.GetAccessToken();
-        
-        if (string.IsNullOrEmpty(accessToken))
-        {
-            return;
-        }
 
-        var userProfile = IdentityProvider.GetUserProfile(accessToken);
+        var userProfile = IdentityProvider.GetUserProfile(Context.User);
 
         if (string.IsNullOrEmpty(userProfile.Id))
         {
@@ -62,15 +56,8 @@ public class NotificationHub : Hub
         await base.OnDisconnectedAsync(exception);
 
         var connectionId = Context.ConnectionId;
-
-        var accessToken = Context?.GetHttpContext()?.GetAccessToken();
         
-        if (string.IsNullOrEmpty(accessToken))
-        {
-            return;
-        }
-        
-        var userProfile = IdentityProvider.GetUserProfile(accessToken);
+        var userProfile = IdentityProvider.GetUserProfile(Context.User);
 
         if (string.IsNullOrEmpty(userProfile.Id))
         {

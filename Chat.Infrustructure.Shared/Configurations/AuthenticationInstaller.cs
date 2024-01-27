@@ -19,7 +19,9 @@ public class AuthenticationInstaller : IServiceInstaller
         {
             options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
             options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-        }).AddJwtBearer(options =>
+        })
+        .AddJwtBearer(
+        options =>
         {
             options.TokenValidationParameters = new TokenValidationParameters
             {
@@ -51,7 +53,6 @@ public class AuthenticationInstaller : IServiceInstaller
                 }
             };
         });
-
         services.AddSwaggerGen(opt =>
         {
             opt.SwaggerDoc("v1", new OpenApiInfo { Title = "MyAPI", Version = "v1" });
