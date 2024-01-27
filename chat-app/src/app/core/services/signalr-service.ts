@@ -72,4 +72,8 @@ export class SignalRService {
     return this.notificationSubject.asObservable();
   }
 
+  getCurrentConnectionId() {
+    return this.hubConnection?.connectionId;
+  }
+
 }

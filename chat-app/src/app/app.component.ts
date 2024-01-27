@@ -5,6 +5,7 @@ import { take } from 'rxjs';
 import { Router } from '@angular/router';
 import { SignalRService } from './core/services/signalr-service';
 import { UserService } from './identity/services/user.service';
+import { ActivityService } from './activity/services/activity-service';
 
 @Component({
   selector: 'app-root',
@@ -22,6 +23,7 @@ export class AppComponent implements OnInit{
     private userService: UserService,
     private authService: AuthService,
     private signlaRService: SignalRService,
+    private activityService: ActivityService,
     private router: Router) {}
 
   ngOnInit(): void {
@@ -30,6 +32,7 @@ export class AppComponent implements OnInit{
     if (this.isLoggedIn) {
       this.signlaRService.startConnection();
     }
+    this.activityService.startRecurringTrackActivity();
     this.authService.authStateObservable().subscribe(state => {
       this.isLoggedIn = this.authService.isLoggedIn();
     });

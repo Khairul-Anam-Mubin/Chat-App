@@ -33,6 +33,6 @@ public class UpdateLastSeenCommandConsumer : ACommandConsumer<UpdateLastSeenComm
             return Result.Error("Save Last Seen Model Error");
         }
         
-        return Result.Success("Last seen time set successfully");
+        return Result.Success();
     }
 }

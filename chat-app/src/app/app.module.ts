@@ -27,6 +27,7 @@ import { SafeUrlPipe } from './core/pipes/safe-url-pipe';
 import { SecurtiyService } from './core/services/security-service';
 import { HomeComponent } from './identity/components/home/home.component';
 import { SocketService } from './core/services/socket-service';
+import { ActivityService } from './activity/services/activity-service';
 
 @NgModule({
   declarations: [
@@ -62,6 +63,7 @@ import { SocketService } from './core/services/socket-service';
     SocketService,
     FileService,
     SecurtiyService,
+    ActivityService,
     {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}
   ],
   bootstrap: [AppComponent]

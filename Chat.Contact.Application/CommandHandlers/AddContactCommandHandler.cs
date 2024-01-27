@@ -8,8 +8,7 @@ using Chat.Framework.Results;
 
 namespace Chat.Contact.Application.CommandHandlers;
 
-public class AddContactCommandHandler : 
-    ICommandHandler<AddContactCommand>
+public class AddContactCommandHandler : ICommandHandler<AddContactCommand>
 {
     private readonly IContactRepository _contactRepository;
     private readonly IMessageRequestClient _messageRequestClient;

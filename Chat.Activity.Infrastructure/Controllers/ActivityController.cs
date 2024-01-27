@@ -22,7 +22,7 @@ public class ActivityController : ACommonController
         return Ok(await GetQueryResponseAsync<LastSeenQuery, List<LastSeenDto>>(query));
     }
 
-    [HttpPost, Route("track")]
+    [HttpPost, Route("track-last-seen")]
     public async Task<IActionResult> UpdateLastSeenAsync(UpdateLastSeenCommand command)
     {
         return Ok(await GetCommandResponseAsync(command));

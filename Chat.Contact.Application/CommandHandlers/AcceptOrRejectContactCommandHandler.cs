@@ -17,8 +17,6 @@ public class AcceptOrRejectContactCommandHandler :
 
     public async Task<IResult> HandleAsync(AcceptOrRejectContactRequestCommand command)
     {
-        IResult result;
-
         var contact = await _contactRepository.GetByIdAsync(command.ContactId);
         
         if (contact is null)
@@ -29,23 +27,20 @@ public class AcceptOrRejectContactCommandHandler :
         if (command.IsAcceptRequest)
         {
             contact.IsPending = false;
+
             if (!await _contactRepository.SaveAsync(contact))
             {
                 return Result.Error("Contact save problem");
             }
 
-            result = Result.Success("Contact Accepted");
-        }
-        else
-        {
-            if (!await _contactRepository.DeleteByIdAsync(command.ContactId))
-            {
-                return Result.Error("Delete contact problem");
-            }
-            
-            result = Result.Success("Contact rejected");
+            return Result.Success("Contact Accepted");
         }
 
-        return result;
+        if (!await _contactRepository.DeleteByIdAsync(command.ContactId))
+        {
+            return Result.Error("Delete contact problem");
+        }
+
+        return Result.Success("Contact rejected");
     }
 }
