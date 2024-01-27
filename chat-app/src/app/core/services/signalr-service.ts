@@ -1,18 +1,19 @@
 import { Injectable } from '@angular/core';
 import * as signalR from '@microsoft/signalr';
 import { AuthService } from 'src/app/identity/services/auth.service';
-import { ChatSocketService } from 'src/app/chat/services/chat-socket-service';
 import { Configuration } from './configuration';
 import { HubConnection } from '@microsoft/signalr';
+import { NotificationData } from '../models/notification-data';
+import { Observable, Subject } from 'rxjs';
 
 @Injectable()
 export class SignalRService {
 
   private hubConnection: HubConnection | undefined;
+  private notificationSubject: Subject<NotificationData> = new Subject<NotificationData>();
 
   constructor(
-    private authService: AuthService,
-    private chatSocketService : ChatSocketService) { 
+    private authService: AuthService) { 
 
     this.authService.authStateObservable().subscribe(state => {
       if (state) {
@@ -48,9 +49,9 @@ export class SignalRService {
 
     this.hubConnection.start().catch((err: any) => console.log(err));
 
-    this.hubConnection.on("notificationReceived",  (message: any) => {
-      console.log("Received message with web socket", message);
-      this.chatSocketService.chatSubject.next(message.content);
+    this.hubConnection.on("notificationReceived",  (notification: NotificationData) => {
+      console.log("Received message with signalR", notification);
+      this.notificationSubject.next(notification);
     });
   }
 
@@ -65,6 +66,10 @@ export class SignalRService {
       return true;
     }
     return false;
+  }
+
+  notificationObservable(): Observable<NotificationData> {
+    return this.notificationSubject.asObservable();
   }
 
 }
