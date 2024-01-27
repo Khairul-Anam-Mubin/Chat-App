@@ -8,16 +8,21 @@ namespace Chat.Application.Shared.Helpers;
 public static class TokenHelper
 {
     public static string GenerateJwtToken(
-        string secretKey, 
         string issuer, 
-        string audience, 
+        string audience,
+        string secretKey,
         int expiredTimeInSec, 
-        List<Claim>? claims = null)
+        List<Claim>? claims = null,
+        string securityAlgorithm = "")
     {
+        if (string.IsNullOrEmpty(securityAlgorithm))
+        {
+            securityAlgorithm = SecurityAlgorithms.HmacSha256;
+        }
         try
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF32.GetBytes(secretKey));
-            var signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+            var signingCredentials = new SigningCredentials(securityKey, securityAlgorithm);
             var expiredTime = DateTime.Now.AddSeconds(expiredTimeInSec);
             var tokenOptions = new JwtSecurityToken(
                 issuer: issuer,
@@ -29,12 +34,10 @@ public static class TokenHelper
             var token = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
             return token;
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            Console.WriteLine(ex.Message);
             return string.Empty;
         }
-
     }
 
     public static string GenerateRefreshToken()
@@ -50,35 +53,23 @@ public static class TokenHelper
             var jwtSecurityToken = new JwtSecurityTokenHandler().ReadJwtToken(accessToken);
             return jwtSecurityToken.Claims.ToList();
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            Console.WriteLine(ex.Message);
             return new List<Claim>();
         }
     }
 
-    public static string GetClaimType(Claim claim)
-    {
-        return claim.Type;
-    }
-
-    public static string GetClaimValue(Claim claim)
-    {
-        return claim.Value;
-    }
-
-    public static bool IsTokenValid(string? accessToken, TokenValidationParameters validateParameters)
+    public static bool IsTokenValid(string? accessToken, TokenValidationParameters validationParameters)
     {
         try
         {
             accessToken = GetPreparedToken(accessToken);
-            new JwtSecurityTokenHandler().ValidateToken(accessToken, validateParameters, out var validatedToken);
-            Console.WriteLine($"Token Valid : {accessToken}\n");
+            new JwtSecurityTokenHandler()
+                .ValidateToken(accessToken, validationParameters, out var validatedToken);
             return true;
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            Console.WriteLine($"Token InValid : {accessToken}\n{ex.Message}\n");
             return false;
         }
     }
@@ -90,14 +81,10 @@ public static class TokenHelper
             accessToken = GetPreparedToken(accessToken);
             var securityToken = new JwtSecurityToken(accessToken);
             bool isExpired = securityToken.ValidTo < DateTime.UtcNow;
-            string message = "Not Expired";
-            if (isExpired) message = "Expired";
-            Console.WriteLine($"Token {message}. Token : {accessToken}\n");
             return isExpired;
         }
         catch (Exception)
         {
-            Console.WriteLine($"Token error : {accessToken}\n");
             return false;
         }
     }

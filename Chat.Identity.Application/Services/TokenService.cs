@@ -54,9 +54,9 @@ public class TokenService : ITokenService
     {
         var claims = GenerateClaims(userProfile, appId);
         var accessToken = TokenHelper.GenerateJwtToken(
-            _tokenConfig.SecretKey, 
             _tokenConfig.Issuer, 
-            _tokenConfig.Audience, 
+            _tokenConfig.Audience,
+            _tokenConfig.SecretKey,
             _tokenConfig.ExpirationTimeInSec, 
             claims);
         var refreshToken = TokenHelper.GenerateRefreshToken();
