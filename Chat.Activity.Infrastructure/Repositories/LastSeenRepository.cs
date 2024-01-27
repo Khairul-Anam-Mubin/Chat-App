@@ -27,4 +27,17 @@ public class LastSeenRepository : RepositoryBase<LastSeenModel>, ILastSeenReposi
         var userIdsFilter = filterBuilder.In(o => o.UserId, userIds);
         return await DbContext.GetManyAsync<LastSeenModel>(DatabaseInfo, userIdsFilter);
     }
+
+    public async Task<bool> TrackLastSeenAsync(string userId, bool isActive)
+    {
+        var userIdFilter = new FilterBuilder<LastSeenModel>().Eq(o => o.UserId, userId);
+        
+        var update =
+            new UpdateBuilder<LastSeenModel>()
+            .Set(o => o.IsActive, isActive)
+            .Set(o => o.LastSeenAt, DateTime.UtcNow)
+            .Build();
+        
+        return await DbContext.UpdateOneAsync<LastSeenModel>(DatabaseInfo, userIdFilter, update);
+    }
 }

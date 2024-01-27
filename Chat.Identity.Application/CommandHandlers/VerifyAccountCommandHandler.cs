@@ -1,4 +1,6 @@
-﻿using Chat.Framework.CQRS;
+﻿using Chat.Domain.Shared.Events;
+using Chat.Framework.CQRS;
+using Chat.Framework.MessageBrokers;
 using Chat.Framework.Results;
 using Chat.Identity.Application.Commands;
 using Chat.Identity.Domain.Interfaces;
@@ -8,10 +10,12 @@ namespace Chat.Identity.Application.CommandHandlers;
 public class VerifyAccountCommandHandler : ICommandHandler<VerifyAccountCommand>
 {
     private readonly IUserRepository _userRepository;
+    private readonly IEventBus _eventBus;
 
-    public VerifyAccountCommandHandler(IUserRepository userRepository)
+    public VerifyAccountCommandHandler(IUserRepository userRepository, IEventBus eventBus)
     {
         _userRepository = userRepository;
+        _eventBus = eventBus;
     }
 
     public async Task<IResult> HandleAsync(VerifyAccountCommand request)
@@ -20,7 +24,12 @@ public class VerifyAccountCommandHandler : ICommandHandler<VerifyAccountCommand>
         {
             return Result.Error("Account verification failed");
         }
-
+        
+        var verifiedUserAccountCreatedEvent = 
+            new VerifiedUserAccountCreatedEvent(request.UserId);
+        
+        await _eventBus.PublishAsync(verifiedUserAccountCreatedEvent);
+        
         return Result.Success("Account verified successfully.");
     }
 }

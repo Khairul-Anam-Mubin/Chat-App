@@ -18,8 +18,9 @@ export class ActivityService{
             return;
         }
         this.isRecurringTrackActivityRunning = true;
-        this.trackLastSeenActivity();
-        
+        if (this.userService.getCurrentUserId()) {
+            this.trackLastSeenActivity();
+        }
         interval(30 * 1000)
         .pipe(mergeMap(() => this.trackLastSeenActivity()))
         .subscribe(data => console.log(data));
@@ -29,7 +30,7 @@ export class ActivityService{
         console.log('Track Last Seen Activity');
         const command = new UpdateLastSeenCommand();
         command.isActive = true;
-        command.userId = this.userService.getCurrentUserId();
+        command.userId = this.userService.getCurrentUserId();;
         return this.commandService.execute(command);
     }
 

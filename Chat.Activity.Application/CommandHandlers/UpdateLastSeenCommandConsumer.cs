@@ -1,5 +1,4 @@
 using Chat.Activity.Domain.Interfaces.Repositories;
-using Chat.Activity.Domain.Models;
 using Chat.Domain.Shared.Commands;
 using Chat.Framework.CQRS;
 using Chat.Framework.MessageBrokers;
@@ -18,19 +17,9 @@ public class UpdateLastSeenCommandConsumer : ACommandConsumer<UpdateLastSeenComm
 
     protected override async Task<IResult> OnConsumeAsync(UpdateLastSeenCommand command, IMessageContext<UpdateLastSeenCommand>? context = null)
     {
-        var lastSeenModel = 
-            await _lastSeenRepository.GetLastSeenModelByUserIdAsync(command.UserId) ?? new LastSeenModel
+        if (!await _lastSeenRepository.TrackLastSeenAsync(command.UserId, command.IsActive))
         {
-            Id = Guid.NewGuid().ToString(),
-            UserId = command.UserId,
-            IsActive = command.IsActive
-        };
-
-        lastSeenModel.LastSeenAt = DateTime.UtcNow;
-
-        if (!await _lastSeenRepository.SaveAsync(lastSeenModel))
-        {
-            return Result.Error("Save Last Seen Model Error");
+            return Result.Error("Last Seen Model Update Failed");
         }
         
         return Result.Success();

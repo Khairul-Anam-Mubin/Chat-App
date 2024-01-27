@@ -8,4 +8,6 @@ public interface ILastSeenRepository : IRepository<LastSeenModel>
     Task<LastSeenModel?> GetLastSeenModelByUserIdAsync(string userId);
 
     Task<List<LastSeenModel>> GetLastSeenModelsByUserIdsAsync(List<string> userIds);
+
+    Task<bool> TrackLastSeenAsync(string userId, bool isActive);
 }

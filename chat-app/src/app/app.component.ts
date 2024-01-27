@@ -30,11 +30,14 @@ export class AppComponent implements OnInit{
     this.setCurrentOpenedNavItem();
     this.isLoggedIn = this.authService.isLoggedIn();
     if (this.isLoggedIn) {
+      this.activityService.startRecurringTrackActivity();
       this.signlaRService.startConnection();
     }
-    this.activityService.startRecurringTrackActivity();
     this.authService.authStateObservable().subscribe(state => {
-      this.isLoggedIn = this.authService.isLoggedIn();
+      this.isLoggedIn = state.isLoggedIn;
+      if (this.isLoggedIn) {
+        this.activityService.startRecurringTrackActivity();
+      }
     });
   }
 
