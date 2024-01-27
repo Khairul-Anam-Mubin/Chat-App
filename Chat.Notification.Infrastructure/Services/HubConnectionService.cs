@@ -9,19 +9,20 @@ namespace Chat.Notification.Infrastructure.Services;
 
 public class HubConnectionService : IHubConnectionService
 {
+    private readonly string _hubInstanceId;
     private readonly ConcurrentDictionary<string, string> _connectionIdUserIdMapper;
     private readonly ConcurrentDictionary<string, HashSet<string>> _userIdConnectionIdsMapper;
+
     private readonly IRedisContext _redisContext;
     private readonly DatabaseInfo _databaseInfo;
-    private readonly string _hubInstanceId;
 
     public HubConnectionService(IRedisContext redisContext, IConfiguration configuration)
     {
         _hubInstanceId = Guid.NewGuid().ToString();
-        _redisContext = redisContext;
-        _databaseInfo = configuration.GetConfig<DatabaseInfo>("RedisConfig")!;
         _connectionIdUserIdMapper = new ConcurrentDictionary<string, string>();
         _userIdConnectionIdsMapper = new ConcurrentDictionary<string, HashSet<string>>();
+        _redisContext = redisContext;
+        _databaseInfo = configuration.TryGetConfig<DatabaseInfo>("RedisConfig");
     }
 
     public async Task AddConnectionToHubAsync(string connectionId, string userId)
@@ -43,15 +44,13 @@ public class HubConnectionService : IHubConnectionService
     public List<string> GetConnectionIds(string userId)
     {
         return _userIdConnectionIdsMapper.TryGetValue(userId, out var connectionIds) ? 
-            connectionIds.ToList() : 
-            new List<string>();
+            connectionIds.ToList() : new List<string>();
     }
 
     public string GetUserId(string connectionId)
     {
         return _connectionIdUserIdMapper.TryGetValue(connectionId, out var value) ? 
-            value : 
-            string.Empty;
+            value : string.Empty;
     }
 
     public async Task RemoveConnectionFromHubAsync(string connectionId)
