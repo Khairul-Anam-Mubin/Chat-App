@@ -25,6 +25,12 @@ public class AddMemberToGroupCommandHandler : ICommandHandler<AddMemberToGroupCo
         var memberId = request.MemberId;
         var addedBy = request.AddedBy;
 
+        if (!await _groupRepository.IsGroupCreatorAsync(groupId, addedBy))
+        {
+            // Todo: will manage role later
+            return Result.Error("Can't add to group");
+        }
+
         if (await _groupMemberRepository.IsUserAlreadyExistsInGroupAsync(groupId, memberId))
         {
             return Result.Error("User Already Exists in the group");

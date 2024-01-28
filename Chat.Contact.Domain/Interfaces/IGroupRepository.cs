@@ -5,5 +5,5 @@ namespace Chat.Contact.Domain.Interfaces;
 
 public interface IGroupRepository : IRepository<GroupModel>
 {
-        
+    Task<bool> IsGroupCreatorAsync(string groupId, string userId);
 }
