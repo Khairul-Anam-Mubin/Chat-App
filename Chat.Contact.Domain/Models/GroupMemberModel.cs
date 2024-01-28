@@ -1,6 +1,8 @@
-﻿namespace Chat.Contact.Domain.Models;
+﻿using Chat.Framework.Database.ORM.Interfaces;
 
-public class GroupMemberModel
+namespace Chat.Contact.Domain.Models;
+
+public class GroupMemberModel : IEntity
 {
     public string Id { get; set; }
     public string GroupId { get; set; }

@@ -17,5 +17,7 @@ public class ContactInstaller : IServiceInstaller
 
         services.AddTransient<IIndexCreator, ContactModelIndexCreator>();
         services.AddSingleton<IContactRepository, ContactRepository>();
+        services.AddSingleton<IGroupRepository, GroupRepository>();
+        services.AddSingleton<IGroupMemberRepository, GroupMemberRepository>();
     }
 }

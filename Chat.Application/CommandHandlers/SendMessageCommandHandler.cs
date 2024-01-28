@@ -54,12 +54,12 @@ public class SendMessageCommandHandler : ICommandHandler<SendMessageCommand, Cha
 
     private Task SendChatNotificationAsync(ChatModel chatModel)
     {
-        var notificaton = new NotificationData("UserChat", chatModel, "ChatModel", chatModel.UserId)
+        var notification = new NotificationData("UserChat", chatModel, "ChatModel", chatModel.UserId)
         {
             Id = chatModel.Id
         };
 
-        var sendNotificationCommand = new SendNotificationCommand(notificaton, new List<string> { chatModel.SendTo, chatModel.UserId });
+        var sendNotificationCommand = new SendNotificationCommand(notification, new List<string> { chatModel.SendTo, chatModel.UserId });
        
         return _commandBus.SendAsync(sendNotificationCommand);
     }

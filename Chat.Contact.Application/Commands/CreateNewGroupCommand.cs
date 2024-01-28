@@ -1,15 +1,19 @@
-﻿using Chat.Framework.CQRS;
+﻿using System.ComponentModel.DataAnnotations;
+using Chat.Framework.CQRS;
 
 namespace Chat.Contact.Application.Commands;
 
 public class CreateNewGroupCommand : ICommand
 {
+    [Required]
     public string GroupName { get; set; }
-    public string CreatedBy { get; set; }
+    
+    [Required]
+    public string UserId { get; set; }
 
-    public CreateNewGroupCommand(string groupName, string createdBy)
+    public CreateNewGroupCommand(string groupName, string userId)
     {
         GroupName = groupName;
-        CreatedBy = createdBy;
+        UserId = userId;
     }
 }
