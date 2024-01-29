@@ -9,10 +9,12 @@ namespace Chat.Contact.Application.CommandHandlers;
 public class CreateNewGroupCommandHandler : ICommandHandler<CreateNewGroupCommand>
 {
     private readonly IGroupRepository _groupRepository;
+    private readonly ICommandExecutor _commandExecutor;
 
-    public CreateNewGroupCommandHandler(IGroupRepository groupRepository)
+    public CreateNewGroupCommandHandler(IGroupRepository groupRepository, ICommandExecutor commandExecutor)
     {
         _groupRepository = groupRepository;
+        _commandExecutor = commandExecutor;
     }
 
     public async Task<IResult> HandleAsync(CreateNewGroupCommand request)
@@ -23,6 +25,10 @@ public class CreateNewGroupCommandHandler : ICommandHandler<CreateNewGroupComman
         var groupModel = new GroupModel(groupName, userId);
 
         await _groupRepository.SaveAsync(groupModel);
+
+        var addMemberToGroupCommand = new AddMemberToGroupCommand(groupModel.Id, userId, userId);
+
+        await _commandExecutor.ExecuteAsync(addMemberToGroupCommand);
 
         var result = Result.Success("Group Created Successfully");
         

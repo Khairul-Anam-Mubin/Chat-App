@@ -45,7 +45,14 @@ public class SendMessageCommandHandler : ICommandHandler<SendMessageCommand, Cha
             return Result.Error<ChatDto>("ChatModel Creation Failed");
         }
 
-        await SendChatNotificationAsync(chatModel);
+        if (command.IsGroupMessage)
+        {
+            await SendForHandleGroupChatAsync(chatModel);
+        }
+        else
+        {
+            await SendChatNotificationAsync(chatModel);
+        }
 
         await UpdateLatestChatModelAsync(chatModel);
         
@@ -74,5 +81,13 @@ public class SendMessageCommandHandler : ICommandHandler<SendMessageCommand, Cha
         };
 
         return _commandExecutor.ExecuteAsync(updateLatestChatCommand);
+    }
+
+    private Task SendForHandleGroupChatAsync(ChatModel chatModel)
+    {
+        var handleGroupChatCommand = 
+            new HandleGroupChatCommand(chatModel.SendTo, chatModel.UserId, chatModel.Id);
+        
+        return _commandBus.SendAsync(handleGroupChatCommand);
     }
 }

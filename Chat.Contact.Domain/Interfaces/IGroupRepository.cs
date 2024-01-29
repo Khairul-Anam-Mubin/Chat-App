@@ -3,7 +3,4 @@ using Chat.Framework.Database.ORM.Interfaces;
 
 namespace Chat.Contact.Domain.Interfaces;
 
-public interface IGroupRepository : IRepository<GroupModel>
-{
-    Task<bool> IsGroupCreatorAsync(string groupId, string userId);
-}
+public interface IGroupRepository : IRepository<GroupModel> {}
