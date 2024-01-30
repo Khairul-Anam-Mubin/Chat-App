@@ -24,7 +24,7 @@ export class UserService{
     }
 
     getCurrentUserId() {
-        return this.getCurrentUserProfile().id;
+        return this.getCurrentUserProfile()?.id;
     }
 
     getCurrentOpenedChatUserId() {

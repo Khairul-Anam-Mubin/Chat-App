@@ -8,4 +8,6 @@ public interface IGroupMemberRepository : IRepository<GroupMemberModel>
     Task<bool> IsUserAlreadyExistsInGroupAsync(string groupId, string userId);
 
     Task<List<GroupMemberModel>> GetAllGroupMembers(string groupId);
+
+    Task<List<GroupMemberModel>> GetUserGroupsAsync(string userId);
 }

@@ -2,6 +2,7 @@ using Chat.Domain.Shared.Entities;
 using Chat.Framework.CQRS;
 using Chat.Framework.Results;
 using Chat.Identity.Application.Commands;
+using Chat.Identity.Application.Extensions;
 using Chat.Identity.Domain.Interfaces;
 
 namespace Chat.Identity.Application.CommandHandlers;
@@ -65,6 +66,6 @@ public class UpdateUserProfileCommandHandler :
             await _userRepository.SaveAsync(userModel);
         }
 
-        return Result.Success<UserProfile>("User Updated Successfully!!");
+        return Result.Success<UserProfile>(userModel.ToUserProfile());
     }
 }

@@ -52,10 +52,10 @@ export class UserProfileComponent implements OnInit{
       this.isCurrentUser = false;
       this.currentUserId = this.userService.getCurrentOpenedProfileUserId();
     }
-    this.getUserProfile(this.currentUserId);
+    this.getUserProfile(this.currentUserId, false);
   }
 
-  getUserProfile(userId : any) {
+  getUserProfile(userId : any, saveToStore: boolean) {
     this.userService.getUserProfileById(userId)
     .pipe(take(1))
     .subscribe(response => {
@@ -73,6 +73,9 @@ export class UserProfileComponent implements OnInit{
             this.userBlobImageUrl = response;
           });
         });
+      }
+      if (saveToStore) {
+        this.userService.setUserProfileToStore(this.userProfile);
       }
     });
   }
@@ -121,9 +124,9 @@ export class UserProfileComponent implements OnInit{
     this.commandService.execute(updateUserProfileCommand)
     .pipe(take(1))
     .subscribe(response => {
-      this.userProfile = response.value;
-      this.userService.setUserProfileToStore(this.userProfile);
-      this.getUserProfile(this.userProfile.id);
+      if (response && response.status === ResponseStatus.success) {
+        this.getUserProfile(this.userProfile.id, true);
+      }
     });
   }
 

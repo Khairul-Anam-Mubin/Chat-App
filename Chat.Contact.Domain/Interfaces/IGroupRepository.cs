@@ -3,4 +3,7 @@ using Chat.Framework.Database.ORM.Interfaces;
 
 namespace Chat.Contact.Domain.Interfaces;
 
-public interface IGroupRepository : IRepository<GroupModel> {}
+public interface IGroupRepository : IRepository<GroupModel> 
+{
+    Task<List<GroupModel>> GetGroupsByGroupIds(List<string> groupIds);
+}

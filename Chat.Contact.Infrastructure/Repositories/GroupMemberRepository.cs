@@ -19,6 +19,12 @@ public class GroupMemberRepository : RepositoryBase<GroupMemberModel>, IGroupMem
         return await DbContext.GetManyAsync<GroupMemberModel>(DatabaseInfo, groupIdFilter);
     }
 
+    public async Task<List<GroupMemberModel>> GetUserGroupsAsync(string userId)
+    {
+        var filter = new FilterBuilder<GroupMemberModel>().Eq(o => o.MemberId, userId);
+        return await DbContext.GetManyAsync<GroupMemberModel>(DatabaseInfo, filter);
+    }
+
     public async Task<bool> IsUserAlreadyExistsInGroupAsync(string groupId, string userId)
     {
         var filterBuilder = new FilterBuilder<GroupMemberModel>();
