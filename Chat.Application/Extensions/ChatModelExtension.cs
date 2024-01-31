@@ -14,7 +14,8 @@ public static class ChatModelExtension
             SendTo = chatModel.SendTo,
             Message = chatModel.Message,
             SentAt = chatModel.SentAt,
-            Status = chatModel.Status
+            Status = chatModel.Status,
+            IsGroupMessage = chatModel.IsGroupMessage
         };
     }
 
@@ -26,7 +27,8 @@ public static class ChatModelExtension
             UserId = chatModel.UserId,
             Message = chatModel.Message,
             Status = chatModel.Status,
-            SentAt = chatModel.SentAt
+            SentAt = chatModel.SentAt,
+            IsGroupMessage = chatModel.IsGroupMessage
         };
     }
 }

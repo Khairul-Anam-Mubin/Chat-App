@@ -1,12 +1,14 @@
 ﻿using Chat.Framework.CQRS;
+using System.ComponentModel.DataAnnotations;
 
 namespace Chat.Contact.Application.Queries
 {
-    public class GroupQuery : IQuery
+    public class UserGroupsQuery : IQuery
     {
+        [Required]
         public string UserId { get; set; }
 
-        public GroupQuery(string userId)
+        public UserGroupsQuery(string userId)
         {
             UserId = userId;
         }

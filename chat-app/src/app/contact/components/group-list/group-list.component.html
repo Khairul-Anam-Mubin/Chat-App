@@ -1,0 +1,18 @@
+<div class="container">
+    <ul class="nav nav-tabs">
+        <li *ngFor="let tab of tabs; let idx = index;" class="nav-item">
+          <button (click)="onClickTab(idx)" [class]="tab.isActive? 'nav-link active' : 'nav-link'" >{{tab.title}}</button>
+        </li>
+    </ul>
+    <div class="list-group">
+        <div *ngIf="activeTabIndex === 0">
+            <li *ngFor="let item of items; let id = index;" class="list-group-item d-flex justify-content-between align-items-center">
+                <button (click)="onClickedItem(item)" class="list-group-item list-group-item-action" aria-current="true">
+                    <div class="d-flex w-100 justify-content-between">
+                      <h3 class="mb-1">{{item.name}}</h3>
+                    </div>
+                </button>
+            </li>
+        </div>
+    </div>
+</div>

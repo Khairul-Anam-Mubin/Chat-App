@@ -45,7 +45,7 @@ public class SendMessageCommandHandler : ICommandHandler<SendMessageCommand, Cha
             return Result.Error<ChatDto>("ChatModel Creation Failed");
         }
 
-        if (command.IsGroupMessage)
+        if (chatModel.IsGroupMessage)
         {
             await SendForHandleGroupChatAsync(chatModel);
         }

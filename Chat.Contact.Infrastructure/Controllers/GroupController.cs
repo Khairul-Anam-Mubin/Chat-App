@@ -28,9 +28,15 @@ public class GroupController : ACommonController
         return Ok(await GetCommandResponseAsync(command));
     }
 
-    [HttpPost, Route("get")]
-    public async Task<IActionResult> GroupQueryAsync(GroupQuery query)
+    [HttpPost, Route("user-groups")]
+    public async Task<IActionResult> UserGroupsQueryAsync(UserGroupsQuery query)
     {
-        return Ok(await GetQueryResponseAsync<GroupQuery, List<GroupModel>>(query));
+        return Ok(await GetQueryResponseAsync<UserGroupsQuery, List<GroupModel>>(query));
+    }
+
+    [HttpPost, Route("groups")]
+    public async Task<IActionResult> GroupsQueryAsync(GroupsQuery query)
+    {
+        return Ok(await GetQueryResponseAsync<GroupsQuery, List<GroupModel>>(query));
     }
 }

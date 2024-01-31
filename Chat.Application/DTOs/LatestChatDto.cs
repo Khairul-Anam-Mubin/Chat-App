@@ -9,4 +9,5 @@ public class LatestChatDto
     public string Status { get; set; } = string.Empty;
     public string DurationDisplayTime { get; set; } = string.Empty;
     public int Occurrence { get; set; }
+    public bool IsGroupMessage { get; set; }
 }

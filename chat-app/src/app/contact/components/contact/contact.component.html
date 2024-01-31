@@ -1,37 +1,28 @@
-<form [formGroup]="addContactFormControl" (ngSubmit)="onSubmitAddContact()" class="container w-50 mt-3">
-    <div class="mb-3">
-      <label class="form-label">Contact Email</label>
-      <input formControlName="email" type="email" class="form-control">
+<div class="row mt-3" style="height: auto;">
+    <div class="col" style="max-width: 40%;">
+        <button (click)="onClickContact()" class="mx-3 btn btn-dark">
+            Contact
+        </button>
+        <button (click)="onClickGroup()" class="btn btn-dark">
+            Group
+        </button>
+        <form *ngIf="isContactSelected" [formGroup]="addContactFormControl" (ngSubmit)="onSubmitAddContact()" class="container mt-3">
+            <div class="mb-3">
+              <label class="form-label">Contact Email</label>
+              <input formControlName="email" type="email" class="form-control">
+            </div>
+            <button [disabled]="!addContactFormControl.valid" type="submit" class="mb-3 btn btn-dark">Add Contact</button>
+        </form>
+        <form *ngIf="isGroupSelected" [formGroup]="createGroupFormControl" (ngSubmit)="onSubmitCreateGroup()" class="container mt-3">
+            <div class="mb-3">
+              <label class="form-label">Group Name</label>
+              <input formControlName="groupName" type="text" class="form-control">
+            </div>
+            <button [disabled]="!createGroupFormControl.valid" type="submit" class="mb-3 btn btn-dark">Create Group</button>
+        </form>
     </div>
-    <button [disabled]="!addContactFormControl.valid" type="submit" class="mb-3 btn btn-dark">Add Contact</button>
-</form>
-
-<div class="container w-50 mt-3">
-    <ul class="nav nav-tabs">
-        <li *ngFor="let contactTab of contactTabs; let idx = index;" class="nav-item">
-          <button (click)="onClickTab(idx)" [class]="contactTab.isActive? 'nav-link active' : 'nav-link'" >{{contactTab.text}}</button>
-        </li>
-    </ul>
-    <div class="list-group">
-        <div *ngIf="activeTabIndex === 0">
-            <li *ngFor="let item of items; let id = index;" class="list-group-item d-flex justify-content-between align-items-center">
-                <button (click)="onClickedContact(item)" class="list-group-item list-group-item-action" aria-current="true">
-                    <div class="d-flex w-100 justify-content-between">
-                      <h3 class="mb-1">{{item.email}}</h3>
-                      <div [class]="item.isActive? 'active-now' : 'active-now-idle'">
-                        <i class="fas fa-circle"></i>
-                        <span class="active-now-title">{{item.status}}</span>
-                      </div>
-                      <!-- <small>{{item.status}}</small> -->
-                    </div>
-                </button>
-            </li>
-        </div>
-        <div *ngIf="activeTabIndex !== 0">
-            <li *ngFor="let item of items; let id = index;" class="list-group-item d-flex justify-content-between align-items-center">
-                {{item.email}}
-                <button class="btn btn-dark" (click)="onClickContact(id)">{{activeTabIndex === 2? 'Cancel Pending' : 'Accept Request'}}</button>
-            </li>
-        </div>
+    <div class="col" style="width: auto;">
+        <app-contact-list *ngIf="isContactSelected"></app-contact-list>
+        <app-group-list *ngIf="isGroupSelected"></app-group-list>
     </div>
 </div>

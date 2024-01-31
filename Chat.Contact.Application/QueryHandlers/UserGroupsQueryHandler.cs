@@ -6,18 +6,18 @@ using Chat.Framework.Results;
 
 namespace Chat.Contact.Application.QueryHandlers;
 
-public class GroupQueryHandler : IQueryHandler<GroupQuery, List<GroupModel>>
+public class UserGroupsQueryHandler : IQueryHandler<UserGroupsQuery, List<GroupModel>>
 {
     private readonly IGroupMemberRepository _groupMemeberRepository;
     private readonly IGroupRepository _groupRepository;
 
-    public GroupQueryHandler(IGroupMemberRepository groupMemeberRepository, IGroupRepository groupRepository)
+    public UserGroupsQueryHandler(IGroupMemberRepository groupMemeberRepository, IGroupRepository groupRepository)
     {
         _groupRepository = groupRepository;
         _groupMemeberRepository = groupMemeberRepository;
     }
 
-    public async Task<IResult<List<GroupModel>>> HandleAsync(GroupQuery request)
+    public async Task<IResult<List<GroupModel>>> HandleAsync(UserGroupsQuery request)
     {
         var groupMemberModels = await _groupMemeberRepository.GetUserGroupsAsync(request.UserId);
 

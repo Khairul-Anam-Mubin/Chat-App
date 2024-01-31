@@ -10,4 +10,5 @@ public class ChatModel : IEntity
     public string Message {get; set;} = string.Empty;
     public DateTime SentAt {get; set;}
     public string Status {get; set;} = string.Empty;
+    public bool IsGroupMessage { get; set; }
 }
