@@ -1,11 +1,10 @@
-using Chat.Application.Shared.Providers;
 using Chat.FileStore.Application.Commands;
 using Chat.FileStore.Domain.Interfaces;
 using Chat.FileStore.Domain.Models;
 using Chat.Framework.CQRS;
 using Chat.Framework.Extensions;
+using Chat.Framework.Identity;
 using Chat.Framework.Results;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 
 namespace Chat.FileStore.Application.CommandHandlers;
@@ -13,17 +12,17 @@ namespace Chat.FileStore.Application.CommandHandlers;
 public class UploadFileCommandHandler : ICommandHandler<UploadFileCommand, string>
 {
     private readonly IFileRepository _fileRepository;
-    private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IConfiguration _configuration;
-
+    private readonly IScopeIdentity _scopeIdentity;
+    
     public UploadFileCommandHandler(
         IFileRepository fileRepository, 
-        IHttpContextAccessor httpContextAccessor, 
-        IConfiguration configuration)
+        IConfiguration configuration,
+        IScopeIdentity scopeIdentity)
     {
         _fileRepository = fileRepository;
-        _httpContextAccessor = httpContextAccessor;
         _configuration = configuration;
+        _scopeIdentity = scopeIdentity;
     }
 
     public async Task<IResult<string>> HandleAsync(UploadFileCommand command)
@@ -46,9 +45,6 @@ public class UploadFileCommandHandler : ICommandHandler<UploadFileCommand, strin
             await file.CopyToAsync(stream);
         }
 
-        var requestContextFromAccessor = _httpContextAccessor.HttpContext;
-        var currentUser = IdentityProvider.GetUserProfile(requestContextFromAccessor?.GetAccessToken());
-        
         var fileModel = new FileModel
         {
             Id = fileId,
@@ -56,7 +52,7 @@ public class UploadFileCommandHandler : ICommandHandler<UploadFileCommand, strin
             Url = fullPath,
             UploadedAt = DateTime.UtcNow,
             Name = fileName,
-            UserId = currentUser?.Id ?? ""
+            UserId = _scopeIdentity.GetUserId()!
         };
         
         if (!await _fileRepository.SaveAsync(fileModel))

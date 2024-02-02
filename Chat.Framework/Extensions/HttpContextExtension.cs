@@ -6,6 +6,14 @@ public static class HttpContextExtension
 {
     public static string? GetAccessToken(this HttpContext httpContext)
     {
-        return httpContext?.Request?.Headers.Authorization;
+        var headerToken = httpContext?.Request?.Headers.Authorization;
+        var queryToken = httpContext?.Request?.Query["access_token"];
+        
+        if (!string.IsNullOrEmpty(headerToken))
+        {
+            return headerToken;
+        }
+        
+        return queryToken;
     }
 }

@@ -1,4 +1,5 @@
 using Chat.Framework.Extensions;
+using Chat.Framework.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,6 +35,7 @@ app.UseHttpsRedirection();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseMiddleware<IdentityMiddleware>();
 app.MapControllers();
 
 #endregion

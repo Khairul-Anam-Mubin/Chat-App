@@ -1,6 +1,6 @@
-﻿using Chat.Application.Shared.Helpers;
-using Chat.Domain.Shared.Constants;
+﻿using Chat.Domain.Shared.Constants;
 using Chat.Domain.Shared.Entities;
+using Chat.Framework.Identity;
 using System.Security.Claims;
 
 namespace Chat.Application.Shared.Providers;

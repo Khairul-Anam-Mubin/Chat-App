@@ -3,15 +3,15 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Chat.Application.Shared.Helpers;
+namespace Chat.Framework.Identity;
 
 public static class TokenHelper
 {
     public static string GenerateJwtToken(
-        string issuer, 
+        string issuer,
         string audience,
         string secretKey,
-        int expiredTimeInSec, 
+        int expiredTimeInSec,
         List<Claim>? claims = null,
         string securityAlgorithm = "")
     {

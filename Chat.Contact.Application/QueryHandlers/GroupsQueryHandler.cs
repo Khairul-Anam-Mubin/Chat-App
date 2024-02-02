@@ -3,11 +3,6 @@ using Chat.Contact.Domain.Interfaces;
 using Chat.Contact.Domain.Models;
 using Chat.Framework.CQRS;
 using Chat.Framework.Results;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Chat.Contact.Application.QueryHandlers;
 

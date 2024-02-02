@@ -1,9 +1,9 @@
 using System.Security.Claims;
 using System.Text;
-using Chat.Application.Shared.Helpers;
 using Chat.Domain.Shared.Constants;
 using Chat.Domain.Shared.Entities;
 using Chat.Framework.Extensions;
+using Chat.Framework.Identity;
 using Chat.Identity.Application.Extensions;
 using Chat.Identity.Domain.Interfaces;
 using Chat.Identity.Domain.Models;

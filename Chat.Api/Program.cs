@@ -1,4 +1,5 @@
 using Chat.Framework.Extensions;
+using Chat.Framework.Identity;
 using Chat.Notification.Infrastructure.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -35,6 +36,7 @@ app.UseHttpsRedirection();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseMiddleware<IdentityMiddleware>();
 app.MapControllers();
 app.MapHub<NotificationHub>("/NotificationHub");
 

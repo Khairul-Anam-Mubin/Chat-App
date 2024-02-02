@@ -1,5 +1,5 @@
-using Chat.Application.Shared.Providers;
 using Chat.Domain.Shared.Events;
+using Chat.Framework.Identity;
 using Chat.Framework.MessageBrokers;
 using Chat.Notification.Application.Helpers;
 using Chat.Notification.Domain.Interfaces;
@@ -13,13 +13,16 @@ public class NotificationHub : Hub
 {
     private readonly IHubConnectionService _hubConnectionService;
     private readonly IEventBus _eventBus;
+    private readonly IScopeIdentity _scopedIdentity;
 
     public NotificationHub(
         IHubConnectionService hubConnectionService,
-        IEventBus eventBus)
+        IEventBus eventBus,
+        IScopeIdentity scopeIdentity)
     {
         _hubConnectionService = hubConnectionService;
         _eventBus = eventBus;
+        _scopedIdentity = scopeIdentity;
     }
 
     public override async Task OnConnectedAsync()
@@ -28,9 +31,9 @@ public class NotificationHub : Hub
 
         var connectionId = Context.ConnectionId;
 
-        var userProfile = IdentityProvider.GetUserProfile(Context.User);
+        var userProfile = _scopedIdentity.GetUser();
 
-        if (string.IsNullOrEmpty(userProfile.Id))
+        if (userProfile is null || string.IsNullOrEmpty(userProfile.Id))
         {
             return;
         }
@@ -55,10 +58,10 @@ public class NotificationHub : Hub
         await base.OnDisconnectedAsync(exception);
 
         var connectionId = Context.ConnectionId;
-        
-        var userProfile = IdentityProvider.GetUserProfile(Context.User);
 
-        if (string.IsNullOrEmpty(userProfile.Id))
+        var userProfile = _scopedIdentity.GetUser();
+
+        if (userProfile is null || string.IsNullOrEmpty(userProfile.Id))
         {
             return;
         }

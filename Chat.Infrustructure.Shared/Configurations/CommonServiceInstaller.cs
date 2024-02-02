@@ -4,6 +4,7 @@ using Chat.Framework.CQRS;
 using Chat.Framework.Database;
 using Chat.Framework.Database.ORM;
 using Chat.Framework.Extensions;
+using Chat.Framework.Identity;
 using Chat.Framework.Loggers;
 using Chat.Framework.Mediators;
 using Chat.Framework.ServiceInstaller;
@@ -28,6 +29,8 @@ public class CommonServiceInstaller : IServiceInstaller
         });
 
         services.AddLogging(configuration);
+
+        services.AddIdentityScope();
 
         services.AddFeatureManagement(configuration.GetSection("FeatureFlags"));
 
