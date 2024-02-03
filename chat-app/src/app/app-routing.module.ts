@@ -8,6 +8,7 @@ import { AuthService } from "./identity/services/auth.service";
 import { ChatComponent } from './chat/components/chat/chat.component';
 import { ChatListComponent } from './chat/components/chat-list/chat-list.component';
 import { HomeComponent } from './identity/components/home/home.component';
+import { GroupComponent } from './contact/components/group/group.component';
 
 const routes: Routes = [
   {
@@ -33,6 +34,16 @@ const routes: Routes = [
   {
     path: "chat/:type",
     component: ChatComponent,
+    canActivate:[() => inject(AuthService).canActivate()]
+  },
+  {
+    path: "group/chat/:type",
+    component: ChatComponent,
+    canActivate:[() => inject(AuthService).canActivate()]
+  },
+  {
+    path: "group/:type",
+    component: GroupComponent,
     canActivate:[() => inject(AuthService).canActivate()]
   },
   {

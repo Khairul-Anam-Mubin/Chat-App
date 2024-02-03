@@ -10,7 +10,7 @@ export class ChatProcessor{
         } else {
           chat.sentAt = chatTime.toLocaleDateString();
         }
-        chat.message = encryptionDecryptionHelper.decrypt(chat.message, sharedSecret);
+        // chat.message = encryptionDecryptionHelper.decrypt(chat.message, sharedSecret);
         return chat;
     }
 }

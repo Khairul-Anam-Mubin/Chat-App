@@ -2,6 +2,7 @@ using Chat.Application.DTOs;
 using Chat.Application.Extensions;
 using Chat.Application.Queries;
 using Chat.Domain.Interfaces;
+using Chat.Domain.Models;
 using Chat.Framework.CQRS;
 using Chat.Framework.Pagination;
 using Chat.Framework.Results;
@@ -21,8 +22,17 @@ public class ChatQueryHandler : IQueryHandler<ChatQuery, IPaginationResponse<Cha
     {
         var response = query.CreateResponse();
 
-        var chatModels = 
-            await _chatRepository.GetChatModelsAsync(query.UserId, query.SendTo, query.Offset, query.Limit);
+        List<ChatModel> chatModels;
+
+        if (query.IsGroupMessage)
+        {
+            chatModels = await _chatRepository.GetGroupChatModelsAsync(query.SendTo, query.Offset, query.Limit);
+        }
+        else
+        {
+            chatModels =
+                await _chatRepository.GetChatModelsAsync(query.UserId, query.SendTo, query.Offset, query.Limit);
+        }
         
         foreach (var chatModel in chatModels)
         {

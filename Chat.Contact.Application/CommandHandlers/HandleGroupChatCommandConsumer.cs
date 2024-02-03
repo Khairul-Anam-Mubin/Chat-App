@@ -23,14 +23,20 @@ public class HandleGroupChatCommandConsumer : ACommandConsumer<HandleGroupChatCo
         var groupMembers = 
             await _groupMemberRepository.GetAllGroupMembers(command.GroupId);
 
-        var groupMemberIds = groupMembers.Select(x => x.Id).ToList();
+        var groupMemberIds = groupMembers.Select(x => x.MemberId).ToList();
 
-        var notification = new NotificationData("GroupChat", command.ChatId , "ChatId", command.SenderId);
+        var notification = 
+            new NotificationData(GetGroupChatTopic(command.GroupId), command.ChatId , "ChatId", command.SenderId);
 
         var sendNotificationCommand = new SendNotificationCommand(notification, groupMemberIds);
 
         await _commandBus.SendAsync(sendNotificationCommand);
 
         return Result.Success();
+    }
+
+    private string GetGroupChatTopic(string groupId)
+    {
+        return "GroupChat-" + groupId;
     }
 }

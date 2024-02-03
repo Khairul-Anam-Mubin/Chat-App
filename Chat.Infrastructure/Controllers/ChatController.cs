@@ -41,5 +41,10 @@ public class ChatController : ACommonController
     {
         return Ok(await GetQueryResponseAsync<ChatQuery, IPaginationResponse<ChatDto>>(query));
     }
-        
+
+    [HttpPost, Route("chats-by-ids")]
+    public async Task<IActionResult> GetChatsByIds(ChatByIdsQuery query)
+    {
+        return Ok(await GetQueryResponseAsync<ChatByIdsQuery, List<ChatDto>>(query));
+    }
 }

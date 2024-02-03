@@ -13,6 +13,7 @@ import { AcceptOrRejectContactRequestCommand } from '../../commands/accept-or-re
 import { LastSeenQuery } from 'src/app/activity/queries/last-seen-query';
 import { UserGroupsQuery } from '../../queries/user-groups-query';
 import { ChatService } from 'src/app/chat/services/chat-service';
+import { GroupService } from '../../services/group-service';
 
 @Component({
   selector: 'app-group-list',
@@ -31,6 +32,7 @@ export class GroupListComponent implements OnInit {
     private commandService: CommandService,
     private queryService : QueryService,
     private chatService: ChatService,
+    private groupService: GroupService,
     private router: Router) {}
 
   ngOnInit(): void {
@@ -68,10 +70,7 @@ export class GroupListComponent implements OnInit {
 
   onClickedItem(item : any) {
     console.log("clicked", item);
-    this.chatService.openChat({
-      id: item.id,
-      type: 'GroupChat'
-    });
+    this.groupService.openGroup(item);
   }
 
   getGroupQuery() {

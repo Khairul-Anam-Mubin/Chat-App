@@ -8,6 +8,7 @@ import { UpdateChatsStatusCommand } from '../../commands/update-chats-status-com
 import { CommandService } from 'src/app/core/services/command-service';
 import { SecurtiyService } from 'src/app/core/services/security-service';
 import { ChatProcessor } from '../../helpers/chat-processor';
+import { GroupService } from 'src/app/contact/services/group-service';
 
 @Component({
   selector: 'app-chat-list',
@@ -19,13 +20,15 @@ export class ChatListComponent implements OnInit{
   items : any;
   chatList : any;
   chatUsers : any;
+  groups: any[] = [];
 
   constructor(
     private commandService: CommandService,
     private queryService : QueryService,
     private userService : UserService,
     private router : Router,
-    private securityService : SecurtiyService) {
+    private securityService : SecurtiyService,
+    private groupService: GroupService) {
 
   }
 
@@ -37,13 +40,21 @@ export class ChatListComponent implements OnInit{
    .subscribe(response => {
     this.items = response.value.items;
     let userIds = [];
+    let groupIds = [];
     for (let i = 0; i < this.items.length; i++) {
-      userIds.push(this.items[i].userId);
+      if (this.items[i].isGroupMessage)
+        groupIds.push(this.items[i].userId);
+      else
+        userIds.push(this.items[i].userId);
     }
     this.userService.getUserProfilesByIds(userIds)
     .pipe(take(1))
     .subscribe(response => {
       this.chatUsers = response.value.items;
+      this.setChatList();
+    });
+    this.groupService.getGroupsByIds(groupIds).pipe(take(1)).subscribe(response => {
+      this.groups = response.value;
       this.setChatList();
     });
    });
@@ -53,18 +64,34 @@ export class ChatListComponent implements OnInit{
     if (!this.items || this.items.length === 0) return;
     this.chatList = [];
     for (let i = 0; i < this.items.length; i++) {
-      const userProfile = this.getChatUser(this.items[i].userId);
-      const sharedSecret = this.securityService.getSharedSecretKey(userProfile.publicKey);
-      this.items[i] = ChatProcessor.process(this.items[i], sharedSecret);
-      let chat = {
-        'latestMessage' : this.items[i].message,
-        'durationDisplayTime' : this.items[i].durationDisplayTime,
-        'chatName' : userProfile.firstName + " " + userProfile.lastName,
-        'userId' : this.items[i].userId,
-        'isReceiver' : this.items[i].isReceiver,
-        'occurrence' : this.items[i].occurrence
-      };
-      this.chatList.push(chat);
+      if (this.items[i].isGroupMessage) {
+        const group = this.getGroup(this.items[i].userId);
+        const sharedSecret = this.securityService.getSharedSecretKey(123);
+        this.items[i] = ChatProcessor.process(this.items[i], sharedSecret);
+        let chat = {
+          'latestMessage' : this.items[i].message,
+          'durationDisplayTime' : this.items[i].durationDisplayTime,
+          'chatName' : group?.name,
+          'userId' : this.items[i].userId,
+          'isReceiver' : this.items[i].isReceiver,
+          'occurrence' : this.items[i].occurrence,
+          'isGroupMessage' : true
+        };
+        this.chatList.push(chat);
+      } else {
+        const userProfile = this.getChatUser(this.items[i].userId);
+        const sharedSecret = this.securityService.getSharedSecretKey(userProfile?.publicKey);
+        this.items[i] = ChatProcessor.process(this.items[i], sharedSecret);
+        let chat = {
+          'latestMessage' : this.items[i].message,
+          'durationDisplayTime' : this.items[i].durationDisplayTime,
+          'chatName' : userProfile.firstName + " " + userProfile.lastName,
+          'userId' : this.items[i].userId,
+          'isReceiver' : this.items[i].isReceiver,
+          'occurrence' : this.items[i].occurrence
+        };
+        this.chatList.push(chat);
+      }
     }
     console.log(this.chatList);
   }
@@ -72,6 +99,9 @@ export class ChatListComponent implements OnInit{
   onClickChat(chat: any) {
     console.log("clicked", chat);
     var url = "chat/" + chat.userId;
+    if (chat.isGroupMessage) {
+      url = "group/chat/" + chat.userId;
+    }
     if (chat.occurrence === 0) {
       this.router.navigateByUrl(url);
       return;
@@ -92,6 +122,14 @@ export class ChatListComponent implements OnInit{
     }
     return null;
   }
+
+  getGroup(id: any) {
+    for (let i = 0; i < this.groups.length; i++) {
+      if (this.groups[i].id === id) return this.groups[i];
+    }
+    return null;
+  }
+
   onChatListScroll($event : any) {
     console.log($event);
   }

@@ -5,4 +5,5 @@ export class ChatModel {
     message : any;
     status : any;
     sentAt : any;
+    isGroupMessage: any;
 }

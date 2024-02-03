@@ -1,0 +1,38 @@
+<div *ngIf="group" class="container">
+    <div class="row">
+        <div class="col">
+            <h2>
+                {{group.name}}
+            </h2>
+            <button (click)="onClickStartChat()" class="btn btn-dark">
+                Start Chat
+            </button>
+            <div class="dropdown mt-2">
+                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Add New Member To Group
+                </button>
+                <ul class="dropdown-menu">
+                    <li>
+                        <a (click)="onClickContact(contact)" *ngFor="let contact of contacts" class="dropdown-item">
+                            {{contact.name}}
+                        </a>
+                    </li>
+                </ul>
+              </div>
+        </div>
+        <div class="col">
+            <h2>
+                Group Members
+            </h2>
+            <div class="list-group">
+                <li *ngFor="let groupMember of groupMembers; let id = index;" class="list-group-item d-flex justify-content-between align-items-center">
+                    <button (click)="onClickGroupMember(groupMember)" class="list-group-item list-group-item-action" aria-current="true">
+                        <div class="d-flex w-100 justify-content-between">
+                          <h3 class="mb-1">{{groupMember.name}}</h3>
+                        </div>
+                    </button>
+                </li>
+            </div>
+        </div>
+    </div>
+</div>

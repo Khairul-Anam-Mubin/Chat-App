@@ -7,7 +7,7 @@
               <img [src]="sendToUserBlobImageUrl" alt="Image">
             </div>
             <h3 class="card-title mt-2">{{chatTitle}}</h3>
-            <div [class]="isActive? 'active-now' : 'active-now-idle'">
+            <div *ngIf="!isGroup" [class]="isActive? 'active-now' : 'active-now-idle'">
               <i class="fas fa-circle"></i>
               <span class="active-now-title">{{lastSeen}}</span>
             </div>

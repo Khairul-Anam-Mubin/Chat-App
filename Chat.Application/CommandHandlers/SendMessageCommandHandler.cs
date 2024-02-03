@@ -61,7 +61,7 @@ public class SendMessageCommandHandler : ICommandHandler<SendMessageCommand, Cha
 
     private Task SendChatNotificationAsync(ChatModel chatModel)
     {
-        var notification = new NotificationData("UserChat", chatModel, "ChatModel", chatModel.UserId)
+        var notification = new NotificationData(GetUserChatTopic(chatModel), chatModel, "ChatModel", chatModel.UserId)
         {
             Id = chatModel.Id
         };
@@ -89,5 +89,12 @@ public class SendMessageCommandHandler : ICommandHandler<SendMessageCommand, Cha
             new HandleGroupChatCommand(chatModel.SendTo, chatModel.UserId, chatModel.Id);
         
         return _commandBus.SendAsync(handleGroupChatCommand);
+    }
+
+    private string GetUserChatTopic(ChatModel chatModel)
+    {
+        var ids = new List<string> { chatModel.UserId, chatModel.SendTo };
+        ids.Sort();
+        return $"UserChat-{ids[0]}-{ids[1]}";
     }
 }

@@ -12,4 +12,6 @@ public class ChatQuery : APaginationQuery<ChatDto>, IQuery
 
     [Required]
     public string SendTo { get; set; } = string.Empty;
+
+    public bool IsGroupMessage { get; set; }
 }

@@ -1,15 +1,13 @@
 import { QueryBase } from "src/app/core/models/query-base";
 import { Configuration } from "src/app/core/services/configuration";
 
-export class ChatQuery extends QueryBase {
+export class ChatByIdsQuery extends QueryBase {
     
-    userId : any;
-    sendTo : any;
-    isGroupMessage: any;
+    chatIds: any;
 
     constructor() {
         super();
-        this.apiUrl = Configuration.identityApi + "/chat/get";
+        this.apiUrl = Configuration.identityApi + "/chat/chats-by-ids";
         this.Offset = 0;
         this.limit = 30;
     }

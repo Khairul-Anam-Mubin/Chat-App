@@ -19,11 +19,21 @@ public class ChatModelIndexCreator : IIndexCreator
 
     public void CreateIndexes()
     {
-        _indexManager.CreateOne<ChatModel>(_databaseInfo,
+        var indexes = new List<IIndex>
+        {
             new IndexBuilder<ChatModel>()
                 .Ascending(o => o.UserId)
                 .Ascending(o => o.SendTo)
                 .Descending(o => o.SentAt)
-                .Build());
+                .Build(),
+
+            new IndexBuilder<ChatModel>()
+                .Ascending(o => o.SendTo)
+                .Ascending(o => o.IsGroupMessage)
+                .Descending(o => o.SentAt)
+                .Build()
+        };
+
+        _indexManager.CreateMany<ChatModel>(_databaseInfo, indexes);
     }
 }

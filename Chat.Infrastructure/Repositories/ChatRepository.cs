@@ -33,6 +33,27 @@ public class ChatRepository : RepositoryBase<ChatModel>, IChatRepository
         return await DbContext.GetManyAsync<ChatModel>(DatabaseInfo, orFilter, sort, offset, limit);
     }
 
+    public async Task<List<ChatModel>> GetGroupChatModelsAsync(string groupId, int offset, int limit)
+    {
+        var filterBuilder = new FilterBuilder<ChatModel>();
+        var sortBuilder = new SortBuilder<ChatModel>();
+
+        var groupIdFilter = filterBuilder.Eq(o => o.SendTo, groupId);
+        var isGroupMessageFilter = filterBuilder.Eq(o => o.IsGroupMessage, true);
+        var andFilter = filterBuilder.And(groupIdFilter, isGroupMessageFilter);
+
+        var sort = sortBuilder.Descending(o => o.SentAt).Build();
+
+        return await DbContext.GetManyAsync<ChatModel>(DatabaseInfo, andFilter, sort, offset, limit);
+    }
+
+    public async Task<List<ChatModel>> GetChatModelsByIds(List<string> ids)
+    {
+        var filterBuilder = new FilterBuilder<ChatModel>();
+        var idsFilter = filterBuilder.In(o => o.Id , ids);
+        return await DbContext.GetManyAsync<ChatModel>(DatabaseInfo, idsFilter);
+    }
+
     public async Task<List<ChatModel>> GetSenderAndReceiverSpecificChatModelsAsync(string senderId, string receiverId)
     {
         var filterBuilder = new FilterBuilder<ChatModel>();

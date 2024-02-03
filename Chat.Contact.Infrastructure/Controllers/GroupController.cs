@@ -39,4 +39,11 @@ public class GroupController : ACommonController
     {
         return Ok(await GetQueryResponseAsync<GroupsQuery, List<GroupModel>>(query));
     }
+
+
+    [HttpPost, Route("group-members")]
+    public async Task<IActionResult> GroupMembersQueryAsync(GroupMembersQuery query)
+    {
+        return Ok(await GetQueryResponseAsync<GroupMembersQuery, List<GroupMemberModel>>(query));
+    }
 }

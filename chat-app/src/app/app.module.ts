@@ -31,6 +31,8 @@ import { ActivityService } from './activity/services/activity-service';
 import { ContactListComponent } from './contact/components/contact-list/contact-list.component';
 import { GroupListComponent } from './contact/components/group-list/group-list.component';
 import { ChatService } from './chat/services/chat-service';
+import { GroupService } from './contact/services/group-service';
+import { GroupComponent } from './contact/components/group/group.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +48,8 @@ import { ChatService } from './chat/services/chat-service';
     SafeUrlPipe,
     HomeComponent,
     ContactListComponent,
-    GroupListComponent
+    GroupListComponent,
+    GroupComponent
   ],
   imports: [
     BrowserModule,
@@ -70,6 +73,7 @@ import { ChatService } from './chat/services/chat-service';
     SecurtiyService,
     ActivityService,
     ChatService,
+    GroupService,
     {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}
   ],
   bootstrap: [AppComponent]

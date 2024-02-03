@@ -14,6 +14,10 @@ import { SecurtiyService } from 'src/app/core/services/security-service';
 import { EncrytptionDecryptionFactory, IEncryptionDecryption } from 'src/app/core/helpers/encryption-decryption-helper';
 import { ChatProcessor } from '../../helpers/chat-processor';
 import { SocketService } from 'src/app/core/services/socket-service';
+import { ChatByIdsQuery } from '../../queries/chat-by-ids-query';
+import { ChatService } from '../../services/chat-service';
+import { GroupService } from 'src/app/contact/services/group-service';
+import { GroupsQuery } from 'src/app/contact/queries/groups-query';
 
 @Component({
   selector: 'app-chat',
@@ -22,6 +26,8 @@ import { SocketService } from 'src/app/core/services/socket-service';
 })
 export class ChatComponent implements OnInit, OnDestroy{
 
+  groupId : string | undefined;
+  isGroup : boolean = false;
   chatTitle : any = "";
   lastSeen : any = "";
   inputMessage : any = "";
@@ -46,23 +52,69 @@ export class ChatComponent implements OnInit, OnDestroy{
     private socketService: SocketService,
     private fileService: FileService,
     private router : Router,
-    private securityService: SecurtiyService) {}
+    private securityService: SecurtiyService,
+    private chatService: ChatService,
+    private groupService: GroupService) {}
 
   ngOnInit(): void {
-    this.encryptionDecryptionHelper = EncrytptionDecryptionFactory.getEncryptionDecryption();
+    // this.encryptionDecryptionHelper = EncrytptionDecryptionFactory.getEncryptionDecryption();
     this.chats = [];
+
+    this.isGroup = this.groupService.getCurrentOpenedGroupId() ? true: false;
     this.currentUserId = this.userService.getCurrentUserId();
-    this.sendToUserId = this.userService.getCurrentOpenedChatUserId();
     this.currentUserProfile = this.userService.getCurrentUserProfile();
+
+    if (this.isGroup) {
+     this.initiateGroupChat();
+    } else {
+      this.initiateUserChat();
+    }
+  }
+
+  initiateGroupChat() {
+    if (!this.isGroup) return;
+    this.groupId = this.groupService.getCurrentOpenedGroupId();
+    this.sendToUserId = this.groupId;
+
+    const groupQuery = new GroupsQuery();
+    groupQuery.groupIds = [this.groupId];
+    
+    this.queryService.execute(groupQuery).pipe(take(1)).subscribe(response => {
+      const group = response.value[0];
+      this.chatTitle = group.name;
+    });
 
     this.query.sendTo = this.sendToUserId;
     this.query.userId = this.currentUserId;
+
+    this.getChats(this.query);
+    
+    this.socketService.subscribeToTopic(this.getGroupChatTopic()).subscribe(notification => {
+      if (notification && notification.content && notification.contentType === 'ChatId') {
+        const query = new ChatByIdsQuery();
+        query.chatIds = [notification.content];
+        this.queryService.execute(query).pipe(take(1)).subscribe(response => {
+          let message = ChatProcessor.process(response.value[0], this.sharedSecret);
+          this.chats = [message].concat(this.chats);
+          this.setChatScrollStartFromBottom();
+        });
+      }
+    });
+  }
+
+  initiateUserChat() {
+    if (this.isGroup) return;
+    this.sendToUserId = this.userService.getCurrentOpenedChatUserId();
+    
+    this.query.sendTo = this.sendToUserId;
+    this.query.userId = this.currentUserId;
+
     this.userService.getUserProfileById(this.sendToUserId)
     .pipe(take(1))
     .subscribe(res => {
       if (res.status === ResponseStatus.success) {
         this.sendToUserProfile = res.value.items.find((item: any) => item.id === this.sendToUserId);
-        this.sharedSecret = this.securityService.getSharedSecretKey(this.sendToUserProfile.publicKey);
+        // this.sharedSecret = this.securityService.getSharedSecretKey(this.sendToUserProfile.publicKey);
         this.chatTitle = this.sendToUserProfile.firstName + " " + this.sendToUserProfile.lastName;
         this.getChats(this.query);
         if (this.sendToUserProfile.profilePictureId){
@@ -75,21 +127,27 @@ export class ChatComponent implements OnInit, OnDestroy{
         }
       }
     });
+    this.getLastSeenStatus();
     this.socketService.subscribeToTopic('UserChat').subscribe(notification => {
       if (notification && notification.content) {
         let message = ChatProcessor.process(notification.content, this.sharedSecret);
+        // let message = notification.content;
         this.chats = [message].concat(this.chats);
         this.setChatScrollStartFromBottom();
       }
     });
-    this.getLastSeenStatus();
   }
 
   ngOnDestroy(): void {
-    this.socketService.unsubscribeTopic('UserChat');
+    if (this.isGroup) {
+      this.socketService.unsubscribeTopic(this.getGroupChatTopic());
+    } else {
+      this.socketService.unsubscribeTopic('UserChat');
+    }
   }
 
   getChats(query : ChatQuery) {
+    this.query.isGroupMessage = this.isGroup;
     this.queryService.execute(query)
     .pipe(take(1))
     .subscribe(res => {
@@ -136,7 +194,8 @@ export class ChatComponent implements OnInit, OnDestroy{
     sendMessageCommand.chatModel.sendTo = this.sendToUserId;
     sendMessageCommand.chatModel.message = this.inputMessage;
     sendMessageCommand.chatModel.status = "Sent";
-    sendMessageCommand.chatModel.message = this.encryptionDecryptionHelper?.encrypt(sendMessageCommand.chatModel.message, this.sharedSecret);
+    sendMessageCommand.chatModel.isGroupMessage = this.isGroup;
+    // sendMessageCommand.chatModel.message = this.encryptionDecryptionHelper?.encrypt(sendMessageCommand.chatModel.message, this.sharedSecret);
     this.inputMessage = '';
     this.commandService.execute(sendMessageCommand)
     .pipe(take(1))
@@ -146,7 +205,7 @@ export class ChatComponent implements OnInit, OnDestroy{
   }
 
   getLastSeenStatus() {
-    var lastSeenQuery = new LastSeenQuery();
+    const lastSeenQuery = new LastSeenQuery();
     lastSeenQuery.userIds = [this.sendToUserId];
     this.queryService.execute(lastSeenQuery)
     .pipe(take(1))
@@ -159,5 +218,23 @@ export class ChatComponent implements OnInit, OnDestroy{
   onClickUserProfile() {
     const userId = this.sendToUserId;
     this.router.navigateByUrl('/user/' + userId);
+  }
+
+  getGroupChatTopic() {
+    return "GroupChat-" + this.groupId;
+  }
+
+  getUserChatTopic() {
+    const ids = [this.currentUserId, this.sendToUserId];
+    const sortedIds = ids.sort((n1,n2) => {
+      if (n1 > n2) {
+        return 1;
+      }
+      if (n1 < n2) {
+        return -1;
+      }
+      return 0;
+    });
+    return "UserChat-" + sortedIds[0] + "-" + sortedIds[1];
   }
 }
