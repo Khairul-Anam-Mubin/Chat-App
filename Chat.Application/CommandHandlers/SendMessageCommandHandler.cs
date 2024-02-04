@@ -6,6 +6,7 @@ using Chat.Domain.Models;
 using Chat.Domain.Shared.Commands;
 using Chat.Domain.Shared.Entities;
 using Chat.Framework.CQRS;
+using Chat.Framework.Identity;
 using Chat.Framework.MessageBrokers;
 using Chat.Framework.Results;
 
@@ -16,15 +17,18 @@ public class SendMessageCommandHandler : ICommandHandler<SendMessageCommand, Cha
     private readonly IChatRepository _chatRepository;
     private readonly ICommandExecutor _commandExecutor;
     private readonly ICommandBus _commandBus;
+    private readonly IScopeIdentity _scopIdentity; 
 
     public SendMessageCommandHandler(
         IChatRepository chatRepository,
         ICommandExecutor commandExecutor,
-        ICommandBus commandBus)
+        ICommandBus commandBus,
+        IScopeIdentity scopeIdentity)
     {
         _chatRepository = chatRepository;
         _commandExecutor = commandExecutor;
         _commandBus = commandBus;
+        _scopIdentity = scopeIdentity;
     }
 
     public async Task<IResult<ChatDto>> HandleAsync(SendMessageCommand command)
@@ -39,6 +43,7 @@ public class SendMessageCommandHandler : ICommandHandler<SendMessageCommand, Cha
         chatModel.Id = Guid.NewGuid().ToString();
         chatModel.SentAt = DateTime.UtcNow;
         chatModel.Status = "Sent";
+        chatModel.UserId = _scopIdentity.GetUserId()!;
 
         if (!await _chatRepository.SaveAsync(chatModel))
         {
