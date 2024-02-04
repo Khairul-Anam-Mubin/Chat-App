@@ -2,6 +2,7 @@
 using Chat.Contact.Domain.Interfaces;
 using Chat.Contact.Domain.Models;
 using Chat.Framework.CQRS;
+using Chat.Framework.Identity;
 using Chat.Framework.Results;
 
 namespace Chat.Contact.Application.CommandHandlers;
@@ -10,9 +11,11 @@ public class CreateNewGroupCommandHandler : ICommandHandler<CreateNewGroupComman
 {
     private readonly IGroupRepository _groupRepository;
     private readonly ICommandExecutor _commandExecutor;
+    private readonly IScopeIdentity _scopeIdentity;
 
-    public CreateNewGroupCommandHandler(IGroupRepository groupRepository, ICommandExecutor commandExecutor)
+    public CreateNewGroupCommandHandler(IGroupRepository groupRepository, ICommandExecutor commandExecutor, IScopeIdentity scopeIdentity)
     {
+        _scopeIdentity = scopeIdentity;
         _groupRepository = groupRepository;
         _commandExecutor = commandExecutor;
     }
@@ -20,7 +23,7 @@ public class CreateNewGroupCommandHandler : ICommandHandler<CreateNewGroupComman
     public async Task<IResult> HandleAsync(CreateNewGroupCommand request)
     {
         var groupName = request.GroupName;
-        var userId = request.UserId;
+        var userId = _scopeIdentity.GetUserId()!;
 
         var groupModel = new GroupModel(groupName, userId);
 

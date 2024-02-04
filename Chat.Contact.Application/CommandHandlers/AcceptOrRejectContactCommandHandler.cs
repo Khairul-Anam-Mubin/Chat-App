@@ -1,27 +1,36 @@
 using Chat.Contact.Application.Commands;
 using Chat.Contact.Domain.Interfaces;
 using Chat.Framework.CQRS;
+using Chat.Framework.Identity;
 using Chat.Framework.Results;
 
 namespace Chat.Contact.Application.CommandHandlers;
 
-public class AcceptOrRejectContactCommandHandler : 
-    ICommandHandler<AcceptOrRejectContactRequestCommand>
+public class AcceptOrRejectContactCommandHandler : ICommandHandler<AcceptOrRejectContactRequestCommand>
 {
     private readonly IContactRepository _contactRepository;
+    private readonly IScopeIdentity _scopeIdentity;
 
-    public AcceptOrRejectContactCommandHandler(IContactRepository contactRepository)
+    public AcceptOrRejectContactCommandHandler(IContactRepository contactRepository, IScopeIdentity scopeIdentity)
     {
         _contactRepository = contactRepository;
+        _scopeIdentity = scopeIdentity;
     }
 
     public async Task<IResult> HandleAsync(AcceptOrRejectContactRequestCommand command)
     {
         var contact = await _contactRepository.GetByIdAsync(command.ContactId);
-        
+
         if (contact is null)
         {
             return Result.Error("Contact not found");
+        }
+
+        var userId = _scopeIdentity.GetUserId();
+
+        if (contact.ContactUserId != userId)
+        {
+            return Result.Error("User do not have permission");
         }
 
         if (command.IsAcceptRequest)

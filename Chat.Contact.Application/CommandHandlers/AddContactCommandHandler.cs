@@ -3,6 +3,7 @@ using Chat.Contact.Domain.Interfaces;
 using Chat.Contact.Domain.Models;
 using Chat.Domain.Shared.Queries;
 using Chat.Framework.CQRS;
+using Chat.Framework.Identity;
 using Chat.Framework.MessageBrokers;
 using Chat.Framework.Results;
 
@@ -12,20 +13,25 @@ public class AddContactCommandHandler : ICommandHandler<AddContactCommand>
 {
     private readonly IContactRepository _contactRepository;
     private readonly IMessageRequestClient _messageRequestClient;
+    private readonly IScopeIdentity _scopeIdentity;
 
     public AddContactCommandHandler(
         IContactRepository contactRepository, 
-        IMessageRequestClient messageRequestClient)
+        IMessageRequestClient messageRequestClient,
+        IScopeIdentity scopeIdentity)
     {
         _contactRepository = contactRepository;
         _messageRequestClient = messageRequestClient;
+        _scopeIdentity = scopeIdentity;
     }
 
     public async Task<IResult> HandleAsync(AddContactCommand command)
     {
+        var userId = _scopeIdentity.GetUserId()!;
+
         var userProfileQuery = new UserProfileQuery
         {
-            UserIds = new List<string> { command.UserId },
+            UserIds = new List<string> { userId },
             Emails = new List<string> { command.ContactEmail }
         };
 
@@ -39,7 +45,7 @@ public class AddContactCommandHandler : ICommandHandler<AddContactCommand>
 
         var userProfiles = queryResponse.Profiles;
 
-        var userProfile = userProfiles.First(x => x.Id == command.UserId);
+        var userProfile = userProfiles.First(x => x.Id == userId);
         
         var contactUserProfile = userProfiles.First(x => x.Email == command.ContactEmail);
 

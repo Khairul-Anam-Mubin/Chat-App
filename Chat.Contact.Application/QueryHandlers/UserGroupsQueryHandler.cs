@@ -2,6 +2,7 @@
 using Chat.Contact.Domain.Interfaces;
 using Chat.Contact.Domain.Models;
 using Chat.Framework.CQRS;
+using Chat.Framework.Identity;
 using Chat.Framework.Results;
 
 namespace Chat.Contact.Application.QueryHandlers;
@@ -10,16 +11,20 @@ public class UserGroupsQueryHandler : IQueryHandler<UserGroupsQuery, List<GroupM
 {
     private readonly IGroupMemberRepository _groupMemeberRepository;
     private readonly IGroupRepository _groupRepository;
+    private readonly IScopeIdentity _scopeIdentity;
 
-    public UserGroupsQueryHandler(IGroupMemberRepository groupMemeberRepository, IGroupRepository groupRepository)
+    public UserGroupsQueryHandler(IGroupMemberRepository groupMemeberRepository, IGroupRepository groupRepository, IScopeIdentity scopeIdentity)
     {
         _groupRepository = groupRepository;
         _groupMemeberRepository = groupMemeberRepository;
+        _scopeIdentity = scopeIdentity;
     }
 
     public async Task<IResult<List<GroupModel>>> HandleAsync(UserGroupsQuery request)
     {
-        var groupMemberModels = await _groupMemeberRepository.GetUserGroupsAsync(request.UserId);
+        var userId = _scopeIdentity.GetUserId()!;
+
+        var groupMemberModels = await _groupMemeberRepository.GetUserGroupsAsync(userId);
 
         var distinctGroupMemberModels = groupMemberModels.DistinctBy(x => x.GroupId);
 
