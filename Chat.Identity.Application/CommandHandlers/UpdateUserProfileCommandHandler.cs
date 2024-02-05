@@ -1,5 +1,6 @@
 using Chat.Domain.Shared.Entities;
 using Chat.Framework.CQRS;
+using Chat.Framework.Identity;
 using Chat.Framework.Results;
 using Chat.Identity.Application.Commands;
 using Chat.Identity.Application.Extensions;
@@ -11,18 +12,22 @@ public class UpdateUserProfileCommandHandler :
     ICommandHandler<UpdateUserProfileCommand, UserProfile>
 {
     private readonly IUserRepository _userRepository;
+    private readonly IScopeIdentity _scopeIdentity;
 
-    public UpdateUserProfileCommandHandler(IUserRepository userRepository)
+    public UpdateUserProfileCommandHandler(IUserRepository userRepository, IScopeIdentity scopeIdentity)
     {
         _userRepository = userRepository;
+        _scopeIdentity = scopeIdentity;
     }
 
     public async Task<IResult<UserProfile>> HandleAsync(UpdateUserProfileCommand command)
     {
         var requestUpdateModel = command.UserModel;
+
+        var userId = _scopeIdentity.GetUserId()!;
         
         var userModel = 
-            await _userRepository.GetUserByEmailAsync(requestUpdateModel.Email);
+            await _userRepository.GetByIdAsync(userId);
         
         if (userModel is null)
         {
@@ -66,6 +71,6 @@ public class UpdateUserProfileCommandHandler :
             await _userRepository.SaveAsync(userModel);
         }
 
-        return Result.Success<UserProfile>(userModel.ToUserProfile());
+        return Result.Success(userModel.ToUserProfile());
     }
 }
