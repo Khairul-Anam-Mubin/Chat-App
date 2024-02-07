@@ -18,7 +18,7 @@ public class NotificationInstaller : IServiceInstaller
         services.AddSignalR();
         services.AddSingleton<IHubConnectionService, HubConnectionService>();
         services.AddSingleton<INotificationHubService, NotificationHubService>();
-        services.AddSingleton<IInitialService, PubSubMessageSubscriber>();
+        services.AddTransient<IInitialService, PubSubMessageSubscriber>();
         services.AddPubSub();
     }
 }

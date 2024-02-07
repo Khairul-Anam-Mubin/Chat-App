@@ -128,7 +128,8 @@ export class ChatComponent implements OnInit, OnDestroy{
       }
     });
     this.getLastSeenStatus();
-    this.socketService.subscribeToTopic('UserChat').subscribe(notification => {
+    this.socketService.subscribeToTopic(this.getUserChatTopic()).subscribe(notification => {
+      console.log('UserChat Received : ', notification);
       if (notification && notification.content) {
         let message = ChatProcessor.process(notification.content, this.sharedSecret);
         // let message = notification.content;
