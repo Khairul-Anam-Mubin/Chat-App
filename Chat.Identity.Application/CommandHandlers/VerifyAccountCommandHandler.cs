@@ -11,11 +11,13 @@ public class VerifyAccountCommandHandler : ICommandHandler<VerifyAccountCommand>
 {
     private readonly IUserRepository _userRepository;
     private readonly IEventBus _eventBus;
+    private readonly IEventService _eventService;
 
-    public VerifyAccountCommandHandler(IUserRepository userRepository, IEventBus eventBus)
+    public VerifyAccountCommandHandler(IUserRepository userRepository, IEventBus eventBus, IEventService eventService)
     {
         _userRepository = userRepository;
         _eventBus = eventBus;
+        _eventService = eventService;
     }
 
     public async Task<IResult> HandleAsync(VerifyAccountCommand request)
@@ -28,7 +30,7 @@ public class VerifyAccountCommandHandler : ICommandHandler<VerifyAccountCommand>
         var verifiedUserAccountCreatedEvent = 
             new VerifiedUserAccountCreatedEvent(request.UserId);
         
-        await _eventBus.PublishAsync(verifiedUserAccountCreatedEvent);
+        await _eventService.PublishAsync(verifiedUserAccountCreatedEvent);
         
         return Result.Success("Account verified successfully.");
     }

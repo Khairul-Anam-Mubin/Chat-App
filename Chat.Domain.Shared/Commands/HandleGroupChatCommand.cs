@@ -1,5 +1,4 @@
 ﻿using Chat.Framework.CQRS;
-using Chat.Framework.MessageBrokers;
 using System.ComponentModel.DataAnnotations;
 
 namespace Chat.Domain.Shared.Commands;

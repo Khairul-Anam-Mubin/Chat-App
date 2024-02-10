@@ -1,6 +1,5 @@
 using Chat.Domain.Shared.Entities;
 using Chat.Framework.CQRS;
-using Chat.Framework.MessageBrokers;
 using Chat.Framework.Pagination;
 
 namespace Chat.Domain.Shared.Queries;

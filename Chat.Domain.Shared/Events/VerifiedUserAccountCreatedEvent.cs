@@ -1,11 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Chat.Framework.CQRS;
+using System.ComponentModel.DataAnnotations;
 
 namespace Chat.Domain.Shared.Events;
 
-public class VerifiedUserAccountCreatedEvent
+public class VerifiedUserAccountCreatedEvent : IEvent, IInternalMessage
 {
     [Required]
     public string UserId { get; set; }
+    public string? Token { get; set; }
 
     public VerifiedUserAccountCreatedEvent(string userId)
     {

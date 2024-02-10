@@ -1,4 +1,4 @@
-﻿namespace Chat.Framework.MessageBrokers;
+﻿namespace Chat.Framework.CQRS;
 
 public interface IInternalMessage
 {

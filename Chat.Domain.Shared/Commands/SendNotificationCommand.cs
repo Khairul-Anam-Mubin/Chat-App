@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Chat.Domain.Shared.Entities;
 using Chat.Framework.CQRS;
-using Chat.Framework.MessageBrokers;
 
 namespace Chat.Domain.Shared.Commands;
 

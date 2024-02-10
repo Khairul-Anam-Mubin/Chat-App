@@ -1,9 +1,9 @@
-﻿using Chat.Framework.MessageBrokers;
+﻿using Chat.Framework.CQRS;
 using System.ComponentModel.DataAnnotations;
 
 namespace Chat.Domain.Shared.Events;
 
-public class UserConnectedToHubEvent : IInternalMessage
+public class UserConnectedToHubEvent : IEvent, IInternalMessage
 {
     [Required]
     public string UserId { get; set; } = string.Empty;

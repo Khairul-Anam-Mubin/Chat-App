@@ -1,22 +1,24 @@
 ﻿using Chat.Domain.Shared.Commands;
 using Chat.Domain.Shared.Events;
 using Chat.Framework.CQRS;
+using Chat.Framework.Identity;
 using Chat.Framework.MessageBrokers;
 
 namespace Chat.Activity.Application.Consumers;
 
-public class UserDisconnectedToHubEventConsumer : AMessageConsumer<UserDisconnectedToHubEvent>
+public class UserDisconnectedToHubEventConsumer : AEventConsumer<UserDisconnectedToHubEvent>
 {
     private readonly ICommandExecutor _commandExecutor;
 
-    public UserDisconnectedToHubEventConsumer(ICommandExecutor commandExecutor)
+    public UserDisconnectedToHubEventConsumer(ICommandExecutor commandExecutor, IScopeIdentity scopeIdentity)
+        : base(scopeIdentity) 
     {
         _commandExecutor = commandExecutor;
     }
 
-    public override async Task Consume(IMessageContext<UserDisconnectedToHubEvent> context)
+    protected override async Task OnConsumeAsync(UserDisconnectedToHubEvent @event, IMessageContext<UserDisconnectedToHubEvent>? context = null)
     {
-        await TrackLastSeenActivityAsync(context.Message, false);
+        await TrackLastSeenActivityAsync(@event, false);
     }
 
     private async Task TrackLastSeenActivityAsync(UserDisconnectedToHubEvent disconnectedToHubEvent, bool isActive)
@@ -24,8 +26,7 @@ public class UserDisconnectedToHubEventConsumer : AMessageConsumer<UserDisconnec
         var updateLastSeenCommand = new UpdateLastSeenCommand
         {
             UserId = disconnectedToHubEvent.UserId,
-            IsActive = isActive,
-            Token = disconnectedToHubEvent.Token,
+            IsActive = isActive
         };
         await _commandExecutor.ExecuteAsync(updateLastSeenCommand);
     }

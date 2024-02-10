@@ -1,4 +1,5 @@
 using Chat.Domain.Shared.Events;
+using Chat.Framework.CQRS;
 using Chat.Framework.Identity;
 using Chat.Framework.MessageBrokers;
 using Chat.Notification.Application.Helpers;
@@ -14,15 +15,18 @@ public class NotificationHub : Hub
     private readonly IHubConnectionService _hubConnectionService;
     private readonly IEventBus _eventBus;
     private readonly IScopeIdentity _scopedIdentity;
+    private readonly IEventService _eventService;
 
     public NotificationHub(
         IHubConnectionService hubConnectionService,
         IEventBus eventBus,
-        IScopeIdentity scopeIdentity)
+        IScopeIdentity scopeIdentity,
+        IEventService eventService)
     {
         _hubConnectionService = hubConnectionService;
         _eventBus = eventBus;
         _scopedIdentity = scopeIdentity;
+        _eventService = eventService;
     }
 
     public override async Task OnConnectedAsync()
@@ -47,11 +51,10 @@ public class NotificationHub : Hub
         var connectedEvent = new UserConnectedToHubEvent
         {
             UserId = userProfile.Id,
-            ConnectionId = connectionId,
-            Token = _scopedIdentity.GetToken()
+            ConnectionId = connectionId
         };
 
-        await _eventBus.PublishAsync(connectedEvent);
+        await _eventService.PublishAsync(connectedEvent);
     }
 
     public override async Task OnDisconnectedAsync(Exception? exception)
@@ -78,10 +81,9 @@ public class NotificationHub : Hub
         var disconnectedEvent = new UserDisconnectedToHubEvent
         {
             UserId = userProfile.Id,
-            ConnectionId = connectionId,
-            Token = _scopedIdentity.GetToken()
+            ConnectionId = connectionId
         };
 
-        await _eventBus.PublishAsync(disconnectedEvent);
+        await _eventService.PublishAsync(disconnectedEvent);
     }
 }

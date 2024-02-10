@@ -7,7 +7,6 @@ using Chat.Domain.Shared.Commands;
 using Chat.Domain.Shared.Entities;
 using Chat.Framework.CQRS;
 using Chat.Framework.Identity;
-using Chat.Framework.MessageBrokers;
 using Chat.Framework.Results;
 
 namespace Chat.Application.CommandHandlers;

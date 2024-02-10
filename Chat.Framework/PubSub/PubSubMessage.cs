@@ -1,4 +1,4 @@
-﻿using Chat.Framework.MessageBrokers;
+﻿using Chat.Framework.CQRS;
 
 namespace Chat.Framework.PubSub;
 
