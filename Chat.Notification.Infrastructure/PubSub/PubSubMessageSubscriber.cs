@@ -1,23 +1,25 @@
-﻿using Chat.Framework.Interfaces;
+﻿using Chat.Framework.Identity;
+using Chat.Framework.Interfaces;
 using Chat.Framework.Mediators;
 using Chat.Framework.PubSub;
 using Chat.Notification.Domain.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Chat.Notification.Infrastructure.PubSub;
 
 public sealed class PubSubMessageSubscriber : IInitialService
 {
     private readonly IHubConnectionService _hubConnectionService;
-    private readonly IMediator _mediator;
+    private readonly IServiceScopeFactory _serviceScopeFactory;
     private readonly IPubSub _pubSub;
 
     public PubSubMessageSubscriber(
         IHubConnectionService hubConnectionService, 
-        IMediator mediator, 
+        IServiceScopeFactory serviceScopeFactory,
         IPubSub pubSub)
     {
         _hubConnectionService = hubConnectionService;
-        _mediator = mediator;
+        _serviceScopeFactory = serviceScopeFactory;
         _pubSub = pubSub;
     }
 
@@ -27,7 +29,7 @@ public sealed class PubSubMessageSubscriber : IInitialService
 
         Console.WriteLine($"Subscribing to redis channel : {channel}\n");
 
-        await _pubSub.SubscribeAsync<PubSubMessage>(channel, (redisChannel, message) =>
+        await _pubSub.SubscribeAsync<PubSubMessage>(channel, async (redisChannel, message) =>
         {
             if (message is null)
             {
@@ -37,7 +39,13 @@ public sealed class PubSubMessageSubscriber : IInitialService
 
             Console.WriteLine($"PubSubMessage.Id : {message?.Id}, PubSubMessageType: {message?.MessageType.ToString()} , message : {message}\n");
 
-            Task.Factory.StartNew(() => _mediator.SendAsync(message));
+            using var scope = _serviceScopeFactory.CreateScope();
+            var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
+            var scopeIdentity = scope.ServiceProvider.GetRequiredService<IScopeIdentity>();
+            var accessToken = message!.Token;
+            // Todo: validate token as its the entry point
+            scopeIdentity.SwitchIdentity(accessToken);
+            await mediator.SendAsync(message);
         });
     }
 }

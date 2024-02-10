@@ -1,6 +1,8 @@
-﻿namespace Chat.Framework.PubSub;
+﻿using Chat.Framework.MessageBrokers;
 
-public class PubSubMessage
+namespace Chat.Framework.PubSub;
+
+public class PubSubMessage : IInternalMessage
 {
     public string Id { get; set; } = string.Empty;
     public MessageType MessageType { get; set; }

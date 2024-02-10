@@ -1,6 +1,7 @@
 ﻿using Chat.Domain.Shared.Commands;
 using Chat.Domain.Shared.Entities;
 using Chat.Framework.CQRS;
+using Chat.Framework.Identity;
 using Chat.Framework.MessageBrokers;
 using Chat.Framework.Results;
 using Chat.Notification.Application.Commands;
@@ -15,7 +16,8 @@ public class SendNotificationCommandConsumer : ACommandConsumer<SendNotification
 
     public SendNotificationCommandConsumer(
         IHubConnectionService hubConnectionService,
-        ICommandExecutor commandExecutor)
+        ICommandExecutor commandExecutor,
+        IScopeIdentity scopeIdentity) : base (scopeIdentity)
     {
         _hubConnectionService = hubConnectionService;
         _commandExecutor = commandExecutor;

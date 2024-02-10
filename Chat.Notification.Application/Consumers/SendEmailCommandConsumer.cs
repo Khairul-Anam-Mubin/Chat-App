@@ -1,6 +1,7 @@
 ﻿using Chat.Domain.Shared.Commands;
 using Chat.Framework.CQRS;
 using Chat.Framework.EmailSenders;
+using Chat.Framework.Identity;
 using Chat.Framework.MessageBrokers;
 using Chat.Framework.Results;
 using Chat.Notification.Application.Constants;
@@ -13,7 +14,8 @@ public class SendEmailCommandConsumer : ACommandConsumer<SendEmailCommand>
     private readonly IEmailSender _emailSender;
     private readonly IFeatureManager _featureManager;
 
-    public SendEmailCommandConsumer(IEmailSender emailSender, IFeatureManager featureManager)
+    public SendEmailCommandConsumer(IEmailSender emailSender, IFeatureManager featureManager, IScopeIdentity scopeIdentity) 
+        : base(scopeIdentity)
     {
         _emailSender = emailSender;
         _featureManager = featureManager;

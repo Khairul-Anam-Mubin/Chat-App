@@ -47,7 +47,8 @@ public class NotificationHub : Hub
         var connectedEvent = new UserConnectedToHubEvent
         {
             UserId = userProfile.Id,
-            ConnectionId = connectionId
+            ConnectionId = connectionId,
+            Token = _scopedIdentity.GetToken()
         };
 
         await _eventBus.PublishAsync(connectedEvent);
@@ -77,7 +78,8 @@ public class NotificationHub : Hub
         var disconnectedEvent = new UserDisconnectedToHubEvent
         {
             UserId = userProfile.Id,
-            ConnectionId = connectionId
+            ConnectionId = connectionId,
+            Token = _scopedIdentity.GetToken()
         };
 
         await _eventBus.PublishAsync(disconnectedEvent);

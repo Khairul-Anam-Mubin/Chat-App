@@ -13,13 +13,16 @@ public class RegisterCommandHandler : ICommandHandler<RegisterCommand>
 {
     private readonly IUserRepository _userRepository;
     private readonly ICommandBus _commandBus;
+    private readonly ICommandService _commandService;
 
     public RegisterCommandHandler(
         IUserRepository userRepository,
-        ICommandBus commandBus)
+        ICommandBus commandBus,
+        ICommandService commandService)
     {
         _userRepository = userRepository;
         _commandBus = commandBus;
+        _commandService = commandService;
     }
 
     public async Task<IResult> HandleAsync(RegisterCommand command)
@@ -55,7 +58,7 @@ public class RegisterCommandHandler : ICommandHandler<RegisterCommand>
             Subject = "User registration complete"
         };
 
-        await _commandBus.SendAsync(new SendEmailCommand
+        await _commandService.SendAsync(new SendEmailCommand
         {
             Email = email
         });

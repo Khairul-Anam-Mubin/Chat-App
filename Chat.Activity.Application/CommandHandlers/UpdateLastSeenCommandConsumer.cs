@@ -1,6 +1,7 @@
 using Chat.Activity.Domain.Interfaces.Repositories;
 using Chat.Domain.Shared.Commands;
 using Chat.Framework.CQRS;
+using Chat.Framework.Identity;
 using Chat.Framework.MessageBrokers;
 using Chat.Framework.Results;
 
@@ -10,7 +11,8 @@ public class UpdateLastSeenCommandConsumer : ACommandConsumer<UpdateLastSeenComm
 {
     private readonly ILastSeenRepository _lastSeenRepository;
 
-    public UpdateLastSeenCommandConsumer(ILastSeenRepository lastSeenRepository)
+    public UpdateLastSeenCommandConsumer(ILastSeenRepository lastSeenRepository, IScopeIdentity scopeIdentity) 
+        : base(scopeIdentity)
     {
         _lastSeenRepository = lastSeenRepository;
     }

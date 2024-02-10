@@ -14,15 +14,18 @@ public class AddContactCommandHandler : ICommandHandler<AddContactCommand>
     private readonly IContactRepository _contactRepository;
     private readonly IMessageRequestClient _messageRequestClient;
     private readonly IScopeIdentity _scopeIdentity;
+    private readonly IQueryService _queryService;
 
     public AddContactCommandHandler(
         IContactRepository contactRepository, 
         IMessageRequestClient messageRequestClient,
-        IScopeIdentity scopeIdentity)
+        IScopeIdentity scopeIdentity,
+        IQueryService queryService)
     {
         _contactRepository = contactRepository;
         _messageRequestClient = messageRequestClient;
         _scopeIdentity = scopeIdentity;
+        _queryService = queryService;
     }
 
     public async Task<IResult> HandleAsync(AddContactCommand command)
@@ -36,7 +39,7 @@ public class AddContactCommandHandler : ICommandHandler<AddContactCommand>
         };
 
         var queryResponse = 
-            await _messageRequestClient.GetResponseAsync<UserProfileQuery, UserProfileResponse>(userProfileQuery);
+            await _queryService.GetResponseAsync<UserProfileQuery, UserProfileResponse>(userProfileQuery);
         
         if (queryResponse.Profiles.Count < 2)
         {

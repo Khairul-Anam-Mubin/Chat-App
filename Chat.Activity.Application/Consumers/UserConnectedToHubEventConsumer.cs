@@ -17,15 +17,16 @@ public class UserConnectedToHubEventConsumer : AMessageConsumer<UserConnectedToH
 
     public override async Task Consume(IMessageContext<UserConnectedToHubEvent> context)
     {
-        await TrackLastSeenActivityAsync(context.Message.UserId, true);
+        await TrackLastSeenActivityAsync(context.Message, true);
     }
 
-    private async Task TrackLastSeenActivityAsync(string userId, bool isActive)
+    private async Task TrackLastSeenActivityAsync(UserConnectedToHubEvent userConnectedToHubEvent, bool isActive)
     {
         var updateLastSeenCommand = new UpdateLastSeenCommand
         {
-            UserId = userId,
-            IsActive = isActive
+            UserId = userConnectedToHubEvent.UserId,
+            IsActive = isActive,
+            Token = userConnectedToHubEvent.Token
         };
 
         await _commandExecutor.ExecuteAsync(updateLastSeenCommand);

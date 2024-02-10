@@ -16,19 +16,19 @@ public class SendMessageCommandHandler : ICommandHandler<SendMessageCommand, Cha
 {
     private readonly IChatRepository _chatRepository;
     private readonly ICommandExecutor _commandExecutor;
-    private readonly ICommandBus _commandBus;
+    private readonly ICommandService _commandService;
     private readonly IScopeIdentity _scopIdentity; 
 
     public SendMessageCommandHandler(
         IChatRepository chatRepository,
         ICommandExecutor commandExecutor,
-        ICommandBus commandBus,
-        IScopeIdentity scopeIdentity)
+        IScopeIdentity scopeIdentity,
+        ICommandService commandService)
     {
         _chatRepository = chatRepository;
         _commandExecutor = commandExecutor;
-        _commandBus = commandBus;
         _scopIdentity = scopeIdentity;
+        _commandService = commandService;
     }
 
     public async Task<IResult<ChatDto>> HandleAsync(SendMessageCommand command)
@@ -72,8 +72,8 @@ public class SendMessageCommandHandler : ICommandHandler<SendMessageCommand, Cha
         };
 
         var sendNotificationCommand = new SendNotificationCommand(notification, new List<string> { chatModel.SendTo, chatModel.UserId });
-       
-        return _commandBus.SendAsync(sendNotificationCommand);
+        
+        return _commandService.SendAsync(sendNotificationCommand);
     }
 
     private Task UpdateLatestChatModelAsync(ChatModel chatModel)
@@ -85,15 +85,14 @@ public class SendMessageCommandHandler : ICommandHandler<SendMessageCommand, Cha
             LatestChatModel = latestChatModel
         };
 
-        return _commandExecutor.ExecuteAsync(updateLatestChatCommand);
+        return _commandService.ExecuteAsync(updateLatestChatCommand);
     }
 
     private Task SendForHandleGroupChatAsync(ChatModel chatModel)
     {
         var handleGroupChatCommand = 
             new HandleGroupChatCommand(chatModel.SendTo, chatModel.UserId, chatModel.Id);
-        
-        return _commandBus.SendAsync(handleGroupChatCommand);
+        return _commandService.SendAsync(handleGroupChatCommand);
     }
 
     private string GetUserChatTopic(ChatModel chatModel)

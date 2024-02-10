@@ -16,15 +16,16 @@ public class UserDisconnectedToHubEventConsumer : AMessageConsumer<UserDisconnec
 
     public override async Task Consume(IMessageContext<UserDisconnectedToHubEvent> context)
     {
-        await TrackLastSeenActivityAsync(context.Message.UserId, false);
+        await TrackLastSeenActivityAsync(context.Message, false);
     }
 
-    private async Task TrackLastSeenActivityAsync(string userId, bool isActive)
+    private async Task TrackLastSeenActivityAsync(UserDisconnectedToHubEvent disconnectedToHubEvent, bool isActive)
     {
         var updateLastSeenCommand = new UpdateLastSeenCommand
         {
-            UserId = userId,
-            IsActive = isActive
+            UserId = disconnectedToHubEvent.UserId,
+            IsActive = isActive,
+            Token = disconnectedToHubEvent.Token,
         };
         await _commandExecutor.ExecuteAsync(updateLastSeenCommand);
     }

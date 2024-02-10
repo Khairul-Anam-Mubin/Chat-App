@@ -42,6 +42,8 @@ public class CommonServiceInstaller : IServiceInstaller
 
         services.AddTransient<IQueryExecutor, QueryExecutor>();
         services.AddTransient<ICommandExecutor, CommandExecutor>();
+        services.AddTransient<ICommandService, CommandService>();
+        services.AddTransient<IQueryService, QueryService>();
 
         services.AddControllers();
         services.AddEndpointsApiExplorer();

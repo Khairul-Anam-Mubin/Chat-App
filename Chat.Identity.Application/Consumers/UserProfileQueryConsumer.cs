@@ -1,5 +1,6 @@
 using Chat.Domain.Shared.Queries;
 using Chat.Framework.CQRS;
+using Chat.Framework.Identity;
 using Chat.Framework.MessageBrokers;
 using Chat.Framework.Results;
 using Chat.Identity.Application.Extensions;
@@ -12,7 +13,8 @@ public class UserProfileQueryConsumer : AQueryConsumer<UserProfileQuery, UserPro
 {
     private readonly IUserRepository _userRepository;
 
-    public UserProfileQueryConsumer(IUserRepository userRepository)
+    public UserProfileQueryConsumer(IUserRepository userRepository, IScopeIdentity scopeIdentity)
+        : base(scopeIdentity)
     {
         _userRepository = userRepository;
     }
