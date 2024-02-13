@@ -34,6 +34,7 @@ public class CommonServiceInstaller : IServiceInstaller
 
         services.AddFeatureManagement(configuration.GetSection("FeatureFlags"));
 
+        services.AddMemoryCache();
         services.AddSqlDb();
         services.AddMongoDb();
         services.AddRedis();
