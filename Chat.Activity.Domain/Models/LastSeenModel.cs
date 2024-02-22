@@ -1,4 +1,5 @@
 using Chat.Framework.Database.ORM.Interfaces;
+using Chat.Framework.Results;
 
 namespace Chat.Activity.Domain.Models;
 
@@ -17,8 +18,13 @@ public class LastSeenModel : IEntity
         LastSeenAt = DateTime.UtcNow;
     }
 
-    public static LastSeenModel Create(string userId)
+    public static IResult<LastSeenModel> Create(string userId)
     {
-        return new LastSeenModel(userId);
+        if (string.IsNullOrEmpty(userId))
+        {
+            return Result.Error<LastSeenModel>("UserId not set");
+        }
+
+        return Result.Success(new LastSeenModel(userId));
     }
 }
