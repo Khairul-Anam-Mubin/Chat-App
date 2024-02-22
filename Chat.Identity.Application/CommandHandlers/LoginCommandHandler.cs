@@ -27,15 +27,11 @@ public class LoginCommandHandler : ICommandHandler<LoginCommand, Token>
             return Result.Error<Token>("Email error!!");
         }
 
-        if (user.Password != command.Password)
-        {
-            return Result.Error<Token>("Password error!!");
-        }
+        var loginResult = user.LogIn(command.Password);
 
-        if (!user.IsEmailVerified)
+        if (loginResult.IsFailure)
         {
-            // Todo: will send email for verification
-            return Result.Error<Token>("Plz verify your email.Check your inbox!!");
+            return Result.Error<Token>(loginResult.Message);
         }
 
         var userProfile = user.ToUserProfile();

@@ -18,7 +18,7 @@ public class CommandExecutor : ICommandExecutor
     {
         var validationResult = command.GetValidationResult();
         
-        if (!validationResult.IsSuccess())
+        if (!validationResult.IsSuccess)
         {
             return validationResult;
         }
@@ -26,7 +26,7 @@ public class CommandExecutor : ICommandExecutor
         try
         {
             var result = await _mediator.SendAsync<TCommand, IResult>(command);
-            result.Status ??= ResponseStatus.Success;
+
             return result;
         }
         catch (Exception e)
@@ -43,7 +43,7 @@ public class CommandExecutor : ICommandExecutor
     {
         var validationResult = command.GetValidationResult<TResponse>();
 
-        if (!validationResult.IsSuccess())
+        if (!validationResult.IsSuccess)
         {
             return validationResult;
         }
@@ -51,7 +51,7 @@ public class CommandExecutor : ICommandExecutor
         try
         {
             var result = await _mediator.SendAsync<TCommand, IResult<TResponse>>(command);
-            result.Status ??= ResponseStatus.Success;
+            
             return result;
         }
         catch (Exception e)

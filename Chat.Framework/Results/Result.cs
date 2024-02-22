@@ -4,99 +4,65 @@ namespace Chat.Framework.Results;
 
 public class Result : MetaDataDictionary, IResult
 {
-    public string Message { get; set; } = string.Empty;
-    public ResponseStatus? Status { get; set; }
+    public string Message { get; }
+    public ResponseStatus Status { get; }
 
-    public bool IsSuccess()
+    public bool IsSuccess => Status == ResponseStatus.Success || Status == ResponseStatus.Pending;
+    public bool IsFailure => !IsSuccess;
+
+    protected Result(string message, ResponseStatus status)
     {
-        return Status == ResponseStatus.Success;
+        Message = message;
+        Status = status;
     }
 
     public static IResult Success(string message = "")
     {
-        return new Result
-        {
-            Status = ResponseStatus.Success,
-            Message = message
-        };
+        return new Result(message, ResponseStatus.Success);
     }
 
     public static IResult Error(string message = "")
     {
-        return new Result
-        {
-            Status = ResponseStatus.Error,
-            Message = message
-        };
+        return new Result(message, ResponseStatus.Error);
     }
 
     public static IResult Ignored(string message = "")
     {
-        return new Result
-        {
-            Status = ResponseStatus.Ignored,
-            Message = message
-        };
+        return new Result(message, ResponseStatus.Ignored);
     }
 
-    public static IResult<TResponse> Success<TResponse>(TResponse? response)
+    public static IResult<TResponse> Success<TResponse>(TResponse? response, string message = "")
     {
-        return new Result<TResponse>
-        {
-            Status = ResponseStatus.Success,
-            Value = response
-        };
+        return Result<TResponse>.Create(response, message, ResponseStatus.Success);
     }
 
-    public static IResult<TResponse> Error<TResponse>(TResponse? response)
+    public static IResult<TResponse> Error<TResponse>(TResponse? response, string message = "")
     {
-        return new Result<TResponse>
-        {
-            Status = ResponseStatus.Error,
-            Value = response,
-        };
-    }
-
-    public static IResult<TResponse> Success<TResponse>(TResponse? response, string message)
-    {
-        return new Result<TResponse>
-        {
-            Status = ResponseStatus.Success,
-            Value = response,
-            Message = message
-        };
-    }
-
-    public static IResult<TResponse> Error<TResponse>(TResponse? response, string message)
-    {
-        return new Result<TResponse>
-        {
-            Status = ResponseStatus.Error,
-            Value = response,
-            Message = message
-        };
+        return Result<TResponse>.Create(response, message, ResponseStatus.Error);
     }
 
     public static IResult<TResponse> Success<TResponse>(string message = "")
     {
-        return new Result<TResponse>
-        {
-            Status = ResponseStatus.Success,
-            Message = message
-        };
+        return Result<TResponse>.Create(default, message, ResponseStatus.Success);
     }
 
     public static IResult<TResponse> Error<TResponse>(string message = "")
     {
-        return new Result<TResponse>
-        {
-            Status = ResponseStatus.Error,
-            Message = message
-        };
+        return Result<TResponse>.Create(default, message, ResponseStatus.Error);
     }
 }
 
 public class Result<TResponse> : Result, IResult<TResponse>
 {
-    public TResponse? Value { get; set; }
+    public TResponse? Value { get; }
+
+    private Result(TResponse? value, string message, ResponseStatus status) : base(message, status)
+    {
+        Value = value;
+    }
+
+    public static Result<TResponse> Create(TResponse? value, string message, ResponseStatus status)
+    {
+        return new Result<TResponse>(value, message, status);
+    }
 }

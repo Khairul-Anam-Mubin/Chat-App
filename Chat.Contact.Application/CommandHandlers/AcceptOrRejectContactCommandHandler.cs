@@ -28,14 +28,14 @@ public class AcceptOrRejectContactCommandHandler : ICommandHandler<AcceptOrRejec
 
         var userId = _scopeIdentity.GetUserId();
 
-        if (contact.ContactUserId != userId)
-        {
-            return Result.Error("User do not have permission");
-        }
-
         if (command.IsAcceptRequest)
         {
-            contact.IsPending = false;
+            var result = contact.AcceptRequest(userId);
+
+            if (!result.IsSuccess)
+            {
+                return result;
+            }
 
             if (!await _contactRepository.SaveAsync(contact))
             {

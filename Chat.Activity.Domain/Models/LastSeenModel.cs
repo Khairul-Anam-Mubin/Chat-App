@@ -4,16 +4,21 @@ namespace Chat.Activity.Domain.Models;
 
 public class LastSeenModel : IEntity
 {
-    public string Id { get; set; } = string.Empty;
-    public string UserId { get; set; } = string.Empty;
-    public DateTime LastSeenAt { get; set; }
-    public bool IsActive { get; set; }
+    public string Id { get; set; }
+    public string UserId { get; }
+    public DateTime LastSeenAt { get; }
+    public bool IsActive { get; }
 
-    public LastSeenModel(string userId)
+    private LastSeenModel(string userId)
     {
-        UserId = userId;
         Id = Guid.NewGuid().ToString();
+        UserId = userId;
         IsActive = true;
         LastSeenAt = DateTime.UtcNow;
+    }
+
+    public static LastSeenModel Create(string userId)
+    {
+        return new LastSeenModel(userId);
     }
 }

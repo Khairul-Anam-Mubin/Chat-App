@@ -5,22 +5,43 @@ namespace Chat.Framework.Models;
 
 public class MetaDataDictionary : IMetaDataDictionary
 {
-    public Dictionary<string, object> MetaData { get; set; }
+    public Dictionary<string, object> MetaData { get; }
 
     public MetaDataDictionary()
     {
         MetaData = new Dictionary<string, object>();
     }
 
+    public bool HasKey(string key)
+    {
+        if (string.IsNullOrEmpty(key)) return false;
+
+        return MetaData.ContainsKey(key);
+    }
+
+    public bool HasData(string key)
+    {
+        return HasKey(key) && MetaData[key] is not null;
+    }
+
     public void SetData(string key, object data)
     {
-        MetaData[key] = data;
+        if (HasKey(key))
+        {
+            MetaData[key] = data;
+            return;
+        }
+
+        MetaData.Add(key, data);
     }
 
     public T? GetData<T>(string key)
     {
-        if (!MetaData.TryGetValue(key, out var data)) return default;
+        if (HasData(key))
+        {
+            return MetaData[key].SmartCast<T>();
+        }
 
-        return data.SmartCast<T>();
+        return default;
     }
 }

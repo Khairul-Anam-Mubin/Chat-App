@@ -52,14 +52,7 @@ public class AddContactCommandHandler : ICommandHandler<AddContactCommand>
         
         var contactUserProfile = userProfiles.First(x => x.Email == command.ContactEmail);
 
-        var userContact = new ContactModel
-        {
-            Id = Guid.NewGuid().ToString(),
-            UserId = userProfile.Id,
-            ContactUserId = contactUserProfile.Id,
-            CreatedAt = DateTime.UtcNow,
-            IsPending = true
-        };
+        var userContact = ContactModel.Create(userProfile.Id, contactUserProfile.Id);
 
         if (!await _contactRepository.SaveAsync(userContact))
         {

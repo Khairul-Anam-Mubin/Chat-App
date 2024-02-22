@@ -19,7 +19,8 @@ public class VerifiedUserAccountCreatedEventConsumer : AEventConsumer<VerifiedUs
 
     protected override async Task OnConsumeAsync(VerifiedUserAccountCreatedEvent @event, IMessageContext<VerifiedUserAccountCreatedEvent>? context = null)
     {
-        var lastSeenModel = new LastSeenModel(@event.UserId);
+        var lastSeenModel = LastSeenModel.Create(@event.UserId);
+
         await _lastSeenRepository.SaveAsync(lastSeenModel);
     }
 }

@@ -18,6 +18,7 @@ public abstract class AEventConsumer<TEvent> : AMessageConsumer<TEvent>
     public override async Task Consume(IMessageContext<TEvent> context)
     {
         ScopeIdentity.SwitchIdentity(context.Message.Token);
+
         await OnConsumeAsync(context.Message, context);
     }
 }

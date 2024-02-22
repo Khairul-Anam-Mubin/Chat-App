@@ -22,7 +22,9 @@ public abstract class AQueryConsumer<TQuery, TResponse> :
     public override async Task Consume(IMessageContext<TQuery> context)
     {
         ScopeIdentity.SwitchIdentity(context.Message.Token);
+
         var response = await OnConsumeAsync(context.Message, context);
+
         await context.RespondAsync(response.Value!);
     }
 

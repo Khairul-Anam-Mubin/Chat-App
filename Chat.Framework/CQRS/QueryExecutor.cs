@@ -19,7 +19,7 @@ public class QueryExecutor : IQueryExecutor
     {
         var validationResult = query.GetValidationResult<TResponse>();
 
-        if (!validationResult.IsSuccess())
+        if (!validationResult.IsSuccess)
         {
             return validationResult;
         }
@@ -27,8 +27,6 @@ public class QueryExecutor : IQueryExecutor
         try
         {
             var response = await _mediator.SendAsync<TQuery, IResult<TResponse>>(query);
-
-            response.Status ??= ResponseStatus.Success;
 
             return response;
         }

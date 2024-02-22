@@ -22,6 +22,7 @@ public abstract class ACommandConsumer<TCommand, TResponse> :
     public override async Task Consume(IMessageContext<TCommand> context)
     {
         ScopeIdentity.SwitchIdentity(context.Message.Token);
+
         await OnConsumeAsync(context.Message, context);
     }
 
@@ -48,6 +49,7 @@ public abstract class ACommandConsumer<TCommand> :
     public override async Task Consume(IMessageContext<TCommand> context)
     {
         ScopeIdentity.SwitchIdentity(context.Message.Token);
+
         await OnConsumeAsync(context.Message, context);
     }
 

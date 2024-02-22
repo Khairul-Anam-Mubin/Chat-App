@@ -40,11 +40,13 @@ public sealed class PubSubMessageSubscriber : IInitialService
             Console.WriteLine($"PubSubMessage.Id : {message?.Id}, PubSubMessageType: {message?.MessageType.ToString()} , message : {message}\n");
 
             using var scope = _serviceScopeFactory.CreateScope();
-            var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
+            
             var scopeIdentity = scope.ServiceProvider.GetRequiredService<IScopeIdentity>();
             var accessToken = message!.Token;
-            // Todo: validate token as its the entry point
             scopeIdentity.SwitchIdentity(accessToken);
+
+            var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
+            
             await mediator.SendAsync(message);
         });
     }
