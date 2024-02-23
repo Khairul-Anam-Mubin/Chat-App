@@ -6,9 +6,9 @@ namespace Chat.Activity.Domain.Models;
 public class LastSeenModel : IEntity
 {
     public string Id { get; set; }
-    public string UserId { get; }
-    public DateTime LastSeenAt { get; }
-    public bool IsActive { get; }
+    public string UserId { get; set; }
+    public DateTime LastSeenAt { get; set; }
+    public bool IsActive { get; set; }
 
     private LastSeenModel(string userId)
     {

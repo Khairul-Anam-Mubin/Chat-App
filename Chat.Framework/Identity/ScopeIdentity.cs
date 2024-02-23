@@ -7,16 +7,12 @@ namespace Chat.Framework.Identity;
 public class ScopeIdentity : IScopeIdentity
 {
     private string? AccessToken { get; set; }
-    private List<Claim> Claims { get; set; }
-    private UserIdentity? UserIdentity { get; set; }
 
     private readonly IHttpContextAccessor _httpContextAccessor;
 
     public ScopeIdentity(IHttpContextAccessor httpContextAccessor)
     {
         _httpContextAccessor = httpContextAccessor;
-
-        Claims = new List<Claim>();
     }
 
     public Claim? GetClaimByType(string type)
@@ -26,12 +22,12 @@ public class ScopeIdentity : IScopeIdentity
 
     public List<Claim> GetClaims()
     {
-        return Claims;
+        return TokenHelper.GetClaims(GetToken());
     }
 
     public UserIdentity? GetUser()
     {
-        return UserIdentity;
+        return UserIdentity.Create(GetClaims());
     }
 
     public string? GetToken()
@@ -57,10 +53,6 @@ public class ScopeIdentity : IScopeIdentity
     public IScopeIdentity SwitchIdentity(string? accessToken)
     {
         AccessToken = accessToken;
-
-        Claims = TokenHelper.GetClaims(GetToken());
-
-        UserIdentity = UserIdentity.Create(Claims);
 
         return this;
     }

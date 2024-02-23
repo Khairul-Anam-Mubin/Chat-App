@@ -6,10 +6,10 @@ namespace Chat.Contact.Domain.Models;
 public class ContactModel : IEntity
 {
     public string Id { get; set; }
-    public string UserId { get; }
-    public string ContactUserId { get; }
-    public bool IsPending { get; private set; }
-    public DateTime CreatedAt { get; }
+    public string UserId { get; set; }
+    public string ContactUserId { get; set; }
+    public bool IsPending { get; set; }
+    public DateTime CreatedAt { get; set; }
 
     private ContactModel(string userId, string contactUserId)
     {
