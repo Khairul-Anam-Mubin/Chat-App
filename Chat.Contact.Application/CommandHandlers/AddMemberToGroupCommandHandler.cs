@@ -46,7 +46,7 @@ public class AddMemberToGroupCommandHandler : ICommandHandler<AddMemberToGroupCo
             return result;
         }
 
-        foreach (var member in group.Members)
+        foreach (var member in group.Members())
         {
             await _groupMemberRepository.SaveAsync(member);
         }

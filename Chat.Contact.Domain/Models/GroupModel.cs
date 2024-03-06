@@ -16,12 +16,21 @@ public class GroupModel : IEntity
         Name = name;
         CreatedBy = createdBy;
         CreatedAt = DateTime.UtcNow;
+        _members = new List<GroupMemberModel>();
     }
 
-    private readonly List<GroupMemberModel> _members = new ();
-    
-    public List<GroupMemberModel> Members => _members.ToList();
+    private List<GroupMemberModel> _members;
 
+    public void AddMember(GroupMemberModel member)
+    {
+        _members ??= new List<GroupMemberModel>();
+        _members.Add(member);
+    }
+
+    public List<GroupMemberModel> Members()
+    {
+        return _members.ToList();
+    }
 
     public static IResult<GroupModel> Create(string name, string creatorId)
     {
@@ -47,7 +56,7 @@ public class GroupModel : IEntity
             return groupMemberCreateResult;
         }
 
-        _members.Add(groupMemberCreateResult.Value);
+        AddMember(groupMemberCreateResult.Value);
 
         return Result.Success();
     }

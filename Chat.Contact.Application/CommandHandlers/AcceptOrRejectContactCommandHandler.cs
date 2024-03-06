@@ -32,7 +32,7 @@ public class AcceptOrRejectContactCommandHandler : ICommandHandler<AcceptOrRejec
         {
             var result = contact.AcceptRequest(userId);
 
-            if (!result.IsSuccess)
+            if (result.IsFailure)
             {
                 return result;
             }

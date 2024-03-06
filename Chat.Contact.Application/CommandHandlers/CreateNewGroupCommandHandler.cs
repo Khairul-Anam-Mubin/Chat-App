@@ -27,22 +27,22 @@ public class CreateNewGroupCommandHandler : ICommandHandler<CreateNewGroupComman
 
         var groupCreateResult = GroupModel.Create(groupName, userId);
 
-        if (groupCreateResult.IsSuccess || groupCreateResult.Value is null)
+        if (groupCreateResult.IsFailure || groupCreateResult.Value is null)
         {
             return groupCreateResult;
         }
 
-        var groupModel = groupCreateResult.Value;
+        var group = groupCreateResult.Value;
 
-        await _groupRepository.SaveAsync(groupModel);
+        await _groupRepository.SaveAsync(group);
 
-        var addMemberToGroupCommand = new AddMemberToGroupCommand(groupModel.Id, userId, userId);
+        var addMemberToGroupCommand = new AddMemberToGroupCommand(group.Id, userId, userId);
 
         await _commandExecutor.ExecuteAsync(addMemberToGroupCommand);
 
         var result = Result.Success("Group Created Successfully");
         
-        result.SetData("GroupId", groupModel.Id);
+        result.SetData("GroupId", group.Id);
 
         return result;
     }
