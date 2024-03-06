@@ -12,7 +12,7 @@ public interface IScopeIdentity
     /// </summary>
     IScopeIdentity SwitchIdentity(string? accessToken);
     UserIdentity? GetUser();
-    string? GetUserId();
+    string GetUserId();
     string? GetToken();
     List<Claim> GetClaims();
     Claim? GetClaimByType(string type);

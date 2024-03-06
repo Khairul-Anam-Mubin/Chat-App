@@ -25,7 +25,14 @@ public class CreateNewGroupCommandHandler : ICommandHandler<CreateNewGroupComman
         var groupName = request.GroupName;
         var userId = _scopeIdentity.GetUserId()!;
 
-        var groupModel = new GroupModel(groupName, userId);
+        var groupCreateResult = GroupModel.Create(groupName, userId);
+
+        if (groupCreateResult.IsSuccess || groupCreateResult.Value is null)
+        {
+            return groupCreateResult;
+        }
+
+        var groupModel = groupCreateResult.Value;
 
         await _groupRepository.SaveAsync(groupModel);
 

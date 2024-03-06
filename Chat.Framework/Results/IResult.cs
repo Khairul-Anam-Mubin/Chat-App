@@ -12,7 +12,7 @@ public interface IResult : IMetaDataDictionary
     bool IsFailure { get; }
 }
 
-public interface IResult<TResponse> : IResult
+public interface IResult<out TResponse> : IResult
 {
     TResponse? Value { get; }
 }

@@ -29,26 +29,27 @@ public class AddMemberToGroupCommandHandler : ICommandHandler<AddMemberToGroupCo
         var memberId = request.MemberId;
         var addedBy = _scopeIdentity.GetUserId();
 
-        var groupModel = await _groupRepository.GetByIdAsync(groupId);
+        var group = await _groupRepository.GetByIdAsync(groupId);
 
-        if (groupModel is null)
+        if (group is null)
         {
             return Result.Error("Group not exists");
         }
 
-        if (groupModel.CreatedBy != addedBy)
+        var result = group.AddNewMemberToGroup(
+            addedBy, 
+            memberId,
+            await _groupMemberRepository.IsUserAlreadyExistsInGroupAsync(groupId, memberId));
+
+        if (result.IsFailure)
         {
-            return Result.Error("Can't add to group");
+            return result;
         }
 
-        if (await _groupMemberRepository.IsUserAlreadyExistsInGroupAsync(groupId, memberId))
+        foreach (var member in group.Members)
         {
-            return Result.Error("User Already Exists in the group");
+            await _groupMemberRepository.SaveAsync(member);
         }
-
-        var groupMemberModel = new GroupMemberModel(groupId, memberId, addedBy);
-
-        await _groupMemberRepository.SaveAsync(groupMemberModel);
 
         return Result.Success("Member added to group successfully");
     }

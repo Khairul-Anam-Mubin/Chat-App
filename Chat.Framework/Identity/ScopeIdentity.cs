@@ -17,7 +17,7 @@ public class ScopeIdentity : IScopeIdentity
 
     public Claim? GetClaimByType(string type)
     {
-        return GetClaims().Where(claim => claim.Type == type).FirstOrDefault();
+        return GetClaims().FirstOrDefault(claim => claim.Type == type);
     }
 
     public List<Claim> GetClaims()
@@ -40,9 +40,9 @@ public class ScopeIdentity : IScopeIdentity
         return _httpContextAccessor.HttpContext?.GetAccessToken();
     }
 
-    public string? GetUserId()
+    public string GetUserId()
     {
-        return GetUser()?.Id;
+        return GetUser()?.Id ?? string.Empty;
     }
 
     public bool HasClaim(string claimType)

@@ -1,21 +1,27 @@
 ﻿using Chat.Framework.Database.ORM.Interfaces;
+using Chat.Framework.Results;
 
 namespace Chat.Contact.Domain.Models;
 
 public class GroupMemberModel : IEntity
 {
     public string Id { get; set; }
-    public string GroupId { get; set; }
-    public string MemberId { get; set; }
-    public string AddedBy { get; set; }
-    public DateTime JoinedAt { get; set; }
+    public string GroupId { get; private set; }
+    public string MemberId { get; private set; }
+    public string AddedBy { get; private set; }
+    public DateTime JoinedAt { get; private set; }
 
-    public GroupMemberModel(string groupId, string memberId, string addedBy)
+    private GroupMemberModel(string groupId, string memberId, string addedBy)
     {
         Id = Guid.NewGuid().ToString();
         GroupId = groupId;
         MemberId = memberId;
         AddedBy = addedBy;
         JoinedAt = DateTime.UtcNow;
+    }
+
+    public static IResult<GroupMemberModel> Create(string groupId, string memberId, string addedBy)
+    {
+        return Result.Success(new GroupMemberModel(groupId, memberId, addedBy));
     }
 }
