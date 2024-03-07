@@ -1,5 +1,5 @@
-using Chat.Contact.Domain.Interfaces;
 using Chat.Contact.Domain.Models;
+using Chat.Contact.Domain.Repositories;
 using Chat.Framework.Database.ORM;
 using Chat.Framework.Database.ORM.Builders;
 using Chat.Framework.Database.ORM.Enums;

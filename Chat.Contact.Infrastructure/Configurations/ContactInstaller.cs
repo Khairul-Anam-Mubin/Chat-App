@@ -1,5 +1,5 @@
 ﻿using Chat.Contact.Application;
-using Chat.Contact.Domain.Interfaces;
+using Chat.Contact.Domain.Repositories;
 using Chat.Contact.Infrastructure.Migrations;
 using Chat.Contact.Infrastructure.Repositories;
 using Chat.Framework.Database.ORM.Interfaces;
@@ -18,6 +18,5 @@ public class ContactInstaller : IServiceInstaller
         services.AddTransient<IIndexCreator, ContactModelIndexCreator>();
         services.AddSingleton<IContactRepository, ContactRepository>();
         services.AddSingleton<IGroupRepository, GroupRepository>();
-        services.AddSingleton<IGroupMemberRepository, GroupMemberRepository>();
     }
 }

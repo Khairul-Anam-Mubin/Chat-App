@@ -21,7 +21,7 @@ public class VerifiedUserAccountCreatedEventConsumer : AEventConsumer<VerifiedUs
     {
         var result = LastSeenModel.Create(@event.UserId);
 
-        if (result.IsSuccess && result.Value is not null)
+        if (result is { IsSuccess: true, Value: not null })
         {
             await _lastSeenRepository.SaveAsync(result.Value);
         }

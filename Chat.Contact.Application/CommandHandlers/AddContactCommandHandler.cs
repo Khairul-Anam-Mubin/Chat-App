@@ -1,6 +1,6 @@
 using Chat.Contact.Application.Commands;
-using Chat.Contact.Domain.Interfaces;
 using Chat.Contact.Domain.Models;
+using Chat.Contact.Domain.Repositories;
 using Chat.Domain.Shared.Queries;
 using Chat.Framework.CQRS;
 using Chat.Framework.Identity;

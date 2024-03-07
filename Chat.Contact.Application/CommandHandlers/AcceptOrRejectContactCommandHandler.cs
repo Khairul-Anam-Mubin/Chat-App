@@ -1,5 +1,5 @@
 using Chat.Contact.Application.Commands;
-using Chat.Contact.Domain.Interfaces;
+using Chat.Contact.Domain.Repositories;
 using Chat.Framework.CQRS;
 using Chat.Framework.Identity;
 using Chat.Framework.Results;
