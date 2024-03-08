@@ -1,4 +1,4 @@
-using Chat.Activity.Domain.Interfaces.Repositories;
+using Chat.Activity.Domain.Repositories;
 using Chat.Domain.Shared.Commands;
 using Chat.Framework.CQRS;
 using Chat.Framework.Identity;

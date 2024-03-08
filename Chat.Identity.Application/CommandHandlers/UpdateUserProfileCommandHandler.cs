@@ -4,7 +4,7 @@ using Chat.Framework.Identity;
 using Chat.Framework.Results;
 using Chat.Identity.Application.Commands;
 using Chat.Identity.Application.Extensions;
-using Chat.Identity.Domain.Interfaces;
+using Chat.Identity.Domain.Repositories;
 
 namespace Chat.Identity.Application.CommandHandlers;
 

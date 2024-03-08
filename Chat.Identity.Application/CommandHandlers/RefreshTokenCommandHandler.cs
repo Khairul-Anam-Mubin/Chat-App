@@ -2,18 +2,22 @@ using Chat.Application.Shared.Providers;
 using Chat.Framework.CQRS;
 using Chat.Framework.Results;
 using Chat.Identity.Application.Commands;
-using Chat.Identity.Domain.Interfaces;
-using Chat.Identity.Domain.Models;
+using Chat.Identity.Application.Dtos;
+using Chat.Identity.Application.Extensions;
+using Chat.Identity.Domain.Repositories;
+using Chat.Identity.Domain.Services;
 
 namespace Chat.Identity.Application.CommandHandlers;
 
 public class RefreshTokenCommandHandler : ICommandHandler<RefreshTokenCommand, Token>
 {
     private readonly ITokenService _tokenService;
+    private readonly IAccessRepository _accessRepository;
 
-    public RefreshTokenCommandHandler(ITokenService tokenService)
+    public RefreshTokenCommandHandler(ITokenService tokenService, IAccessRepository accessRepository)
     {
         _tokenService = tokenService;
+        _accessRepository = accessRepository;
     }
 
     public async Task<IResult<Token>> HandleAsync(RefreshTokenCommand command)
@@ -27,7 +31,7 @@ public class RefreshTokenCommandHandler : ICommandHandler<RefreshTokenCommand, T
         }
 
         var accessModel = 
-            await _tokenService.GetAccessModelByRefreshTokenAsync(command.RefreshToken);
+            await _accessRepository.GetByIdAsync(command.RefreshToken);
 
         if (accessModel is null)
         {
@@ -46,18 +50,23 @@ public class RefreshTokenCommandHandler : ICommandHandler<RefreshTokenCommand, T
 
         if (validRefreshAttemptResult.IsFailure)
         {
-            await _tokenService.RevokeAllTokensByUserId(accessModel.UserId);
+            await _accessRepository.RevokeAllTokensByUserIdAsync(accessModel.UserId);
 
             return (IResult<Token>)validRefreshAttemptResult;
         }
 
         accessModel.MakeTokenExpired();
         
-        await _tokenService.SaveAccessModelAsync(accessModel);
+        await _accessRepository.SaveAsync(accessModel);
         
         var userProfile = IdentityProvider.GetUserProfile(command.AccessToken);
+
+        var refreshedAccessModel = 
+            _tokenService.GenerateAccessModel(userProfile, command.AppId);
         
-        var token = await _tokenService.CreateTokenAsync(userProfile, command.AppId);
+        await _accessRepository.SaveAsync(refreshedAccessModel);
+
+        var token = refreshedAccessModel.ToToken();
 
         if (token is null)
         {

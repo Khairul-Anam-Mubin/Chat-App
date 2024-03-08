@@ -1,6 +1,6 @@
 using Chat.Framework.CQRS;
 using Chat.Identity.Application.Commands;
-using Chat.Identity.Domain.Models;
+using Chat.Identity.Application.Dtos;
 using Chat.Infrastructure.Shared.Controllers;
 using Microsoft.AspNetCore.Mvc;
 

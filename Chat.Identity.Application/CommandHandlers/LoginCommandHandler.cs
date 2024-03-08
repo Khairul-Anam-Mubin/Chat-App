@@ -1,9 +1,10 @@
 using Chat.Framework.CQRS;
 using Chat.Framework.Results;
 using Chat.Identity.Application.Commands;
+using Chat.Identity.Application.Dtos;
 using Chat.Identity.Application.Extensions;
-using Chat.Identity.Domain.Interfaces;
-using Chat.Identity.Domain.Models;
+using Chat.Identity.Domain.Repositories;
+using Chat.Identity.Domain.Services;
 
 namespace Chat.Identity.Application.CommandHandlers;
 
@@ -11,11 +12,13 @@ public class LoginCommandHandler : ICommandHandler<LoginCommand, Token>
 {
     private readonly IUserRepository _userRepository;
     private readonly ITokenService _tokenService;
+    private readonly IAccessRepository _accessRepository;
 
-    public LoginCommandHandler(IUserRepository userRepository, ITokenService tokenService)
+    public LoginCommandHandler(IUserRepository userRepository, ITokenService tokenService, IAccessRepository accessRepository)
     {
         _userRepository = userRepository;
         _tokenService = tokenService;
+        _accessRepository = accessRepository;
     }
 
     public async Task<IResult<Token>> HandleAsync(LoginCommand command)
@@ -36,7 +39,11 @@ public class LoginCommandHandler : ICommandHandler<LoginCommand, Token>
 
         var userProfile = user.ToUserProfile();
 
-        var token = await _tokenService.CreateTokenAsync(userProfile, command.AppId);
+        var accessModel = _tokenService.GenerateAccessModel(userProfile, command.AppId);
+
+        await _accessRepository.SaveAsync(accessModel);
+
+        var token = accessModel.ToToken();
         
         if (token is null)
         {

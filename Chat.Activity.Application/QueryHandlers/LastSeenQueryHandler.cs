@@ -1,7 +1,7 @@
 using Chat.Activity.Application.DTOs;
 using Chat.Activity.Application.Extensions;
 using Chat.Activity.Application.Queries;
-using Chat.Activity.Domain.Interfaces.Repositories;
+using Chat.Activity.Domain.Repositories;
 using Chat.Framework.CQRS;
 using Chat.Framework.Results;
 

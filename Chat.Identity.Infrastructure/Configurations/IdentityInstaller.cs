@@ -1,7 +1,7 @@
 ﻿using Chat.Framework.Database.ORM.Interfaces;
 using Chat.Framework.ServiceInstaller;
 using Chat.Identity.Application;
-using Chat.Identity.Domain.Interfaces;
+using Chat.Identity.Domain.Repositories;
 using Chat.Identity.Infrastructure.Migrations;
 using Chat.Identity.Infrastructure.Repositories;
 using Microsoft.Extensions.Configuration;

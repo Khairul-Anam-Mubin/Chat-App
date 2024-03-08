@@ -1,7 +1,7 @@
 using Chat.Framework.Database.ORM.Interfaces;
 using Chat.Framework.Results;
 
-namespace Chat.Identity.Domain.Models;
+namespace Chat.Identity.Domain.Entities;
 
 public class AccessModel : IEntity
 {

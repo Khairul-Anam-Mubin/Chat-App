@@ -4,8 +4,8 @@ using Chat.Framework.Identity;
 using Chat.Framework.MessageBrokers;
 using Chat.Framework.Results;
 using Chat.Identity.Application.Extensions;
-using Chat.Identity.Domain.Interfaces;
-using Chat.Identity.Domain.Models;
+using Chat.Identity.Domain.Entities;
+using Chat.Identity.Domain.Repositories;
 
 namespace Chat.Identity.Application.Consumers;
 

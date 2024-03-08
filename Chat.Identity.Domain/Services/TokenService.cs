@@ -5,13 +5,12 @@ using Chat.Domain.Shared.Entities;
 using Chat.Framework.Extensions;
 using Chat.Framework.Identity;
 using Chat.Framework.Results;
-using Chat.Identity.Application.Extensions;
-using Chat.Identity.Domain.Interfaces;
-using Chat.Identity.Domain.Models;
+using Chat.Identity.Domain.Entities;
+using Chat.Identity.Domain.Repositories;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Chat.Identity.Application.Services;
+namespace Chat.Identity.Domain.Services;
 
 public class TokenService : ITokenService
 {
@@ -31,7 +30,7 @@ public class TokenService : ITokenService
             GetTokenValidationParameters(
                 true,
                 true,
-                false), 
+                false),
             out var validationMessage))
         {
             return Result.Error(validationMessage);
@@ -45,47 +44,37 @@ public class TokenService : ITokenService
         return Result.Success();
     }
 
-    public async Task<Token?> CreateTokenAsync(UserProfile userProfile, string appId)
-    {
-        var accessModel = GenerateAccessModel(userProfile, appId);
-        var isSave = await _accessRepository.SaveAsync(accessModel);
-        if (isSave == false) return null;
-        return accessModel.ToToken();
-    }
-
-    public async Task<bool> RevokeAllTokenByAppIdAsync(string appId)
-    {
-        return await _accessRepository.DeleteAllTokenByAppId(appId);
-    }
-
-    public async Task<bool> RevokeAllTokensByUserId(string userId)
-    {
-        return await _accessRepository.DeleteAllTokensByUserId(userId);
-    }
-
-    public async Task<bool> SaveAccessModelAsync(AccessModel accessModel)
-    {
-        return await _accessRepository.SaveAsync(accessModel);
-    }
-    public async Task<AccessModel?> GetAccessModelByRefreshTokenAsync(string refreshToken)
-    {
-        return await _accessRepository.GetByIdAsync(refreshToken);
-    }
-
     public AccessModel GenerateAccessModel(UserProfile userProfile, string appId)
     {
+        var accessToken = GenerateAccessToken(userProfile, appId);
+
+        var refreshToken = TokenHelper.GenerateRefreshToken();
+
+        var accessModelCreateResult =
+            AccessModel.Create(refreshToken, accessToken, userProfile.Id, appId);
+
+        return accessModelCreateResult.Value!;
+    }
+
+    public string GenerateAccessToken(UserProfile userProfile, string appId)
+    {
         var claims = GenerateClaims(userProfile, appId);
+
+        var accessToken = GenerateAccessToken(claims);
+
+        return accessToken;
+    }
+
+    public string GenerateAccessToken(List<Claim> claims)
+    {
         var accessToken = TokenHelper.GenerateJwtToken(
-            _tokenConfig.Issuer, 
+            _tokenConfig.Issuer,
             _tokenConfig.Audience,
             _tokenConfig.SecretKey,
-            _tokenConfig.ExpirationTimeInSec, 
+            _tokenConfig.ExpirationTimeInSec,
             claims);
-        var refreshToken = TokenHelper.GenerateRefreshToken();
-        var accessModelCreateResult = 
-            AccessModel.Create(refreshToken, accessToken, userProfile.Id, appId);
-        
-        return accessModelCreateResult.Value!;
+
+        return accessToken;
     }
 
     public List<Claim> GenerateClaims(UserProfile userProfile, string appId)
@@ -106,9 +95,9 @@ public class TokenService : ITokenService
     }
 
     public TokenValidationParameters GetTokenValidationParameters(
-        bool validateIssuer = true, 
-        bool validateAudience = true, 
-        bool validateLifetime = true, 
+        bool validateIssuer = true,
+        bool validateAudience = true,
+        bool validateLifetime = true,
         bool validateIssuerSigningKey = true)
     {
         return new TokenValidationParameters

@@ -84,10 +84,8 @@ export class AuthService {
     getRefreshTokenCommand() {
         const refreshTokenCommand = new RefreshTokenCommand();
         refreshTokenCommand.appId = this.getAppId();
-        const token = new Token();
-        token.accessToken = this.getAccessToken();
-        token.refreshToken = this.getRefreshToken();
-        refreshTokenCommand.token = token;
+        refreshTokenCommand.accessToken = this.getAccessToken();
+        refreshTokenCommand.refreshToken = this.getRefreshToken();
         return refreshTokenCommand;
     }
 

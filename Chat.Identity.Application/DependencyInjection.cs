@@ -1,8 +1,7 @@
 ﻿using Chat.Framework.Mediators;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
-using Chat.Identity.Application.Services;
-using Chat.Identity.Domain.Interfaces;
+using Chat.Identity.Domain.Services;
 
 namespace Chat.Identity.Application;
 

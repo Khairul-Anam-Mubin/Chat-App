@@ -1,4 +1,4 @@
-namespace Chat.Identity.Domain.Models;
+namespace Chat.Identity.Application.Dtos;
 
 public class Token
 {

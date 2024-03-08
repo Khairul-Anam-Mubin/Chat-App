@@ -1,5 +1,5 @@
 ﻿using Chat.Activity.Application;
-using Chat.Activity.Domain.Interfaces.Repositories;
+using Chat.Activity.Domain.Repositories;
 using Chat.Activity.Infrastructure.Migrations;
 using Chat.Activity.Infrastructure.Repositories;
 using Chat.Framework.Database.ORM.Interfaces;

@@ -1,7 +1,7 @@
 using Chat.Framework.Database.ORM.Interfaces;
 using Chat.Framework.Results;
 
-namespace Chat.Activity.Domain.Models;
+namespace Chat.Activity.Domain.Entities;
 
 public class LastSeenModel : IEntity
 {

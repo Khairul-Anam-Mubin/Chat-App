@@ -1,4 +1,4 @@
-﻿using Chat.Activity.Domain.Models;
+﻿using Chat.Activity.Domain.Entities;
 using Chat.Framework.Database.ORM;
 using Chat.Framework.Database.ORM.Builders;
 using Chat.Framework.Database.ORM.Interfaces;

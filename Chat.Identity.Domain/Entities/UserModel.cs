@@ -2,7 +2,7 @@ using Chat.Framework.Database.ORM.Interfaces;
 using Chat.Framework.Results;
 using System.ComponentModel.DataAnnotations;
 
-namespace Chat.Identity.Domain.Models;
+namespace Chat.Identity.Domain.Entities;
 
 public class UserModel : IEntity
 {
@@ -30,7 +30,7 @@ public class UserModel : IEntity
     public int PublicKey { get; private set; }
 
     public string Password { get; private set; }
-    
+
     public bool IsEmailVerified { get; private set; }
 
     private UserModel(string firstName, string lastName, DateTime birthDay, string email, string password)
@@ -61,7 +61,7 @@ public class UserModel : IEntity
         {
             return Result.Error("Password Empty");
         }
-        
+
         if (!Password.Equals(password))
         {
             return Result.Error("Incorrect password");
@@ -71,7 +71,7 @@ public class UserModel : IEntity
         {
             return Result.Error("Email not verified yet");
         }
-        
+
         return Result.Success();
     }
 
@@ -79,14 +79,14 @@ public class UserModel : IEntity
     {
         var updateInfoCount = 0;
 
-        if (!string.IsNullOrEmpty(requestUpdateModel.FirstName) && 
+        if (!string.IsNullOrEmpty(requestUpdateModel.FirstName) &&
             FirstName != requestUpdateModel.FirstName)
         {
             FirstName = requestUpdateModel.FirstName;
             updateInfoCount++;
         }
 
-        if (!string.IsNullOrEmpty(requestUpdateModel.LastName) && 
+        if (!string.IsNullOrEmpty(requestUpdateModel.LastName) &&
             LastName != requestUpdateModel.LastName)
         {
             LastName = requestUpdateModel.LastName;
@@ -100,14 +100,14 @@ public class UserModel : IEntity
             updateInfoCount++;
         }
 
-        if (!string.IsNullOrEmpty(requestUpdateModel.About) && 
+        if (!string.IsNullOrEmpty(requestUpdateModel.About) &&
             About != requestUpdateModel.About)
         {
             About = requestUpdateModel.About;
             updateInfoCount++;
         }
 
-        if (!string.IsNullOrEmpty(requestUpdateModel.ProfilePictureId) && 
+        if (!string.IsNullOrEmpty(requestUpdateModel.ProfilePictureId) &&
             ProfilePictureId != requestUpdateModel.ProfilePictureId)
         {
             ProfilePictureId = requestUpdateModel.ProfilePictureId;

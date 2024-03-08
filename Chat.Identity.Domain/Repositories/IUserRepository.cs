@@ -1,7 +1,7 @@
 using Chat.Framework.Database.ORM.Interfaces;
-using Chat.Identity.Domain.Models;
+using Chat.Identity.Domain.Entities;
 
-namespace Chat.Identity.Domain.Interfaces;
+namespace Chat.Identity.Domain.Repositories;
 
 public interface IUserRepository : IRepository<UserModel>
 {

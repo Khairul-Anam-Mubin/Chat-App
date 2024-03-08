@@ -3,7 +3,7 @@ using Chat.Framework.CQRS;
 using Chat.Framework.MessageBrokers;
 using Chat.Framework.Results;
 using Chat.Identity.Application.Commands;
-using Chat.Identity.Domain.Interfaces;
+using Chat.Identity.Domain.Repositories;
 
 namespace Chat.Identity.Application.CommandHandlers;
 

@@ -3,8 +3,8 @@ using Chat.Framework.CQRS;
 using Chat.Framework.EmailSenders;
 using Chat.Framework.Results;
 using Chat.Identity.Application.Commands;
-using Chat.Identity.Domain.Interfaces;
-using Chat.Identity.Domain.Models;
+using Chat.Identity.Domain.Entities;
+using Chat.Identity.Domain.Repositories;
 
 namespace Chat.Identity.Application.CommandHandlers;
 
