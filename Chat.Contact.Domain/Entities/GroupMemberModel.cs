@@ -1,7 +1,7 @@
 ﻿using Chat.Framework.Database.ORM.Interfaces;
 using Chat.Framework.Results;
 
-namespace Chat.Contact.Domain.Models;
+namespace Chat.Contact.Domain.Entities;
 
 public class GroupMemberModel : IEntity
 {

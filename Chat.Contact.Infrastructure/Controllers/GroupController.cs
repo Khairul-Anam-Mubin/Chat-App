@@ -1,6 +1,6 @@
 ﻿using Chat.Contact.Application.Commands;
 using Chat.Contact.Application.Queries;
-using Chat.Contact.Domain.Models;
+using Chat.Contact.Domain.Entities;
 using Chat.Framework.CQRS;
 using Chat.Infrastructure.Shared.Controllers;
 using Microsoft.AspNetCore.Authorization;

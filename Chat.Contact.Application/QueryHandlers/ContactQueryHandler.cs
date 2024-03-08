@@ -1,7 +1,7 @@
 using Chat.Contact.Application.DTOs;
 using Chat.Contact.Application.Extensions;
 using Chat.Contact.Application.Queries;
-using Chat.Contact.Domain.Models;
+using Chat.Contact.Domain.Entities;
 using Chat.Contact.Domain.Repositories;
 using Chat.Framework.CQRS;
 using Chat.Framework.Identity;

@@ -1,7 +1,7 @@
 ﻿using Chat.Framework.Database.ORM.Interfaces;
 using Chat.Framework.Results;
 
-namespace Chat.Contact.Domain.Models;
+namespace Chat.Contact.Domain.Entities;
 
 public class GroupModel : IEntity
 {
@@ -21,7 +21,7 @@ public class GroupModel : IEntity
 
     private List<GroupMemberModel> _members;
 
-    public void AddMember(GroupMemberModel member)
+    private void AddMember(GroupMemberModel member)
     {
         _members ??= new List<GroupMemberModel>();
         _members.Add(member);

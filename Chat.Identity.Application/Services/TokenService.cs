@@ -4,6 +4,7 @@ using Chat.Domain.Shared.Constants;
 using Chat.Domain.Shared.Entities;
 using Chat.Framework.Extensions;
 using Chat.Framework.Identity;
+using Chat.Framework.Results;
 using Chat.Identity.Application.Extensions;
 using Chat.Identity.Domain.Interfaces;
 using Chat.Identity.Domain.Models;
@@ -21,6 +22,27 @@ public class TokenService : ITokenService
     {
         _tokenConfig = configuration.TryGetConfig<TokenConfig>();
         _accessRepository = accessRepository;
+    }
+
+    public IResult CheckForValidRefreshTokenRequest(string jwtToken)
+    {
+        if (!TokenHelper.TryValidateToken(
+            jwtToken,
+            GetTokenValidationParameters(
+                true,
+                true,
+                false), 
+            out var validationMessage))
+        {
+            return Result.Error(validationMessage);
+        }
+
+        if (!TokenHelper.IsExpired(jwtToken))
+        {
+            return Result.Error("AccessToken not expired yet!");
+        }
+
+        return Result.Success();
     }
 
     public async Task<Token?> CreateTokenAsync(UserProfile userProfile, string appId)
@@ -60,16 +82,10 @@ public class TokenService : ITokenService
             _tokenConfig.ExpirationTimeInSec, 
             claims);
         var refreshToken = TokenHelper.GenerateRefreshToken();
-        var accessModel = new AccessModel
-        {
-            Id = refreshToken,
-            AccessToken = accessToken,
-            AppId = appId,
-            UserId = userProfile.Id,
-            Expired = false,
-            CreatedAt = DateTime.UtcNow
-        };
-        return accessModel;
+        var accessModelCreateResult = 
+            AccessModel.Create(refreshToken, accessToken, userProfile.Id, appId);
+        
+        return accessModelCreateResult.Value!;
     }
 
     public List<Claim> GenerateClaims(UserProfile userProfile, string appId)

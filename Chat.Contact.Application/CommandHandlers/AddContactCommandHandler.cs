@@ -1,5 +1,5 @@
 using Chat.Contact.Application.Commands;
-using Chat.Contact.Domain.Models;
+using Chat.Contact.Domain.Entities;
 using Chat.Contact.Domain.Repositories;
 using Chat.Domain.Shared.Queries;
 using Chat.Framework.CQRS;

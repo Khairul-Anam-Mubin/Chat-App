@@ -1,4 +1,4 @@
-using Chat.Contact.Domain.Models;
+using Chat.Contact.Domain.Entities;
 using Chat.Framework.Database.ORM.Interfaces;
 
 namespace Chat.Contact.Domain.Repositories;

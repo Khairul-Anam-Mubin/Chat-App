@@ -1,4 +1,4 @@
-using Chat.Contact.Domain.Models;
+using Chat.Contact.Domain.Entities;
 using Chat.Contact.Domain.Repositories;
 using Chat.Framework.Database.ORM;
 using Chat.Framework.Database.ORM.Builders;

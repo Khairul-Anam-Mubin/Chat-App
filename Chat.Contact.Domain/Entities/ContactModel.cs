@@ -1,7 +1,7 @@
 using Chat.Framework.Database.ORM.Interfaces;
 using Chat.Framework.Results;
 
-namespace Chat.Contact.Domain.Models;
+namespace Chat.Contact.Domain.Entities;
 
 public class ContactModel : IEntity
 {
@@ -31,12 +31,12 @@ public class ContactModel : IEntity
         {
             return Result.Error("Only contact user can accept request.");
         }
-        
+
         IsPending = false;
-        
+
         return Result.Success();
     }
-    
+
     public static ContactModel Create(string userId, string contactUserId)
     {
         return new ContactModel(userId, contactUserId);

@@ -15,6 +15,11 @@ public class UserRepository : RepositoryBase<UserModel>, IUserRepository
         : base(configuration.TryGetConfig<DatabaseInfo>("DatabaseInfo"), 
             dbContextFactory.GetDbContext(Context.Mongo)) {}
 
+    public async Task<bool> IsUserExistAsync(string email)
+    {
+        return await GetUserByEmailAsync(email) is not null;
+    }
+
     public async Task<bool> IsUserExistAsync(UserModel userModel)
     {
         var filterBuilder = new FilterBuilder<UserModel>();

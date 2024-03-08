@@ -5,6 +5,8 @@ namespace Chat.Identity.Domain.Interfaces;
 
 public interface IUserRepository : IRepository<UserModel>
 {
+    Task<bool> IsUserExistAsync(string email);
+
     Task<bool> IsUserExistAsync(UserModel userModel);
 
     Task<UserModel?> GetUserByEmailAsync(string email);

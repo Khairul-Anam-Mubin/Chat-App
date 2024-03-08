@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { UserModel } from '../../models/user-model';
 import { RegisterCommand } from '../../commands/register-command';
 import { CommandService } from 'src/app/core/services/command-service';
 import { take } from 'rxjs';
@@ -19,7 +18,6 @@ export class RegisterComponent implements OnInit{
     firstName : ['', [Validators.required, Validators.pattern('[a-zA-z ]*')]],
     lastName : ['', [Validators.required, Validators.pattern('[a-zA-z ]*')]],
     birthDay : ['', Validators.required],
-    about : [''],
     email : ['', [Validators.required, Validators.email]],
     password : ['', [Validators.required, Validators.minLength(6)]],
     confirmPassword : ['', [Validators.required, Validators.minLength(6)]],
@@ -47,16 +45,12 @@ export class RegisterComponent implements OnInit{
   }
 
   getRegisterCommand() {
-    const userModel = new UserModel();
-    userModel.firstName = this.getFormValue('firstName');
-    userModel.lastName = this.getFormValue('lastName');
-    userModel.birthDay = this.getFormValue('birthDay');
-    userModel.about = this.getFormValue('about');
-    userModel.email = this.getFormValue('email');
-    userModel.password = this.getFormValue('password');
-    userModel.publicKey = this.securityService.getPublicKey(this.securityService.getPrivateKey());
     const registerCommand = new RegisterCommand();
-    registerCommand.userModel = userModel;
+    registerCommand.firstName = this.getFormValue('firstName');
+    registerCommand.lastName = this.getFormValue('lastName');
+    registerCommand.birthDay = this.getFormValue('birthDay');
+    registerCommand.email = this.getFormValue('email');
+    registerCommand.password = this.getFormValue('password');
     return registerCommand;
   }
 

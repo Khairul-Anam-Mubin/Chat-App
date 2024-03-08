@@ -26,51 +26,23 @@ public class UpdateUserProfileCommandHandler :
 
         var userId = _scopeIdentity.GetUserId()!;
         
-        var userModel = 
+        var user = 
             await _userRepository.GetByIdAsync(userId);
         
-        if (userModel is null)
+        if (user is null)
         {
             return Result.Error<UserProfile>("UserModel not found");
         }
+
+        var updateResult = user.Update(requestUpdateModel);
         
-        var updateInfoCount = 0;
-        
-        if (!string.IsNullOrEmpty(requestUpdateModel.FirstName))
+        if (updateResult.IsFailure || updateResult.Value is null)
         {
-            userModel.FirstName = requestUpdateModel.FirstName;
-            updateInfoCount++;
-        }
-        
-        if (!string.IsNullOrEmpty(requestUpdateModel.LastName))
-        {
-            userModel.LastName = requestUpdateModel.LastName;
-            updateInfoCount++;
-        }
-        
-        if (requestUpdateModel.BirthDay != null)
-        {
-            userModel.BirthDay = requestUpdateModel.BirthDay;
-            updateInfoCount++;
-        }
-        
-        if (!string.IsNullOrEmpty(requestUpdateModel.About))
-        {
-            userModel.About = requestUpdateModel.About;
-            updateInfoCount++;
-        }
-        
-        if (!string.IsNullOrEmpty(requestUpdateModel.ProfilePictureId))
-        {
-            userModel.ProfilePictureId = requestUpdateModel.ProfilePictureId;
-            updateInfoCount++;
-        }
-        
-        if (updateInfoCount > 0)
-        {
-            await _userRepository.SaveAsync(userModel);
+            return Result.Error<UserProfile>(updateResult.Message);
         }
 
-        return Result.Success(userModel.ToUserProfile());
+        await _userRepository.SaveAsync(user);
+
+        return Result.Success(user.ToUserProfile());
     }
 }

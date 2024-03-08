@@ -59,17 +59,26 @@ public static class TokenHelper
         }
     }
 
-    public static bool IsTokenValid(string? accessToken, TokenValidationParameters validationParameters)
+    public static bool TryValidateToken(string? accessToken, TokenValidationParameters validationParameters, out string validationMessage)
     {
         try
         {
+            if (string.IsNullOrEmpty(accessToken))
+            {
+                throw new Exception("AccessToken not found");
+            }
+
             accessToken = GetPreparedToken(accessToken);
             new JwtSecurityTokenHandler()
                 .ValidateToken(accessToken, validationParameters, out var validatedToken);
+
+            validationMessage = "Successfully token validated with the given parameters";
+            
             return true;
         }
-        catch (Exception)
+        catch (Exception ex)
         {
+            validationMessage = ex.Message;
             return false;
         }
     }

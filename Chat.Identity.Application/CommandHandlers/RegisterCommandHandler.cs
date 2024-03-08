@@ -1,7 +1,6 @@
 using Chat.Domain.Shared.Commands;
 using Chat.Framework.CQRS;
 using Chat.Framework.EmailSenders;
-using Chat.Framework.MessageBrokers;
 using Chat.Framework.Results;
 using Chat.Identity.Application.Commands;
 using Chat.Identity.Domain.Interfaces;
@@ -12,38 +11,40 @@ namespace Chat.Identity.Application.CommandHandlers;
 public class RegisterCommandHandler : ICommandHandler<RegisterCommand>
 {
     private readonly IUserRepository _userRepository;
-    private readonly ICommandBus _commandBus;
     private readonly ICommandService _commandService;
 
-    public RegisterCommandHandler(
-        IUserRepository userRepository,
-        ICommandBus commandBus,
-        ICommandService commandService)
+    public RegisterCommandHandler(IUserRepository userRepository, ICommandService commandService)
     {
         _userRepository = userRepository;
-        _commandBus = commandBus;
         _commandService = commandService;
     }
 
     public async Task<IResult> HandleAsync(RegisterCommand command)
     {
-        if (await _userRepository.IsUserExistAsync(command.UserModel))
-        {
-            return Result.Error("User email or id already exists!!");
-        }
-        
-        command.UserModel.Id = Guid.NewGuid().ToString();
-        command.UserModel.UserName = $"{command.UserModel.FirstName}_{command.UserModel.LastName}";
-        command.UserModel.IsEmailVerified = false;
+        var userCreatedResult = 
+            UserModel.Create(
+                command.FirstName, 
+                command.LastName, 
+                command.BirthDay, 
+                command.Email, 
+                command.Password,
+                await _userRepository.IsUserExistAsync(command.Email));
 
-        if (!await _userRepository.SaveAsync(command.UserModel))
+        if (userCreatedResult.IsFailure || userCreatedResult.Value is null)
+        {
+            return userCreatedResult;
+        }
+
+        var user = userCreatedResult.Value;
+
+        if (!await _userRepository.SaveAsync(user))
         {
             return Result.Error("Some anonymous problem occurred!!");
         }
 
         var response = Result.Success("User Created Successfully!!");
 
-        await SendVerificationEmailAsync(command.UserModel);
+        await SendVerificationEmailAsync(user);
         
         return response;
     }
