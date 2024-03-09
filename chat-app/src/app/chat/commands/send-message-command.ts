@@ -4,11 +4,12 @@ import { ChatModel } from "../models/chat-model";
 
 export class SendMessageCommand extends CommandBase {
     
-    chatModel : ChatModel;
-    
+    sendTo : any;
+    message : any;
+    isGroupMessage: any;
+
     constructor() {
         super();
-        this.chatModel = new ChatModel();
         this.apiUrl = Configuration.identityApi + "/chat/send"
     }
 }

@@ -1,5 +1,5 @@
 using System.ComponentModel.DataAnnotations;
-using Chat.FileStore.Domain.Models;
+using Chat.FileStore.Domain.Entities;
 using Chat.Framework.CQRS;
 using Chat.Framework.Pagination;
 

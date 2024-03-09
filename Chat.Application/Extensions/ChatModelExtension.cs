@@ -1,5 +1,5 @@
 ﻿using Chat.Application.DTOs;
-using Chat.Domain.Models;
+using Chat.Domain.Entities;
 
 namespace Chat.Application.Extensions;
 

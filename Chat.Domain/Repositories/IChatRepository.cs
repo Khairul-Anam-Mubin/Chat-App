@@ -1,7 +1,7 @@
-using Chat.Domain.Models;
+using Chat.Domain.Entities;
 using Chat.Framework.Database.ORM.Interfaces;
 
-namespace Chat.Domain.Interfaces;
+namespace Chat.Domain.Repositories;
 
 public interface IChatRepository : IRepository<ChatModel>
 {

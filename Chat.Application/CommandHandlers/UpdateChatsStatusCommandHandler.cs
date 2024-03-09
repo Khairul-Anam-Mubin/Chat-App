@@ -1,5 +1,5 @@
 using Chat.Application.Commands;
-using Chat.Domain.Interfaces;
+using Chat.Domain.Repositories;
 using Chat.Framework.CQRS;
 using Chat.Framework.Identity;
 using Chat.Framework.Results;
@@ -23,7 +23,8 @@ public class UpdateChatsStatusCommandHandler : ICommandHandler<UpdateChatsStatus
     {
         var userId = _scopeIdentity.GetUserId()!;
 
-        var latestChatModel = await _latestChatRepository.GetLatestChatAsync(userId, command.OpenedChatUserId);
+        var latestChatModel = 
+            await _latestChatRepository.GetLatestChatAsync(userId, command.OpenedChatUserId);
         
         if (latestChatModel is null)
         {
@@ -41,7 +42,7 @@ public class UpdateChatsStatusCommandHandler : ICommandHandler<UpdateChatsStatus
         
         foreach (var chatModel in chatModels)
         {
-            chatModel.Status = "Seen";
+            chatModel.MessageSeen();
         }
 
         await _chatRepository.SaveAsync(chatModels);

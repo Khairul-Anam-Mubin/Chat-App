@@ -1,6 +1,6 @@
 using Chat.FileStore.Application.Commands;
-using Chat.FileStore.Domain.Interfaces;
-using Chat.FileStore.Domain.Models;
+using Chat.FileStore.Domain.Entities;
+using Chat.FileStore.Domain.Repositories;
 using Chat.Framework.CQRS;
 using Chat.Framework.Extensions;
 using Chat.Framework.Identity;
@@ -45,21 +45,21 @@ public class UploadFileCommandHandler : ICommandHandler<UploadFileCommand, strin
             await file.CopyToAsync(stream);
         }
 
-        var fileModel = new FileModel
+        var fileModelCreateResult = 
+            FileModel.Create(fileId, fileName, extension, fullPath, _scopeIdentity.GetUserId());
+        
+        if (fileModelCreateResult.IsFailure || fileModelCreateResult.Value is null)
         {
-            Id = fileId,
-            Extension = extension,
-            Url = fullPath,
-            UploadedAt = DateTime.UtcNow,
-            Name = fileName,
-            UserId = _scopeIdentity.GetUserId()!
-        };
+            return (IResult<string>)fileModelCreateResult;
+        }
+
+        var fileModel = fileModelCreateResult.Value;
         
         if (!await _fileRepository.SaveAsync(fileModel))
         {
             return Result.Error<string>("File Save error to db");
         }
         
-        return Result.Success(fileModel.Id,"File uploaded successfully");
+        return Result.Success(fileModel.Id, "File uploaded successfully");
     }
 }

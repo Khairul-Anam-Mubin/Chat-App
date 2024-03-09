@@ -1,6 +1,6 @@
 ﻿using Chat.Application.DTOs;
 using Chat.Application.Shared.Helpers;
-using Chat.Domain.Models;
+using Chat.Domain.Entities;
 
 namespace Chat.Application.Extensions;
 

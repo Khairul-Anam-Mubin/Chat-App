@@ -1,4 +1,4 @@
-using Chat.Domain.Models;
+using Chat.Domain.Entities;
 using Chat.Framework.CQRS;
 
 namespace Chat.Application.Commands;

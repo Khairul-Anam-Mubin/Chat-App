@@ -1,4 +1,4 @@
-using Chat.FileStore.Domain.Models;
+using Chat.FileStore.Domain.Entities;
 
 namespace Chat.FileStore.Application.DTOs;
 

@@ -1,8 +1,8 @@
 using Chat.Application.Commands;
 using Chat.Application.DTOs;
 using Chat.Application.Extensions;
-using Chat.Domain.Interfaces;
-using Chat.Domain.Models;
+using Chat.Domain.Entities;
+using Chat.Domain.Repositories;
 using Chat.Domain.Shared.Commands;
 using Chat.Domain.Shared.Entities;
 using Chat.Framework.CQRS;
@@ -31,18 +31,20 @@ public class SendMessageCommandHandler : ICommandHandler<SendMessageCommand, Cha
     }
 
     public async Task<IResult<ChatDto>> HandleAsync(SendMessageCommand command)
-    { 
-        var chatModel = command.ChatModel;
+    {
+        var sendTo = command.SendTo;
+        var message = command.Message;
+        var isGroupMessage = command.IsGroupMessage;
 
-        if (chatModel is null)
+        var chatModelCreateResult =
+            ChatModel.Create(_scopIdentity.GetUserId()!, sendTo, message, isGroupMessage);
+
+        if (chatModelCreateResult.IsFailure || chatModelCreateResult.Value is null)
         {
-            return Result.Error<ChatDto>("ChatModel not set");
+            return (IResult<ChatDto>)chatModelCreateResult;
         }
 
-        chatModel.Id = Guid.NewGuid().ToString();
-        chatModel.SentAt = DateTime.UtcNow;
-        chatModel.Status = "Sent";
-        chatModel.UserId = _scopIdentity.GetUserId()!;
+        var chatModel = chatModelCreateResult.Value;
 
         if (!await _chatRepository.SaveAsync(chatModel))
         {

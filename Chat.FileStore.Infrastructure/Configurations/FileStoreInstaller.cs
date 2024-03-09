@@ -1,5 +1,5 @@
 ﻿using Chat.FileStore.Application;
-using Chat.FileStore.Domain.Interfaces;
+using Chat.FileStore.Domain.Repositories;
 using Chat.FileStore.Infrastructure.Repositories;
 using Chat.Framework.ServiceInstaller;
 using Microsoft.Extensions.Configuration;

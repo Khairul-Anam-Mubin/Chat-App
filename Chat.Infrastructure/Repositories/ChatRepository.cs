@@ -1,5 +1,5 @@
-using Chat.Domain.Interfaces;
-using Chat.Domain.Models;
+using Chat.Domain.Entities;
+using Chat.Domain.Repositories;
 using Chat.Framework.Database.ORM;
 using Chat.Framework.Database.ORM.Builders;
 using Chat.Framework.Database.ORM.Enums;

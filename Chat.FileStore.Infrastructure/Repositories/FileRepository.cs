@@ -1,5 +1,5 @@
-using Chat.FileStore.Domain.Interfaces;
-using Chat.FileStore.Domain.Models;
+using Chat.FileStore.Domain.Entities;
+using Chat.FileStore.Domain.Repositories;
 using Chat.Framework.Database.ORM;
 using Chat.Framework.Database.ORM.Enums;
 using Chat.Framework.Database.ORM.Interfaces;

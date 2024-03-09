@@ -1,5 +1,5 @@
 using Chat.Application.Commands;
-using Chat.Domain.Interfaces;
+using Chat.Domain.Repositories;
 using Chat.Framework.CQRS;
 using Chat.Framework.Results;
 

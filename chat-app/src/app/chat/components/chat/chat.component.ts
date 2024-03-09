@@ -191,12 +191,9 @@ export class ChatComponent implements OnInit, OnDestroy{
   onClickSendMessage() {
     console.log(this.inputMessage);
     const sendMessageCommand = new SendMessageCommand();
-    sendMessageCommand.chatModel.userId = this.currentUserId;
-    sendMessageCommand.chatModel.sendTo = this.sendToUserId;
-    sendMessageCommand.chatModel.message = this.inputMessage;
-    sendMessageCommand.chatModel.status = "Sent";
-    sendMessageCommand.chatModel.isGroupMessage = this.isGroup;
-    // sendMessageCommand.chatModel.message = this.encryptionDecryptionHelper?.encrypt(sendMessageCommand.chatModel.message, this.sharedSecret);
+    sendMessageCommand.message = this.inputMessage;
+    sendMessageCommand.sendTo = this.sendToUserId;
+    sendMessageCommand.isGroupMessage = this.isGroup;
     this.inputMessage = '';
     this.commandService.execute(sendMessageCommand)
     .pipe(take(1))

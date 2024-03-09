@@ -1,7 +1,7 @@
 using Chat.FileStore.Application.Commands;
 using Chat.FileStore.Application.DTOs;
 using Chat.FileStore.Application.Queries;
-using Chat.FileStore.Domain.Models;
+using Chat.FileStore.Domain.Entities;
 using Chat.Framework.CQRS;
 using Chat.Framework.Pagination;
 using Chat.Infrastructure.Shared.Controllers;

@@ -1,7 +1,7 @@
 using Chat.Application.DTOs;
 using Chat.Application.Extensions;
 using Chat.Application.Queries;
-using Chat.Domain.Interfaces;
+using Chat.Domain.Repositories;
 using Chat.Framework.CQRS;
 using Chat.Framework.Identity;
 using Chat.Framework.Pagination;
