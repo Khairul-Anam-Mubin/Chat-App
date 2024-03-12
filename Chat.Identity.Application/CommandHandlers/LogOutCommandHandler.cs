@@ -2,18 +2,15 @@ using Chat.Framework.CQRS;
 using Chat.Framework.Results;
 using Chat.Identity.Application.Commands;
 using Chat.Identity.Domain.Repositories;
-using Chat.Identity.Domain.Services;
 
 namespace Chat.Identity.Application.CommandHandlers;
 
 public class LogOutCommandHandler : ICommandHandler<LogOutCommand>
 {
-    private readonly ITokenService _tokenService;
     private readonly IAccessRepository _accessRepository;
 
-    public LogOutCommandHandler(ITokenService tokenService, IAccessRepository accessRepository)
+    public LogOutCommandHandler(IAccessRepository accessRepository)
     {
-        _tokenService = tokenService;
         _accessRepository = accessRepository;
     }
     

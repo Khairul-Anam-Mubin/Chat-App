@@ -22,12 +22,12 @@ public class RefreshTokenCommandHandler : ICommandHandler<RefreshTokenCommand, T
 
     public async Task<IResult<Token>> HandleAsync(RefreshTokenCommand command)
     {
-        var validationCheckResult = 
+        var refreshTokenRequestValidationResult = 
             _tokenService.CheckForValidRefreshTokenRequest(command.AccessToken);
 
-        if (validationCheckResult.IsFailure)
+        if (refreshTokenRequestValidationResult.IsFailure)
         {
-            return (IResult<Token>)validationCheckResult;
+            return (IResult<Token>)refreshTokenRequestValidationResult;
         }
 
         var accessModel = 
@@ -38,12 +38,12 @@ public class RefreshTokenCommandHandler : ICommandHandler<RefreshTokenCommand, T
             return Result.Error<Token>("AccessModel not found");
         }
 
-        var allowedResult = 
+        var allowedToRefreshResult = 
             accessModel.IsTokenAllowedToRefresh(command.AccessToken, command.AppId);
 
-        if (allowedResult.IsFailure)
+        if (allowedToRefreshResult.IsFailure)
         {
-            return (IResult<Token>)allowedResult;
+            return (IResult<Token>)allowedToRefreshResult;
         }
 
         var validRefreshAttemptResult = accessModel.CheckForValidRefreshAttempt();

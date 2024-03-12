@@ -6,7 +6,6 @@ using Chat.Framework.Extensions;
 using Chat.Framework.Identity;
 using Chat.Framework.Results;
 using Chat.Identity.Domain.Entities;
-using Chat.Identity.Domain.Repositories;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
@@ -15,12 +14,10 @@ namespace Chat.Identity.Domain.Services;
 public class TokenService : ITokenService
 {
     private readonly TokenConfig _tokenConfig;
-    private readonly IAccessRepository _accessRepository;
 
-    public TokenService(IAccessRepository accessRepository, IConfiguration configuration)
+    public TokenService(IConfiguration configuration)
     {
         _tokenConfig = configuration.TryGetConfig<TokenConfig>();
-        _accessRepository = accessRepository;
     }
 
     public IResult CheckForValidRefreshTokenRequest(string jwtToken)
