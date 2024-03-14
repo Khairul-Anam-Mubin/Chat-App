@@ -10,6 +10,8 @@ public interface IResult : IMetaDataDictionary
     bool IsSuccess { get; }
 
     bool IsFailure { get; }
+
+    IResult SetMessage(string message);
 }
 
 public interface IResult<out TResponse> : IResult

@@ -4,11 +4,17 @@ namespace Chat.Framework.Results;
 
 public class Result : MetaDataDictionary, IResult
 {
-    public string Message { get; }
+    public string Message { get; private set; }
     public ResponseStatus Status { get; }
 
     public bool IsSuccess => Status == ResponseStatus.Success || Status == ResponseStatus.Pending;
     public bool IsFailure => !IsSuccess;
+
+    public IResult SetMessage(string message)
+    {
+        Message = message;
+        return this;
+    }
 
     protected Result(string message, ResponseStatus status)
     {

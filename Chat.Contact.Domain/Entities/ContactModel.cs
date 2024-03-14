@@ -1,3 +1,4 @@
+using Chat.Contact.Domain.Results;
 using Chat.Framework.Database.ORM.Interfaces;
 using Chat.Framework.Results;
 
@@ -20,25 +21,40 @@ public class ContactModel : IEntity
         CreatedAt = DateTime.UtcNow;
     }
 
+    public static ContactModel Create(string userId, string contactUserId)
+    {
+        return new ContactModel(userId, contactUserId);
+    }
+
     public IResult AcceptRequest(string? contactUserId)
     {
         if (string.IsNullOrEmpty(contactUserId))
         {
-            return Result.Error("Contact User Id can't be empty");
+            return Result.Error().ContactUserIdEmpty();
         }
 
         if (contactUserId != ContactUserId)
         {
-            return Result.Error("Only contact user can accept request.");
+            return Result.Error().InvalidContactUser();
         }
 
         IsPending = false;
 
-        return Result.Success();
+        return Result.Success().ContactAccepted();
     }
 
-    public static ContactModel Create(string userId, string contactUserId)
+    public IResult RejectRequest(string? contactUserId)
     {
-        return new ContactModel(userId, contactUserId);
+        if (string.IsNullOrEmpty(contactUserId))
+        {
+            return Result.Error().ContactUserIdEmpty();
+        }
+
+        if (contactUserId != ContactUserId)
+        {
+            return Result.Error().InvalidContactUser();
+        }
+
+        return Result.Success().ContactRejected();
     }
 }

@@ -1,4 +1,5 @@
-﻿using Chat.Framework.Database.ORM.Interfaces;
+﻿using Chat.Contact.Domain.Results;
+using Chat.Framework.Database.ORM.Interfaces;
 using Chat.Framework.Results;
 
 namespace Chat.Contact.Domain.Entities;
@@ -41,12 +42,12 @@ public class GroupModel : IEntity
     {
         if (memberAlreadyExist)
         {
-            return Result.Error($"Member already exist in group : {Name}");
+            return Result.Error().MemberAlreadyExist();
         }
 
         if (CreatedBy != addedBy)
         {
-            return Result.Error($"Does not have permission to add member in group : {Name}");
+            return Result.Error().GroupAddMemberPermissionProblem();
         }
 
         var groupMemberCreateResult = GroupMemberModel.Create(Id, memberId, CreatedBy);

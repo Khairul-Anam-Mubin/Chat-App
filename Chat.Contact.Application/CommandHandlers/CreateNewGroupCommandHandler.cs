@@ -1,6 +1,7 @@
 ﻿using Chat.Contact.Application.Commands;
 using Chat.Contact.Domain.Entities;
 using Chat.Contact.Domain.Repositories;
+using Chat.Contact.Domain.Results;
 using Chat.Framework.CQRS;
 using Chat.Framework.Identity;
 using Chat.Framework.Results;
@@ -40,7 +41,7 @@ public class CreateNewGroupCommandHandler : ICommandHandler<CreateNewGroupComman
 
         await _commandExecutor.ExecuteAsync(addMemberToGroupCommand);
 
-        var result = Result.Success("Group Created Successfully");
+        var result = Result.Success().GroupCreated();
         
         result.SetData("GroupId", group.Id);
 

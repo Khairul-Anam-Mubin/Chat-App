@@ -1,5 +1,6 @@
 using Chat.Contact.Application.Commands;
 using Chat.Contact.Domain.Repositories;
+using Chat.Contact.Domain.Results;
 using Chat.Framework.CQRS;
 using Chat.Framework.Identity;
 using Chat.Framework.Results;
@@ -23,33 +24,37 @@ public class AcceptOrRejectContactCommandHandler : ICommandHandler<AcceptOrRejec
 
         if (contact is null)
         {
-            return Result.Error("Contact not found");
+            return Result.Error().ContactNotFound();
         }
 
         var userId = _scopeIdentity.GetUserId();
 
         if (command.IsAcceptRequest)
         {
-            var result = contact.AcceptRequest(userId);
+            var acceptResult = contact.AcceptRequest(userId);
 
-            if (result.IsFailure)
+            if (acceptResult.IsFailure)
             {
-                return result;
+                return acceptResult;
             }
 
             if (!await _contactRepository.SaveAsync(contact))
             {
-                return Result.Error("Contact save problem");
+                return Result.Error().ContactSaveProblem();
             }
 
-            return Result.Success("Contact Accepted");
+            return acceptResult;
         }
 
-        if (!await _contactRepository.DeleteByIdAsync(command.ContactId))
+        var rejectResult = contact.RejectRequest(userId);
+
+        if (rejectResult.IsFailure) return rejectResult;
+
+        if (!await _contactRepository.DeleteByIdAsync(contact.Id))
         {
-            return Result.Error("Delete contact problem");
+            return Result.Error().ContactDeleteProblem();
         }
 
-        return Result.Success("Contact rejected");
+        return rejectResult;
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Chat.Contact.Application.Commands;
 using Chat.Contact.Domain.Repositories;
+using Chat.Contact.Domain.Results;
 using Chat.Framework.CQRS;
 using Chat.Framework.Identity;
 using Chat.Framework.Results;
@@ -29,7 +30,7 @@ public class AddMemberToGroupCommandHandler : ICommandHandler<AddMemberToGroupCo
 
         if (group is null)
         {
-            return Result.Error("Group not exists");
+            return Result.Error().GroupNotFound();
         }
 
         var result = group.AddNewMemberToGroup(
@@ -44,6 +45,6 @@ public class AddMemberToGroupCommandHandler : ICommandHandler<AddMemberToGroupCo
 
         await _groupRepository.SaveGroupMembersAsync(group.Members());
 
-        return Result.Success("Member added to group successfully");
+        return Result.Success().MemberAdded();
     }
 }

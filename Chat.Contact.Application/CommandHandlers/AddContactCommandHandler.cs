@@ -1,6 +1,7 @@
 using Chat.Contact.Application.Commands;
 using Chat.Contact.Domain.Entities;
 using Chat.Contact.Domain.Repositories;
+using Chat.Contact.Domain.Results;
 using Chat.Domain.Shared.Queries;
 using Chat.Framework.CQRS;
 using Chat.Framework.Identity;
@@ -43,7 +44,7 @@ public class AddContactCommandHandler : ICommandHandler<AddContactCommand>
         
         if (queryResponse.Profiles.Count < 2)
         {
-            return Result.Error("User Not Exists");
+            return Result.Error().GetUserFailed();
         }
 
         var userProfiles = queryResponse.Profiles;
@@ -56,9 +57,9 @@ public class AddContactCommandHandler : ICommandHandler<AddContactCommand>
 
         if (!await _contactRepository.SaveAsync(userContact))
         {
-            return Result.Error("Contact Saving Failed");
+            return Result.Error().ContactSaveProblem();
         }
 
-        return Result.Success("Contact Added Successfully");
+        return Result.Success().ContactAdded();
     }
 }
