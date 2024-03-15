@@ -15,7 +15,7 @@ public class MongoDbContext : IDbContext
         _mongoClientManager = mongoClientManager;
     }
 
-    public async Task<bool> SaveAsync<T>(DatabaseInfo databaseInfo, T item) where T : class, IEntity
+    public async Task<bool> SaveAsync<T>(DatabaseInfo databaseInfo, T item) where T : class, IRepositoryItem
     {
         try
         {
@@ -37,7 +37,7 @@ public class MongoDbContext : IDbContext
         }
     }
 
-    public async Task<bool> SaveManyAsync<T>(DatabaseInfo databaseInfo, List<T> items) where T : class, IEntity
+    public async Task<bool> SaveManyAsync<T>(DatabaseInfo databaseInfo, List<T> items) where T : class, IRepositoryItem
     {
         var writeModels = new List<WriteModel<T>>();
 
@@ -60,7 +60,7 @@ public class MongoDbContext : IDbContext
         return writeResult is { IsAcknowledged: true };
     }
 
-    public async Task<bool> DeleteOneByIdAsync<T>(DatabaseInfo databaseInfo, string id) where T : class, IEntity
+    public async Task<bool> DeleteOneByIdAsync<T>(DatabaseInfo databaseInfo, string id) where T : class, IRepositoryItem
     {
         try
         {
@@ -87,7 +87,7 @@ public class MongoDbContext : IDbContext
         }
     }
 
-    public async Task<bool> DeleteManyAsync<T>(DatabaseInfo databaseInfo, IFilter filter) where T : class, IEntity
+    public async Task<bool> DeleteManyAsync<T>(DatabaseInfo databaseInfo, IFilter filter) where T : class, IRepositoryItem
     {
         try
         {
@@ -116,19 +116,19 @@ public class MongoDbContext : IDbContext
         }
     }
 
-    public async Task<T?> GetByIdAsync<T>(DatabaseInfo databaseInfo, string id) where T : class, IEntity
+    public async Task<T?> GetByIdAsync<T>(DatabaseInfo databaseInfo, string id) where T : class, IRepositoryItem
     {
         var idFilter = new FilterBuilder<T>().Eq(entity => entity.Id, id);
 
         return await GetOneAsync<T>(databaseInfo, idFilter);
     }
 
-    public async Task<List<T>> GetManyAsync<T>(DatabaseInfo databaseInfo) where T : class, IEntity
+    public async Task<List<T>> GetManyAsync<T>(DatabaseInfo databaseInfo) where T : class, IRepositoryItem
     {
         return await GetManyAsync<T>(databaseInfo, new FilterBuilder<T>().None());
     }
 
-    public async Task<T?> GetOneAsync<T>(DatabaseInfo databaseInfo, IFilter filter) where T : class, IEntity
+    public async Task<T?> GetOneAsync<T>(DatabaseInfo databaseInfo, IFilter filter) where T : class, IRepositoryItem
     {
         try
         {
@@ -154,7 +154,7 @@ public class MongoDbContext : IDbContext
         }
     }
 
-    public async Task<List<T>> GetManyAsync<T>(DatabaseInfo databaseInfo, IFilter filter) where T : class, IEntity
+    public async Task<List<T>> GetManyAsync<T>(DatabaseInfo databaseInfo, IFilter filter) where T : class, IRepositoryItem
     {
         try
         {
@@ -181,7 +181,7 @@ public class MongoDbContext : IDbContext
     }
 
 
-    public async Task<List<T>> GetManyAsync<T>(DatabaseInfo databaseInfo, IFilter filter, ISort sort, int offset, int limit) where T : class, IEntity
+    public async Task<List<T>> GetManyAsync<T>(DatabaseInfo databaseInfo, IFilter filter, ISort sort, int offset, int limit) where T : class, IRepositoryItem
     {
         try
         {
@@ -214,7 +214,7 @@ public class MongoDbContext : IDbContext
         }
     }
 
-    public async Task<bool> UpdateOneAsync<T>(DatabaseInfo databaseInfo, IFilter filter, IUpdate update) where T : class, IEntity
+    public async Task<bool> UpdateOneAsync<T>(DatabaseInfo databaseInfo, IFilter filter, IUpdate update) where T : class, IRepositoryItem
     {
         var collection = _mongoClientManager.GetCollection<T>(databaseInfo);
 
@@ -229,7 +229,7 @@ public class MongoDbContext : IDbContext
         return result.IsModifiedCountAvailable;
     }
 
-    public async Task<bool> UpdateManyAsync<T>(DatabaseInfo databaseInfo, IFilter filter, IUpdate update) where T : class, IEntity
+    public async Task<bool> UpdateManyAsync<T>(DatabaseInfo databaseInfo, IFilter filter, IUpdate update) where T : class, IRepositoryItem
     {
         var collection = _mongoClientManager.GetCollection<T>(databaseInfo);
 
@@ -244,12 +244,12 @@ public class MongoDbContext : IDbContext
         return result.IsModifiedCountAvailable;
     }
 
-    public async Task<long> CountAsync<T>(DatabaseInfo databaseInfo) where T : class, IEntity
+    public async Task<long> CountAsync<T>(DatabaseInfo databaseInfo) where T : class, IRepositoryItem
     {
         return await CountAsync<T>(databaseInfo, new FilterBuilder<T>().None());
     }
 
-    public async Task<long> CountAsync<T>(DatabaseInfo databaseInfo, IFilter filter) where T : class, IEntity
+    public async Task<long> CountAsync<T>(DatabaseInfo databaseInfo, IFilter filter) where T : class, IRepositoryItem
     {
         try
         {

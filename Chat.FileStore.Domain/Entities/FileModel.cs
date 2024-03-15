@@ -3,9 +3,9 @@ using Chat.Framework.Results;
 
 namespace Chat.FileStore.Domain.Entities;
 
-public class FileModel : IEntity
+public class FileModel : IRepositoryItem
 {
-    public string Id { get; set; } = string.Empty;
+    public string Id { get; private set; }
     public string Name { get; private set; }
     public string Extension { get; private set; }
     public string Url { get; private set; }

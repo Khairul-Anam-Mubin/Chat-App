@@ -4,9 +4,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Chat.Identity.Domain.Entities;
 
-public class UserModel : IEntity
+public class UserModel : IRepositoryItem
 {
-    public string Id { get; set; } = string.Empty;
+    public string Id { get; private set; }
 
     [Required]
     public string FirstName { get; private set; }

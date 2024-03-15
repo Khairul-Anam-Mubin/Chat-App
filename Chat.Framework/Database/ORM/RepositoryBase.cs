@@ -2,7 +2,7 @@
 
 namespace Chat.Framework.Database.ORM;
 
-public abstract class RepositoryBase<TEntity> : IRepository<TEntity> where TEntity : class, IEntity
+public abstract class RepositoryBase<TEntity> : IRepository<TEntity> where TEntity : class, IRepositoryItem
 {
     protected readonly IDbContext DbContext;
     protected readonly DatabaseInfo DatabaseInfo;

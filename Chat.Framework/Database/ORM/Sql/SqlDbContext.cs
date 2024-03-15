@@ -15,7 +15,7 @@ public class SqlDbContext : IDbContext
         _clientManager = clientManager;
     }
 
-    public async Task<bool> SaveAsync<T>(DatabaseInfo databaseInfo, T item) where T : class, IEntity
+    public async Task<bool> SaveAsync<T>(DatabaseInfo databaseInfo, T item) where T : class, IRepositoryItem
     {
         try
         {
@@ -74,7 +74,7 @@ public class SqlDbContext : IDbContext
         return false;
     }
 
-    public async Task<bool> SaveManyAsync<T>(DatabaseInfo databaseInfo, List<T> items) where T : class, IEntity
+    public async Task<bool> SaveManyAsync<T>(DatabaseInfo databaseInfo, List<T> items) where T : class, IRepositoryItem
     {
         try
         {
@@ -92,7 +92,7 @@ public class SqlDbContext : IDbContext
         return false;
     }
 
-    public async Task<bool> UpdateOneAsync<T>(DatabaseInfo databaseInfo, IFilter filter, IUpdate update) where T : class, IEntity
+    public async Task<bool> UpdateOneAsync<T>(DatabaseInfo databaseInfo, IFilter filter, IUpdate update) where T : class, IRepositoryItem
     {
         try
         {
@@ -106,7 +106,7 @@ public class SqlDbContext : IDbContext
         return false;
     }
 
-    public async Task<bool> UpdateManyAsync<T>(DatabaseInfo databaseInfo, IFilter filter, IUpdate update) where T : class, IEntity
+    public async Task<bool> UpdateManyAsync<T>(DatabaseInfo databaseInfo, IFilter filter, IUpdate update) where T : class, IRepositoryItem
     {
         try
         {
@@ -144,7 +144,7 @@ public class SqlDbContext : IDbContext
         return false;
     }
 
-    public async Task<bool> DeleteOneByIdAsync<T>(DatabaseInfo databaseInfo, string id) where T : class, IEntity
+    public async Task<bool> DeleteOneByIdAsync<T>(DatabaseInfo databaseInfo, string id) where T : class, IRepositoryItem
     {
         try
         {
@@ -160,7 +160,7 @@ public class SqlDbContext : IDbContext
         return false;
     }
 
-    public async Task<bool> DeleteManyAsync<T>(DatabaseInfo databaseInfo, IFilter filter) where T : class, IEntity
+    public async Task<bool> DeleteManyAsync<T>(DatabaseInfo databaseInfo, IFilter filter) where T : class, IRepositoryItem
     {
         try
         {
@@ -189,7 +189,7 @@ public class SqlDbContext : IDbContext
         return default;
     }
 
-    public async Task<T?> GetByIdAsync<T>(DatabaseInfo databaseInfo, string id) where T : class, IEntity
+    public async Task<T?> GetByIdAsync<T>(DatabaseInfo databaseInfo, string id) where T : class, IRepositoryItem
     {
         try
         {
@@ -205,7 +205,7 @@ public class SqlDbContext : IDbContext
         return default;
     }
 
-    public async Task<T?> GetOneAsync<T>(DatabaseInfo databaseInfo, IFilter filter) where T : class, IEntity
+    public async Task<T?> GetOneAsync<T>(DatabaseInfo databaseInfo, IFilter filter) where T : class, IRepositoryItem
     {
         try
         {
@@ -234,7 +234,7 @@ public class SqlDbContext : IDbContext
         return default;
     }
 
-    public async Task<List<T>> GetManyAsync<T>(DatabaseInfo databaseInfo) where T : class, IEntity
+    public async Task<List<T>> GetManyAsync<T>(DatabaseInfo databaseInfo) where T : class, IRepositoryItem
     {
         try
         {
@@ -256,7 +256,7 @@ public class SqlDbContext : IDbContext
         return new List<T>();
     }
 
-    public async Task<List<T>> GetManyAsync<T>(DatabaseInfo databaseInfo, IFilter filter) where T : class, IEntity
+    public async Task<List<T>> GetManyAsync<T>(DatabaseInfo databaseInfo, IFilter filter) where T : class, IRepositoryItem
     {
         try
         {
@@ -285,7 +285,7 @@ public class SqlDbContext : IDbContext
         return new List<T>();
     }
 
-    public async Task<List<T>> GetManyAsync<T>(DatabaseInfo databaseInfo, IFilter filter, ISort sort, int offset, int limit) where T : class, IEntity
+    public async Task<List<T>> GetManyAsync<T>(DatabaseInfo databaseInfo, IFilter filter, ISort sort, int offset, int limit) where T : class, IRepositoryItem
     {
         try
         {
@@ -325,7 +325,7 @@ public class SqlDbContext : IDbContext
         return new List<T>();
     }
 
-    public async Task<long> CountAsync<T>(DatabaseInfo databaseInfo) where T : class, IEntity
+    public async Task<long> CountAsync<T>(DatabaseInfo databaseInfo) where T : class, IRepositoryItem
     {
         try
         {
@@ -346,7 +346,7 @@ public class SqlDbContext : IDbContext
         return 0;
     }
 
-    public async Task<long> CountAsync<T>(DatabaseInfo databaseInfo, IFilter filter) where T : class, IEntity
+    public async Task<long> CountAsync<T>(DatabaseInfo databaseInfo, IFilter filter) where T : class, IRepositoryItem
     {
         try
         {

@@ -2,9 +2,9 @@ using Chat.Framework.Database.ORM.Interfaces;
 
 namespace Chat.Domain.Entities;
 
-public class LatestChatModel : IEntity
+public class LatestChatModel : IRepositoryItem
 {
-    public string Id { get; set; } = string.Empty;
+    public string Id { get; private set; }
     public string UserId { get; private set; }
     public string SendTo { get; private set; }
     public string Message { get; private set; }

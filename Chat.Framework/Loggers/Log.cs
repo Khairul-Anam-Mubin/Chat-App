@@ -2,7 +2,7 @@
 
 namespace Chat.Framework.Loggers;
 
-public class Log : IEntity
+public class Log : IRepositoryItem
 {
     public string Id { get; set; }
     public string Message { get; set; }

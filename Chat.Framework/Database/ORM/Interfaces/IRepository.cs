@@ -1,6 +1,6 @@
 ﻿namespace Chat.Framework.Database.ORM.Interfaces;
 
-public interface IRepository<TEntity> where TEntity : class, IEntity
+public interface IRepository<TEntity> where TEntity : class, IRepositoryItem
 {
     Task<TEntity?> GetByIdAsync(string id);
 

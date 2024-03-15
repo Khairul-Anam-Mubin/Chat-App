@@ -3,9 +3,9 @@ using Chat.Framework.Results;
 
 namespace Chat.Activity.Domain.Entities;
 
-public class LastSeenModel : IEntity
+public class LastSeenModel : IRepositoryItem
 {
-    public string Id { get; set; }
+    public string Id { get; private set; }
     public string UserId { get; private set; }
     public DateTime LastSeenAt { get; private set; }
     public bool IsActive { get; private set; }

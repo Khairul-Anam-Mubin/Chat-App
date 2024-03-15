@@ -14,7 +14,7 @@ public class MongoDbIndexManager : IIndexManager
         _mongoClientManager = mongoClientManager;
     }
 
-    public async Task CreateOneAsync<T>(DatabaseInfo databaseInfo, IIndex index) where T : class, IEntity
+    public async Task CreateOneAsync<T>(DatabaseInfo databaseInfo, IIndex index) where T : class, IRepositoryItem
     {
         try
         {
@@ -34,7 +34,7 @@ public class MongoDbIndexManager : IIndexManager
         }
     }
 
-    public async Task CreateManyAsync<T>(DatabaseInfo databaseInfo, List<IIndex> indexes) where T : class, IEntity
+    public async Task CreateManyAsync<T>(DatabaseInfo databaseInfo, List<IIndex> indexes) where T : class, IRepositoryItem
     {
         try
         {
@@ -59,34 +59,34 @@ public class MongoDbIndexManager : IIndexManager
         }
     }
 
-    public async Task DropAllIndexesAsync<T>(DatabaseInfo databaseInfo) where T : class, IEntity
+    public async Task DropAllIndexesAsync<T>(DatabaseInfo databaseInfo) where T : class, IRepositoryItem
     {
         var collection = _mongoClientManager.GetCollection<T>(databaseInfo);
         await collection.Indexes.DropAllAsync();
     }
 
-    public async Task DropIndexAsync<T>(DatabaseInfo databaseInfo, string indexName) where T : class, IEntity
+    public async Task DropIndexAsync<T>(DatabaseInfo databaseInfo, string indexName) where T : class, IRepositoryItem
     {
         var collection = _mongoClientManager.GetCollection<T>(databaseInfo);
         await collection.Indexes.DropOneAsync(indexName);
     }
 
-    public void CreateOne<T>(DatabaseInfo databaseInfo, IIndex index) where T : class, IEntity
+    public void CreateOne<T>(DatabaseInfo databaseInfo, IIndex index) where T : class, IRepositoryItem
     {
         CreateOneAsync<T>(databaseInfo, index).Wait();
     }
 
-    public void CreateMany<T>(DatabaseInfo databaseInfo, List<IIndex> indexes) where T : class, IEntity
+    public void CreateMany<T>(DatabaseInfo databaseInfo, List<IIndex> indexes) where T : class, IRepositoryItem
     {
         CreateManyAsync<T>(databaseInfo, indexes).Wait();
     }
 
-    public void DropAllIndexes<T>(DatabaseInfo databaseInfo) where T : class, IEntity
+    public void DropAllIndexes<T>(DatabaseInfo databaseInfo) where T : class, IRepositoryItem
     {
         DropAllIndexesAsync<T>(databaseInfo).Wait();
     }
 
-    public void DropIndex<T>(DatabaseInfo databaseInfo, string indexName) where T : class, IEntity
+    public void DropIndex<T>(DatabaseInfo databaseInfo, string indexName) where T : class, IRepositoryItem
     {
         DropIndexAsync<T>(databaseInfo, indexName).Wait();
     }

@@ -4,9 +4,9 @@ using Chat.Framework.Results;
 
 namespace Chat.Contact.Domain.Entities;
 
-public class GroupModel : IEntity
+public class GroupModel : IRepositoryItem
 {
-    public string Id { get; set; }
+    public string Id { get; private set; }
     public string Name { get; private set; }
     public string CreatedBy { get; private set; }
     public DateTime CreatedAt { get; private set; }

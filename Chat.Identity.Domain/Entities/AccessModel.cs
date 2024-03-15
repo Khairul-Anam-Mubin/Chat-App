@@ -3,9 +3,9 @@ using Chat.Framework.Results;
 
 namespace Chat.Identity.Domain.Entities;
 
-public class AccessModel : IEntity
+public class AccessModel : IRepositoryItem
 {
-    public string Id { get; set; } = string.Empty;
+    public string Id { get; private set; }
     public string AccessToken { get; private set; }
     public string UserId { get; private set; }
     public string AppId { get; private set; }

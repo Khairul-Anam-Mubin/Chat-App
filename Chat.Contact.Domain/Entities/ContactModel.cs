@@ -4,9 +4,9 @@ using Chat.Framework.Results;
 
 namespace Chat.Contact.Domain.Entities;
 
-public class ContactModel : IEntity
+public class ContactModel : IRepositoryItem
 {
-    public string Id { get; set; }
+    public string Id { get; private set; }
     public string UserId { get; private set; }
     public string ContactUserId { get; private set; }
     public bool IsPending { get; private set; }
