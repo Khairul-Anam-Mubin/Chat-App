@@ -5,7 +5,6 @@ using Chat.Contact.Domain.Results;
 using Chat.Domain.Shared.Queries;
 using Chat.Framework.CQRS;
 using Chat.Framework.Identity;
-using Chat.Framework.MessageBrokers;
 using Chat.Framework.Results;
 
 namespace Chat.Contact.Application.CommandHandlers;
@@ -13,18 +12,15 @@ namespace Chat.Contact.Application.CommandHandlers;
 public class AddContactCommandHandler : ICommandHandler<AddContactCommand>
 {
     private readonly IContactRepository _contactRepository;
-    private readonly IMessageRequestClient _messageRequestClient;
     private readonly IScopeIdentity _scopeIdentity;
     private readonly IQueryService _queryService;
 
     public AddContactCommandHandler(
-        IContactRepository contactRepository, 
-        IMessageRequestClient messageRequestClient,
+        IContactRepository contactRepository,
         IScopeIdentity scopeIdentity,
         IQueryService queryService)
     {
         _contactRepository = contactRepository;
-        _messageRequestClient = messageRequestClient;
         _scopeIdentity = scopeIdentity;
         _queryService = queryService;
     }

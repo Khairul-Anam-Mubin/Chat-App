@@ -1,4 +1,5 @@
 using Chat.Application.Commands;
+using Chat.Domain.Entities;
 using Chat.Domain.Repositories;
 using Chat.Framework.CQRS;
 using Chat.Framework.Results;
@@ -21,25 +22,23 @@ public class UpdateLatestChatCommandHandler : ICommandHandler<UpdateLatestChatCo
         
         if (latestChatModel is null)
         {
-            latestChatModel = command.LatestChatModel;
-            latestChatModel.Id = Guid.NewGuid().ToString();
-            latestChatModel.Occurrence = 1;
+            latestChatModel = 
+                LatestChatModel.Create(
+                    command.LatestChatModel.Id, 
+                    command.LatestChatModel.UserId, 
+                    command.LatestChatModel.SendTo, 
+                    command.LatestChatModel.Message, 
+                    command.LatestChatModel.SentAt, 
+                    command.LatestChatModel.Status, 
+                    command.LatestChatModel.IsGroupMessage);
         }
 
-        latestChatModel.Message = command.LatestChatModel.Message;
-        latestChatModel.SentAt = command.LatestChatModel.SentAt;
-        latestChatModel.Status = command.LatestChatModel.Status;
-
-        if (command.LatestChatModel.UserId == latestChatModel.UserId)
-        {
-            latestChatModel.Occurrence++;
-        }
-        else 
-        {
-            latestChatModel.Occurrence = 1;
-            latestChatModel.UserId = command.LatestChatModel.UserId;
-            latestChatModel.SendTo = command.LatestChatModel.SendTo;
-        }
+        latestChatModel.Update(
+            command.LatestChatModel.UserId,
+            command.LatestChatModel.SendTo,
+            command.LatestChatModel.Message,
+            command.LatestChatModel.Status,
+            command.LatestChatModel.SentAt);
 
         await _latestChatRepository.SaveAsync(latestChatModel);
 

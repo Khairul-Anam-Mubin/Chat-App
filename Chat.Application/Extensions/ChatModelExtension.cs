@@ -7,16 +7,14 @@ public static class ChatModelExtension
 {
     public static LatestChatModel ToLatestChatModel(this ChatModel chatModel)
     {
-        return new LatestChatModel
-        {
-            Id = chatModel.Id,
-            UserId = chatModel.UserId,
-            SendTo = chatModel.SendTo,
-            Message = chatModel.Message,
-            SentAt = chatModel.SentAt,
-            Status = chatModel.Status,
-            IsGroupMessage = chatModel.IsGroupMessage
-        };
+        return LatestChatModel.Create(
+            chatModel.Id, 
+            chatModel.UserId, 
+            chatModel.SendTo, 
+            chatModel.Message,
+            chatModel.SentAt,
+            chatModel.Status, 
+            chatModel.IsGroupMessage);
     }
 
     public static ChatDto ToChatDto(this ChatModel chatModel)

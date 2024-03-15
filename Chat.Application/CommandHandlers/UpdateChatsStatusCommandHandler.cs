@@ -31,9 +31,8 @@ public class UpdateChatsStatusCommandHandler : ICommandHandler<UpdateChatsStatus
             return Result.Error("LatestChatModel not found");
         }
 
-        if (latestChatModel.UserId != userId)
+        if (latestChatModel.SeenChat(userId))
         {
-            latestChatModel.Occurrence = 0;
             await _latestChatRepository.SaveAsync(latestChatModel);
         }
             
