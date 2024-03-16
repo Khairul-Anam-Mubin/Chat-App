@@ -3,6 +3,7 @@ using Chat.Framework.Attributes;
 using Chat.Framework.CQRS;
 using Chat.Framework.Database;
 using Chat.Framework.Database.ORM;
+using Chat.Framework.EDD;
 using Chat.Framework.Extensions;
 using Chat.Framework.Identity;
 using Chat.Framework.Loggers;
@@ -40,7 +41,14 @@ public class CommonServiceInstaller : IServiceInstaller
         services.AddRedis();
 
         services.AddMediator();
+        services.AddMediatR(cfg =>
+        {
+            AssemblyCache.Instance.GetAddedAssemblies()
+            .ForEach(
+                assembly => cfg.RegisterServicesFromAssembly(assembly));
+        });
 
+        services.AddTransient<IEventExecutor, EventExecutor>();
         services.AddTransient<IQueryExecutor, QueryExecutor>();
         services.AddTransient<ICommandExecutor, CommandExecutor>();
         services.AddTransient<ICommandService, CommandService>();

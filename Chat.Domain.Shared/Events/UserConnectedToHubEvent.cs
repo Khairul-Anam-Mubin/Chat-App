@@ -1,4 +1,5 @@
 ﻿using Chat.Framework.CQRS;
+using Chat.Framework.EDD;
 using System.ComponentModel.DataAnnotations;
 
 namespace Chat.Domain.Shared.Events;

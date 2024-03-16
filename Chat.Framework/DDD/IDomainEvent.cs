@@ -1,6 +1,8 @@
-﻿namespace Chat.Framework.DDD;
+﻿using Chat.Framework.EDD;
 
-public interface IDomainEvent
+namespace Chat.Framework.DDD;
+
+public interface IDomainEvent : IEvent
 {
     public string Id { get; }
 }

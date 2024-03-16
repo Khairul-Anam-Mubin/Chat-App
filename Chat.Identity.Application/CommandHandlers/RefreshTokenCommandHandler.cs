@@ -27,7 +27,7 @@ public class RefreshTokenCommandHandler : ICommandHandler<RefreshTokenCommand, T
 
         if (refreshTokenRequestValidationResult.IsFailure)
         {
-            return (IResult<Token>)refreshTokenRequestValidationResult;
+            return Result.Error<Token>(refreshTokenRequestValidationResult.Message);
         }
 
         var accessModel = 
@@ -43,7 +43,7 @@ public class RefreshTokenCommandHandler : ICommandHandler<RefreshTokenCommand, T
 
         if (allowedToRefreshResult.IsFailure)
         {
-            return (IResult<Token>)allowedToRefreshResult;
+            return Result.Error<Token>(allowedToRefreshResult.Message);
         }
 
         var validRefreshAttemptResult = accessModel.CheckForValidRefreshAttempt();
@@ -52,7 +52,7 @@ public class RefreshTokenCommandHandler : ICommandHandler<RefreshTokenCommand, T
         {
             await _accessRepository.RevokeAllTokensByUserIdAsync(accessModel.UserId);
 
-            return (IResult<Token>)validRefreshAttemptResult;
+            return Result.Error<Token>(validRefreshAttemptResult.Message);
         }
 
         accessModel.MakeTokenExpired();

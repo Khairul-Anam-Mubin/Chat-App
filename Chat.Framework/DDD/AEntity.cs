@@ -7,16 +7,10 @@ public abstract class AEntity : IEntity
     protected AEntity(string id)
     {
         Id = id;
-        _domainEvents = new();
     }
 
-    private AEntity()
-    {
-        Id = Guid.NewGuid().ToString();
-        _domainEvents = new();
-    }
-
-    private List<IDomainEvent> _domainEvents;
+    private List<IDomainEvent> _domainEvents = new();
+    
     public List<IDomainEvent> DomainEvents => _domainEvents is null ? new() : _domainEvents.ToList();
 
     protected void RaiseDomainEvent(IDomainEvent domainEvent)

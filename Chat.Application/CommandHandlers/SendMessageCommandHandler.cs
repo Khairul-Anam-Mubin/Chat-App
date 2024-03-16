@@ -3,9 +3,8 @@ using Chat.Application.DTOs;
 using Chat.Application.Extensions;
 using Chat.Domain.Entities;
 using Chat.Domain.Repositories;
-using Chat.Domain.Shared.Commands;
-using Chat.Domain.Shared.Entities;
 using Chat.Framework.CQRS;
+using Chat.Framework.EDD;
 using Chat.Framework.Identity;
 using Chat.Framework.Results;
 
@@ -14,20 +13,17 @@ namespace Chat.Application.CommandHandlers;
 public class SendMessageCommandHandler : ICommandHandler<SendMessageCommand, ChatDto>
 {
     private readonly IChatRepository _chatRepository;
-    private readonly ICommandExecutor _commandExecutor;
-    private readonly ICommandService _commandService;
-    private readonly IScopeIdentity _scopIdentity; 
+    private readonly IScopeIdentity _scopIdentity;
+    private readonly IEventService _eventService;
 
     public SendMessageCommandHandler(
         IChatRepository chatRepository,
-        ICommandExecutor commandExecutor,
         IScopeIdentity scopeIdentity,
-        ICommandService commandService)
+        IEventService eventService)
     {
         _chatRepository = chatRepository;
-        _commandExecutor = commandExecutor;
         _scopIdentity = scopeIdentity;
-        _commandService = commandService;
+        _eventService = eventService;
     }
 
     public async Task<IResult<ChatDto>> HandleAsync(SendMessageCommand command)
@@ -51,55 +47,8 @@ public class SendMessageCommandHandler : ICommandHandler<SendMessageCommand, Cha
             return Result.Error<ChatDto>("ChatModel Creation Failed");
         }
 
-        if (chatModel.IsGroupMessage)
-        {
-            await SendForHandleGroupChatAsync(chatModel);
-        }
-        else
-        {
-            await SendChatNotificationAsync(chatModel);
-        }
-
-        await UpdateLatestChatModelAsync(chatModel);
+        await _eventService.PublishDomainEventAsync(chatModel.DomainEvents.FirstOrDefault()!);
         
         return Result.Success(chatModel.ToChatDto());
-    }
-
-    private Task SendChatNotificationAsync(ChatModel chatModel)
-    {
-        var notification = new NotificationData(GetUserChatTopic(chatModel), chatModel, "ChatModel", chatModel.UserId)
-        {
-            Id = chatModel.Id
-        };
-
-        var sendNotificationCommand = new SendNotificationCommand(notification, new List<string> { chatModel.SendTo, chatModel.UserId });
-        
-        return _commandService.SendAsync(sendNotificationCommand);
-    }
-
-    private Task UpdateLatestChatModelAsync(ChatModel chatModel)
-    {
-        var latestChatModel = chatModel.ToLatestChatModel();
-
-        var updateLatestChatCommand = new UpdateLatestChatCommand
-        {
-            LatestChatModel = latestChatModel
-        };
-
-        return _commandService.ExecuteAsync(updateLatestChatCommand);
-    }
-
-    private Task SendForHandleGroupChatAsync(ChatModel chatModel)
-    {
-        var handleGroupChatCommand = 
-            new HandleGroupChatCommand(chatModel.SendTo, chatModel.UserId, chatModel.Id);
-        return _commandService.SendAsync(handleGroupChatCommand);
-    }
-
-    private string GetUserChatTopic(ChatModel chatModel)
-    {
-        var ids = new List<string> { chatModel.UserId, chatModel.SendTo };
-        ids.Sort();
-        return $"UserChat-{ids[0]}-{ids[1]}";
     }
 }

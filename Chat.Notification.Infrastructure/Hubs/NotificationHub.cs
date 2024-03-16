@@ -1,5 +1,5 @@
 using Chat.Domain.Shared.Events;
-using Chat.Framework.CQRS;
+using Chat.Framework.EDD;
 using Chat.Framework.Identity;
 using Chat.Framework.MessageBrokers;
 using Chat.Notification.Application.Helpers;
@@ -54,7 +54,7 @@ public class NotificationHub : Hub
             ConnectionId = connectionId
         };
 
-        await _eventService.PublishAsync(connectedEvent);
+        await _eventService.PublishIntegrationEventAsync(connectedEvent);
     }
 
     public override async Task OnDisconnectedAsync(Exception? exception)
@@ -84,6 +84,6 @@ public class NotificationHub : Hub
             ConnectionId = connectionId
         };
 
-        await _eventService.PublishAsync(disconnectedEvent);
+        await _eventService.PublishIntegrationEventAsync(disconnectedEvent);
     }
 }

@@ -22,6 +22,7 @@ public static class ChatModelExtension
         return new ChatDto
         {
             Id = chatModel.Id,
+            SendTo = chatModel.SendTo,
             UserId = chatModel.UserId,
             Message = chatModel.Message,
             Status = chatModel.Status,

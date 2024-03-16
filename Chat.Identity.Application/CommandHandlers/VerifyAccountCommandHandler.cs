@@ -1,5 +1,6 @@
 ﻿using Chat.Domain.Shared.Events;
 using Chat.Framework.CQRS;
+using Chat.Framework.EDD;
 using Chat.Framework.MessageBrokers;
 using Chat.Framework.Results;
 using Chat.Identity.Application.Commands;
@@ -30,7 +31,7 @@ public class VerifyAccountCommandHandler : ICommandHandler<VerifyAccountCommand>
         var verifiedUserAccountCreatedEvent = 
             new VerifiedUserAccountCreatedEvent(request.UserId);
         
-        await _eventService.PublishAsync(verifiedUserAccountCreatedEvent);
+        await _eventService.PublishIntegrationEventAsync(verifiedUserAccountCreatedEvent);
         
         return Result.Success("Account verified successfully.");
     }

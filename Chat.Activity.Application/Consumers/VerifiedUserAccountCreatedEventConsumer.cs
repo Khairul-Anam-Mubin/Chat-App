@@ -1,7 +1,7 @@
 ﻿using Chat.Activity.Domain.Entities;
 using Chat.Activity.Domain.Repositories;
 using Chat.Domain.Shared.Events;
-using Chat.Framework.CQRS;
+using Chat.Framework.EDD;
 using Chat.Framework.Identity;
 using Chat.Framework.MessageBrokers;
 

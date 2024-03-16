@@ -1,11 +1,12 @@
+using Chat.Domain.DomainEvents;
 using Chat.Framework.Database.ORM.Interfaces;
+using Chat.Framework.DDD;
 using Chat.Framework.Results;
 
 namespace Chat.Domain.Entities;
 
-public class ChatModel : IRepositoryItem
+public class ChatModel : AEntity, IRepositoryItem
 {
-    public string Id { get; private set; }
     public string UserId { get; private set; }
     public string SendTo { get; private set; }
     public string Message { get; private set; }
@@ -14,8 +15,8 @@ public class ChatModel : IRepositoryItem
     public bool IsGroupMessage { get; private set; }
 
     private ChatModel(string userId, string sendTo, string message, bool isGroupMessage)
+        : base(Guid.NewGuid().ToString())
     {
-        Id = Guid.NewGuid().ToString();
         UserId = userId;
         SendTo = sendTo;
         Message = message;
@@ -26,7 +27,11 @@ public class ChatModel : IRepositoryItem
 
     public static IResult<ChatModel> Create(string userId, string sendTo, string message, bool isGroupMessage)
     {
-        return Result.Success(new ChatModel(userId, sendTo, message, isGroupMessage));
+        var chat = new ChatModel(userId, sendTo, message, isGroupMessage);
+
+        chat.RaiseDomainEvent(new ChatCreatedDomainEvent(chat));
+
+        return Result.Success(chat);
     }
 
     public void MessageSeen()
