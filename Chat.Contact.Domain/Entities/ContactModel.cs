@@ -1,20 +1,20 @@
 using Chat.Contact.Domain.Results;
 using Chat.Framework.Database.ORM.Interfaces;
+using Chat.Framework.DDD;
 using Chat.Framework.Results;
 
 namespace Chat.Contact.Domain.Entities;
 
-public class ContactModel : IRepositoryItem
+public class ContactModel : Entity, IRepositoryItem
 {
-    public string Id { get; private set; }
     public string UserId { get; private set; }
     public string ContactUserId { get; private set; }
     public bool IsPending { get; private set; }
     public DateTime CreatedAt { get; private set; }
 
     private ContactModel(string userId, string contactUserId)
+        : base(Guid.NewGuid().ToString())
     {
-        Id = Guid.NewGuid().ToString();
         UserId = userId;
         ContactUserId = contactUserId;
         IsPending = true;

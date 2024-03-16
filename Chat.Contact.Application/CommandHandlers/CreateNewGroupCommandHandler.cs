@@ -3,6 +3,7 @@ using Chat.Contact.Domain.Entities;
 using Chat.Contact.Domain.Repositories;
 using Chat.Contact.Domain.Results;
 using Chat.Framework.CQRS;
+using Chat.Framework.EDD;
 using Chat.Framework.Identity;
 using Chat.Framework.Results;
 
@@ -11,14 +12,17 @@ namespace Chat.Contact.Application.CommandHandlers;
 public class CreateNewGroupCommandHandler : ICommandHandler<CreateNewGroupCommand>
 {
     private readonly IGroupRepository _groupRepository;
-    private readonly ICommandExecutor _commandExecutor;
     private readonly IScopeIdentity _scopeIdentity;
+    private readonly IEventService _eventService;
 
-    public CreateNewGroupCommandHandler(IGroupRepository groupRepository, ICommandExecutor commandExecutor, IScopeIdentity scopeIdentity)
+    public CreateNewGroupCommandHandler(
+        IGroupRepository groupRepository, 
+        IScopeIdentity scopeIdentity,
+        IEventService eventService)
     {
         _scopeIdentity = scopeIdentity;
         _groupRepository = groupRepository;
-        _commandExecutor = commandExecutor;
+        _eventService = eventService;
     }
 
     public async Task<IResult> HandleAsync(CreateNewGroupCommand request)
@@ -37,9 +41,7 @@ public class CreateNewGroupCommandHandler : ICommandHandler<CreateNewGroupComman
 
         await _groupRepository.SaveAsync(group);
 
-        var addMemberToGroupCommand = new AddMemberToGroupCommand(group.Id, userId, userId);
-
-        await _commandExecutor.ExecuteAsync(addMemberToGroupCommand);
+        await _eventService.PublishDomainEventAsync(group.DomainEvents.FirstOrDefault()!);
 
         var result = Result.Success().GroupCreated();
         

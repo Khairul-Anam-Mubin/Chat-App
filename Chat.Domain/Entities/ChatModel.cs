@@ -5,7 +5,7 @@ using Chat.Framework.Results;
 
 namespace Chat.Domain.Entities;
 
-public class ChatModel : AEntity, IRepositoryItem
+public class ChatModel : Entity, IRepositoryItem
 {
     public string UserId { get; private set; }
     public string SendTo { get; private set; }

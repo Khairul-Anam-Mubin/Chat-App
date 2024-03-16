@@ -1,17 +1,24 @@
 ﻿namespace Chat.Framework.DDD;
 
-public abstract class AEntity : IEntity
+public abstract class Entity : IEntity
 {
     public string Id { get; private set; }
 
-    protected AEntity(string id)
+    protected Entity(string id)
     {
         Id = id;
     }
 
     private List<IDomainEvent> _domainEvents = new();
     
-    public List<IDomainEvent> DomainEvents => _domainEvents is null ? new() : _domainEvents.ToList();
+    public List<IDomainEvent> DomainEvents 
+    { 
+        get 
+        {
+            _domainEvents = _domainEvents ?? new List<IDomainEvent>();
+            return _domainEvents.ToList();
+        } 
+    }
 
     protected void RaiseDomainEvent(IDomainEvent domainEvent)
     {
