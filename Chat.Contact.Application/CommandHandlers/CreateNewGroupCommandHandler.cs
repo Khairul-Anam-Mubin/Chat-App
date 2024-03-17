@@ -41,7 +41,7 @@ public class CreateNewGroupCommandHandler : ICommandHandler<CreateNewGroupComman
 
         await _groupRepository.SaveAsync(group);
 
-        await _eventService.PublishDomainEventAsync(group.DomainEvents.FirstOrDefault()!);
+        await _eventService.PublishEventAsync(group.DomainEvents.FirstOrDefault()!);
 
         var result = Result.Success().GroupCreated();
         

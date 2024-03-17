@@ -1,11 +1,11 @@
 ﻿using Chat.Contact.Application.Commands;
 using Chat.Contact.Domain.DomainEvents;
 using Chat.Framework.CQRS;
-using Chat.Framework.EDD;
+using Chat.Framework.DDD;
 
 namespace Chat.Contact.Application.EventHandlers;
 
-public class NewGroupCreatedDomainEventHandler : IEventHandler<NewGroupCreatedDomainEvent>
+public class NewGroupCreatedDomainEventHandler : IDomainEventHandler<NewGroupCreatedDomainEvent>
 {
     private readonly ICommandExecutor _commandExecutor;
 

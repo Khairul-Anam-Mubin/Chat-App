@@ -47,7 +47,7 @@ public class SendMessageCommandHandler : ICommandHandler<SendMessageCommand, Cha
             return Result.Error<ChatDto>("ChatModel Creation Failed");
         }
 
-        await _eventService.PublishDomainEventAsync(chatModel.DomainEvents.FirstOrDefault()!);
+        await _eventService.PublishEventAsync(chatModel.DomainEvents.FirstOrDefault()!);
         
         return Result.Success(chatModel.ToChatDto());
     }

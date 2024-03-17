@@ -5,11 +5,11 @@ using Chat.Domain.Entities;
 using Chat.Domain.Shared.Commands;
 using Chat.Domain.Shared.Entities;
 using Chat.Framework.CQRS;
-using Chat.Framework.EDD;
+using Chat.Framework.DDD;
 
 namespace Chat.Application.EventHandlers;
 
-public class ChatCreatedDomainEventHandler : IEventHandler<ChatCreatedDomainEvent>
+public class ChatCreatedDomainEventHandler : IDomainEventHandler<ChatCreatedDomainEvent>
 {
     private readonly ICommandService _commandService;
     

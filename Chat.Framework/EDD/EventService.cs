@@ -1,18 +1,8 @@
 ﻿using Chat.Framework.CQRS;
-using Chat.Framework.DDD;
 using Chat.Framework.Identity;
 using Chat.Framework.MessageBrokers;
 
 namespace Chat.Framework.EDD;
-
-public interface IEventService
-{
-    Task PublishIntegrationEventAsync<TEvent>(TEvent @event)
-        where TEvent : class, IEvent, IInternalMessage;
-
-    Task PublishDomainEventAsync<TEvent>(TEvent @event)
-        where TEvent : class, IDomainEvent;
-}
 
 public class EventService : IEventService
 {
@@ -21,8 +11,8 @@ public class EventService : IEventService
     private readonly IEventExecutor _eventExecutor;
 
     public EventService(
-        IEventBus eventBus, 
-        IScopeIdentity scopeIdentity, 
+        IEventBus eventBus,
+        IScopeIdentity scopeIdentity,
         IEventExecutor eventExecutor)
     {
         _eventBus = eventBus;
@@ -37,8 +27,8 @@ public class EventService : IEventService
         await _eventBus.PublishAsync(@event);
     }
 
-    public async Task PublishDomainEventAsync<TEvent>(TEvent @event)
-        where TEvent : class, IDomainEvent
+    public async Task PublishEventAsync<TEvent>(TEvent @event)
+        where TEvent : class, IEvent
     {
         await _eventExecutor.PublishAsync(@event);
     }
