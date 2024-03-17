@@ -1,7 +1,7 @@
 ﻿using Chat.Framework.CQRS;
 using System.ComponentModel.DataAnnotations;
 
-namespace Chat.Contact.Application.Queries;
+namespace Chat.Contacts.Application.Queries;
 
 public class GroupsQuery : IQuery
 {

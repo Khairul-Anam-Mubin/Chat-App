@@ -15,10 +15,10 @@ public class ChatInstaller : IServiceInstaller
     {
         services.AddChatApplication();
         
-        services.AddTransient<IIndexCreator, ChatModelIndexCreator>();
-        services.AddTransient<IIndexCreator, LatestChatModelIndexCreator>();
+        services.AddTransient<IIndexCreator, MessageIndexCreator>();
+        services.AddTransient<IIndexCreator, ConversationIndexCreator>();
         
-        services.AddSingleton<IChatRepository, ChatRepository>();
-        services.AddSingleton<ILatestChatRepository, LatestChatRepository>();
+        services.AddSingleton<IMessageRepository, MessageRepository>();
+        services.AddSingleton<IConversationRepository, ConversationRepository>();
     }
 }

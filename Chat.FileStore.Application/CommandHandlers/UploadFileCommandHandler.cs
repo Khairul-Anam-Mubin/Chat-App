@@ -11,16 +11,16 @@ namespace Chat.FileStore.Application.CommandHandlers;
 
 public class UploadFileCommandHandler : ICommandHandler<UploadFileCommand, string>
 {
-    private readonly IFileRepository _fileRepository;
+    private readonly IFileDirectoryRepository _fileDirectoryRepository;
     private readonly IConfiguration _configuration;
     private readonly IScopeIdentity _scopeIdentity;
     
     public UploadFileCommandHandler(
-        IFileRepository fileRepository, 
+        IFileDirectoryRepository fileDirectoryRepository, 
         IConfiguration configuration,
         IScopeIdentity scopeIdentity)
     {
-        _fileRepository = fileRepository;
+        _fileDirectoryRepository = fileDirectoryRepository;
         _configuration = configuration;
         _scopeIdentity = scopeIdentity;
     }
@@ -45,21 +45,21 @@ public class UploadFileCommandHandler : ICommandHandler<UploadFileCommand, strin
             await file.CopyToAsync(stream);
         }
 
-        var fileModelCreateResult = 
-            FileModel.Create(fileId, fileName, extension, fullPath, _scopeIdentity.GetUserId());
+        var fileDirectoryCreateResult =
+           FileDirectory.Create(fileId, fileName, extension, fullPath, _scopeIdentity.GetUserId());
         
-        if (fileModelCreateResult.IsFailure || fileModelCreateResult.Value is null)
+        if (fileDirectoryCreateResult.IsFailure || fileDirectoryCreateResult.Value is null)
         {
-            return (IResult<string>)fileModelCreateResult;
+            return (IResult<string>)fileDirectoryCreateResult;
         }
 
-        var fileModel = fileModelCreateResult.Value;
+        var fileDirectory = fileDirectoryCreateResult.Value;
         
-        if (!await _fileRepository.SaveAsync(fileModel))
+        if (!await _fileDirectoryRepository.SaveAsync(fileDirectory))
         {
             return Result.Error<string>("File Save error to db");
         }
         
-        return Result.Success(fileModel.Id, "File uploaded successfully");
+        return Result.Success(fileDirectory.Id, "File uploaded successfully");
     }
 }

@@ -2,7 +2,7 @@ export class ChatModel {
     id : any = '';
     userId : any;
     sendTo : any;
-    message : any;
+    content : any;
     status : any;
     sentAt : any;
     isGroupMessage: any;

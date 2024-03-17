@@ -1,6 +1,6 @@
 ﻿using Chat.Framework.DDD;
 
-namespace Chat.Contact.Domain.DomainEvents;
+namespace Chat.Contacts.Domain.DomainEvents;
 
 public class NewGroupCreatedDomainEvent : DomainEvent
 {

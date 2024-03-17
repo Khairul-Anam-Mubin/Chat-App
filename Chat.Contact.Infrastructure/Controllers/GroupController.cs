@@ -1,20 +1,20 @@
-﻿using Chat.Contact.Application.Commands;
-using Chat.Contact.Application.Queries;
-using Chat.Contact.Domain.Entities;
+﻿using Chat.Contacts.Application.Commands;
+using Chat.Contacts.Application.Queries;
+using Chat.Contacts.Domain.Entities;
 using Chat.Framework.CQRS;
 using Chat.Infrastructure.Shared.Controllers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Chat.Contact.Infrastructure.Controllers;
+namespace Chat.Contacts.Infrastructure.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
 [Authorize]
 public class GroupController : ACommonController
 {
-    public GroupController(ICommandExecutor commandExecutor, IQueryExecutor queryExecutor) 
-        : base(commandExecutor, queryExecutor) {}
+    public GroupController(ICommandExecutor commandExecutor, IQueryExecutor queryExecutor)
+        : base(commandExecutor, queryExecutor) { }
 
     [HttpPost, Route("create")]
     public async Task<IActionResult> CreateNewGroupCommandAsync(CreateNewGroupCommand command)
@@ -31,19 +31,19 @@ public class GroupController : ACommonController
     [HttpPost, Route("user-groups")]
     public async Task<IActionResult> UserGroupsQueryAsync(UserGroupsQuery query)
     {
-        return Ok(await GetQueryResponseAsync<UserGroupsQuery, List<GroupModel>>(query));
+        return Ok(await GetQueryResponseAsync<UserGroupsQuery, List<Group>>(query));
     }
 
     [HttpPost, Route("groups")]
     public async Task<IActionResult> GroupsQueryAsync(GroupsQuery query)
     {
-        return Ok(await GetQueryResponseAsync<GroupsQuery, List<GroupModel>>(query));
+        return Ok(await GetQueryResponseAsync<GroupsQuery, List<Group>>(query));
     }
 
 
     [HttpPost, Route("group-members")]
     public async Task<IActionResult> GroupMembersQueryAsync(GroupMembersQuery query)
     {
-        return Ok(await GetQueryResponseAsync<GroupMembersQuery, List<GroupMemberModel>>(query));
+        return Ok(await GetQueryResponseAsync<GroupMembersQuery, List<GroupMember>>(query));
     }
 }

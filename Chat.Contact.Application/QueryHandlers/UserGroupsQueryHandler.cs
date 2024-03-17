@@ -1,13 +1,13 @@
-﻿using Chat.Contact.Application.Queries;
-using Chat.Contact.Domain.Entities;
-using Chat.Contact.Domain.Repositories;
+﻿using Chat.Contacts.Application.Queries;
+using Chat.Contacts.Domain.Entities;
+using Chat.Contacts.Domain.Repositories;
 using Chat.Framework.CQRS;
 using Chat.Framework.Identity;
 using Chat.Framework.Results;
 
-namespace Chat.Contact.Application.QueryHandlers;
+namespace Chat.Contacts.Application.QueryHandlers;
 
-public class UserGroupsQueryHandler : IQueryHandler<UserGroupsQuery, List<GroupModel>>
+public class UserGroupsQueryHandler : IQueryHandler<UserGroupsQuery, List<Group>>
 {
     private readonly IGroupRepository _groupRepository;
     private readonly IScopeIdentity _scopeIdentity;
@@ -18,18 +18,18 @@ public class UserGroupsQueryHandler : IQueryHandler<UserGroupsQuery, List<GroupM
         _scopeIdentity = scopeIdentity;
     }
 
-    public async Task<IResult<List<GroupModel>>> HandleAsync(UserGroupsQuery request)
+    public async Task<IResult<List<Group>>> HandleAsync(UserGroupsQuery request)
     {
         var userId = _scopeIdentity.GetUserId()!;
 
-        var groupMemberModels = await _groupRepository.GetUserGroupsAsync(userId);
+        var groupMembers = await _groupRepository.GetUserGroupsAsync(userId);
 
-        var distinctGroupMemberModels = 
-            groupMemberModels.DistinctBy(x => x.GroupId);
+        var distinctGroupMembers =
+            groupMembers.DistinctBy(x => x.GroupId);
 
-        var groupIds = 
-            distinctGroupMemberModels
-            .Select(distinctGroupMemberModel => distinctGroupMemberModel.GroupId)
+        var groupIds =
+            distinctGroupMembers
+            .Select(distinctGroupMember => distinctGroupMember.GroupId)
             .ToList();
 
         var groups = await _groupRepository.GetGroupsByGroupIds(groupIds);

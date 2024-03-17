@@ -41,14 +41,14 @@ public class TokenService : ITokenService
         return Result.Success();
     }
 
-    public AccessModel GenerateAccessModel(UserProfile userProfile, string appId)
+    public Token GenerateToken(UserProfile userProfile, string appId)
     {
         var accessToken = GenerateAccessToken(userProfile, appId);
 
         var refreshToken = TokenHelper.GenerateRefreshToken();
 
         var accessModelCreateResult =
-            AccessModel.Create(refreshToken, accessToken, userProfile.Id, appId);
+            Token.Create(refreshToken, accessToken, userProfile.Id, appId);
 
         return accessModelCreateResult.Value!;
     }

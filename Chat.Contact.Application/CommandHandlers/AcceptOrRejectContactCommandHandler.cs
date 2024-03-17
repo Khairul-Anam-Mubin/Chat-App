@@ -1,11 +1,11 @@
-using Chat.Contact.Application.Commands;
-using Chat.Contact.Domain.Repositories;
-using Chat.Contact.Domain.Results;
+using Chat.Contacts.Application.Commands;
+using Chat.Contacts.Domain.Repositories;
+using Chat.Contacts.Domain.Results;
 using Chat.Framework.CQRS;
 using Chat.Framework.Identity;
 using Chat.Framework.Results;
 
-namespace Chat.Contact.Application.CommandHandlers;
+namespace Chat.Contacts.Application.CommandHandlers;
 
 public class AcceptOrRejectContactCommandHandler : ICommandHandler<AcceptOrRejectContactRequestCommand>
 {

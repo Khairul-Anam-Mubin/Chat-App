@@ -69,7 +69,7 @@ export class ChatListComponent implements OnInit{
         const sharedSecret = this.securityService.getSharedSecretKey(123);
         this.items[i] = ChatProcessor.process(this.items[i], sharedSecret);
         let chat = {
-          'latestMessage' : this.items[i].message,
+          'latestMessage' : this.items[i].content,
           'durationDisplayTime' : this.items[i].durationDisplayTime,
           'chatName' : group?.name,
           'userId' : this.items[i].userId,
@@ -83,7 +83,7 @@ export class ChatListComponent implements OnInit{
         const sharedSecret = this.securityService.getSharedSecretKey(userProfile?.publicKey);
         this.items[i] = ChatProcessor.process(this.items[i], sharedSecret);
         let chat = {
-          'latestMessage' : this.items[i].message,
+          'latestMessage' : this.items[i].content,
           'durationDisplayTime' : this.items[i].durationDisplayTime,
           'chatName' : userProfile.firstName + " " + userProfile.lastName,
           'userId' : this.items[i].userId,

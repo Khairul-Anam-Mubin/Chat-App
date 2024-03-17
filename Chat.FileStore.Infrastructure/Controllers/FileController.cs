@@ -1,7 +1,6 @@
 using Chat.FileStore.Application.Commands;
 using Chat.FileStore.Application.DTOs;
 using Chat.FileStore.Application.Queries;
-using Chat.FileStore.Domain.Entities;
 using Chat.Framework.CQRS;
 using Chat.Framework.Pagination;
 using Chat.Infrastructure.Shared.Controllers;
@@ -59,8 +58,8 @@ public class FileController : ACommonController
 
     [HttpPost]
     [Route("get")]
-    public async Task<IActionResult> GetFileModelAsync(FileModelQuery query)
+    public async Task<IActionResult> GetFileModelAsync(FileDirectoryQuery query)
     {
-        return Ok(await GetQueryResponseAsync<FileModelQuery, IPaginationResponse<FileModel>>(query));
+        return base.Ok(await GetQueryResponseAsync<FileDirectoryQuery, IPaginationResponse<Domain.Entities.FileDirectory>>(query));
     }
 }

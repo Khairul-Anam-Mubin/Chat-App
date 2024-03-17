@@ -1,11 +1,11 @@
 using System.ComponentModel.DataAnnotations;
-using Chat.Contact.Application.DTOs;
+using Chat.Contacts.Application.DTOs;
 using Chat.Framework.CQRS;
 using Chat.Framework.Pagination;
 
-namespace Chat.Contact.Application.Queries;
+namespace Chat.Contacts.Application.Queries;
 
-public class ContactQuery : APaginationQuery<ContactDto> , IQuery
+public class ContactQuery : APaginationQuery<ContactDto>, IQuery
 {
     [Required]
     public string UserId { get; set; } = string.Empty;

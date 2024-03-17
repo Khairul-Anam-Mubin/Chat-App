@@ -1,16 +1,16 @@
-﻿using Chat.Contact.Application.DTOs;
-using Chat.Contact.Domain.Entities;
+﻿using Chat.Contacts.Application.DTOs;
+using Chat.Contacts.Domain.Entities;
 
-namespace Chat.Contact.Application.Extensions;
+namespace Chat.Contacts.Application.Extensions;
 
 public static class ContactExtension
 {
-    public static ContactDto ToContactDto(this ContactModel contactModel, string userId)
+    public static ContactDto ToContactDto(this Contact contact, string userId)
     {
         return new ContactDto
         {
-            ContactId = contactModel.Id,
-            ContactUserId = contactModel.UserId == userId ? contactModel.ContactUserId : contactModel.UserId,
+            ContactId = contact.Id,
+            ContactUserId = contact.UserId == userId ? contact.ContactUserId : contact.UserId,
         };
     }
 }

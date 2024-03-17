@@ -1,6 +1,6 @@
 ﻿using Chat.Framework.Results;
 
-namespace Chat.Contact.Domain.Results;
+namespace Chat.Contacts.Domain.Results;
 
 public static class GroupResult
 {
@@ -12,7 +12,7 @@ public static class GroupResult
 
     public static IResult GroupNotFound(this IResult result)
         => result.SetMessage("Group not found.");
-    
+
     public static IResult MemberAdded(this IResult result)
         => result.SetMessage("Member added to the group successfully.");
 

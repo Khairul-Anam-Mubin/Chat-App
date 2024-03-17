@@ -52,6 +52,7 @@ export class GroupComponent implements OnInit {
             if (this.contacts[i].contactUserId === userProfiles[i].id) {
               this.contacts[i].email = userProfiles[i].email;
               this.contacts[i].name = userProfiles[i].firstName + " " + userProfiles[i].lastName;
+              console.log(this.contacts[i]);
               break;
             }
           }

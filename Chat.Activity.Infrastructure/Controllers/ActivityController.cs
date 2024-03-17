@@ -17,13 +17,13 @@ public class ActivityController : ACommonController
         : base(commandExecutor, queryExecutor) {}
 
     [HttpPost, Route("last-seen")]
-    public async Task<IActionResult> GetLastSeenModelAsync(LastSeenQuery query)
+    public async Task<IActionResult> GetLastSeenModelAsync(PresenceQuery query)
     {
-        return Ok(await GetQueryResponseAsync<LastSeenQuery, List<LastSeenDto>>(query));
+        return Ok(await GetQueryResponseAsync<PresenceQuery, List<PresenceDto>>(query));
     }
 
     [HttpPost, Route("track-last-seen")]
-    public async Task<IActionResult> UpdateLastSeenAsync(UpdateLastSeenCommand command)
+    public async Task<IActionResult> UpdateLastSeenAsync(TrackPresenceCommand command)
     {
         return Ok(await GetCommandResponseAsync(command));
     }

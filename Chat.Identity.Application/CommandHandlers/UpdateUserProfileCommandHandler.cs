@@ -22,7 +22,7 @@ public class UpdateUserProfileCommandHandler :
 
     public async Task<IResult<UserProfile>> HandleAsync(UpdateUserProfileCommand command)
     {
-        var requestUpdateModel = command.UserModel;
+        var updateRequestUser = command.UserModel;
 
         var userId = _scopeIdentity.GetUserId()!;
         
@@ -31,10 +31,10 @@ public class UpdateUserProfileCommandHandler :
         
         if (user is null)
         {
-            return Result.Error<UserProfile>("UserModel not found");
+            return Result.Error<UserProfile>("User not found");
         }
 
-        var updateResult = user.Update(requestUpdateModel);
+        var updateResult = user.Update(updateRequestUser);
         
         if (updateResult.IsFailure || updateResult.Value is null)
         {

@@ -2,7 +2,7 @@
 using Chat.Framework.Mediators;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Chat.Contact.Application;
+namespace Chat.Contacts.Application;
 
 public static class DependencyInjection
 {

@@ -29,13 +29,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat.Identity.Infrastructur
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Identity", "Identity", "{70BBA365-2DBB-4EB6-B870-205934DB08FB}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Contact", "Contact", "{9D9AD2C1-4432-48BC-95A3-41703AE2FB5A}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Contacts", "Contacts", "{9D9AD2C1-4432-48BC-95A3-41703AE2FB5A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat.Contact.Domain", "Chat.Contact.Domain\Chat.Contact.Domain.csproj", "{784B4EAD-D735-45A7-8D16-DDB8241B1723}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat.Contacts.Domain", "Chat.Contact.Domain\Chat.Contacts.Domain.csproj", "{784B4EAD-D735-45A7-8D16-DDB8241B1723}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat.Contact.Application", "Chat.Contact.Application\Chat.Contact.Application.csproj", "{249F8232-E45D-45DD-9D4A-D8420B2C8B6C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat.Contacts.Application", "Chat.Contact.Application\Chat.Contacts.Application.csproj", "{249F8232-E45D-45DD-9D4A-D8420B2C8B6C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat.Contact.Infrastructure", "Chat.Contact.Infrastructure\Chat.Contact.Infrastructure.csproj", "{4044AB2C-F51F-47DE-813B-7327BCEFE17D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat.Contacts.Infrastructure", "Chat.Contact.Infrastructure\Chat.Contacts.Infrastructure.csproj", "{4044AB2C-F51F-47DE-813B-7327BCEFE17D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FileStore", "FileStore", "{5B66DF56-6D08-421A-BD15-5CA82346BB7B}"
 EndProject

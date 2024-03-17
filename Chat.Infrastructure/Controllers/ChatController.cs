@@ -21,30 +21,30 @@ public class ChatController : ACommonController
     [HttpPost, Route("send")]
     public async Task<IActionResult> SendMessageAsync(SendMessageCommand command)
     {
-        return Ok(await GetCommandResponseAsync<SendMessageCommand, ChatDto>(command));
+        return Ok(await GetCommandResponseAsync<SendMessageCommand, MessageDto>(command));
     }
 
     [HttpPost, Route("update-status")]
-    public async Task<IActionResult> UpdateChatsStatusAsync(UpdateChatsStatusCommand command)
+    public async Task<IActionResult> UpdateChatsStatusAsync(UpdateMessageStatusCommand command)
     {
         return Ok(await GetCommandResponseAsync(command));
     }
 
     [HttpPost, Route("list")]
-    public async Task<IActionResult> GetChatListAsync(ChatListQuery query)
+    public async Task<IActionResult> GetChatListAsync(ConversationsQuery query)
     {
-        return Ok(await GetQueryResponseAsync<ChatListQuery, IPaginationResponse<LatestChatDto>>(query));
+        return Ok(await GetQueryResponseAsync<ConversationsQuery, IPaginationResponse<ConversationDto>>(query));
     }
 
     [HttpPost, Route("get")]
-    public async Task<IActionResult> GetChatsAsync(ChatQuery query)
+    public async Task<IActionResult> GetChatsAsync(MessageQuery query)
     {
-        return Ok(await GetQueryResponseAsync<ChatQuery, IPaginationResponse<ChatDto>>(query));
+        return Ok(await GetQueryResponseAsync<MessageQuery, IPaginationResponse<MessageDto>>(query));
     }
 
     [HttpPost, Route("chats-by-ids")]
-    public async Task<IActionResult> GetChatsByIds(ChatByIdsQuery query)
+    public async Task<IActionResult> GetChatsByIds(MessageByIdsQuery query)
     {
-        return Ok(await GetQueryResponseAsync<ChatByIdsQuery, List<ChatDto>>(query));
+        return Ok(await GetQueryResponseAsync<MessageByIdsQuery, List<MessageDto>>(query));
     }
 }

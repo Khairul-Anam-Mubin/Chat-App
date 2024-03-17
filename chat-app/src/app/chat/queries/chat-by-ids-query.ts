@@ -3,7 +3,7 @@ import { Configuration } from "src/app/core/services/configuration";
 
 export class ChatByIdsQuery extends QueryBase {
     
-    chatIds: any;
+    messageIds: any;
 
     constructor() {
         super();

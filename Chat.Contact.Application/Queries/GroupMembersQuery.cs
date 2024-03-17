@@ -1,6 +1,6 @@
 ﻿using Chat.Framework.CQRS;
 
-namespace Chat.Contact.Application.Queries;
+namespace Chat.Contacts.Application.Queries;
 
 public class GroupMembersQuery : IQuery
 {

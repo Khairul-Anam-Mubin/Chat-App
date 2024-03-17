@@ -92,7 +92,7 @@ export class ChatComponent implements OnInit, OnDestroy{
     this.socketService.subscribeToTopic(this.getGroupChatTopic()).subscribe(notification => {
       if (notification && notification.content && notification.contentType === 'ChatId') {
         const query = new ChatByIdsQuery();
-        query.chatIds = [notification.content];
+        query.messageIds = [notification.content];
         this.queryService.execute(query).pipe(take(1)).subscribe(response => {
           let message = ChatProcessor.process(response.value[0], this.sharedSecret);
           this.chats = [message].concat(this.chats);
@@ -191,7 +191,7 @@ export class ChatComponent implements OnInit, OnDestroy{
   onClickSendMessage() {
     console.log(this.inputMessage);
     const sendMessageCommand = new SendMessageCommand();
-    sendMessageCommand.message = this.inputMessage;
+    sendMessageCommand.messageContent = this.inputMessage;
     sendMessageCommand.sendTo = this.sendToUserId;
     sendMessageCommand.isGroupMessage = this.isGroup;
     this.inputMessage = '';

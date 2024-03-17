@@ -1,6 +1,6 @@
 ﻿using Chat.Framework.Results;
 
-namespace Chat.Contact.Domain.Results;
+namespace Chat.Contacts.Domain.Results;
 
 public static class ContactResult
 {

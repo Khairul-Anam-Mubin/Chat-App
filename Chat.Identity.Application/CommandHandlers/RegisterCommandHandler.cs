@@ -22,7 +22,7 @@ public class RegisterCommandHandler : ICommandHandler<RegisterCommand>
     public async Task<IResult> HandleAsync(RegisterCommand command)
     {
         var userCreatedResult = 
-            UserModel.Create(
+            User.Create(
                 command.FirstName, 
                 command.LastName, 
                 command.BirthDay, 
@@ -49,13 +49,13 @@ public class RegisterCommandHandler : ICommandHandler<RegisterCommand>
         return response;
     }
 
-    private async Task SendVerificationEmailAsync(UserModel userModel)
+    private async Task SendVerificationEmailAsync(User user)
     {
         var email = new Email
         {
-            To = new List<string> { userModel.Email },
+            To = new List<string> { user.Email },
             IsHtmlContent = true,
-            Content = $"<h1>Account Registration Successfully.</h1><br><button><a href=\"https://localhost:6001/api/User/verify-account?userId={userModel.Id}\">Click to verify account</a></button><br><br><p>Thanks</p>",
+            Content = $"<h1>Account Registration Successfully.</h1><br><button><a href=\"https://localhost:6001/api/User/verify-account?userId={user.Id}\">Click to verify account</a></button><br><br><p>Thanks</p>",
             Subject = "User registration complete"
         };
 

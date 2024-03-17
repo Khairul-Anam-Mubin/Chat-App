@@ -7,5 +7,5 @@ namespace Chat.Identity.Application.Commands;
 public class UpdateUserProfileCommand : ICommand
 {
     [Required]
-    public UserModel UserModel { get; set; }
+    public User UserModel { get; set; }
 }

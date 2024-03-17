@@ -12,7 +12,7 @@ public interface ITokenService
     string GenerateAccessToken(UserProfile userProfile, string appId);
     List<Claim> GenerateClaims(UserProfile userProfile, string appId);
     IResult CheckForValidRefreshTokenRequest(string jwtToken);
-    AccessModel GenerateAccessModel(UserProfile userProfile, string appId);
+    Token GenerateToken(UserProfile userProfile, string appId);
     TokenValidationParameters GetTokenValidationParameters(
         bool validateIssuer = true,
         bool validateAudience = true,

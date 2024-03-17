@@ -5,7 +5,7 @@ import { ChatModel } from "../models/chat-model";
 export class SendMessageCommand extends CommandBase {
     
     sendTo : any;
-    message : any;
+    messageContent : any;
     isGroupMessage: any;
 
     constructor() {

@@ -7,9 +7,9 @@ namespace Chat.Identity.Application.CommandHandlers;
 
 public class LogOutCommandHandler : ICommandHandler<LogOutCommand>
 {
-    private readonly IAccessRepository _accessRepository;
+    private readonly ITokenRepository _accessRepository;
 
-    public LogOutCommandHandler(IAccessRepository accessRepository)
+    public LogOutCommandHandler(ITokenRepository accessRepository)
     {
         _accessRepository = accessRepository;
     }

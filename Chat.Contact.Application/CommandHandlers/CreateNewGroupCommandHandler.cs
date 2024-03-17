@@ -1,13 +1,13 @@
-﻿using Chat.Contact.Application.Commands;
-using Chat.Contact.Domain.Entities;
-using Chat.Contact.Domain.Repositories;
-using Chat.Contact.Domain.Results;
+﻿using Chat.Contacts.Application.Commands;
+using Chat.Contacts.Domain.Entities;
+using Chat.Contacts.Domain.Repositories;
+using Chat.Contacts.Domain.Results;
 using Chat.Framework.CQRS;
 using Chat.Framework.EDD;
 using Chat.Framework.Identity;
 using Chat.Framework.Results;
 
-namespace Chat.Contact.Application.CommandHandlers;
+namespace Chat.Contacts.Application.CommandHandlers;
 
 public class CreateNewGroupCommandHandler : ICommandHandler<CreateNewGroupCommand>
 {
@@ -16,7 +16,7 @@ public class CreateNewGroupCommandHandler : ICommandHandler<CreateNewGroupComman
     private readonly IEventService _eventService;
 
     public CreateNewGroupCommandHandler(
-        IGroupRepository groupRepository, 
+        IGroupRepository groupRepository,
         IScopeIdentity scopeIdentity,
         IEventService eventService)
     {
@@ -30,7 +30,7 @@ public class CreateNewGroupCommandHandler : ICommandHandler<CreateNewGroupComman
         var groupName = request.GroupName;
         var userId = _scopeIdentity.GetUserId()!;
 
-        var groupCreateResult = GroupModel.Create(groupName, userId);
+        var groupCreateResult = Group.Create(groupName, userId);
 
         if (groupCreateResult.IsFailure || groupCreateResult.Value is null)
         {
@@ -44,7 +44,7 @@ public class CreateNewGroupCommandHandler : ICommandHandler<CreateNewGroupComman
         await _eventService.PublishEventAsync(group.DomainEvents.FirstOrDefault()!);
 
         var result = Result.Success().GroupCreated();
-        
+
         result.SetData("GroupId", group.Id);
 
         return result;

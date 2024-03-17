@@ -1,13 +1,13 @@
-﻿using Chat.Contact.Application;
-using Chat.Contact.Domain.Repositories;
-using Chat.Contact.Infrastructure.Migrations;
-using Chat.Contact.Infrastructure.Repositories;
+﻿using Chat.Contacts.Application;
+using Chat.Contacts.Domain.Repositories;
+using Chat.Contacts.Infrastructure.Migrations;
+using Chat.Contacts.Infrastructure.Repositories;
 using Chat.Framework.Database.ORM.Interfaces;
 using Chat.Framework.ServiceInstaller;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Chat.Contact.Infrastructure.Configurations;
+namespace Chat.Contacts.Infrastructure.Configurations;
 
 public class ContactInstaller : IServiceInstaller
 {

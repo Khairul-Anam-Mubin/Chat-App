@@ -12,6 +12,6 @@ public class FileStoreInstaller : IServiceInstaller
     public void Install(IServiceCollection services, IConfiguration configuration)
     {
         services.AddFileStoreApplication();
-        services.AddSingleton<IFileRepository, FileRepository>();
+        services.AddSingleton<IFileDirectoryRepository, FileDirectoryRepository>();
     }
 }

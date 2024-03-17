@@ -1,13 +1,13 @@
-using Chat.Contact.Application.Commands;
-using Chat.Contact.Domain.Entities;
-using Chat.Contact.Domain.Repositories;
-using Chat.Contact.Domain.Results;
+using Chat.Contacts.Application.Commands;
+using Chat.Contacts.Domain.Entities;
+using Chat.Contacts.Domain.Repositories;
+using Chat.Contacts.Domain.Results;
 using Chat.Domain.Shared.Queries;
 using Chat.Framework.CQRS;
 using Chat.Framework.Identity;
 using Chat.Framework.Results;
 
-namespace Chat.Contact.Application.CommandHandlers;
+namespace Chat.Contacts.Application.CommandHandlers;
 
 public class AddContactCommandHandler : ICommandHandler<AddContactCommand>
 {
@@ -35,9 +35,9 @@ public class AddContactCommandHandler : ICommandHandler<AddContactCommand>
             Emails = new List<string> { command.ContactEmail }
         };
 
-        var queryResponse = 
+        var queryResponse =
             await _queryService.GetResponseAsync<UserProfileQuery, UserProfileResponse>(userProfileQuery);
-        
+
         if (queryResponse.Profiles.Count < 2)
         {
             return Result.Error().GetUserFailed();
@@ -46,10 +46,10 @@ public class AddContactCommandHandler : ICommandHandler<AddContactCommand>
         var userProfiles = queryResponse.Profiles;
 
         var userProfile = userProfiles.First(x => x.Id == userId);
-        
+
         var contactUserProfile = userProfiles.First(x => x.Email == command.ContactEmail);
 
-        var userContact = ContactModel.Create(userProfile.Id, contactUserProfile.Id);
+        var userContact = Contact.Create(userProfile.Id, contactUserProfile.Id);
 
         if (!await _contactRepository.SaveAsync(userContact))
         {

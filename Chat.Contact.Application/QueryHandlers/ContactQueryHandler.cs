@@ -1,14 +1,14 @@
-using Chat.Contact.Application.DTOs;
-using Chat.Contact.Application.Extensions;
-using Chat.Contact.Application.Queries;
-using Chat.Contact.Domain.Entities;
-using Chat.Contact.Domain.Repositories;
+using Chat.Contacts.Application.DTOs;
+using Chat.Contacts.Application.Extensions;
+using Chat.Contacts.Application.Queries;
+using Chat.Contacts.Domain.Entities;
+using Chat.Contacts.Domain.Repositories;
 using Chat.Framework.CQRS;
 using Chat.Framework.Identity;
 using Chat.Framework.Pagination;
 using Chat.Framework.Results;
 
-namespace Chat.Contact.Application.QueryHandlers;
+namespace Chat.Contacts.Application.QueryHandlers;
 
 public class ContactQueryHandler : IQueryHandler<ContactQuery, IPaginationResponse<ContactDto>>
 {
@@ -27,7 +27,7 @@ public class ContactQueryHandler : IQueryHandler<ContactQuery, IPaginationRespon
 
         var userId = _scopeIdentity.GetUserId()!;
 
-        List<ContactModel> contacts;
+        List<Contact> contacts;
 
         if (query.IsRequestContacts)
         {

@@ -19,16 +19,16 @@ public class UserDisconnectedToHubEventConsumer : AEventConsumer<UserDisconnecte
 
     protected override async Task OnConsumeAsync(UserDisconnectedToHubEvent @event, IMessageContext<UserDisconnectedToHubEvent>? context = null)
     {
-        await TrackLastSeenActivityAsync(@event, false);
+        await TrackPresenceAsync(@event, false);
     }
 
-    private async Task TrackLastSeenActivityAsync(UserDisconnectedToHubEvent disconnectedToHubEvent, bool isActive)
+    private async Task TrackPresenceAsync(UserDisconnectedToHubEvent disconnectedToHubEvent, bool isActive)
     {
-        var updateLastSeenCommand = new UpdateLastSeenCommand
+        var trackPresenceCommand = new TrackPresenceCommand
         {
             UserId = disconnectedToHubEvent.UserId,
             IsActive = isActive
         };
-        await _commandExecutor.ExecuteAsync(updateLastSeenCommand);
+        await _commandExecutor.ExecuteAsync(trackPresenceCommand);
     }
 }

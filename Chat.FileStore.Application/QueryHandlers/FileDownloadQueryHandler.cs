@@ -9,30 +9,30 @@ namespace Chat.FileStore.Application.QueryHandlers;
 
 public class FileDownloadQueryHandler : IQueryHandler<FileDownloadQuery, IPaginationResponse<FileDownloadResult>>
 {
-    private readonly IFileRepository _fileRepository;
+    private readonly IFileDirectoryRepository _fileDirectoryRepository;
 
-    public FileDownloadQueryHandler(IFileRepository fileRepository)
+    public FileDownloadQueryHandler(IFileDirectoryRepository fileDirectoryRepository)
     {
-        _fileRepository = fileRepository;
+        _fileDirectoryRepository = fileDirectoryRepository;
     }
 
     public async Task<IResult<IPaginationResponse<FileDownloadResult>>> HandleAsync(FileDownloadQuery query)
     {
         var response = query.CreateResponse();
 
-        var fileModel = await _fileRepository.GetByIdAsync(query.FileId);
+        var fileDirectory = await _fileDirectoryRepository.GetByIdAsync(query.FileId);
 
-        if (fileModel is null)
+        if (fileDirectory is null)
         {
             return Result.Error(response, "File not found");
         }
 
-        var path = fileModel.Url;
+        var path = fileDirectory.Url;
 
         var fileDownloadResult = new FileDownloadResult
         {
-            FileModel = fileModel,
-            ContentType = GetContentType(fileModel.Extension)
+            FileDirectory = fileDirectory,
+            ContentType = GetContentType(fileDirectory.Extension)
         };
 
         await using (var fileStream = new FileStream(path, FileMode.Open))

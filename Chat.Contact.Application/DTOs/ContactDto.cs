@@ -1,4 +1,4 @@
-﻿namespace Chat.Contact.Application.DTOs;
+﻿namespace Chat.Contacts.Application.DTOs;
 
 public class ContactDto
 {

@@ -9,70 +9,70 @@ using Chat.Identity.Domain.Services;
 
 namespace Chat.Identity.Application.CommandHandlers;
 
-public class RefreshTokenCommandHandler : ICommandHandler<RefreshTokenCommand, Token>
+public class RefreshTokenCommandHandler : ICommandHandler<RefreshTokenCommand, TokenDto>
 {
     private readonly ITokenService _tokenService;
-    private readonly IAccessRepository _accessRepository;
+    private readonly ITokenRepository _accessRepository;
 
-    public RefreshTokenCommandHandler(ITokenService tokenService, IAccessRepository accessRepository)
+    public RefreshTokenCommandHandler(ITokenService tokenService, ITokenRepository accessRepository)
     {
         _tokenService = tokenService;
         _accessRepository = accessRepository;
     }
 
-    public async Task<IResult<Token>> HandleAsync(RefreshTokenCommand command)
+    public async Task<IResult<TokenDto>> HandleAsync(RefreshTokenCommand command)
     {
         var refreshTokenRequestValidationResult = 
             _tokenService.CheckForValidRefreshTokenRequest(command.AccessToken);
 
         if (refreshTokenRequestValidationResult.IsFailure)
         {
-            return Result.Error<Token>(refreshTokenRequestValidationResult.Message);
+            return Result.Error<TokenDto>(refreshTokenRequestValidationResult.Message);
         }
 
-        var accessModel = 
+        var token = 
             await _accessRepository.GetByIdAsync(command.RefreshToken);
 
-        if (accessModel is null)
+        if (token is null)
         {
-            return Result.Error<Token>("AccessModel not found");
+            return Result.Error<TokenDto>("TokenDto not found");
         }
 
         var allowedToRefreshResult = 
-            accessModel.IsTokenAllowedToRefresh(command.AccessToken, command.AppId);
+            token.IsTokenAllowedToRefresh(command.AccessToken, command.AppId);
 
         if (allowedToRefreshResult.IsFailure)
         {
-            return Result.Error<Token>(allowedToRefreshResult.Message);
+            return Result.Error<TokenDto>(allowedToRefreshResult.Message);
         }
 
-        var validRefreshAttemptResult = accessModel.CheckForValidRefreshAttempt();
+        var validRefreshAttemptResult = token.CheckForValidRefreshAttempt();
 
         if (validRefreshAttemptResult.IsFailure)
         {
-            await _accessRepository.RevokeAllTokensByUserIdAsync(accessModel.UserId);
+            await _accessRepository.RevokeAllTokensByUserIdAsync(token.UserId);
 
-            return Result.Error<Token>(validRefreshAttemptResult.Message);
+            return Result.Error<TokenDto>(validRefreshAttemptResult.Message);
         }
 
-        accessModel.MakeTokenExpired();
+        token.MakeTokenExpired();
         
-        await _accessRepository.SaveAsync(accessModel);
+        await _accessRepository.SaveAsync(token);
         
         var userProfile = IdentityProvider.GetUserProfile(command.AccessToken);
 
         var refreshedAccessModel = 
-            _tokenService.GenerateAccessModel(userProfile, command.AppId);
+            _tokenService.GenerateToken(userProfile, command.AppId);
         
         await _accessRepository.SaveAsync(refreshedAccessModel);
 
-        var token = refreshedAccessModel.ToToken();
+        var tokenDto = refreshedAccessModel.ToTokenDto();
 
-        if (token is null)
+        if (tokenDto is null)
         {
-            return Result.Error<Token>("Token Creation Failed");
+            return Result.Error<TokenDto>("Token Creation Failed");
         }
 
-        return Result.Success(token);
+        return Result.Success(tokenDto);
     }
 } 

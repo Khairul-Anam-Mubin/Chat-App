@@ -24,31 +24,31 @@ public class UserProfileQueryConsumer : AQueryConsumer<UserProfileQuery, UserPro
     {
         var response = new UserProfileResponse();
 
-        var userModels = new List<UserModel>();
+        var users = new List<User>();
 
         if (query.UserIds != null && query.UserIds.Any())
         {
-            userModels.AddRange(await _userRepository.GetUsersByUserIdsAsync(query.UserIds));
+            users.AddRange(await _userRepository.GetUsersByUserIdsAsync(query.UserIds));
         }
 
         if (query.Emails != null && query.Emails.Any())
         {
-            userModels.AddRange(await _userRepository.GetUsersByEmailsAsync(query.Emails));
+            users.AddRange(await _userRepository.GetUsersByEmailsAsync(query.Emails));
         }
 
         if (context is null)
         {
-            foreach (var userModel in userModels)
+            foreach (var user in users)
             {
-                response.AddItem(userModel.ToUserProfile());
+                response.AddItem(user.ToUserProfile());
             }
 
             return Result.Success(response);
         }
 
-        foreach (var userModel in userModels)
+        foreach (var user in users)
         {
-            response.Profiles.Add(userModel.ToUserProfile());
+            response.Profiles.Add(user.ToUserProfile());
         }
 
         return Result.Success(response);

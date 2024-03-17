@@ -1,13 +1,13 @@
-using Chat.Contact.Application.Commands;
-using Chat.Contact.Application.DTOs;
-using Chat.Contact.Application.Queries;
+using Chat.Contacts.Application.Commands;
+using Chat.Contacts.Application.DTOs;
+using Chat.Contacts.Application.Queries;
 using Chat.Framework.CQRS;
 using Chat.Framework.Pagination;
 using Chat.Infrastructure.Shared.Controllers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Chat.Contact.Infrastructure.Controllers;
+namespace Chat.Contacts.Infrastructure.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -15,7 +15,7 @@ namespace Chat.Contact.Infrastructure.Controllers;
 public class ContactController : ACommonController
 {
     public ContactController(ICommandExecutor commandExecutor, IQueryExecutor queryExecutor)
-        : base(commandExecutor, queryExecutor) {}
+        : base(commandExecutor, queryExecutor) { }
 
     [HttpPost, Route("add")]
     public async Task<IActionResult> AddContactAsync(AddContactCommand command)

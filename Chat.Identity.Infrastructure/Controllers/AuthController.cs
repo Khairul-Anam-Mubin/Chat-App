@@ -17,7 +17,7 @@ public class AuthController : ACommonController
     [Route("log-in")]
     public async Task<IActionResult> LoginUserAsync(LoginCommand command)
     {
-        return Ok(await GetCommandResponseAsync<LoginCommand,Token>(command));
+        return Ok(await GetCommandResponseAsync<LoginCommand,TokenDto>(command));
     }
 
     [HttpPost]
@@ -31,6 +31,6 @@ public class AuthController : ACommonController
     [Route("refresh-token")]
     public async Task<IActionResult> RefreshTokenAsync(RefreshTokenCommand command)
     {
-        return Ok(await GetCommandResponseAsync<RefreshTokenCommand, Token>(command));
+        return Ok(await GetCommandResponseAsync<RefreshTokenCommand, TokenDto>(command));
     }
 }

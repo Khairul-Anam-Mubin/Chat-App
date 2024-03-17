@@ -10,45 +10,45 @@ using Chat.Framework.Results;
 
 namespace Chat.Application.CommandHandlers;
 
-public class SendMessageCommandHandler : ICommandHandler<SendMessageCommand, ChatDto>
+public class SendMessageCommandHandler : ICommandHandler<SendMessageCommand, MessageDto>
 {
-    private readonly IChatRepository _chatRepository;
+    private readonly IMessageRepository _messageRepository;
     private readonly IScopeIdentity _scopIdentity;
     private readonly IEventService _eventService;
 
     public SendMessageCommandHandler(
-        IChatRepository chatRepository,
+        IMessageRepository messageRepository,
         IScopeIdentity scopeIdentity,
         IEventService eventService)
     {
-        _chatRepository = chatRepository;
+        _messageRepository = messageRepository;
         _scopIdentity = scopeIdentity;
         _eventService = eventService;
     }
 
-    public async Task<IResult<ChatDto>> HandleAsync(SendMessageCommand command)
+    public async Task<IResult<MessageDto>> HandleAsync(SendMessageCommand command)
     {
         var sendTo = command.SendTo;
-        var message = command.Message;
+        var messageContent = command.MessageContent;
         var isGroupMessage = command.IsGroupMessage;
 
-        var chatModelCreateResult =
-            ChatModel.Create(_scopIdentity.GetUserId()!, sendTo, message, isGroupMessage);
+        var messageCreateResult =
+            Message.Create(_scopIdentity.GetUserId()!, sendTo, messageContent, isGroupMessage);
 
-        if (chatModelCreateResult.IsFailure || chatModelCreateResult.Value is null)
+        if (messageCreateResult.IsFailure || messageCreateResult.Value is null)
         {
-            return (IResult<ChatDto>)chatModelCreateResult;
+            return (IResult<MessageDto>)messageCreateResult;
         }
 
-        var chatModel = chatModelCreateResult.Value;
+        var message = messageCreateResult.Value;
 
-        if (!await _chatRepository.SaveAsync(chatModel))
+        if (!await _messageRepository.SaveAsync(message))
         {
-            return Result.Error<ChatDto>("ChatModel Creation Failed");
+            return Result.Error<MessageDto>("Content Creation Failed");
         }
 
-        await _eventService.PublishEventAsync(chatModel.DomainEvents.FirstOrDefault()!);
+        await _eventService.PublishEventAsync(message.DomainEvents.FirstOrDefault()!);
         
-        return Result.Success(chatModel.ToChatDto());
+        return Result.Success(message.ToMessageDto());
     }
 }

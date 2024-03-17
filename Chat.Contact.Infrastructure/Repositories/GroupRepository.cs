@@ -1,11 +1,11 @@
-﻿using Chat.Contact.Domain.Entities;
-using Chat.Contact.Domain.Repositories;
+﻿using Chat.Contacts.Domain.Entities;
+using Chat.Contacts.Domain.Repositories;
 using Chat.Framework.Database.ORM;
 using Chat.Framework.Database.ORM.Builders;
 using Chat.Framework.Database.ORM.Enums;
 using Chat.Framework.Database.ORM.Interfaces;
 
-namespace Chat.Contact.Infrastructure.Repositories;
+namespace Chat.Contacts.Infrastructure.Repositories;
 
 public class GroupRepository : IGroupRepository
 {
@@ -18,18 +18,18 @@ public class GroupRepository : IGroupRepository
         _databaseInfo = databaseInfo;
     }
 
-    public async Task<List<GroupModel>> GetGroupsByGroupIds(List<string> groupIds)
+    public async Task<List<Group>> GetGroupsByGroupIds(List<string> groupIds)
     {
-        var filter = new FilterBuilder<GroupModel>().In(o => o.Id, groupIds);
-        return await _dbContext.GetManyAsync<GroupModel>(_databaseInfo, filter);
+        var filter = new FilterBuilder<Group>().In(o => o.Id, groupIds);
+        return await _dbContext.GetManyAsync<Group>(_databaseInfo, filter);
     }
 
-    public async Task<GroupModel?> GetGroupByIdAsync(string groupId)
+    public async Task<Group?> GetGroupByIdAsync(string groupId)
     {
-        return await _dbContext.GetByIdAsync<GroupModel>(_databaseInfo, groupId);
+        return await _dbContext.GetByIdAsync<Group>(_databaseInfo, groupId);
     }
 
-    public async Task<bool> SaveAsync(GroupModel group)
+    public async Task<bool> SaveAsync(Group group)
     {
         var result = await _dbContext.SaveAsync(_databaseInfo, group);
 
@@ -38,29 +38,29 @@ public class GroupRepository : IGroupRepository
         return result;
     }
 
-    public async Task<List<GroupMemberModel>> GetAllGroupMembers(string groupId)
+    public async Task<List<GroupMember>> GetAllGroupMembers(string groupId)
     {
-        var filterBuilder = new FilterBuilder<GroupMemberModel>();
+        var filterBuilder = new FilterBuilder<GroupMember>();
         var groupIdFilter = filterBuilder.Eq(o => o.GroupId, groupId);
-        return await _dbContext.GetManyAsync<GroupMemberModel>(_databaseInfo, groupIdFilter);
+        return await _dbContext.GetManyAsync<GroupMember>(_databaseInfo, groupIdFilter);
     }
 
-    public async Task<List<GroupMemberModel>> GetUserGroupsAsync(string userId)
+    public async Task<List<GroupMember>> GetUserGroupsAsync(string userId)
     {
-        var filter = new FilterBuilder<GroupMemberModel>().Eq(o => o.MemberId, userId);
-        return await _dbContext.GetManyAsync<GroupMemberModel>(_databaseInfo, filter);
+        var filter = new FilterBuilder<GroupMember>().Eq(o => o.MemberId, userId);
+        return await _dbContext.GetManyAsync<GroupMember>(_databaseInfo, filter);
     }
 
     public async Task<bool> IsUserAlreadyExistsInGroupAsync(string groupId, string userId)
     {
-        var filterBuilder = new FilterBuilder<GroupMemberModel>();
+        var filterBuilder = new FilterBuilder<GroupMember>();
         var groupIdFilter = filterBuilder.Eq(o => o.GroupId, groupId);
         var memberIdFilter = filterBuilder.Eq(o => o.MemberId, userId);
         var filter = filterBuilder.And(groupIdFilter, memberIdFilter);
-        return await _dbContext.CountAsync<GroupMemberModel>(_databaseInfo, filter) > 0;
+        return await _dbContext.CountAsync<GroupMember>(_databaseInfo, filter) > 0;
     }
 
-    public async Task<bool> SaveGroupMembersAsync(List<GroupMemberModel> groupMembers)
+    public async Task<bool> SaveGroupMembersAsync(List<GroupMember> groupMembers)
     {
         if (!groupMembers.Any())
         {

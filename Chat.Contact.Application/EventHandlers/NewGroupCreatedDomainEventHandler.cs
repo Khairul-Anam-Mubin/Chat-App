@@ -1,9 +1,9 @@
-﻿using Chat.Contact.Application.Commands;
-using Chat.Contact.Domain.DomainEvents;
+﻿using Chat.Contacts.Application.Commands;
+using Chat.Contacts.Domain.DomainEvents;
 using Chat.Framework.CQRS;
 using Chat.Framework.DDD;
 
-namespace Chat.Contact.Application.EventHandlers;
+namespace Chat.Contacts.Application.EventHandlers;
 
 public class NewGroupCreatedDomainEventHandler : IDomainEventHandler<NewGroupCreatedDomainEvent>
 {
@@ -11,7 +11,7 @@ public class NewGroupCreatedDomainEventHandler : IDomainEventHandler<NewGroupCre
 
     public NewGroupCreatedDomainEventHandler(ICommandExecutor commandExecutor)
     {
-        _commandExecutor = commandExecutor;    
+        _commandExecutor = commandExecutor;
     }
 
     public async Task Handle(NewGroupCreatedDomainEvent notification, CancellationToken cancellationToken)

@@ -12,24 +12,25 @@ public class UserConnectedToHubEventConsumer : AEventConsumer<UserConnectedToHub
     private readonly ICommandExecutor _commandExecutor;
 
     public UserConnectedToHubEventConsumer(
-        ICommandExecutor commandExecutor, IScopeIdentity scopeIdentity) : base(scopeIdentity)
+        ICommandExecutor commandExecutor, IScopeIdentity scopeIdentity) 
+        : base(scopeIdentity)
     {
         _commandExecutor = commandExecutor;
     }
 
     protected override async Task OnConsumeAsync(UserConnectedToHubEvent @event, IMessageContext<UserConnectedToHubEvent>? context = null)
     {
-        await TrackLastSeenActivityAsync(@event, true);
+        await TrackPresenceAsync(@event, true);
     }
 
-    private async Task TrackLastSeenActivityAsync(UserConnectedToHubEvent userConnectedToHubEvent, bool isActive)
+    private async Task TrackPresenceAsync(UserConnectedToHubEvent userConnectedToHubEvent, bool isActive)
     {
-        var updateLastSeenCommand = new UpdateLastSeenCommand
+        var trackPresentCommand = new TrackPresenceCommand
         {
             UserId = userConnectedToHubEvent.UserId,
             IsActive = isActive
         };
 
-        await _commandExecutor.ExecuteAsync(updateLastSeenCommand);
+        await _commandExecutor.ExecuteAsync(trackPresentCommand);
     }
 }

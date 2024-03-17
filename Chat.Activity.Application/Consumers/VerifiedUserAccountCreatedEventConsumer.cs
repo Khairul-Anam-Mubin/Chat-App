@@ -9,21 +9,21 @@ namespace Chat.Activity.Application.Consumers;
 
 public class VerifiedUserAccountCreatedEventConsumer : AEventConsumer<VerifiedUserAccountCreatedEvent>
 {
-    private readonly ILastSeenRepository _lastSeenRepository;
+    private readonly IPresenceRepository _presenceRepository;
 
-    public VerifiedUserAccountCreatedEventConsumer(ILastSeenRepository lastSeenRepository, IScopeIdentity scopeIdentity)
+    public VerifiedUserAccountCreatedEventConsumer(IPresenceRepository presenceRepository, IScopeIdentity scopeIdentity)
         : base(scopeIdentity)
     {
-        _lastSeenRepository = lastSeenRepository;
+        _presenceRepository = presenceRepository;
     }
 
     protected override async Task OnConsumeAsync(VerifiedUserAccountCreatedEvent @event, IMessageContext<VerifiedUserAccountCreatedEvent>? context = null)
     {
-        var result = LastSeenModel.Create(@event.UserId);
+        var result = Presence.Create(@event.UserId);
 
         if (result is { IsSuccess: true, Value: not null })
         {
-            await _lastSeenRepository.SaveAsync(result.Value);
+            await _presenceRepository.SaveAsync(result.Value);
         }
     }
 }

@@ -1,9 +1,9 @@
-﻿using Chat.Contact.Domain.Entities;
+﻿using Chat.Contacts.Domain.Entities;
 using Chat.Framework.Database.ORM;
 using Chat.Framework.Database.ORM.Builders;
 using Chat.Framework.Database.ORM.Interfaces;
 
-namespace Chat.Contact.Infrastructure.Migrations;
+namespace Chat.Contacts.Infrastructure.Migrations;
 
 public class ContactModelIndexCreator : IIndexCreator
 {
@@ -20,16 +20,16 @@ public class ContactModelIndexCreator : IIndexCreator
     {
         var indexes = new List<IIndex>
         {
-            new IndexBuilder<ContactModel>()
+            new IndexBuilder<Contact>()
                 .Ascending(o => o.UserId)
                 .Ascending(o => o.IsPending)
                 .Build(),
-            new IndexBuilder<ContactModel>()
+            new IndexBuilder<Contact>()
                 .Ascending(o => o.ContactUserId)
                 .Ascending(o => o.IsPending)
                 .Build()
         };
 
-        _indexManager.CreateMany<ContactModel>(_databaseInfo, indexes);
+        _indexManager.CreateMany<Contact>(_databaseInfo, indexes);
     }
 }

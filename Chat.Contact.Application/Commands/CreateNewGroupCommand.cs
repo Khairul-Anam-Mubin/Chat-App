@@ -1,13 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Chat.Framework.CQRS;
 
-namespace Chat.Contact.Application.Commands;
+namespace Chat.Contacts.Application.Commands;
 
 public class CreateNewGroupCommand : ICommand
 {
     [Required]
     public string GroupName { get; set; }
-    
+
     [Required]
     public string UserId { get; set; }
 
