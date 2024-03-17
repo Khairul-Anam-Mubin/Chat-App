@@ -1,6 +1,4 @@
 using Chat.Application.Commands;
-using Chat.Application.DTOs;
-using Chat.Application.Extensions;
 using Chat.Domain.Entities;
 using Chat.Domain.Repositories;
 using Chat.Framework.CQRS;
@@ -10,45 +8,77 @@ using Chat.Framework.Results;
 
 namespace Chat.Application.CommandHandlers;
 
-public class SendMessageCommandHandler : ICommandHandler<SendMessageCommand, MessageDto>
+public class SendMessageCommandHandler : ICommandHandler<SendMessageCommand>
 {
-    private readonly IMessageRepository _messageRepository;
+    private readonly IConversationRepository _conversationRepository;
     private readonly IScopeIdentity _scopIdentity;
     private readonly IEventService _eventService;
 
     public SendMessageCommandHandler(
-        IMessageRepository messageRepository,
         IScopeIdentity scopeIdentity,
-        IEventService eventService)
+        IEventService eventService,
+        IConversationRepository conversationRepository)
     {
-        _messageRepository = messageRepository;
         _scopIdentity = scopeIdentity;
         _eventService = eventService;
+        _conversationRepository = conversationRepository;
     }
 
-    public async Task<IResult<MessageDto>> HandleAsync(SendMessageCommand command)
+    public async Task<IResult> HandleAsync(SendMessageCommand command)
     {
-        var sendTo = command.SendTo;
+        var senderId = _scopIdentity.GetUserId()!;
+        var receiverId = command.SendTo;
         var messageContent = command.MessageContent;
         var isGroupMessage = command.IsGroupMessage;
 
-        var messageCreateResult =
-            Message.Create(_scopIdentity.GetUserId()!, sendTo, messageContent, isGroupMessage);
+        var conversationId = Conversation.GetConversationId(senderId, receiverId);
 
-        if (messageCreateResult.IsFailure || messageCreateResult.Value is null)
+        var conversation = 
+            await _conversationRepository.GetByIdAsync(conversationId);
+
+        conversation ??=
+                Conversation.Create(
+                    conversationId, 
+                    senderId, 
+                    receiverId, 
+                    isGroupMessage);
+
+        var messageAddResult = 
+            conversation.AddNewMessage(senderId, receiverId, messageContent);
+
+        if (messageAddResult.IsFailure)
         {
-            return (IResult<MessageDto>)messageCreateResult;
+            return messageAddResult;
         }
 
-        var message = messageCreateResult.Value;
-
-        if (!await _messageRepository.SaveAsync(message))
+        if (!await _conversationRepository.SaveAsync(conversation))
         {
-            return Result.Error<MessageDto>("Content Creation Failed");
+            return Result.Error("Failed to persist the message");
         }
 
-        await _eventService.PublishEventAsync(message.DomainEvents.FirstOrDefault()!);
+        await PublishDomainEvents(conversation);
         
-        return Result.Success(message.ToMessageDto());
+        return Result.Success();
+    }
+
+    private async Task PublishDomainEvents(Conversation conversation)
+    {
+        var domainEvents = conversation.DomainEvents;
+
+        conversation.Messages.ForEach(message => domainEvents.AddRange(message.DomainEvents));
+
+        var tasks = new List<Task>();
+
+        domainEvents.ForEach(domainEvent =>
+        {
+            var task = _eventService.PublishEventAsync(domainEvent);
+
+            tasks.Add(task);
+        });
+
+        if (tasks.Any())
+        {
+            await Task.WhenAll(tasks);
+        }
     }
 }

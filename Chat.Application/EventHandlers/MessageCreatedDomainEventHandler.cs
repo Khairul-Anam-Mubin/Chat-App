@@ -1,5 +1,4 @@
-﻿using Chat.Application.Commands;
-using Chat.Application.Extensions;
+﻿using Chat.Application.Extensions;
 using Chat.Domain.DomainEvents;
 using Chat.Domain.Entities;
 using Chat.Domain.Shared.Commands;
@@ -30,8 +29,6 @@ public class MessageCreatedDomainEventHandler : IDomainEventHandler<MessageCreat
         {
             await SendMessageNotificationAsync(message);
         }
-
-        await UpdateConversationAsync(message);
     }
 
     private Task SendMessageNotificationAsync(Message message)
@@ -44,18 +41,6 @@ public class MessageCreatedDomainEventHandler : IDomainEventHandler<MessageCreat
         var sendNotificationCommand = new SendNotificationCommand(notification, new List<string> { message.SendTo, message.UserId });
 
         return _commandService.SendAsync(sendNotificationCommand);
-    }
-
-    private Task UpdateConversationAsync(Message message)
-    {
-        var latestChat = message.ToConversation();
-
-        var updateConversationCommand = new UpdateConversationCommand
-        {
-            Conversation = latestChat
-        };
-
-        return _commandService.ExecuteAsync(updateConversationCommand);
     }
 
     private Task SendForHandleGroupMessageAsync(Message message)

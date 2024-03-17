@@ -21,7 +21,7 @@ public class ChatController : ACommonController
     [HttpPost, Route("send")]
     public async Task<IActionResult> SendMessageAsync(SendMessageCommand command)
     {
-        return Ok(await GetCommandResponseAsync<SendMessageCommand, MessageDto>(command));
+        return Ok(await GetCommandResponseAsync(command));
     }
 
     [HttpPost, Route("update-status")]

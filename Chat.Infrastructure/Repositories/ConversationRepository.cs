@@ -9,9 +9,13 @@ namespace Chat.Infrastructure.Repositories;
 
 public class ConversationRepository : RepositoryBase<Conversation>, IConversationRepository
 {
-    public ConversationRepository(IDbContextFactory dbContextFactory, DatabaseInfo databaseInfo)
+    private readonly IMessageRepository _messageRepository;
+
+    public ConversationRepository(IDbContextFactory dbContextFactory, DatabaseInfo databaseInfo, IMessageRepository messageRepository)
         : base(databaseInfo, dbContextFactory.GetDbContext(Context.Mongo))
-    { }
+    {
+        _messageRepository = messageRepository;
+    }
 
     public async Task<Conversation?> GetConversationAsync(string userId, string sendTo)
     {
@@ -42,5 +46,15 @@ public class ConversationRepository : RepositoryBase<Conversation>, IConversatio
         var sortDef = sortBuilder.Descending(o => o.SentAt).Build();
         
         return await DbContext.GetManyAsync<Conversation>(DatabaseInfo, orFilter, sortDef , offset, limit);
+    }
+
+    public override async Task<bool> SaveAsync(Conversation conversation)
+    {
+        if (conversation.Messages.Any())
+        {
+            await _messageRepository.SaveAsync(conversation.Messages);
+        }
+
+        return await base.SaveAsync(conversation);
     }
 }

@@ -1,4 +1,5 @@
 using Chat.Application.Commands;
+using Chat.Domain.Entities;
 using Chat.Domain.Repositories;
 using Chat.Framework.CQRS;
 using Chat.Framework.Identity;
@@ -23,8 +24,10 @@ public class UpdateMessageStatusCommandHandler : ICommandHandler<UpdateMessageSt
     {
         var userId = _scopeIdentity.GetUserId()!;
 
+        var conversationId = Conversation.GetConversationId(userId, command.OpenedChatUserId);
+
         var conversation = 
-            await _conversationRepository.GetConversationAsync(userId, command.OpenedChatUserId);
+            await _conversationRepository.GetByIdAsync(conversationId);
         
         if (conversation is null)
         {
