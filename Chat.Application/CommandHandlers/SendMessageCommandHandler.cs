@@ -10,19 +10,19 @@ namespace Chat.Application.CommandHandlers;
 public class SendMessageCommandHandler : ICommandHandler<SendMessageCommand>
 {
     private readonly IConversationRepository _conversationRepository;
-    private readonly IScopeIdentity _scopIdentity;
+    private readonly IScopeIdentity _scopeIdentity;
 
     public SendMessageCommandHandler(
         IScopeIdentity scopeIdentity,
         IConversationRepository conversationRepository)
     {
-        _scopIdentity = scopeIdentity;
+        _scopeIdentity = scopeIdentity;
         _conversationRepository = conversationRepository;
     }
 
     public async Task<IResult> HandleAsync(SendMessageCommand command)
     {
-        var senderId = _scopIdentity.GetUserId()!;
+        var senderId = _scopeIdentity.GetUserId()!;
         var receiverId = command.SendTo;
         var messageContent = command.MessageContent;
         var isGroupMessage = command.IsGroupMessage;

@@ -74,7 +74,8 @@ public class Conversation : AggregateRoot, IRepositoryItem
 
     public IResult AddNewMessage(string userId, string sendTo, string messageContent)
     {
-        var messageCreateResult = Message.Create(userId, sendTo, messageContent, IsGroupMessage);
+        var messageCreateResult = 
+            Message.Create(Id, userId, sendTo, messageContent, IsGroupMessage);
 
         var message = messageCreateResult.Value;
 

@@ -24,7 +24,8 @@ public class UpdateMessageStatusCommandHandler : ICommandHandler<UpdateMessageSt
     {
         var userId = _scopeIdentity.GetUserId()!;
 
-        var conversationId = Conversation.GetConversationId(userId, command.OpenedChatUserId);
+        var conversationId = 
+            Conversation.GetConversationId(userId, command.OpenedChatUserId);
 
         var conversation = 
             await _conversationRepository.GetByIdAsync(conversationId);
