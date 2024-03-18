@@ -4,34 +4,30 @@ using Chat.Framework.Database.ORM;
 using Chat.Framework.Database.ORM.Builders;
 using Chat.Framework.Database.ORM.Enums;
 using Chat.Framework.Database.ORM.Interfaces;
+using Chat.Framework.DDD;
+using Chat.Framework.EDD;
 
 namespace Chat.Infrastructure.Repositories;
 
-public class ConversationRepository : RepositoryBase<Conversation>, IConversationRepository
+public class ConversationRepository : RepositoryBaseWrapper<Conversation>, IConversationRepository
 {
     private readonly IMessageRepository _messageRepository;
 
-    public ConversationRepository(IDbContextFactory dbContextFactory, DatabaseInfo databaseInfo, IMessageRepository messageRepository)
-        : base(databaseInfo, dbContextFactory.GetDbContext(Context.Mongo))
+    public ConversationRepository(
+        IDbContextFactory dbContextFactory, 
+        DatabaseInfo databaseInfo, 
+        IMessageRepository messageRepository,
+        IEventService eventService)
+        : base(databaseInfo, dbContextFactory.GetDbContext(Context.Mongo), eventService)
     {
         _messageRepository = messageRepository;
     }
 
-    public async Task<Conversation?> GetConversationAsync(string userId, string sendTo)
+    public async Task<Conversation?> GetConversationAsync(string senderId, string receiverId)
     {
-        var filterBuilder = new FilterBuilder<Conversation>();
+        var conversationId = Conversation.GetConversationId(senderId, receiverId);
 
-        var userIdFilter = filterBuilder.Eq(o => o.UserId, userId);
-        var sendToFilter = filterBuilder.Eq(o => o.SendTo, sendTo);
-        var andFilter = filterBuilder.And(userIdFilter, sendToFilter);
-        
-        var alterUserIdFilter = filterBuilder.Eq(o => o.UserId, sendTo);
-        var alterSendToFilter = filterBuilder.Eq(o => o.SendTo, userId);
-        var alterAndFilter = filterBuilder.And(alterUserIdFilter, alterSendToFilter);
-        
-        var orFilter = filterBuilder.Or(andFilter, alterAndFilter);
-            
-        return await DbContext.GetOneAsync<Conversation>(DatabaseInfo, orFilter);
+        return await GetByIdAsync(conversationId);
     }
 
     public async Task<List<Conversation>> GetConversationsAsync(string userId, int offset, int limit)

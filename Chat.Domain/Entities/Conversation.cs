@@ -5,7 +5,7 @@ using Chat.Framework.Security;
 
 namespace Chat.Domain.Entities;
 
-public class Conversation : Entity, IRepositoryItem
+public class Conversation : AggregateRoot, IRepositoryItem
 {
     public string UserId { get; private set; }
     public string SendTo { get; private set; }
@@ -57,6 +57,11 @@ public class Conversation : Entity, IRepositoryItem
         return new Conversation(id, userId, sendTo, messageContent, sentAt, status, isGroupMessage);
     }
 
+    public static Conversation Create(string conversationId, string senderId, string receiverId, bool isGroupMessage)
+    {
+        return Create(conversationId, senderId, receiverId, string.Empty, default, string.Empty, isGroupMessage);
+    }
+
     public bool SeenChat(string userId)
     {
         if (UserId != userId)
@@ -65,24 +70,6 @@ public class Conversation : Entity, IRepositoryItem
             return true;
         }
         return false;
-    }
-
-    public void Update(string userId, string sendTo, string messageContent, string status, DateTime sentAt)
-    {
-        Content = messageContent;
-        SentAt = sentAt;
-        Status = status;
-
-        if (userId == UserId)
-        {
-            Occurrence++;
-        }
-        else
-        {
-            Occurrence = 1;
-            UserId = userId;
-            SendTo = sendTo;
-        }
     }
 
     public IResult AddNewMessage(string userId, string sendTo, string messageContent)
@@ -115,10 +102,5 @@ public class Conversation : Entity, IRepositoryItem
         AddMessage(message);
 
         return Result.Success();
-    }
-
-    public static Conversation Create(string conversationId, string senderId, string receiverId, bool isGroupMessage)
-    {
-        return Create(conversationId, senderId, receiverId, string.Empty, default, string.Empty, isGroupMessage);
     }
 }

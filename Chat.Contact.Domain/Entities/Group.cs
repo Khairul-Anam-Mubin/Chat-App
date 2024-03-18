@@ -23,13 +23,17 @@ public class Group : AggregateRoot, IRepositoryItem
 
     private void AddMember(GroupMember member)
     {
-        _members ??= new List<GroupMember>();
+        _members ??= new();
         _members.Add(member);
     }
 
-    public List<GroupMember> Members()
+    public List<GroupMember> Members
     {
-        return _members.ToList();
+        get
+        {
+            _members ??= new();
+            return _members.ToList();
+        }
     }
 
     public static IResult<Group> Create(string name, string creatorId)

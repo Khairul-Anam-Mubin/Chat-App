@@ -36,14 +36,14 @@ public class AddMemberToGroupCommandHandler : ICommandHandler<AddMemberToGroupCo
         var result = group.AddNewMemberToGroup(
             addedBy,
             memberId,
-            await _groupRepository.IsUserAlreadyExistsInGroupAsync(groupId, memberId));
+            await _groupRepository.IsUserAlreadyExistInGroupAsync(groupId, memberId));
 
         if (result.IsFailure)
         {
             return result;
         }
 
-        await _groupRepository.SaveGroupMembersAsync(group.Members());
+        await _groupRepository.SaveAsync(group);
 
         return Result.Success().MemberAdded();
     }

@@ -11,22 +11,25 @@ namespace Chat.Contacts.Application.CommandHandlers;
 public class HandleGroupMessageCommandConsumer : ACommandConsumer<HandleGroupMessageCommand>
 {
     private readonly IGroupRepository _groupRepository;
+    private readonly IGroupMemberRepository _groupMemberRepository;
     private readonly ICommandService _commandService;
 
     public HandleGroupMessageCommandConsumer(
         IGroupRepository groupRepository,
         IScopeIdentity scopeIdentity,
-        ICommandService commandService)
+        ICommandService commandService,
+        IGroupMemberRepository groupMemberRepository)
         : base(scopeIdentity)
     {
         _groupRepository = groupRepository;
         _commandService = commandService;
+        _groupMemberRepository = groupMemberRepository;
     }
 
     protected override async Task<IResult> OnConsumeAsync(HandleGroupMessageCommand command, IMessageContext<HandleGroupMessageCommand>? context = null)
     {
         var groupMembers =
-            await _groupRepository.GetAllGroupMembers(command.GroupId);
+            await _groupMemberRepository.GetAllGroupMembersAsync(command.GroupId);
 
         var groupMemberIds = groupMembers.Select(x => x.MemberId).ToList();
 

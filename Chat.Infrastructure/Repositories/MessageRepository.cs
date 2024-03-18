@@ -4,13 +4,18 @@ using Chat.Framework.Database.ORM;
 using Chat.Framework.Database.ORM.Builders;
 using Chat.Framework.Database.ORM.Enums;
 using Chat.Framework.Database.ORM.Interfaces;
+using Chat.Framework.DDD;
+using Chat.Framework.EDD;
 
 namespace Chat.Infrastructure.Repositories;
 
-public class MessageRepository : RepositoryBase<Message>, IMessageRepository
+public class MessageRepository : RepositoryBaseWrapper<Message>, IMessageRepository
 {
-    public MessageRepository(IDbContextFactory dbContextFactory, DatabaseInfo databaseInfo)
-        : base(databaseInfo, dbContextFactory.GetDbContext(Context.Mongo))
+    public MessageRepository(
+        IDbContextFactory dbContextFactory,
+        DatabaseInfo databaseInfo,
+        IEventService eventService)
+        : base(databaseInfo, dbContextFactory.GetDbContext(Context.Mongo), eventService)
     { }
 
     public async Task<List<Message>> GetMessagesAsync(string userId, string sendTo, int offset, int limit)

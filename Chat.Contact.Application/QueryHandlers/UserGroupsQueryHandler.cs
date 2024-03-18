@@ -9,20 +9,22 @@ namespace Chat.Contacts.Application.QueryHandlers;
 
 public class UserGroupsQueryHandler : IQueryHandler<UserGroupsQuery, List<Group>>
 {
+    private readonly IGroupMemberRepository _groupMemberRepository;
     private readonly IGroupRepository _groupRepository;
     private readonly IScopeIdentity _scopeIdentity;
 
-    public UserGroupsQueryHandler(IGroupRepository groupRepository, IScopeIdentity scopeIdentity)
+    public UserGroupsQueryHandler(IGroupRepository groupRepository, IScopeIdentity scopeIdentity, IGroupMemberRepository groupMemberRepository)
     {
         _groupRepository = groupRepository;
         _scopeIdentity = scopeIdentity;
+        _groupMemberRepository = groupMemberRepository;
     }
 
     public async Task<IResult<List<Group>>> HandleAsync(UserGroupsQuery request)
     {
         var userId = _scopeIdentity.GetUserId()!;
 
-        var groupMembers = await _groupRepository.GetUserGroupsAsync(userId);
+        var groupMembers = await _groupMemberRepository.GetUserGroupsAsync(userId);
 
         var distinctGroupMembers =
             groupMembers.DistinctBy(x => x.GroupId);

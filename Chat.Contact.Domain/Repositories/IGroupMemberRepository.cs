@@ -3,11 +3,11 @@ using Chat.Framework.Database.ORM.Interfaces;
 
 namespace Chat.Contacts.Domain.Repositories;
 
-public interface IGroupRepository : IRepository<Group>
+public interface IGroupMemberRepository : IRepository<GroupMember>
 {
-    Task<List<Group>> GetGroupsByGroupIds(List<string> groupIds);
+    Task<List<GroupMember>> GetAllGroupMembersAsync(string groupId);
 
-    Task<Group?> GetGroupByIdAsync(string groupId);
+    Task<List<GroupMember>> GetUserGroupsAsync(string userId);
 
     Task<bool> IsUserAlreadyExistInGroupAsync(string groupId, string userId);
 }
