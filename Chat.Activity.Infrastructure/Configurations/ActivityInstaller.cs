@@ -15,7 +15,7 @@ public class ActivityInstaller : IServiceInstaller
     {
         services
             .AddActivityApplication()
-            .AddSingleton<IPresenceRepository, PresneceRepository>();
+            .AddScoped<IPresenceRepository, PresneceRepository>();
 
         services.AddTransient<IIndexCreator, PresenceIndexCreator>();
     }

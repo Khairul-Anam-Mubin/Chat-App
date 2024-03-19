@@ -17,7 +17,7 @@ public class IdentityInstaller : IServiceInstaller
 
         services.AddTransient<IIndexCreator, UserIndexCreator>();
         services.AddTransient<IIndexCreator, TokenIndexCreator>();
-        services.AddSingleton<ITokenRepository, TokenRepository>();
-        services.AddSingleton<IUserRepository, UserRepository>();
+        services.AddScoped<ITokenRepository, TokenRepository>();
+        services.AddScoped<IUserRepository, UserRepository>();
     }
 }

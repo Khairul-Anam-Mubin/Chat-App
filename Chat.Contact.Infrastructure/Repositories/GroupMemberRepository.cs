@@ -2,6 +2,7 @@
 using Chat.Contacts.Domain.Repositories;
 using Chat.Framework.Database.ORM;
 using Chat.Framework.Database.ORM.Builders;
+using Chat.Framework.Database.ORM.Enums;
 using Chat.Framework.Database.ORM.Interfaces;
 using Chat.Framework.DDD;
 using Chat.Framework.EDD;
@@ -10,8 +11,8 @@ namespace Chat.Contacts.Infrastructure.Repositories;
 
 public class GroupMemberRepository : RepositoryBaseWrapper<GroupMember>, IGroupMemberRepository
 {
-    public GroupMemberRepository(DatabaseInfo databaseInfo, IDbContext dbContext, IEventService eventService) 
-        : base(databaseInfo, dbContext, eventService) {}
+    public GroupMemberRepository(DatabaseInfo databaseInfo, IDbContextFactory dbContextFactory, IEventService eventService) 
+        : base(databaseInfo, dbContextFactory.GetDbContext(Context.Mongo), eventService) {}
 
     public async Task<List<GroupMember>> GetAllGroupMembersAsync(string groupId)
     {

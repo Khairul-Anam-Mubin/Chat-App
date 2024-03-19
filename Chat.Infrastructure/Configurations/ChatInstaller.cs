@@ -18,7 +18,7 @@ public class ChatInstaller : IServiceInstaller
         services.AddTransient<IIndexCreator, MessageIndexCreator>();
         services.AddTransient<IIndexCreator, ConversationIndexCreator>();
         
-        services.AddSingleton<IMessageRepository, MessageRepository>();
-        services.AddSingleton<IConversationRepository, ConversationRepository>();
+        services.AddScoped<IMessageRepository, MessageRepository>();
+        services.AddScoped<IConversationRepository, ConversationRepository>();
     }
 }
