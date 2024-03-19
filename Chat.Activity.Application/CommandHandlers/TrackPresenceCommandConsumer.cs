@@ -1,4 +1,5 @@
 using Chat.Activity.Domain.Repositories;
+using Chat.Activity.Domain.Results;
 using Chat.Domain.Shared.Commands;
 using Chat.Framework.CQRS;
 using Chat.Framework.Identity;
@@ -21,7 +22,7 @@ public class TrackPresenceCommandConsumer : ACommandConsumer<TrackPresenceComman
     {
         if (!await _presenceRepository.TrackPresenceAsync(command.UserId, command.IsActive))
         {
-            return Result.Error("Track presence failed.");
+            return Result.Error().TrackPresenceFailed();
         }
         
         return Result.Success();

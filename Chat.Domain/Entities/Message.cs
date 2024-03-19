@@ -22,7 +22,7 @@ public class Message : Entity, IRepositoryItem
         SendTo = sendTo;
         Content = messageContent;
         SentAt = DateTime.UtcNow;
-        Status = "Sent";
+        Status = MessageStatus.Sent;
         IsGroupMessage = isGroupMessage;
         ConversationId = conversationId;
     }
@@ -38,6 +38,13 @@ public class Message : Entity, IRepositoryItem
 
     public void MessageSeen()
     {
-        Status = "Seen";
+        Status = MessageStatus.Seen;
     }
+}
+
+public class MessageStatus
+{
+    public const string Seen = "Seen";
+    public const string Sent = "Sent";
+    public const string Delivered = "Delivered";
 }

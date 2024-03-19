@@ -1,3 +1,4 @@
+using Chat.Activity.Domain.Results;
 using Chat.Framework.Database.ORM.Interfaces;
 using Chat.Framework.DDD;
 using Chat.Framework.Results;
@@ -21,7 +22,7 @@ public class Presence : Entity, IRepositoryItem
     {
         if (string.IsNullOrEmpty(userId))
         {
-            return Result.Error<Presence>("UserId not set");
+            return Result.Error<Presence>().IdNotSet();
         }
 
         return Result.Success(new Presence(userId));

@@ -49,7 +49,7 @@ public class SendMessageCommandHandler : ICommandHandler<SendMessageCommand>
 
         if (!await _conversationRepository.SaveAsync(conversation))
         {
-            return Result.Error("Failed to persist the message");
+            return Error.SaveProblem<Conversation>();
         }
         
         return Result.Success();

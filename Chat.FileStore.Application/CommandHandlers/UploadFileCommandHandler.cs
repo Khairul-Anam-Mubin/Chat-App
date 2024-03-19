@@ -1,6 +1,7 @@
 using Chat.FileStore.Application.Commands;
 using Chat.FileStore.Domain.Entities;
 using Chat.FileStore.Domain.Repositories;
+using Chat.FileStore.Domain.Results;
 using Chat.Framework.CQRS;
 using Chat.Framework.Extensions;
 using Chat.Framework.Identity;
@@ -29,12 +30,6 @@ public class UploadFileCommandHandler : ICommandHandler<UploadFileCommand, strin
     {
         var file = command.FormFile;
         var pathToSave = _configuration.TryGetConfig<string>("FileStorePath");
-        
-        if (file.Length <= 0)
-        {
-            return Result.Error<string>("File Length 0");
-        }
-
         var fileName = file.FileName;
         var fileId = Guid.NewGuid().ToString();
         var extension = Path.GetExtension(fileName);
@@ -57,9 +52,9 @@ public class UploadFileCommandHandler : ICommandHandler<UploadFileCommand, strin
         
         if (!await _fileDirectoryRepository.SaveAsync(fileDirectory))
         {
-            return Result.Error<string>("File Save error to db");
+            return (IResult<string>)Error.SaveProblem<FileDirectory>();
         }
-        
-        return Result.Success(fileDirectory.Id, "File uploaded successfully");
+
+        return Result.Success<string>().FileUpload(fileDirectory.Id);
     }
 }

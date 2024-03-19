@@ -32,7 +32,7 @@ public class UpdateMessageStatusCommandHandler : ICommandHandler<UpdateMessageSt
         
         if (conversation is null)
         {
-            return Result.Error("Conversation not found");
+            return Error.NotFound<Conversation>();
         }
 
         if (conversation.SeenChat(userId))
