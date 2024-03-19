@@ -1,13 +1,13 @@
 using Chat.Framework.Database.ORM.Interfaces;
+using Chat.Framework.DDD;
 using Chat.Framework.Results;
+using Chat.Identity.Domain.DomainEvents;
 using System.ComponentModel.DataAnnotations;
 
 namespace Chat.Identity.Domain.Entities;
 
-public class User : IRepositoryItem
+public class User : Entity, IRepositoryItem
 {
-    public string Id { get; private set; }
-
     [Required]
     public string FirstName { get; private set; }
 
@@ -34,8 +34,8 @@ public class User : IRepositoryItem
     public bool IsEmailVerified { get; private set; }
 
     private User(string firstName, string lastName, DateTime birthDay, string email, string password)
+        : base(Guid.NewGuid().ToString())
     {
-        Id = Guid.NewGuid().ToString();
         FirstName = firstName;
         LastName = lastName;
         UserName = $"{firstName}-{lastName}";
@@ -52,7 +52,13 @@ public class User : IRepositoryItem
             return Result.Error<User>("User email or id already exists!!");
         }
 
-        return Result.Success(new User(firstName, lastName, birthDay, email, password));
+        var user = new User(firstName, lastName, birthDay, email, password);
+
+        var userCreatedResult = Result.Success(user);
+
+        user.RaiseDomainEvent(new UserCreatedDomainEvent(user));
+
+        return userCreatedResult;
     }
 
     public IResult LogIn(string password)

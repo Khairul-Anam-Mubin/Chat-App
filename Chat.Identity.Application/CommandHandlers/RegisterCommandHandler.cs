@@ -1,6 +1,4 @@
-using Chat.Domain.Shared.Commands;
 using Chat.Framework.CQRS;
-using Chat.Framework.EmailSenders;
 using Chat.Framework.Results;
 using Chat.Identity.Application.Commands;
 using Chat.Identity.Domain.Entities;
@@ -11,12 +9,10 @@ namespace Chat.Identity.Application.CommandHandlers;
 public class RegisterCommandHandler : ICommandHandler<RegisterCommand>
 {
     private readonly IUserRepository _userRepository;
-    private readonly ICommandService _commandService;
 
-    public RegisterCommandHandler(IUserRepository userRepository, ICommandService commandService)
+    public RegisterCommandHandler(IUserRepository userRepository)
     {
         _userRepository = userRepository;
-        _commandService = commandService;
     }
 
     public async Task<IResult> HandleAsync(RegisterCommand command)
@@ -30,38 +26,18 @@ public class RegisterCommandHandler : ICommandHandler<RegisterCommand>
                 command.Password,
                 await _userRepository.IsUserExistAsync(command.Email));
 
-        if (userCreatedResult.IsFailure || userCreatedResult.Value is null)
+        var user = userCreatedResult.Value;
+
+        if (userCreatedResult.IsFailure || user is null)
         {
             return userCreatedResult;
         }
 
-        var user = userCreatedResult.Value;
-
         if (!await _userRepository.SaveAsync(user))
         {
-            return Result.Error("Some anonymous problem occurred!!");
+            return Error.SaveProblem<User>();
         }
 
-        var response = Result.Success("User Created Successfully!!");
-
-        await SendVerificationEmailAsync(user);
-        
-        return response;
-    }
-
-    private async Task SendVerificationEmailAsync(User user)
-    {
-        var email = new Email
-        {
-            To = new List<string> { user.Email },
-            IsHtmlContent = true,
-            Content = $"<h1>Account Registration Successfully.</h1><br><button><a href=\"https://localhost:6001/api/User/verify-account?userId={user.Id}\">Click to verify account</a></button><br><br><p>Thanks</p>",
-            Subject = "User registration complete"
-        };
-
-        await _commandService.SendAsync(new SendEmailCommand
-        {
-            Email = email
-        });
+        return Result.Success("User Created Successfully!!");
     }
 }

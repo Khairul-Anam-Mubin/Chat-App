@@ -12,13 +12,13 @@ public class LoginCommandHandler : ICommandHandler<LoginCommand, TokenDto>
 {
     private readonly IUserRepository _userRepository;
     private readonly ITokenService _tokenService;
-    private readonly ITokenRepository _accessRepository;
+    private readonly ITokenRepository _tokenRepository;
 
-    public LoginCommandHandler(IUserRepository userRepository, ITokenService tokenService, ITokenRepository accessRepository)
+    public LoginCommandHandler(IUserRepository userRepository, ITokenService tokenService, ITokenRepository tokenRepository)
     {
         _userRepository = userRepository;
         _tokenService = tokenService;
-        _accessRepository = accessRepository;
+        _tokenRepository = tokenRepository;
     }
 
     public async Task<IResult<TokenDto>> HandleAsync(LoginCommand command)
@@ -41,7 +41,7 @@ public class LoginCommandHandler : ICommandHandler<LoginCommand, TokenDto>
 
         var token = _tokenService.GenerateToken(userProfile, command.AppId);
 
-        await _accessRepository.SaveAsync(token);
+        await _tokenRepository.SaveAsync(token);
 
         var tokenDto = token.ToTokenDto();
         

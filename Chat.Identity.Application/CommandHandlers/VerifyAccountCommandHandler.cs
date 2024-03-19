@@ -11,13 +11,11 @@ namespace Chat.Identity.Application.CommandHandlers;
 public class VerifyAccountCommandHandler : ICommandHandler<VerifyAccountCommand>
 {
     private readonly IUserRepository _userRepository;
-    private readonly IEventBus _eventBus;
     private readonly IEventService _eventService;
 
-    public VerifyAccountCommandHandler(IUserRepository userRepository, IEventBus eventBus, IEventService eventService)
+    public VerifyAccountCommandHandler(IUserRepository userRepository, IEventService eventService)
     {
         _userRepository = userRepository;
-        _eventBus = eventBus;
         _eventService = eventService;
     }
 

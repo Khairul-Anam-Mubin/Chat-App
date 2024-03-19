@@ -2,6 +2,8 @@ using Chat.Framework.Database.ORM;
 using Chat.Framework.Database.ORM.Builders;
 using Chat.Framework.Database.ORM.Enums;
 using Chat.Framework.Database.ORM.Interfaces;
+using Chat.Framework.DDD;
+using Chat.Framework.EDD;
 using Chat.Framework.Extensions;
 using Chat.Identity.Domain.Entities;
 using Chat.Identity.Domain.Repositories;
@@ -9,11 +11,11 @@ using Microsoft.Extensions.Configuration;
 
 namespace Chat.Identity.Infrastructure.Repositories;
 
-public class UserRepository : RepositoryBase<User>, IUserRepository
+public class UserRepository : RepositoryBaseWrapper<User>, IUserRepository
 {
-    public UserRepository(IDbContextFactory dbContextFactory, IConfiguration configuration)
+    public UserRepository(IDbContextFactory dbContextFactory, IConfiguration configuration, IEventService eventService)
         : base(configuration.TryGetConfig<DatabaseInfo>("DatabaseInfo"), 
-            dbContextFactory.GetDbContext(Context.Mongo)) {}
+            dbContextFactory.GetDbContext(Context.Mongo), eventService) {}
 
     public async Task<bool> IsUserExistAsync(string email)
     {

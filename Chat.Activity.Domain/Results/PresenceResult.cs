@@ -1,5 +1,4 @@
-﻿using Chat.Framework.DDD;
-using Chat.Framework.Results;
+﻿using Chat.Framework.Results;
 
 namespace Chat.Activity.Domain.Results;
 

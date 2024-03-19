@@ -12,12 +12,12 @@ namespace Chat.Identity.Application.CommandHandlers;
 public class RefreshTokenCommandHandler : ICommandHandler<RefreshTokenCommand, TokenDto>
 {
     private readonly ITokenService _tokenService;
-    private readonly ITokenRepository _accessRepository;
+    private readonly ITokenRepository _tokenRepository;
 
-    public RefreshTokenCommandHandler(ITokenService tokenService, ITokenRepository accessRepository)
+    public RefreshTokenCommandHandler(ITokenService tokenService, ITokenRepository tokenRepository)
     {
         _tokenService = tokenService;
-        _accessRepository = accessRepository;
+        _tokenRepository = tokenRepository;
     }
 
     public async Task<IResult<TokenDto>> HandleAsync(RefreshTokenCommand command)
@@ -31,7 +31,7 @@ public class RefreshTokenCommandHandler : ICommandHandler<RefreshTokenCommand, T
         }
 
         var token = 
-            await _accessRepository.GetByIdAsync(command.RefreshToken);
+            await _tokenRepository.GetByIdAsync(command.RefreshToken);
 
         if (token is null)
         {
@@ -50,21 +50,21 @@ public class RefreshTokenCommandHandler : ICommandHandler<RefreshTokenCommand, T
 
         if (validRefreshAttemptResult.IsFailure)
         {
-            await _accessRepository.RevokeAllTokensByUserIdAsync(token.UserId);
+            await _tokenRepository.RevokeAllTokensByUserIdAsync(token.UserId);
 
             return Result.Error<TokenDto>(validRefreshAttemptResult.Message);
         }
 
         token.MakeTokenExpired();
         
-        await _accessRepository.SaveAsync(token);
+        await _tokenRepository.SaveAsync(token);
         
         var userProfile = IdentityProvider.GetUserProfile(command.AccessToken);
 
         var refreshedAccessModel = 
             _tokenService.GenerateToken(userProfile, command.AppId);
         
-        await _accessRepository.SaveAsync(refreshedAccessModel);
+        await _tokenRepository.SaveAsync(refreshedAccessModel);
 
         var tokenDto = refreshedAccessModel.ToTokenDto();
 

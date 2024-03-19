@@ -1,4 +1,5 @@
 .chat-list-container {
+    padding-top: 20px;
     height: 500px;
     overflow-y: auto;
   }
@@ -10,4 +11,7 @@
   }
   .chat-list-container::-webkit-scrollbar-thumb {
   background-color: #bbb;
+  }
+  .list-group{
+    padding-bottom: 5px;
   }

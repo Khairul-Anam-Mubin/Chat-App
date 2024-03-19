@@ -49,6 +49,8 @@ public abstract class RepositoryBaseWrapper<T> : RepositoryBase<T>
 
     private async Task PublishDomainEvents(List<IDomainEvent> domainEvents)
     {
+        if (!domainEvents.Any()) return;
+
         var tasks = new List<Task>();
 
         domainEvents.ForEach(domainEvent =>

@@ -26,3 +26,6 @@
     color: black;
     font-size: 12px;
   }
+  .list-group{
+    padding-bottom: 5px;
+  }
