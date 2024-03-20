@@ -50,6 +50,10 @@ public class AuthenticationInstaller : IServiceInstaller
                     }
 
                     return Task.CompletedTask;
+                },
+                OnTokenValidated = context =>
+                {
+                    return Task.CompletedTask;
                 }
             };
         });

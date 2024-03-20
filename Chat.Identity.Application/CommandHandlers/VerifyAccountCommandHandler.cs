@@ -1,7 +1,6 @@
 ﻿using Chat.Domain.Shared.Events;
 using Chat.Framework.CQRS;
 using Chat.Framework.EDD;
-using Chat.Framework.MessageBrokers;
 using Chat.Framework.Results;
 using Chat.Identity.Application.Commands;
 using Chat.Identity.Domain.Repositories;

@@ -38,6 +38,6 @@ public class RegisterCommandHandler : ICommandHandler<RegisterCommand>
             return Error.SaveProblem<User>();
         }
 
-        return Result.Success("User Created Successfully!!");
+        return Result.Success("UserProfile Created Successfully!!");
     }
 }

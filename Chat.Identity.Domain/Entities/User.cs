@@ -1,6 +1,7 @@
 using Chat.Framework.Database.ORM.Interfaces;
 using Chat.Framework.DDD;
 using Chat.Framework.Results;
+using Chat.Framework.Security;
 using Chat.Identity.Domain.DomainEvents;
 using System.ComponentModel.DataAnnotations;
 
@@ -27,9 +28,9 @@ public class User : Entity, IRepositoryItem
 
     public string? ProfilePictureId { get; private set; }
 
-    public int PublicKey { get; private set; }
+    public string PasswordHash { get; private set; }
 
-    public string Password { get; private set; }
+    public string PasswordSalt { get; private set; }
 
     public bool IsEmailVerified { get; private set; }
 
@@ -41,22 +42,22 @@ public class User : Entity, IRepositoryItem
         UserName = $"{firstName}-{lastName}";
         BirthDay = birthDay;
         Email = email;
-        Password = password;
         IsEmailVerified = false;
+        (PasswordHash, PasswordSalt) = GeneratePasswordHash(password);
     }
 
     public static IResult<User> Create(string firstName, string lastName, DateTime birthDay, string email, string password, bool isAlreadyExist)
     {
         if (isAlreadyExist)
         {
-            return Result.Error<User>("User email or id already exists!!");
+            return Result.Error<User>("UserProfile email or id already exists!!");
         }
 
         var user = new User(firstName, lastName, birthDay, email, password);
 
-        var userCreatedResult = Result.Success(user);
+        user.RaiseDomainEvent(new UserCreatedDomainEvent(user.Id));
 
-        user.RaiseDomainEvent(new UserCreatedDomainEvent(user));
+        var userCreatedResult = Result.Success(user);
 
         return userCreatedResult;
     }
@@ -65,66 +66,88 @@ public class User : Entity, IRepositoryItem
     {
         if (string.IsNullOrEmpty(password))
         {
-            return Result.Error("Password Empty");
+            return Result.Error("PasswordHash Empty");
         }
 
-        if (!Password.Equals(password))
+        if (!IsPasswordMatched(password))
         {
             return Result.Error("Incorrect password");
         }
 
         if (!IsEmailVerified)
         {
-            return Result.Error("Email not verified yet");
+            return Result.Error("Email not verified yet. Please check your email to verify.");
         }
 
         return Result.Success();
     }
 
-    public IResult<User> Update(User requestUpdateModel)
+    public IResult Update(string? firstName, string? lastName, DateTime? birthDay, string? about, string? profilePictureId)
     {
         var updateInfoCount = 0;
 
-        if (!string.IsNullOrEmpty(requestUpdateModel.FirstName) &&
-            FirstName != requestUpdateModel.FirstName)
+        if (!string.IsNullOrEmpty(firstName) && FirstName != firstName)
         {
-            FirstName = requestUpdateModel.FirstName;
+            FirstName = firstName;
             updateInfoCount++;
         }
 
-        if (!string.IsNullOrEmpty(requestUpdateModel.LastName) &&
-            LastName != requestUpdateModel.LastName)
+        if (!string.IsNullOrEmpty(lastName) && LastName != lastName)
         {
-            LastName = requestUpdateModel.LastName;
+            LastName = lastName;
             updateInfoCount++;
         }
 
-        if (requestUpdateModel.BirthDay != default &&
-            !BirthDay.Equals(requestUpdateModel.BirthDay))
+        if (birthDay is not null && !BirthDay.Equals(birthDay))
         {
-            BirthDay = requestUpdateModel.BirthDay;
+            BirthDay = (DateTime)birthDay;
             updateInfoCount++;
         }
 
-        if (!string.IsNullOrEmpty(requestUpdateModel.About) &&
-            About != requestUpdateModel.About)
+        if (!string.IsNullOrEmpty(about) && !about.Equals(About))
         {
-            About = requestUpdateModel.About;
+            About = about;
             updateInfoCount++;
         }
 
-        if (!string.IsNullOrEmpty(requestUpdateModel.ProfilePictureId) &&
-            ProfilePictureId != requestUpdateModel.ProfilePictureId)
+        if (!string.IsNullOrEmpty(profilePictureId) && ProfilePictureId != profilePictureId)
         {
-            ProfilePictureId = requestUpdateModel.ProfilePictureId;
+            ProfilePictureId = profilePictureId;
             updateInfoCount++;
         }
 
         if (updateInfoCount == 0)
         {
-            return Result.Error<User>("No Information updated");
+            return Result.Error("No Information updated");
         }
 
-        return Result.Success(this);
+        return Result.Success();
+    }
+
+    public IResult ChangePassword(string previousPassword, string newPassword)
+    {
+        if (!IsPasswordMatched(previousPassword))
+        {
+            return Result.Error("Incorrect password.");
+        }
+
+        (PasswordHash, PasswordSalt) = GeneratePasswordHash(newPassword);
+
+        return Result.Success();
+    }
+
+    private bool IsPasswordMatched(string password)
+    {
+        var passwordHash = PasswordHelper.GetPasswordHash(password, PasswordSalt);
+
+        return passwordHash.Equals(PasswordHash);
+    }
+
+    private (string PasswordHash, string PasswordSalt) GeneratePasswordHash(string password)
+    {
+        var salt = PasswordHelper.GenerateRandomSalt(64);
+        var passwordHash = PasswordHelper.GetPasswordHash(password, salt);
+
+        return (passwordHash, salt);
     }
 }

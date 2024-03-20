@@ -119,8 +119,14 @@ export class UserProfileComponent implements OnInit{
   }
 
   updateUserProfileCommand(userProfile : any) {
-    var updateUserProfileCommand = new UpdateUserProfileCommand();
-    updateUserProfileCommand.userModel = userProfile;
+    const updateUserProfileCommand = new UpdateUserProfileCommand();
+    
+    updateUserProfileCommand.about = userProfile.about;
+    updateUserProfileCommand.birthDay = userProfile.birthDay;
+    updateUserProfileCommand.firstName = userProfile.firstName;
+    updateUserProfileCommand.lastName = userProfile.lastName;
+    updateUserProfileCommand.profilePictureId = userProfile.profilePictureId;
+    
     this.commandService.execute(updateUserProfileCommand)
     .pipe(take(1))
     .subscribe(response => {

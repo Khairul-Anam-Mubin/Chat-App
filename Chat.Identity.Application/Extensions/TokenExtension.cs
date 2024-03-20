@@ -1,10 +1,12 @@
-﻿namespace Chat.Identity.Application.Extensions;
+﻿using Chat.Identity.Application.Dtos;
+
+namespace Chat.Identity.Application.Extensions;
 
 public static class TokenExtension
 {
-    public static Dtos.TokenDto ToTokenDto(this Domain.Entities.Token token)
+    public static TokenDto ToTokenDto(this Domain.Entities.Token token)
     {
-        return new Dtos.TokenDto
+        return new TokenDto
         {
             RefreshToken = token.Id,
             AccessToken = token.AccessToken,

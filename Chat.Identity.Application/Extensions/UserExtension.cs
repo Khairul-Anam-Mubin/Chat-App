@@ -15,9 +15,8 @@ public static class UserExtension
             UserName = user.UserName,
             BirthDay = user.BirthDay,
             About = user.About,
-            ProfilePictureId = user.ProfilePictureId ?? "",
-            Email = user.Email,
-            PublicKey = user.PublicKey
+            ProfilePictureId = user.ProfilePictureId,
+            Email = user.Email
         };
         return userProfile;
     }

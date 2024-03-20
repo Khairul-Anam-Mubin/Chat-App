@@ -34,7 +34,8 @@ public class UserIdentity
     {
         string? id = null, name = null, email = null, phone = null;
 
-        var claimsDictionary = claims.ToDictionary(claim => claim.Type, claim => claim.Value);
+        var claimsDictionary = 
+            claims.ToDictionary(claim => claim.Type, claim => claim.Value);
 
         if (claimsDictionary is not null)
         {

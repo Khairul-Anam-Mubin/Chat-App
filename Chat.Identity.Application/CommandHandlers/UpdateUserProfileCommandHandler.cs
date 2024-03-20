@@ -22,8 +22,6 @@ public class UpdateUserProfileCommandHandler :
 
     public async Task<IResult<UserProfile>> HandleAsync(UpdateUserProfileCommand command)
     {
-        var updateRequestUser = command.UserModel;
-
         var userId = _scopeIdentity.GetUserId()!;
         
         var user = 
@@ -31,12 +29,19 @@ public class UpdateUserProfileCommandHandler :
         
         if (user is null)
         {
-            return Result.Error<UserProfile>("User not found");
+            return Result.Error<UserProfile>("UserProfile not found");
         }
 
-        var updateResult = user.Update(updateRequestUser);
+        var firstName = command.FirstName;
+        var lastName = command.LastName;
+        var birthday = command.BirthDay;
+        var about = command.About;
+        var profilePictureId = command.ProfilePictureId;
+
+        var updateResult = 
+            user.Update(firstName, lastName, birthday, about, profilePictureId);
         
-        if (updateResult.IsFailure || updateResult.Value is null)
+        if (updateResult.IsFailure)
         {
             return Result.Error<UserProfile>(updateResult.Message);
         }

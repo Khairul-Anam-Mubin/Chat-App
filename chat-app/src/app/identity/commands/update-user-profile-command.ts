@@ -4,7 +4,11 @@ import { Configuration } from "src/app/core/services/configuration";
 
 export class UpdateUserProfileCommand extends CommandBase {
 
-    public userModel : UserModel | undefined;
+    public firstName : any;
+    public lastName : any;
+    public birthDay : any;
+    public about : any;
+    public profilePictureId : any;
 
     constructor() {
         super();
