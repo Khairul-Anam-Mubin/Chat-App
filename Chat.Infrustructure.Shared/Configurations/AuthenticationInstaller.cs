@@ -15,6 +15,7 @@ public class AuthenticationInstaller : IServiceInstaller
     public void Install(IServiceCollection services, IConfiguration configuration)
     {
         var tokenConfig = configuration.TryGetConfig<TokenConfig>();
+        services.AddSingleton(tokenConfig);
         services.AddAuthentication(options => 
         {
             options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

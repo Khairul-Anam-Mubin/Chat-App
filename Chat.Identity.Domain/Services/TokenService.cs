@@ -2,11 +2,9 @@ using System.Security.Claims;
 using System.Text;
 using Chat.Domain.Shared.Constants;
 using Chat.Domain.Shared.Entities;
-using Chat.Framework.Extensions;
 using Chat.Framework.Identity;
 using Chat.Framework.Results;
 using Chat.Identity.Domain.Entities;
-using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Chat.Identity.Domain.Services;
@@ -15,9 +13,9 @@ public class TokenService : ITokenService
 {
     private readonly TokenConfig _tokenConfig;
 
-    public TokenService(IConfiguration configuration)
+    public TokenService(TokenConfig tokenConfig)
     {
-        _tokenConfig = configuration.TryGetConfig<TokenConfig>();
+        _tokenConfig = tokenConfig;
     }
 
     public IResult CheckForValidRefreshTokenRequest(string jwtToken)

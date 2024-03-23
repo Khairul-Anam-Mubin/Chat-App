@@ -9,7 +9,6 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddIdentityApplication(this IServiceCollection services)
     {
-        services.AddSingleton<ITokenService, TokenService>();
         services.AddHandlers(Assembly.GetExecutingAssembly());
         return services;
     }

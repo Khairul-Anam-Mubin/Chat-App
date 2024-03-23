@@ -50,6 +50,6 @@ public class LoginCommandHandler : ICommandHandler<LoginCommand, TokenDto>
             return Result.Error<TokenDto>("Token Creation Failed");
         }
 
-        return Result.Success(tokenDto, "Logged in successfully"); ;
+        return Result.Success(tokenDto, "Logged in successfully");
     }
 }

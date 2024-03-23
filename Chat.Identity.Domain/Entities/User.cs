@@ -7,8 +7,11 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Chat.Identity.Domain.Entities;
 
-public class User : Entity, IRepositoryItem
+public class User : AggregateRoot, IRepositoryItem
 {
+
+#region public properties
+
     [Required]
     public string FirstName { get; private set; }
 
@@ -33,6 +36,8 @@ public class User : Entity, IRepositoryItem
     public string PasswordSalt { get; private set; }
 
     public bool IsEmailVerified { get; private set; }
+
+    #endregion
 
     private User(string firstName, string lastName, DateTime birthDay, string email, string password)
         : base(Guid.NewGuid().ToString())
@@ -136,6 +141,8 @@ public class User : Entity, IRepositoryItem
         return Result.Success();
     }
 
+    #region private methods
+
     private bool IsPasswordMatched(string password)
     {
         var passwordHash = PasswordHelper.GetPasswordHash(password, PasswordSalt);
@@ -150,4 +157,5 @@ public class User : Entity, IRepositoryItem
 
         return (passwordHash, salt);
     }
+#endregion
 }
