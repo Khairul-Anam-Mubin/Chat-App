@@ -24,8 +24,16 @@ public static class DependencyInjection
                 foreach (var serviceRegisterAttribute in serviceRegisterAttributes)
                 {
                     if (serviceRegisterAttribute.ServiceType is null)
-                    {
-                        services.TryAdd(new ServiceDescriptor(type, type, serviceRegisterAttribute.ServiceLifetime));
+                    { 
+                        if (string.IsNullOrEmpty(serviceRegisterAttribute.Key))
+                        {
+                            services.TryAdd(new ServiceDescriptor(type, type, serviceRegisterAttribute.ServiceLifetime));
+                        }
+                        else
+                        {
+                            services.TryAdd(new ServiceDescriptor(type, serviceRegisterAttribute.Key, type, serviceRegisterAttribute.ServiceLifetime));
+                        }
+                        
                         continue;
                     }
 
@@ -34,8 +42,15 @@ public static class DependencyInjection
                         continue;
                     }
 
-                    services.TryAdd(new ServiceDescriptor(serviceRegisterAttribute.ServiceType, type,
+                    if (string.IsNullOrEmpty(serviceRegisterAttribute.Key))
+                    {
+                        services.TryAdd(new ServiceDescriptor(serviceRegisterAttribute.ServiceType, type,
                         serviceRegisterAttribute.ServiceLifetime));
+                    }
+                    else
+                    {
+                        services.TryAdd(new ServiceDescriptor(type, serviceRegisterAttribute.Key, type, serviceRegisterAttribute.ServiceLifetime));
+                    }
                 }
                 
             }
@@ -43,10 +58,9 @@ public static class DependencyInjection
         return services;
     }
 
-    public static IServiceCollection AddAttributeRegisteredServices(this IServiceCollection services, Assembly assembly, params Assembly[] assemblies)
+    public static IServiceCollection AddAttributeRegisteredServices(this IServiceCollection services, params Assembly[] assemblies)
     {
         var assemblyList = assemblies.ToList();
-        assemblyList.Add(assembly);
 
         return AddAttributeRegisteredServices(services, assemblyList);
     }

@@ -30,7 +30,7 @@ public sealed class AssemblyCache
         _assemblyLists = new();
     }
 
-    public void AddAllAssemblies(string assemblyPrefix)
+    public AssemblyCache AddAllAssemblies(string assemblyPrefix)
     {
         var entryAssemblyLocation = Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location);
 
@@ -45,11 +45,13 @@ public sealed class AssemblyCache
         {
             AddAllAssemblies(executingAssemblyLocation, assemblyPrefix);
         }
+
+        return this;
     }
 
-    public void AddAllAssemblies(string location, string assemblyPrefix)
+    public AssemblyCache AddAllAssemblies(string location, string assemblyPrefix)
     {
-        if (string.IsNullOrEmpty(location)) return;
+        if (string.IsNullOrEmpty(location)) return this;
 
         var files = Directory.GetFiles(location);
 
@@ -73,19 +75,35 @@ public sealed class AssemblyCache
                 Console.WriteLine(e.Message);
             }
         }
+
+        return this;
     }
 
-    public void AddAssembly(Assembly assembly)
+    public AssemblyCache AddAssemblies(params Assembly[] assemblies)
+    {
+        AddAssemblies(assemblies.ToList());
+        return this;
+    }
+
+    public AssemblyCache AddAssemblies(List<Assembly> assemblies)
+    {
+        assemblies.ForEach(assembly => AddAssembly(assembly));
+        return this;
+    }
+
+    public AssemblyCache AddAssembly(Assembly assembly)
     {
         if (string.IsNullOrEmpty(assembly.FullName) ||
             _assemblyLists.ContainsKey(assembly.FullName))
         {
             Console.WriteLine($"{assembly.FullName} already added\n");
-            return;
+            return this;
         }
 
         _assemblyLists.TryAdd(assembly.FullName, assembly);
         Console.WriteLine($"Added Assembly {assembly.FullName}\n");
+        
+        return this;
     }
 
     public List<Assembly> GetAddedAssemblies()

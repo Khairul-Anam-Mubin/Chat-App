@@ -8,13 +8,9 @@ namespace Chat.Framework.ServiceInstaller;
 public static class DependencyInjection
 {
     public static IServiceCollection InstallServices(this IServiceCollection services, 
-        IConfiguration configuration, Assembly assembly,
-        params Assembly[] assemblies)
+        IConfiguration configuration, params Assembly[] assemblies)
     {
-        var assemblyList = assemblies.ToList();
-        assemblyList.Add(assembly);
-
-        return InstallServices(services, configuration, assemblyList);
+        return InstallServices(services, configuration, assemblies.ToList());
     }
 
     public static IServiceCollection InstallServices(this IServiceCollection services, 

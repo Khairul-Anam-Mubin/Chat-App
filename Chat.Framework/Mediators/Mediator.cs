@@ -1,4 +1,3 @@
-using Chat.Framework.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Chat.Framework.Mediators;
@@ -53,7 +52,7 @@ public class Mediator : IMediator
             Console.WriteLine(e.Message);
         }
 
-        var handler = _serviceProvider.GetService<IHandler>(handlerName);
+        var handler = _serviceProvider.GetKeyedService<IHandler>(handlerName);
 
         return (IHandler<TRequest, TResponse>?)handler; // todo: will use smart cast later
     }
@@ -69,7 +68,7 @@ public class Mediator : IMediator
             Console.WriteLine(e.Message);
         }
 
-        var handler = _serviceProvider.GetService<IHandler>(handlerName);
+        var handler = _serviceProvider.GetKeyedService<IHandler>(handlerName);
 
         return (IHandler<TRequest>?)handler; // todo: will use smart cast later
     }
