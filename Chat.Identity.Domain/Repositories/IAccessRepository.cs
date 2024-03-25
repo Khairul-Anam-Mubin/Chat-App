@@ -8,4 +8,6 @@ public interface IAccessRepository
     Task SaveUserPermissionsAsync(List<PermissionAccess> permissions);
     Task<List<RoleAccess>> GetUserRolesAsync(string userId);
     Task<List<PermissionAccess>> GetUserPermissionsAsync(string userId);
+    Task<List<Permission>> GetPermissionsAsync(List<string> permissionIds);
+    Task<List<Role>> GetRolesAsync(List<string> roleIds);
 }

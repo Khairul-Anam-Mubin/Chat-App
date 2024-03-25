@@ -19,7 +19,7 @@ public class AccessService : IAccessService
         {
             permissionsAccess.Add
             (
-                PermissionAccess.Create(permission.Id,userId, default, true)    
+                PermissionAccess.Create(permission.Id,userId)    
             );
         });
 
@@ -28,7 +28,7 @@ public class AccessService : IAccessService
 
     public async Task AddPermissionToUserAsync(string userId, Permission permission)
     {
-        var permissionAccess = PermissionAccess.Create(permission.Id, userId, default, true);
+        var permissionAccess = PermissionAccess.Create(permission.Id, userId);
 
         await _accessRepository.SaveUserPermissionsAsync(new List<PermissionAccess> { permissionAccess});
     }
@@ -40,7 +40,7 @@ public class AccessService : IAccessService
         {
             rolesAccess.Add
             (
-                RoleAccess.Create(roleAccess.Id, userId, default, true)
+                RoleAccess.Create(roleAccess.Id, userId)
             );
         });
 
@@ -49,9 +49,27 @@ public class AccessService : IAccessService
 
     public async Task AddRoleToUserAsync(string userId, Role role)
     {
-        var roleAccess = RoleAccess.Create(role.Id, userId, default, true);
+        var roleAccess = RoleAccess.Create(role.Id, userId);
 
         await _accessRepository.SaveUserRolesAsync(
             new List<RoleAccess> { roleAccess });
+    }
+
+    public async Task<List<Permission>> GetUserPermissionsAsync(string userId)
+    {
+        var permissions = await _accessRepository.GetUserPermissionsAsync(userId);
+        
+        var permissionIds = permissions.Select(permission => permission.Id).ToList();
+        
+        return await _accessRepository.GetPermissionsAsync(permissionIds);
+    }
+
+    public async Task<List<Role>> GetUserRolesAsync(string userId)
+    {
+        var roles = await _accessRepository.GetUserRolesAsync(userId);
+        
+        var roleIds = roles.Select(role => role.Id).ToList();
+        
+        return await _accessRepository.GetRolesAsync(roleIds);
     }
 }

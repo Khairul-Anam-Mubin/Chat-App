@@ -8,4 +8,6 @@ public interface IAccessService
     Task AddRoleToUserAsync(string userId, Role role);
     Task AddPermissionsToUserAsync(string userId, List<Permission> permissions);
     Task AddRolesToUserAsync(string userId, List<Role> roles);
+    Task<List<Permission>> GetUserPermissionsAsync(string userId);
+    Task<List<Role>> GetUserRolesAsync(string userId);
 }

@@ -6,12 +6,12 @@ namespace Chat.Identity.Domain.Entities;
 public class Permission : Entity, IRepositoryItem
 {
     public string Title { get; private set; }
-    public List<Permission> Pemissions { get; private set; }
+    public List<Permission> Permissions { get; private set; }
 
     private Permission(string id, string title, List<Permission> permissions) : base(id)
     {
         Title = title;
-        Pemissions = permissions;
+        Permissions = permissions;
     }
 
     public static Permission Create(string title,  List<Permission> permissions)

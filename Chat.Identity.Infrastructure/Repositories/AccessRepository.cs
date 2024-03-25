@@ -18,6 +18,24 @@ namespace Chat.Identity.Infrastructure.Repositories
             _databaseInfo = databaseInfo;
         }
 
+        public async Task<List<Permission>> GetPermissionsAsync(List<string> permissionIds)
+        {
+            var filterBuilder = new FilterBuilder<Permission>();
+
+            var permissionIdsFilter = filterBuilder.In(x => x.Id, permissionIds);
+
+            return await _dbContext.GetManyAsync<Permission>(_databaseInfo, permissionIdsFilter);
+        }
+
+        public async Task<List<Role>> GetRolesAsync(List<string> roleIds)
+        {
+            var filterBuilder = new FilterBuilder<Role>();
+
+            var roleIdsFilter = filterBuilder.In(x => x.Id, roleIds);
+
+            return await _dbContext.GetManyAsync<Role>(_databaseInfo, roleIdsFilter);
+        }
+
         public async Task<List<PermissionAccess>> GetUserPermissionsAsync(string userId)
         {
             var filterBuilder = new FilterBuilder<PermissionAccess>();
