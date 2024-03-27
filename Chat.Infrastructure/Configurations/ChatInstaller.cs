@@ -1,6 +1,6 @@
 ﻿using Chat.Application;
 using Chat.Domain.Repositories;
-using Chat.Framework.Database.ORM.Interfaces;
+using Chat.Framework.ORM.Interfaces;
 using Chat.Framework.ServiceInstaller;
 using Chat.Infrastructure.Migrations;
 using Chat.Infrastructure.Repositories;

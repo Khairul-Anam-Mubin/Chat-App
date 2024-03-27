@@ -1,5 +1,5 @@
-using Chat.Framework.Database.ORM.Interfaces;
 using Chat.Framework.DDD;
+using Chat.Framework.ORM.Interfaces;
 using Chat.Framework.Results;
 
 namespace Chat.FileStore.Domain.Entities;

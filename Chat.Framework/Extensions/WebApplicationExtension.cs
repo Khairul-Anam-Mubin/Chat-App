@@ -1,5 +1,5 @@
-﻿using Chat.Framework.Database.ORM.Interfaces;
-using Chat.Framework.Interfaces;
+﻿using Chat.Framework.Interfaces;
+using Chat.Framework.ORM.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 

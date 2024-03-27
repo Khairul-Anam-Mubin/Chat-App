@@ -1,5 +1,4 @@
-﻿using Chat.Framework.Database.Clients;
-using Chat.Framework.Database.Interfaces;
+﻿using Chat.Framework.Cache.DistributedCache;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Chat.Framework.PubSub;

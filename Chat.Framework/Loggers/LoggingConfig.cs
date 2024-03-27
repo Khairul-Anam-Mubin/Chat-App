@@ -1,4 +1,4 @@
-﻿using Chat.Framework.Database.ORM;
+﻿using Chat.Framework.ORM;
 
 namespace Chat.Framework.Loggers;
 

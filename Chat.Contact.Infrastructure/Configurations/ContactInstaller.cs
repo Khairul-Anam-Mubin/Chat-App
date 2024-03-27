@@ -2,7 +2,7 @@
 using Chat.Contacts.Domain.Repositories;
 using Chat.Contacts.Infrastructure.Migrations;
 using Chat.Contacts.Infrastructure.Repositories;
-using Chat.Framework.Database.ORM.Interfaces;
+using Chat.Framework.ORM.Interfaces;
 using Chat.Framework.ServiceInstaller;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

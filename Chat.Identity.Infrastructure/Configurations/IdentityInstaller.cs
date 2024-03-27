@@ -1,4 +1,4 @@
-﻿using Chat.Framework.Database.ORM.Interfaces;
+﻿using Chat.Framework.ORM.Interfaces;
 using Chat.Framework.ServiceInstaller;
 using Chat.Identity.Application;
 using Chat.Identity.Domain.Repositories;

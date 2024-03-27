@@ -1,13 +1,12 @@
 ﻿using Chat.Framework;
 using Chat.Framework.Attributes;
 using Chat.Framework.CQRS;
-using Chat.Framework.Database;
-using Chat.Framework.Database.ORM;
 using Chat.Framework.EDD;
 using Chat.Framework.Extensions;
 using Chat.Framework.Identity;
 using Chat.Framework.Loggers;
 using Chat.Framework.Mediators;
+using Chat.Framework.ORM;
 using Chat.Framework.ServiceInstaller;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;

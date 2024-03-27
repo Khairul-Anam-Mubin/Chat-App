@@ -1,6 +1,6 @@
-﻿using Chat.Framework.Database.ORM;
-using Chat.Framework.Database.ORM.Interfaces;
-using Chat.Framework.EDD;
+﻿using Chat.Framework.EDD;
+using Chat.Framework.ORM;
+using Chat.Framework.ORM.Interfaces;
 
 namespace Chat.Framework.DDD;
 

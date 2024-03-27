@@ -1,8 +1,8 @@
 using Chat.FileStore.Domain.Entities;
 using Chat.FileStore.Domain.Repositories;
-using Chat.Framework.Database.ORM;
-using Chat.Framework.Database.ORM.Enums;
-using Chat.Framework.Database.ORM.Interfaces;
+using Chat.Framework.ORM;
+using Chat.Framework.ORM.Enums;
+using Chat.Framework.ORM.Interfaces;
 
 namespace Chat.FileStore.Infrastructure.Repositories;
 

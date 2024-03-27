@@ -1,7 +1,7 @@
 using System.Collections.Concurrent;
-using Chat.Framework.Database.Interfaces;
-using Chat.Framework.Database.ORM;
+using Chat.Framework.Cache.DistributedCache;
 using Chat.Framework.Extensions;
+using Chat.Framework.ORM;
 using Chat.Notification.Domain.Interfaces;
 using Microsoft.Extensions.Configuration;
 
@@ -13,15 +13,15 @@ public class HubConnectionService : IHubConnectionService
     private readonly ConcurrentDictionary<string, string> _connectionIdUserIdMapper;
     private readonly ConcurrentDictionary<string, HashSet<string>> _userIdConnectionIdsMapper;
 
-    private readonly IRedisContext _redisContext;
+    private readonly IDistributedCache _distributedCache;
     private readonly DatabaseInfo _databaseInfo;
 
-    public HubConnectionService(IRedisContext redisContext, IConfiguration configuration)
+    public HubConnectionService(IDistributedCache distributedCache, IConfiguration configuration)
     {
         _hubInstanceId = Guid.NewGuid().ToString();
         _connectionIdUserIdMapper = new ConcurrentDictionary<string, string>();
         _userIdConnectionIdsMapper = new ConcurrentDictionary<string, HashSet<string>>();
-        _redisContext = redisContext;
+        _distributedCache = distributedCache;
         _databaseInfo = configuration.TryGetConfig<DatabaseInfo>("RedisConfig");
     }
 
@@ -38,7 +38,16 @@ public class HubConnectionService : IHubConnectionService
 
         _connectionIdUserIdMapper[connectionId] = userId;
 
-        await _redisContext.GetDatabase(_databaseInfo).SetAddAsync(GetSetKey(userId), GetCurrentHubId());
+        var hubIds = await _distributedCache.GetByKeyAsync<List<string>>(GetSetKey(userId));
+
+        if (hubIds is null)
+        {
+            hubIds = new List<string>();
+        }
+
+        hubIds.Add(GetCurrentHubId());
+
+        await _distributedCache.SetByKeyAsync(GetSetKey(userId), hubIds);
     }
 
     public List<string> GetConnectionIds(string userId)
@@ -69,7 +78,18 @@ public class HubConnectionService : IHubConnectionService
 
             if (connectionIds is not null && connectionIds.Count == 0)
             {
-                await _redisContext.GetDatabase(_databaseInfo).SetRemoveAsync(GetSetKey(userId), GetCurrentHubId());
+
+                var hubIds = await _distributedCache.GetByKeyAsync<List<string>>(GetSetKey(userId));
+
+                if (hubIds is null)
+                {
+                    hubIds = new List<string>();
+                }
+
+                hubIds.Remove(GetCurrentHubId());
+
+                await _distributedCache.SetByKeyAsync(GetSetKey(userId), hubIds);
+     
             }
         }
 
@@ -86,13 +106,13 @@ public class HubConnectionService : IHubConnectionService
 
     public async Task<List<string>> GetUserConnectedHubIdsAsync(string userId)
     {
-        var redisDb = _redisContext.GetDatabase(_databaseInfo);
-        var hubIds = new List<string>();
-        var redisHubIds = await redisDb.SetMembersAsync(GetSetKey(userId));
-        foreach (var hubId in redisHubIds)
+        var hubIds = await _distributedCache.GetByKeyAsync<List<string>>(GetSetKey(userId));
+
+        if (hubIds is null)
         {
-            hubIds.Add(hubId.ToString());
+            hubIds = new List<string>();
         }
+
         return hubIds;
     }
 
