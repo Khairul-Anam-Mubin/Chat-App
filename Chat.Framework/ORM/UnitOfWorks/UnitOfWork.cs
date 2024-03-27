@@ -10,7 +10,7 @@ public class UnitOfWork : IUnitOfWork
 
     public UnitOfWork(IMongoClientManager mongoClientManager, DatabaseInfo databaseInfo)
     {
-        _commands = new List<Func<Task>>();
+        _commands = new ();
         _mongoClientManager = mongoClientManager;
         _databaseInfo = databaseInfo;
     }
