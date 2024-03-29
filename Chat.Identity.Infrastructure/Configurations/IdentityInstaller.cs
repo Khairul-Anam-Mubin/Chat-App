@@ -18,12 +18,16 @@ public class IdentityInstaller : IServiceInstaller
 
         services.AddTransient<IIndexCreator, UserIndexCreator>();
         services.AddTransient<IIndexCreator, TokenIndexCreator>();
+        services.AddTransient<IMigrationJob, PermissionMigrationJob>();
+        services.AddTransient<IMigrationJob, RoleMigrationJob>();
         
         services.AddScoped<ITokenRepository, TokenRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
-        services.AddScoped<IAccessRepository, AccessRepository>();
+        services.AddScoped<IPermissionRepository, PermissionRepository>();
+        services.AddScoped<IRoleRepository, RoleRepository>();
+        services.AddScoped<IUserAccessRepository, UserAccessRepository>();
 
+        services.AddScoped<IAccessService, AccessService>();
         services.AddSingleton<ITokenService, TokenService>();
-        services.AddSingleton<IAccessService, AccessService>();
     }
 }

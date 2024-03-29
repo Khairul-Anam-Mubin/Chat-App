@@ -5,71 +5,66 @@ namespace Chat.Identity.Domain.Services;
 
 public class AccessService : IAccessService
 {
-    private readonly IAccessRepository _accessRepository;
-    
-    public AccessService(IAccessRepository accessRepository)
+    private readonly IRoleRepository _roleRepository;
+    private readonly IPermissionRepository _permissionRepository;
+    private readonly IUserAccessRepository _userAccessRepository;
+
+    public AccessService(IRoleRepository roleRepository, IPermissionRepository permissionRepository, IUserAccessRepository userAccessRepository)
     {
-        _accessRepository = accessRepository;
-    }
-    
-    public async Task AddPermissionsToUserAsync(string userId, List<Permission> permissions)
-    {
-        var permissionsAccess = new List<PermissionAccess>();
-        permissions.ForEach(permission =>
-        {
-            permissionsAccess.Add
-            (
-                PermissionAccess.Create(permission.Id,userId)    
-            );
-        });
-
-        await _accessRepository.SaveUserPermissionsAsync(permissionsAccess);
-    }
-
-    public async Task AddPermissionToUserAsync(string userId, Permission permission)
-    {
-        var permissionAccess = PermissionAccess.Create(permission.Id, userId);
-
-        await _accessRepository.SaveUserPermissionsAsync(new List<PermissionAccess> { permissionAccess});
-    }
-
-    public async Task AddRolesToUserAsync(string userId, List<Role> roles)
-    {
-        var rolesAccess = new List<RoleAccess>();
-        roles.ForEach(roleAccess =>
-        {
-            rolesAccess.Add
-            (
-                RoleAccess.Create(roleAccess.Id, userId)
-            );
-        });
-
-        await _accessRepository.SaveUserRolesAsync(rolesAccess);
-    }
-
-    public async Task AddRoleToUserAsync(string userId, Role role)
-    {
-        var roleAccess = RoleAccess.Create(role.Id, userId);
-
-        await _accessRepository.SaveUserRolesAsync(
-            new List<RoleAccess> { roleAccess });
-    }
-
-    public async Task<List<Permission>> GetUserPermissionsAsync(string userId)
-    {
-        var permissions = await _accessRepository.GetUserPermissionsAsync(userId);
-        
-        var permissionIds = permissions.Select(permission => permission.Id).ToList();
-        
-        return await _accessRepository.GetPermissionsAsync(permissionIds);
+        _permissionRepository = permissionRepository;
+        _roleRepository = roleRepository;
+        _userAccessRepository = userAccessRepository;
     }
 
     public async Task<List<Role>> GetUserRolesAsync(string userId)
     {
-        var roles = await _accessRepository.GetUserRolesAsync(userId);
-        
-        var roleIds = roles.Select(role => role.Id).ToList();
-        
-        return await _accessRepository.GetRolesAsync(roleIds);
+        var userAccess = await _userAccessRepository.GetUserAccessByUserIdAsync(userId);
+
+        if (userAccess is null) return new List<Role>();
+
+        return await _roleRepository.GetManyByIds(userAccess.RoleIds);
+    }
+
+    public async Task<List<string>> GetUserPermissionIdsAsync(string userId)
+    {
+        var userAccess = await _userAccessRepository.GetUserAccessByUserIdAsync(userId);
+
+        if (userAccess is null) return new List<string>();
+
+        var roles = await _roleRepository.GetManyByIds(userAccess.RoleIds);
+
+        var rolePermissionIds = new List<string>();
+
+        roles.ForEach(role => rolePermissionIds.AddRange(role.PermissionIds));
+
+        var distinctPermissionIds = new HashSet<string>();
+
+        rolePermissionIds.ForEach(id => distinctPermissionIds.Add(id));
+
+        userAccess.PermissionIds.ForEach(id => distinctPermissionIds.Add(id));
+
+        return distinctPermissionIds.ToList();
+    }
+
+    public async Task<List<string>> GetUserFlatPermissionsAsync(string userId)
+    {
+        var userPermissionIds = await GetUserPermissionIdsAsync(userId);
+
+        var permissions = await _permissionRepository.GetManyByIds(userPermissionIds);
+
+        var flatPermissions = new List<Permission>();
+
+        foreach (var permission in permissions)
+        {
+            flatPermissions.AddRange(await _permissionRepository.GetFlatChildPermissionsAsync(permission.Id));
+        }
+
+        flatPermissions.AddRange(permissions);
+
+        var distinctPermissions = new HashSet<string>();
+
+        flatPermissions.ForEach(permission => distinctPermissions.Add(permission.Title));
+
+        return distinctPermissions.ToList();
     }
 }

@@ -7,17 +7,27 @@ public class Role : Entity, IRepositoryItem
 {
     public string Title { get; private set; }
     public string Description { get; private set; }
-    public List<Permission> Permissions { get; private set; }
+    public List<string> PermissionIds { get; private set; }
 
-    private Role(string id, string title, string description, List<Permission> permissions) : base(id)
+    private Role(string id, string title, string description) : base(id)
     {
         Title = title;
         Description = description;
-        Permissions = permissions;
+        PermissionIds = new();
     }
 
-    public static Role Create(string title, string description, List<Permission> permissions)
+    public static Role Create(string title, string description)
     {
-        return new Role(Guid.NewGuid().ToString(), description, title, permissions);
+        return new Role(Guid.NewGuid().ToString(), description, title);
+    }
+
+    public void AddPermission(Permission permission)
+    {
+        PermissionIds.Add(permission.Id);
+    }
+
+    public void AddPermissions(List<Permission> permissions)
+    {
+        PermissionIds.AddRange(permissions.Select(permission => permission.Id).ToList());
     }
 }

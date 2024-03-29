@@ -1,4 +1,5 @@
-﻿using Chat.Framework.ORM.Interfaces;
+﻿using Chat.Framework.ORM.Builders;
+using Chat.Framework.ORM.Interfaces;
 
 namespace Chat.Framework.ORM;
 
@@ -32,5 +33,12 @@ public abstract class RepositoryBase<TEntity> : IRepository<TEntity>
     public virtual async Task<bool> DeleteByIdAsync(string id)
     {
         return await DbContext.DeleteOneByIdAsync<TEntity>(DatabaseInfo, id);
+    }
+
+    public virtual async Task<List<TEntity>> GetManyByIds(List<string> ids)
+    {
+        var idsFilter = new FilterBuilder<TEntity>().In(entity => entity.Id, ids);
+
+        return await DbContext.GetManyAsync<TEntity>(DatabaseInfo, idsFilter);
     }
 }

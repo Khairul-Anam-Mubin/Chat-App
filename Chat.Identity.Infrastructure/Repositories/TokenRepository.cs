@@ -1,16 +1,18 @@
+using Chat.Framework.Extensions;
 using Chat.Framework.ORM;
 using Chat.Framework.ORM.Builders;
 using Chat.Framework.ORM.Enums;
 using Chat.Framework.ORM.Interfaces;
 using Chat.Identity.Domain.Entities;
 using Chat.Identity.Domain.Repositories;
+using Microsoft.Extensions.Configuration;
 
 namespace Chat.Identity.Infrastructure.Repositories;
 
 public class TokenRepository : RepositoryBase<Token>, ITokenRepository
 {
-    public TokenRepository(IDbContextFactory dbContextFactory, DatabaseInfo databaseInfo)
-        : base(databaseInfo, dbContextFactory.GetDbContext(Context.Mongo))
+    public TokenRepository(IDbContextFactory dbContextFactory, IConfiguration configuration)
+        : base(configuration.TryGetConfig<DatabaseInfo>("DatabaseInfo"), dbContextFactory.GetDbContext(Context.Mongo))
     { }
 
     public async Task<bool> RevokeAllTokenByAppIdAsync(string appId)

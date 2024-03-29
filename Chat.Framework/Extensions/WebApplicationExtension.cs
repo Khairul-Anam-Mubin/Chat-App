@@ -44,7 +44,9 @@ public static class WebApplicationExtension
                 return application;
             }
 
-            var migrationJobs = application.Services.GetServices<IMigrationJob>()
+            using var scope = application.Services.CreateScope();
+
+            var migrationJobs = scope.ServiceProvider.GetServices<IMigrationJob>()
                 .Where(job => enabledMigrationJobs.Contains(job.GetType().Name))
                 .ToList();
             
