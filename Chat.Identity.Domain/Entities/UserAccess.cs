@@ -9,16 +9,16 @@ public class UserAccess : Entity, IRepositoryItem
     public List<string> RoleIds { get; private set; }
     public List<string> PermissionIds { get; private set; }
 
-    private UserAccess(string id, string userId) : base(id)
+    private UserAccess(string userId) : base(Guid.NewGuid().ToString())
     {
         UserId = userId;
         RoleIds = new List<string>();
         PermissionIds = new List<string>();
     }
 
-    public static UserAccess Create(string id, string userId)
+    public static UserAccess Create(string userId)
     {
-        return new UserAccess(id, userId);
+        return new UserAccess(userId);
     }
 
     public void AddPermission(Permission permission)
@@ -26,7 +26,7 @@ public class UserAccess : Entity, IRepositoryItem
         PermissionIds.Add(permission.Id);
     }
 
-    public void Role(Role role)
+    public void AddRole(Role role)
     {
         RoleIds.Add(role.Id);
     }

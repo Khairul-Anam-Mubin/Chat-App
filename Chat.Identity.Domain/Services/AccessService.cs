@@ -22,7 +22,7 @@ public class AccessService : IAccessService
 
         if (userAccess is null) return new List<Role>();
 
-        return await _roleRepository.GetManyByIds(userAccess.RoleIds);
+        return await _roleRepository.GetManyByIdsAsync(userAccess.RoleIds);
     }
 
     public async Task<List<string>> GetUserPermissionIdsAsync(string userId)
@@ -31,7 +31,7 @@ public class AccessService : IAccessService
 
         if (userAccess is null) return new List<string>();
 
-        var roles = await _roleRepository.GetManyByIds(userAccess.RoleIds);
+        var roles = await _roleRepository.GetManyByIdsAsync(userAccess.RoleIds);
 
         var rolePermissionIds = new List<string>();
 
@@ -50,7 +50,7 @@ public class AccessService : IAccessService
     {
         var userPermissionIds = await GetUserPermissionIdsAsync(userId);
 
-        var permissions = await _permissionRepository.GetManyByIds(userPermissionIds);
+        var permissions = await _permissionRepository.GetManyByIdsAsync(userPermissionIds);
 
         var flatPermissions = new List<Permission>();
 

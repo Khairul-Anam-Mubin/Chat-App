@@ -2,8 +2,11 @@
 using Chat.Framework.CQRS;
 using Chat.Framework.DDD;
 using Chat.Framework.EmailSenders;
+using Chat.Framework.Extensions;
 using Chat.Framework.Identity;
+using Chat.Identity.Application.Commands;
 using Chat.Identity.Domain.DomainEvents;
+using Microsoft.Extensions.Configuration;
 
 namespace Chat.Identity.Application.EventHandlers;
 
@@ -11,11 +14,13 @@ public class UserCreatedDomainEventHandler : IDomainEventHandler<UserCreatedDoma
 {
     private readonly ICommandService _commandService;
     private readonly IScopeIdentity _scopeIdentity;
+    private readonly IConfiguration _configuration;
 
-    public UserCreatedDomainEventHandler(ICommandService commandService, IScopeIdentity scopeIdentity)
+    public UserCreatedDomainEventHandler(IConfiguration configuration, ICommandService commandService, IScopeIdentity scopeIdentity)
     {
         _commandService = commandService;
         _scopeIdentity = scopeIdentity;
+        _configuration = configuration;
     }
 
     public async Task Handle(UserCreatedDomainEvent notification, CancellationToken cancellationToken)
@@ -29,6 +34,8 @@ public class UserCreatedDomainEventHandler : IDomainEventHandler<UserCreatedDoma
         }
 
         await SendVerificationEmailAsync(userIdentity);
+
+        await TryGiveDeveloperAccessAsync(userIdentity);
     }
 
     private async Task SendVerificationEmailAsync(UserIdentity userIdentity)
@@ -52,5 +59,23 @@ public class UserCreatedDomainEventHandler : IDomainEventHandler<UserCreatedDoma
         {
             Email = email
         });
+    }
+
+    private async Task TryGiveDeveloperAccessAsync(UserIdentity userIdentity)
+    {
+        var developerEmails = _configuration.GetConfig<List<string>>("DeveloperEmails");
+
+        if (developerEmails is null) return;
+
+        if (string.IsNullOrEmpty(userIdentity.Email)) return;
+
+        if (!developerEmails.Contains(userIdentity.Email)) return;
+
+        var developerAccessCommand = new GiveDeveloperAccessCommand
+        {
+            UserId = userIdentity.Id!
+        };
+
+        await _commandService.ExecuteAsync(developerAccessCommand);
     }
 }

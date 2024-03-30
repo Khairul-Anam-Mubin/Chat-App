@@ -35,10 +35,15 @@ public abstract class RepositoryBase<TEntity> : IRepository<TEntity>
         return await DbContext.DeleteOneByIdAsync<TEntity>(DatabaseInfo, id);
     }
 
-    public virtual async Task<List<TEntity>> GetManyByIds(List<string> ids)
+    public virtual async Task<List<TEntity>> GetManyByIdsAsync(List<string> ids)
     {
         var idsFilter = new FilterBuilder<TEntity>().In(entity => entity.Id, ids);
 
         return await DbContext.GetManyAsync<TEntity>(DatabaseInfo, idsFilter);
+    }
+
+    public virtual async Task<List<TEntity>> GetManyAsync()
+    {
+        return await DbContext.GetManyAsync<TEntity>(DatabaseInfo);
     }
 }

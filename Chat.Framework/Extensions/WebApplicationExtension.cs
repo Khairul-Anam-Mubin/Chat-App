@@ -49,10 +49,15 @@ public static class WebApplicationExtension
             var migrationJobs = scope.ServiceProvider.GetServices<IMigrationJob>()
                 .Where(job => enabledMigrationJobs.Contains(job.GetType().Name))
                 .ToList();
-            
-            migrationJobs.ForEach(job =>
+
+            // enabled entry order wise migrations..
+            enabledMigrationJobs.ForEach(enabledMigrationJob =>
             {
-                job.MigrateAsync();
+                var migrationJob = migrationJobs.FirstOrDefault(x => x.GetType().Name == enabledMigrationJob);
+                
+                if (migrationJob is null) return;
+                
+                migrationJob.MigrateAsync().Wait();
             });
         }
 

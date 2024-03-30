@@ -21,7 +21,7 @@ public class PermissionRepository : RepositoryBaseWrapper<Permission>, IPermissi
 
         if (permission is null) return new List<Permission>();
 
-        return await GetManyByIds(permission.PermissionIds);
+        return await GetManyByIdsAsync(permission.PermissionIds);
     }
 
     public async Task<List<Permission>> GetFlatChildPermissionsAsync(string permissionId)
@@ -38,7 +38,7 @@ public class PermissionRepository : RepositoryBaseWrapper<Permission>, IPermissi
 
             childPermissions.ForEach(childPermission => childPermissionIds.AddRange(childPermission.PermissionIds));
 
-            childPermissions = await GetManyByIds(childPermissionIds);
+            childPermissions = await GetManyByIdsAsync(childPermissionIds);
         }
 
         return flatPermissions;

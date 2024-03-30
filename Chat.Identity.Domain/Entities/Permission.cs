@@ -16,16 +16,18 @@ public class Permission : Entity, IRepositoryItem
 
     public static Permission Create(string title)
     {
-        return new Permission(Guid.NewGuid().ToString(), title);
+        return new Permission(title, title);
     }
 
-    public void AddChildPermission(Permission permission)
+    public Permission AddChildPermission(Permission permission)
     {
         PermissionIds.Add(permission.Id);
+        return this;
     }
 
-    public void AddChildPermissions(List<Permission> permissions)
+    public Permission AddChildPermissions(List<Permission> permissions)
     {
         PermissionIds.AddRange(permissions.Select(permission => permission.Id).ToList());
+        return this;
     }
 }

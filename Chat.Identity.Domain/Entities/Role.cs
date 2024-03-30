@@ -18,16 +18,18 @@ public class Role : Entity, IRepositoryItem
 
     public static Role Create(string title, string description)
     {
-        return new Role(Guid.NewGuid().ToString(), description, title);
+        return new Role(title, title, description);
     }
 
-    public void AddPermission(Permission permission)
+    public Role AddPermission(Permission permission)
     {
         PermissionIds.Add(permission.Id);
+        return this;
     }
 
-    public void AddPermissions(List<Permission> permissions)
+    public Role AddPermissions(List<Permission> permissions)
     {
         PermissionIds.AddRange(permissions.Select(permission => permission.Id).ToList());
+        return this;
     }
 }
