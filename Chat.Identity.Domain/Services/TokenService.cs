@@ -5,6 +5,7 @@ using Chat.Domain.Shared.Entities;
 using Chat.Framework.Identity;
 using Chat.Framework.Results;
 using Chat.Identity.Domain.Entities;
+using Chat.Identity.Domain.Repositories;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Chat.Identity.Domain.Services;
@@ -12,10 +13,16 @@ namespace Chat.Identity.Domain.Services;
 public class TokenService : ITokenService
 {
     private readonly TokenConfig _tokenConfig;
+    private readonly IUserAccessRepository _userAccessRepository;
+    private readonly IAccessService _accessService;
 
-    public TokenService(TokenConfig tokenConfig)
+    public TokenService(TokenConfig tokenConfig, 
+        IUserAccessRepository userAccessRepository,
+        IAccessService accessService)
     {
         _tokenConfig = tokenConfig;
+        _userAccessRepository = userAccessRepository;
+        _accessService = accessService;
     }
 
     public IResult CheckForValidRefreshTokenRequest(string jwtToken)
@@ -51,9 +58,43 @@ public class TokenService : ITokenService
         return accessModelCreateResult.Value!;
     }
 
+    public Token GenerateToken(User userProfile, UserAccess userAccess, string appId)
+    {
+        var accessToken = 
+            GenerateAccessToken(userProfile, appId, userAccess.RoleIds, userAccess.PermissionIds);
+
+        var refreshToken = TokenHelper.GenerateRefreshToken();
+
+        var accessModelCreateResult =
+            Token.Create(refreshToken, accessToken, userProfile.Id, appId);
+
+        return accessModelCreateResult.Value!;
+    }
+
+    public Token GenerateToken(User userProfile, string appId, List<string> roles, List<string> permissions)
+    {
+        var accessToken = GenerateAccessToken(userProfile, appId, roles, permissions);
+
+        var refreshToken = TokenHelper.GenerateRefreshToken();
+
+        var accessModelCreateResult =
+            Token.Create(refreshToken, accessToken, userProfile.Id, appId);
+
+        return accessModelCreateResult.Value!;
+    }
+
     public string GenerateAccessToken(UserProfile userProfile, string appId)
     {
         var claims = GenerateClaims(userProfile, appId);
+
+        var accessToken = GenerateAccessToken(claims);
+
+        return accessToken;
+    }
+
+    public string GenerateAccessToken(User userProfile, string appId, List<string> roles, List<string> permissions)
+    {
+        var claims = GenerateClaims(userProfile, appId, roles, permissions);
 
         var accessToken = GenerateAccessToken(claims);
 
@@ -74,10 +115,13 @@ public class TokenService : ITokenService
 
     public List<Claim> GenerateClaims(UserProfile userProfile, string appId)
     {
+        
+        var permissions = _accessService.GetUserFlatPermissionsAsync(userProfile.Id).Result;
+
         var claims = new List<Claim>
         {
             new Claim(UserClaims.UserId, userProfile.Id),
-            new Claim(UserClaims.ProfilePictureId, userProfile.ProfilePictureId),
+            new Claim(UserClaims.ProfilePictureId, userProfile.ProfilePictureId ?? string.Empty),
             new Claim(UserClaims.Email, userProfile.Email),
             new Claim(UserClaims.FirstName, userProfile.FirstName),
             new Claim(UserClaims.LastName, userProfile.LastName),
@@ -85,6 +129,29 @@ public class TokenService : ITokenService
             new Claim(UserClaims.AppId, appId),
             new Claim(UserClaims.JwtId, Guid.NewGuid().ToString())
         };
+
+        permissions.ForEach(permission => claims.Add(new Claim("permissions", permission)));
+
+        return claims;
+    }
+
+    public List<Claim> GenerateClaims(User userProfile, string appId, List<string> roles, List<string> permissions)
+    {
+        var claims = new List<Claim>
+        {
+            new Claim(UserClaims.UserId, userProfile.Id),
+            new Claim(UserClaims.ProfilePictureId, userProfile.ProfilePictureId ?? string.Empty),
+            new Claim(UserClaims.Email, userProfile.Email),
+            new Claim(UserClaims.FirstName, userProfile.FirstName),
+            new Claim(UserClaims.LastName, userProfile.LastName),
+            new Claim(UserClaims.UserName, userProfile.UserName),
+            new Claim(UserClaims.AppId, appId),
+            new Claim(UserClaims.JwtId, Guid.NewGuid().ToString())
+        };
+
+        permissions.ForEach(permission => claims.Add(new Claim("permissions", permission)));
+        
+        roles.ForEach(role => claims.Add(new Claim("roles", role)));
 
         return claims;
     }

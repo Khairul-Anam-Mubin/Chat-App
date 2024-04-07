@@ -34,6 +34,8 @@ public class UserIdentity
     {
         string? id = null, name = null, email = null, phone = null;
 
+        claims = claims.DistinctBy(x => x.Type).ToList();
+
         var claimsDictionary = 
             claims.ToDictionary(claim => claim.Type, claim => claim.Value);
 

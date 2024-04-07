@@ -1,4 +1,4 @@
-﻿namespace Chat.Identity.Domain.Constants;
+﻿namespace Chat.Domain.Shared.Constants;
 
 public class Roles
 {

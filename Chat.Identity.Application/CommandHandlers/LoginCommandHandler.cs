@@ -2,23 +2,21 @@ using Chat.Framework.CQRS;
 using Chat.Framework.Results;
 using Chat.Identity.Application.Commands;
 using Chat.Identity.Application.Dtos;
-using Chat.Identity.Application.Extensions;
 using Chat.Identity.Domain.Repositories;
-using Chat.Identity.Domain.Services;
 
 namespace Chat.Identity.Application.CommandHandlers;
 
 public class LoginCommandHandler : ICommandHandler<LoginCommand, TokenDto>
 {
     private readonly IUserRepository _userRepository;
-    private readonly ITokenService _tokenService;
-    private readonly ITokenRepository _tokenRepository;
+    private readonly ICommandService _commandService;
 
-    public LoginCommandHandler(IUserRepository userRepository, ITokenService tokenService, ITokenRepository tokenRepository)
+    public LoginCommandHandler(
+        IUserRepository userRepository,
+        ICommandService commandService)
     {
         _userRepository = userRepository;
-        _tokenService = tokenService;
-        _tokenRepository = tokenRepository;
+        _commandService = commandService;
     }
 
     public async Task<IResult<TokenDto>> HandleAsync(LoginCommand command)
@@ -37,19 +35,22 @@ public class LoginCommandHandler : ICommandHandler<LoginCommand, TokenDto>
             return Result.Error<TokenDto>(loginResult.Message);
         }
 
-        var userProfile = user.ToUserProfile();
-
-        var token = _tokenService.GenerateToken(userProfile, command.AppId);
-
-        await _tokenRepository.SaveAsync(token);
-
-        var tokenDto = token.ToTokenDto();
-        
-        if (tokenDto is null)
+        var generateTokenCommand = new GenerateTokenCommand
         {
-            return Result.Error<TokenDto>("Token Creation Failed");
-        }
+            UserId = user.Id,
+            AppId = command.AppId
+        };
 
+        var generateTokenResult = 
+            await _commandService.ExecuteAsync<GenerateTokenCommand, TokenDto>(generateTokenCommand);
+
+        var tokenDto = generateTokenResult.Value;
+
+        if (generateTokenResult.IsFailure || tokenDto is null)
+        {
+            return generateTokenResult;
+        }
+        
         return Result.Success(tokenDto, "Logged in successfully");
     }
 }

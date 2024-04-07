@@ -28,6 +28,6 @@ public class IdentityInstaller : IServiceInstaller
         services.AddScoped<IUserAccessRepository, UserAccessRepository>();
 
         services.AddScoped<IAccessService, AccessService>();
-        services.AddSingleton<ITokenService, TokenService>();
+        services.AddScoped<ITokenService, TokenService>();
     }
 }

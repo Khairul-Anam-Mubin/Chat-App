@@ -7,36 +7,36 @@ using Chat.Identity.Domain.Repositories;
 
 namespace Chat.Identity.Application.CommandHandlers;
 
-public class GiveDeveloperAccessCommandHandler : ICommandHandler<GiveDeveloperAccessCommand>
+public class GiveVisitorAccessCommandHandler : ICommandHandler<GiveVisitorAccessCommand>
 {
     private readonly IRoleRepository _roleRepository;
     private readonly IPermissionRepository _permissionRepository;
     private readonly IUserAccessRepository _userAccessRepository;
 
-    public GiveDeveloperAccessCommandHandler(IRoleRepository roleRepository, IPermissionRepository permissionRepository, IUserAccessRepository userAccessRepository)
+    public GiveVisitorAccessCommandHandler(IRoleRepository roleRepository, IPermissionRepository permissionRepository, IUserAccessRepository userAccessRepository)
     {
         _roleRepository = roleRepository;
         _permissionRepository = permissionRepository;
         _userAccessRepository = userAccessRepository;
     }
 
-    public async Task<IResult> HandleAsync(GiveDeveloperAccessCommand command)
+    public async Task<IResult> HandleAsync(GiveVisitorAccessCommand command)
     {
         var userId = command.UserId;
 
         var userAccess = UserAccess.Create(userId);
 
-        var developerRole = await _roleRepository.GetRoleByTitleAsync(Roles.Developer);
+        var visitorRole = await _roleRepository.GetRoleByTitleAsync(Roles.Visitor);
 
-        if (developerRole is null)
+        if (visitorRole is null)
         {
-            return Result.Error("Developer role not found");
+            return Result.Error("Visitor role not found");
         }
 
-        userAccess.AddRole(developerRole);
+        userAccess.AddRole(visitorRole);
 
-        var permissions = 
-            await _permissionRepository.GetManyByIdsAsync(developerRole.PermissionIds);
+        var permissions =
+            await _permissionRepository.GetManyByIdsAsync(visitorRole.PermissionIds);
 
         permissions.ForEach(permission => userAccess.AddPermission(permission));
 

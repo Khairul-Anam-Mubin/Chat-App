@@ -35,7 +35,14 @@ public class UserCreatedDomainEventHandler : IDomainEventHandler<UserCreatedDoma
 
         await SendVerificationEmailAsync(userIdentity);
 
-        await TryGiveDeveloperAccessAsync(userIdentity);
+        if (IsDeveloper(userIdentity))
+        {
+            await GiveDeveloperAccessAsync(userIdentity);
+        } 
+        else
+        {
+            await GiveVisitorAccessAsync(userIdentity);
+        }
     }
 
     private async Task SendVerificationEmailAsync(UserIdentity userIdentity)
@@ -51,7 +58,7 @@ public class UserCreatedDomainEventHandler : IDomainEventHandler<UserCreatedDoma
         {
             To = new List<string> { userIdentity.Email },
             IsHtmlContent = true,
-            Content = $"<h1>Account Registration Successfully.</h1><br><button><a href=\"https://localhost:6001/api/UserProfile/verify-account?userId={userIdentity.Id}\">Click to verify account</a></button><br><br><p>Thanks</p>",
+            Content = $"<h1>Account Registration Successfully.</h1><br><button><a href=\"https://localhost:6001/api/User/verify-account?userId={userIdentity.Id}\">Click to verify account</a></button><br><br><p>Thanks</p>",
             Subject = "UserProfile registration complete"
         };
 
@@ -61,21 +68,34 @@ public class UserCreatedDomainEventHandler : IDomainEventHandler<UserCreatedDoma
         });
     }
 
-    private async Task TryGiveDeveloperAccessAsync(UserIdentity userIdentity)
+    private async Task GiveDeveloperAccessAsync(UserIdentity userIdentity)
     {
-        var developerEmails = _configuration.GetConfig<List<string>>("DeveloperEmails");
-
-        if (developerEmails is null) return;
-
-        if (string.IsNullOrEmpty(userIdentity.Email)) return;
-
-        if (!developerEmails.Contains(userIdentity.Email)) return;
-
         var developerAccessCommand = new GiveDeveloperAccessCommand
         {
             UserId = userIdentity.Id!
         };
 
         await _commandService.ExecuteAsync(developerAccessCommand);
+    }
+
+    private async Task GiveVisitorAccessAsync(UserIdentity userIdentity)
+    {
+        var visitorAccessCommmand = new GiveVisitorAccessCommand
+        {
+            UserId = userIdentity.Id!
+        };
+
+        await _commandService.ExecuteAsync(visitorAccessCommmand);
+    }
+
+    private bool IsDeveloper(UserIdentity userIdentity)
+    {
+        var developerEmails = _configuration.GetConfig<List<string>>("DeveloperEmails");
+
+        if (developerEmails is null) return false;
+
+        if (string.IsNullOrEmpty(userIdentity.Email)) return false;
+
+        return developerEmails.Contains(userIdentity.Email);
     }
 }

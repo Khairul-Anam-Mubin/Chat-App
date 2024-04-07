@@ -3,7 +3,6 @@ using Chat.Framework.CQRS;
 using Chat.Framework.Results;
 using Chat.Identity.Application.Commands;
 using Chat.Identity.Application.Dtos;
-using Chat.Identity.Application.Extensions;
 using Chat.Identity.Domain.Repositories;
 using Chat.Identity.Domain.Services;
 
@@ -13,11 +12,13 @@ public class RefreshTokenCommandHandler : ICommandHandler<RefreshTokenCommand, T
 {
     private readonly ITokenService _tokenService;
     private readonly ITokenRepository _tokenRepository;
+    private readonly ICommandService _commandService;
 
-    public RefreshTokenCommandHandler(ITokenService tokenService, ITokenRepository tokenRepository)
+    public RefreshTokenCommandHandler(ITokenService tokenService, ITokenRepository tokenRepository, ICommandService commandService)
     {
         _tokenService = tokenService;
         _tokenRepository = tokenRepository;
+        _commandService = commandService;
     }
 
     public async Task<IResult<TokenDto>> HandleAsync(RefreshTokenCommand command)
@@ -61,16 +62,20 @@ public class RefreshTokenCommandHandler : ICommandHandler<RefreshTokenCommand, T
         
         var userProfile = IdentityProvider.GetUserProfile(command.AccessToken);
 
-        var refreshedAccessModel = 
-            _tokenService.GenerateToken(userProfile, command.AppId);
-        
-        await _tokenRepository.SaveAsync(refreshedAccessModel);
-
-        var tokenDto = refreshedAccessModel.ToTokenDto();
-
-        if (tokenDto is null)
+        var generateTokenCommand = new GenerateTokenCommand
         {
-            return Result.Error<TokenDto>("Token Creation Failed");
+            UserId = userProfile.Id,
+            AppId = command.AppId
+        };
+
+        var generateTokenResult =
+            await _commandService.ExecuteAsync<GenerateTokenCommand, TokenDto>(generateTokenCommand);
+
+        var tokenDto = generateTokenResult.Value;
+
+        if (generateTokenResult.IsFailure || tokenDto is null)
+        {
+            return generateTokenResult;
         }
 
         return Result.Success(tokenDto);
