@@ -10,4 +10,6 @@ public class UserClaims
     public const string UserName = "user_name";
     public const string AppId = "app_id";
     public const string JwtId = "jti";
+    public const string Permissions = "permissions";
+    public const string Roles = "roles";
 }

@@ -2,7 +2,6 @@ using Chat.Framework.CQRS;
 using Chat.Framework.Identity;
 using Chat.Framework.Results;
 using Chat.Identity.Application.Commands;
-using Chat.Identity.Application.Extensions;
 using Chat.Identity.Domain.Entities;
 using Chat.Identity.Domain.Repositories;
 using Chat.Identity.Domain.Services;
@@ -41,7 +40,7 @@ public class RegisterCommandHandler : ICommandHandler<RegisterCommand>
         }
 
         var accessToken = 
-            _tokenService.GenerateAccessToken(user.ToUserProfile(), Guid.NewGuid().ToString());
+            _tokenService.GenerateAccessToken(user, Guid.NewGuid().ToString(), new List<string>(), new List<string>());
 
         _scopeIdentity.SwitchIdentity(accessToken);
 
