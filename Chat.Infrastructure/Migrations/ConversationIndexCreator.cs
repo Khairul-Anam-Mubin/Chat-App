@@ -20,8 +20,8 @@ internal class ConversationIndexCreator : IIndexCreator
     {
         _indexManager.CreateOne<Conversation>(_databaseInfo,
             new IndexBuilder<Conversation>()
-                .Ascending(o => o.UserId)
-                .Ascending(o => o.SendTo)
+                .Ascending(o => o.SenderId)
+                .Ascending(o => o.ReceiverId)
                 .Descending(o => o.SentAt)
                 .Build());
     }

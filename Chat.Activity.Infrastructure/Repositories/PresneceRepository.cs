@@ -28,13 +28,12 @@ public class PresneceRepository : RepositoryBase<Presence>, IPresenceRepository
         return await DbContext.GetManyAsync<Presence>(DatabaseInfo, userIdsFilter);
     }
 
-    public async Task<bool> TrackPresenceAsync(string userId, bool isActive)
+    public async Task<bool> TrackPresenceAsync(string userId)
     {
         var userIdFilter = new FilterBuilder<Presence>().Eq(o => o.UserId, userId);
         
         var update =
             new UpdateBuilder<Presence>()
-            .Set(o => o.IsActive, isActive)
             .Set(o => o.LastSeenAt, DateTime.UtcNow)
             .Build();
         

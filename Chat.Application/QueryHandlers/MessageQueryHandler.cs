@@ -23,22 +23,24 @@ public class MessageQueryHandler : IQueryHandler<MessageQuery, IPaginationRespon
 
     public async Task<IResult<IPaginationResponse<MessageDto>>> HandleAsync(MessageQuery query)
     {
-        var userId = _scopeIdentity.GetUserId()!;
-
-        var response = query.CreateResponse();
+        var senderId = _scopeIdentity.GetUserId()!;
 
         List<Message> messages;
 
         if (query.IsGroupMessage)
         {
-            messages = await _messageRepository.GetGroupMessagesAsync(query.SendTo, query.Offset, query.Limit);
+            messages = await _messageRepository.GetGroupMessagesAsync(query.ReceiverId, query.Offset, query.Limit);
         }
         else
         {
+            var conversationId = Conversation.GetConversationId(senderId, query.ReceiverId);
+
             messages =
-                await _messageRepository.GetMessagesAsync(userId, query.SendTo, query.Offset, query.Limit);
+                await _messageRepository.GetConversationMessagesAsync(conversationId, query.Offset, query.Limit);
         }
-        
+
+        var response = query.CreateResponse();
+
         foreach (var message in messages)
         {
             response.AddItem(message.ToMessageDto());   

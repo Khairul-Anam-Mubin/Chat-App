@@ -1,6 +1,7 @@
 ﻿using Chat.Application.Extensions;
 using Chat.Domain.DomainEvents;
 using Chat.Domain.Entities;
+using Chat.Domain.Repositories;
 using Chat.Domain.Shared.Commands;
 using Chat.Domain.Shared.Entities;
 using Chat.Framework.CQRS;
@@ -10,16 +11,23 @@ namespace Chat.Application.EventHandlers;
 
 public class MessageCreatedDomainEventHandler : IDomainEventHandler<MessageCreatedDomainEvent>
 {
+    private readonly IMessageRepository _messageRepository;
     private readonly ICommandService _commandService;
     
-    public MessageCreatedDomainEventHandler(ICommandService commandService)
+    public MessageCreatedDomainEventHandler(IMessageRepository messageRepository, ICommandService commandService)
     {
+        _messageRepository = messageRepository;
         _commandService = commandService;
     }
 
     public async Task Handle(MessageCreatedDomainEvent notification, CancellationToken cancellationToken)
     {
-        var message = notification.Message;
+        var message = await _messageRepository.GetByIdAsync(notification.MessageId);
+
+        if (message is null)
+        {
+            return;
+        }
 
         if (message.IsGroupMessage)
         {
@@ -33,12 +41,12 @@ public class MessageCreatedDomainEventHandler : IDomainEventHandler<MessageCreat
 
     private Task SendMessageNotificationAsync(Message message)
     {
-        var notification = new NotificationData(GetUserMessageTopic(message), message.ToMessageDto(), "Chat", message.UserId)
+        var notification = new NotificationData(GetUserMessageTopic(message), message.ToMessageDto(), "Chat", message.SenderId)
         {
             Id = message.Id
         };
 
-        var sendNotificationCommand = new SendNotificationCommand(notification, new List<string> { message.SendTo, message.UserId });
+        var sendNotificationCommand = new SendNotificationCommand(notification, new List<string> { message.ReceiverId, message.SenderId });
 
         return _commandService.SendAsync(sendNotificationCommand);
     }
@@ -46,14 +54,14 @@ public class MessageCreatedDomainEventHandler : IDomainEventHandler<MessageCreat
     private Task SendForHandleGroupMessageAsync(Message message)
     {
         var handleGroupMessageCommand =
-            new HandleGroupMessageCommand(message.SendTo, message.UserId, message.Id);
+            new HandleGroupMessageCommand(message.ReceiverId, message.SenderId, message.Id);
 
         return _commandService.SendAsync(handleGroupMessageCommand);
     }
 
     private string GetUserMessageTopic(Message message)
     {
-        var ids = new List<string> { message.UserId, message.SendTo };
+        var ids = new List<string> { message.SenderId, message.ReceiverId };
         ids.Sort();
         return $"UserChat-{ids[0]}-{ids[1]}";
     }

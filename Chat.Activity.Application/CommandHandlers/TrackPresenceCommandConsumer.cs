@@ -20,7 +20,9 @@ public class TrackPresenceCommandConsumer : ACommandConsumer<TrackPresenceComman
 
     protected override async Task<IResult> OnConsumeAsync(TrackPresenceCommand command, IMessageContext<TrackPresenceCommand>? context = null)
     {
-        if (!await _presenceRepository.TrackPresenceAsync(command.UserId, command.IsActive))
+        var userId = ScopeIdentity.GetUserId()!;
+
+        if (!await _presenceRepository.TrackPresenceAsync(userId))
         {
             return Result.Error().TrackPresenceFailed();
         }

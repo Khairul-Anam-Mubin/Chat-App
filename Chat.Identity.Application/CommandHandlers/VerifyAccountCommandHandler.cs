@@ -26,7 +26,7 @@ public class VerifyAccountCommandHandler : ICommandHandler<VerifyAccountCommand>
         }
         
         var verifiedUserAccountCreatedEvent = 
-            new VerifiedUserAccountCreatedEvent(request.UserId);
+            new UserEmailVerifiedEvent(request.UserId);
         
         await _eventService.PublishIntegrationEventAsync(verifiedUserAccountCreatedEvent);
         

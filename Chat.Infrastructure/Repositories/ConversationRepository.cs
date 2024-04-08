@@ -23,21 +23,15 @@ public class ConversationRepository : RepositoryBaseWrapper<Conversation>, IConv
         _messageRepository = messageRepository;
     }
 
-    public async Task<Conversation?> GetConversationAsync(string senderId, string receiverId)
-    {
-        var conversationId = Conversation.GetConversationId(senderId, receiverId);
-
-        return await GetByIdAsync(conversationId);
-    }
-
-    public async Task<List<Conversation>> GetConversationsAsync(string userId, int offset, int limit)
+    public async Task<List<Conversation>> GetUserConversationsAsync(string userId, int offset, int limit)
     {
         var filterBuilder = new FilterBuilder<Conversation>();
         var sortBuilder = new SortBuilder<Conversation>();
 
-        var userIdFilter = filterBuilder.Eq(o => o.UserId, userId);
-        var sendToFilter = filterBuilder.Eq(o => o.SendTo, userId);
-        var orFilter = filterBuilder.Or(userIdFilter, sendToFilter);
+        var senderIdFilter = filterBuilder.Eq(o => o.SenderId, userId);
+        var receiverIdFilter = filterBuilder.Eq(o => o.ReceiverId, userId);
+
+        var orFilter = filterBuilder.Or(senderIdFilter, receiverIdFilter);
         
         var sortDef = sortBuilder.Descending(o => o.SentAt).Build();
         

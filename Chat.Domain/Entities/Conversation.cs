@@ -7,13 +7,13 @@ namespace Chat.Domain.Entities;
 
 public class Conversation : AggregateRoot, IRepositoryItem
 {
-    public string UserId { get; private set; }
-    public string SendTo { get; private set; }
+    public string SenderId { get; private set; }
+    public string ReceiverId { get; private set; }
     public string LatestMessageId { get; private set; } 
     public string Content { get; private set; }
     public DateTime SentAt { get; private set; }
     public string Status { get; private set; }
-    public bool IsGroupMessage { get; private set; }
+    public bool IsGroupConversation { get; private set; }
     public int Occurrence { get; private set; }
 
 
@@ -34,27 +34,27 @@ public class Conversation : AggregateRoot, IRepositoryItem
         _messages.Add(message);
     }
 
-    private Conversation(string id, string userId, string sendTo, string messageContent, DateTime sentAt, string status, bool isGroupMessage)
+    private Conversation(string id, string senderId, string receiverId, string messageContent, DateTime sentAt, string status, bool isGroupMessage)
         : base(id)
     {
-        UserId = userId;
-        SendTo = sendTo;
+        SenderId = senderId;
+        ReceiverId = receiverId;
         Content = messageContent;
         SentAt = sentAt;
         Status = status;
-        IsGroupMessage = isGroupMessage;
+        IsGroupConversation = isGroupMessage;
         Occurrence = 0;
         LatestMessageId = string.Empty;
     }
 
-    public static string GetConversationId(string userId, string sendTo)
+    public static string GetConversationId(string senderId, string receiverId)
     {
-        return CheckSumGenerator.GetCheckSum(userId, sendTo);
+        return CheckSumGenerator.GetCheckSum(senderId, receiverId);
     }
 
-    public static Conversation Create(string id, string userId, string sendTo, string messageContent, DateTime sentAt, string status, bool isGroupMessage)
+    public static Conversation Create(string id, string senderId, string receiverId, string messageContent, DateTime sentAt, string status, bool isGroupMessage)
     {
-        return new Conversation(id, userId, sendTo, messageContent, sentAt, status, isGroupMessage);
+        return new Conversation(id, senderId, receiverId, messageContent, sentAt, status, isGroupMessage);
     }
 
     public static Conversation Create(string conversationId, string senderId, string receiverId, bool isGroupMessage)
@@ -64,7 +64,7 @@ public class Conversation : AggregateRoot, IRepositoryItem
 
     public bool SeenChat(string userId)
     {
-        if (UserId != userId)
+        if (SenderId != userId)
         {
             Occurrence = 0;
             return true;
@@ -72,10 +72,10 @@ public class Conversation : AggregateRoot, IRepositoryItem
         return false;
     }
 
-    public IResult AddNewMessage(string userId, string sendTo, string messageContent)
+    public IResult AddNewMessage(string senderId, string receiverId, string messageContent)
     {
         var messageCreateResult = 
-            Message.Create(Id, userId, sendTo, messageContent, IsGroupMessage);
+            Message.Create(Id, senderId, receiverId, messageContent, IsGroupConversation);
 
         var message = messageCreateResult.Value;
 
@@ -84,7 +84,7 @@ public class Conversation : AggregateRoot, IRepositoryItem
             return messageCreateResult;
         }
 
-        if (userId == UserId)
+        if (senderId == SenderId)
         {
             Occurrence++;
         }
@@ -94,8 +94,8 @@ public class Conversation : AggregateRoot, IRepositoryItem
         }
 
         LatestMessageId = message.Id;
-        UserId = message.UserId;
-        SendTo = message.SendTo;
+        SenderId = message.SenderId;
+        ReceiverId = message.ReceiverId;
         Content = message.Content;
         SentAt = message.SentAt;
         Status = message.Status;

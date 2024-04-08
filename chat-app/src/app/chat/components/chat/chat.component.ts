@@ -84,8 +84,7 @@ export class ChatComponent implements OnInit, OnDestroy{
       this.chatTitle = group.name;
     });
 
-    this.query.sendTo = this.sendToUserId;
-    this.query.userId = this.currentUserId;
+    this.query.receiverId = this.sendToUserId;
 
     this.getChats(this.query);
     
@@ -106,8 +105,7 @@ export class ChatComponent implements OnInit, OnDestroy{
     if (this.isGroup) return;
     this.sendToUserId = this.userService.getCurrentOpenedChatUserId();
     
-    this.query.sendTo = this.sendToUserId;
-    this.query.userId = this.currentUserId;
+    this.query.receiverId = this.sendToUserId;
 
     this.userService.getUserProfileById(this.sendToUserId)
     .pipe(take(1))
@@ -192,7 +190,7 @@ export class ChatComponent implements OnInit, OnDestroy{
     console.log(this.inputMessage);
     const sendMessageCommand = new SendMessageCommand();
     sendMessageCommand.messageContent = this.inputMessage;
-    sendMessageCommand.sendTo = this.sendToUserId;
+    sendMessageCommand.receiverId = this.sendToUserId;
     sendMessageCommand.isGroupMessage = this.isGroup;
     this.inputMessage = '';
     this.commandService.execute(sendMessageCommand)

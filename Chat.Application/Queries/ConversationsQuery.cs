@@ -5,8 +5,4 @@ using Chat.Framework.Pagination;
 
 namespace Chat.Application.Queries;
 
-public class ConversationsQuery : APaginationQuery<ConversationDto>, IQuery
-{
-    [Required]
-    public string UserId { get; set; } = string.Empty;
-}
+public class ConversationsQuery : APaginationQuery<ConversationDto>, IQuery {}

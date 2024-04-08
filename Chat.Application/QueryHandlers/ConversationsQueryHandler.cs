@@ -23,11 +23,12 @@ public class ConversationsQueryHandler : IQueryHandler<ConversationsQuery, IPagi
     public async Task<IResult<IPaginationResponse<ConversationDto>>> HandleAsync(ConversationsQuery query)
     {
         var userId = _scopeIdentity.GetUserId()!;
-        var response = query.CreateResponse();
 
         var conversations = 
-            await _conversationRepository.GetConversationsAsync(userId, query.Offset, query.Limit);
-        
+            await _conversationRepository.GetUserConversationsAsync(userId, query.Offset, query.Limit);
+
+        var response = query.CreateResponse();
+
         foreach (var conversation in conversations)
         {
             response.AddItem(conversation.ToConversationDto(userId));

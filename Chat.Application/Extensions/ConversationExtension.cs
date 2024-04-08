@@ -14,10 +14,10 @@ public static class ConversationExtension
             Content = conversation.Content,
             Status = conversation.Status,
             DurationDisplayTime = DisplayTimeHelper.GetChatListDisplayTime(conversation.SentAt),
-            UserId = conversation.UserId == currentUserId ? conversation.SendTo : conversation.UserId,
-            IsReceiver = conversation.UserId != currentUserId,
-            Occurrence = conversation.UserId != currentUserId ? conversation.Occurrence : 0,
-            IsGroupMessage = conversation.IsGroupMessage
+            UserId = conversation.SenderId == currentUserId ? conversation.ReceiverId : conversation.SenderId,
+            IsReceiver = conversation.SenderId != currentUserId,
+            Occurrence = conversation.SenderId != currentUserId ? conversation.Occurrence : 0,
+            IsGroupConversation = conversation.IsGroupConversation
         };
     }
 }

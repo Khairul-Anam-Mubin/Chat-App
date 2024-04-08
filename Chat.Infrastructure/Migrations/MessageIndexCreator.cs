@@ -1,4 +1,5 @@
-﻿using Chat.Framework.ORM;
+﻿using Chat.Domain.Entities;
+using Chat.Framework.ORM;
 using Chat.Framework.ORM.Builders;
 using Chat.Framework.ORM.Interfaces;
 
@@ -20,19 +21,19 @@ public class MessageIndexCreator : IIndexCreator
     {
         var indexes = new List<IIndex>
         {
-            new IndexBuilder<Domain.Entities.Message>()
-                .Ascending(o => o.UserId)
-                .Ascending(o => o.SendTo)
+            new IndexBuilder<Message>()
+                .Ascending(o => o.SenderId)
+                .Ascending(o => o.ReceiverId)
                 .Descending(o => o.SentAt)
                 .Build(),
 
-            new IndexBuilder<Domain.Entities.Message>()
-                .Ascending(o => o.SendTo)
+            new IndexBuilder<Message>()
+                .Ascending(o => o.ReceiverId)
                 .Ascending(o => o.IsGroupMessage)
                 .Descending(o => o.SentAt)
                 .Build()
         };
 
-        _indexManager.CreateMany<Domain.Entities.Message>(_databaseInfo, indexes);
+        _indexManager.CreateMany<Message>(_databaseInfo, indexes);
     }
 }

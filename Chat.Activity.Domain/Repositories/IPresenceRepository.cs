@@ -9,5 +9,5 @@ public interface IPresenceRepository : IRepository<Presence>
 
     Task<List<Presence>> GetPresenceListByUserIdsAsync(List<string> userIds);
 
-    Task<bool> TrackPresenceAsync(string userId, bool isActive);
+    Task<bool> TrackPresenceAsync(string userId);
 }

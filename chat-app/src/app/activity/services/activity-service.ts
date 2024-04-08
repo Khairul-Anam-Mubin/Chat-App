@@ -30,7 +30,6 @@ export class ActivityService{
         console.log('Track Last Seen Activity');
         const command = new UpdateLastSeenCommand();
         command.isActive = true;
-        command.userId = this.userService.getCurrentUserId();;
         return this.commandService.execute(command);
     }
 

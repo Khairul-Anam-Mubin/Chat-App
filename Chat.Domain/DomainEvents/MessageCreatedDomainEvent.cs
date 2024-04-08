@@ -5,10 +5,10 @@ namespace Chat.Domain.DomainEvents;
 
 public class MessageCreatedDomainEvent : DomainEvent
 {
-    public Message Message { get; set; }
+    public string MessageId { get; set; }
 
-    public MessageCreatedDomainEvent(Message message) : base(message.Id)
+    public MessageCreatedDomainEvent(string messageId) : base(messageId)
     {
-        Message = message;
+        MessageId = messageId;
     }
 }

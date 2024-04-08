@@ -9,25 +9,25 @@ public static class MessageExtension
     {
         return Conversation.Create(
             message.Id, 
-            message.UserId, 
-            message.SendTo, 
+            message.SenderId, 
+            message.ReceiverId, 
             message.Content,
             message.SentAt,
             message.Status, 
             message.IsGroupMessage);
     }
 
-    public static MessageDto ToMessageDto(this Message chat)
+    public static MessageDto ToMessageDto(this Message message)
     {
         return new MessageDto
         {
-            Id = chat.Id,
-            SendTo = chat.SendTo,
-            UserId = chat.UserId,
-            Content = chat.Content,
-            Status = chat.Status,
-            SentAt = chat.SentAt,
-            IsGroupMessage = chat.IsGroupMessage
+            Id = message.Id,
+            ReceiverId = message.ReceiverId,
+            SenderId = message.SenderId,
+            Content = message.Content,
+            Status = message.Status,
+            SentAt = message.SentAt,
+            IsGroupMessage = message.IsGroupMessage
         };
     }
 }

@@ -33,8 +33,7 @@ export class ChatListComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    var chatLstQuery = new ChatListQuery();
-    chatLstQuery.userId = this.userService.getCurrentUserId();
+    const chatLstQuery = new ChatListQuery();
    this.queryService.execute(chatLstQuery)
    .pipe(take(1))
    .subscribe(response => {
@@ -42,7 +41,7 @@ export class ChatListComponent implements OnInit{
     let userIds = [];
     let groupIds = [];
     for (let i = 0; i < this.items.length; i++) {
-      if (this.items[i].isGroupMessage)
+      if (this.items[i].isGroupConversation)
         groupIds.push(this.items[i].userId);
       else
         userIds.push(this.items[i].userId);
@@ -64,7 +63,7 @@ export class ChatListComponent implements OnInit{
     if (!this.items || this.items.length === 0) return;
     this.chatList = [];
     for (let i = 0; i < this.items.length; i++) {
-      if (this.items[i].isGroupMessage) {
+      if (this.items[i].isGroupConversation) {
         const group = this.getGroup(this.items[i].userId);
         const sharedSecret = this.securityService.getSharedSecretKey(123);
         this.items[i] = ChatProcessor.process(this.items[i], sharedSecret);
@@ -106,8 +105,7 @@ export class ChatListComponent implements OnInit{
       this.router.navigateByUrl(url);
       return;
     }
-    var updateChatsStatusCommand = new UpdateChatsStatusCommand();
-    updateChatsStatusCommand.userId = this.userService.getCurrentUserId();
+    const updateChatsStatusCommand = new UpdateChatsStatusCommand();
     updateChatsStatusCommand.openedChatUserId = chat.userId;
     this.commandService.execute(updateChatsStatusCommand)
     .pipe(take(1))

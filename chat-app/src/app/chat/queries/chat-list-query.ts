@@ -3,8 +3,6 @@ import { Configuration } from "src/app/core/services/configuration";
 
 export class ChatListQuery extends QueryBase {
     
-    userId : any;
-    
     constructor() {
         super();
         this.apiUrl = Configuration.identityApi + "/chat/list";

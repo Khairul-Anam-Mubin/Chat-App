@@ -14,13 +14,13 @@
           </div>
           <div class="card-body chat-container"  (scroll)="onChatScroll($event)">
             <div *ngFor="let chat of chats | reverse">
-              <div *ngIf="chat.userId !== currentUserId" class="message-group incoming">
+              <div *ngIf="chat.senderId !== currentUserId" class="message-group incoming">
                 <div class="message">
                   <p>{{chat.content}}</p>
                   <span class="time">{{chat.sentAt}}</span>
                 </div>
               </div>
-              <div *ngIf="chat.userId === currentUserId" class="message-group outgoing">
+              <div *ngIf="chat.senderId === currentUserId" class="message-group outgoing">
                 <div class="message">
                   <p>{{chat.content}}</p>
                   <span class="time">{{chat.sentAt}}</span>

@@ -23,21 +23,22 @@ public class SendMessageCommandHandler : ICommandHandler<SendMessageCommand>
     public async Task<IResult> HandleAsync(SendMessageCommand command)
     {
         var senderId = _scopeIdentity.GetUserId()!;
-        var receiverId = command.SendTo;
+        var receiverId = command.ReceiverId;
+        var conversationId = Conversation.GetConversationId(senderId, receiverId);
         var messageContent = command.MessageContent;
         var isGroupMessage = command.IsGroupMessage;
-
-        var conversationId = Conversation.GetConversationId(senderId, receiverId);
-
+        
         var conversation = 
             await _conversationRepository.GetByIdAsync(conversationId);
 
-        conversation ??=
-                Conversation.Create(
-                    conversationId, 
-                    senderId, 
-                    receiverId, 
-                    isGroupMessage);
+        if (conversation is null)
+        {
+            conversation = Conversation.Create(
+                conversationId,
+                senderId,
+                receiverId,
+                isGroupMessage);
+        }    
 
         var messageAddResult = 
             conversation.AddNewMessage(senderId, receiverId, messageContent);

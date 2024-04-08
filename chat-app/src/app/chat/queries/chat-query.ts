@@ -3,8 +3,7 @@ import { Configuration } from "src/app/core/services/configuration";
 
 export class ChatQuery extends QueryBase {
     
-    userId : any;
-    sendTo : any;
+    receiverId : any;
     isGroupMessage: any;
 
     constructor() {

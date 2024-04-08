@@ -18,24 +18,16 @@ public class MessageRepository : RepositoryBaseWrapper<Message>, IMessageReposit
         : base(databaseInfo, dbContextFactory.GetDbContext(Context.Mongo), eventService)
     { }
 
-    public async Task<List<Message>> GetMessagesAsync(string userId, string sendTo, int offset, int limit)
+    public async Task<List<Message>> GetConversationMessagesAsync(string conversationId, int offset, int limit)
     {
         var filterBuilder = new FilterBuilder<Message>();
         var sortBuilder = new SortBuilder<Message>();
 
-        var userIdFilter = filterBuilder.Eq(o => o.UserId, userId);
-        var sendToFilter = filterBuilder.Eq(o => o.SendTo, sendTo);
-        var andFilter = filterBuilder.And(userIdFilter, sendToFilter);
-        
-        var alterUserIdFilter = filterBuilder.Eq(o => o.UserId, sendTo);
-        var alterSendToFilter = filterBuilder.Eq(o => o.SendTo, userId);
-        var alterAndFilter = filterBuilder.And(alterUserIdFilter, alterSendToFilter);
-        
-        var orFilter = filterBuilder.Or(andFilter, alterAndFilter);
+        var conversationIdFilter = filterBuilder.Eq(message => message.ConversationId, conversationId);
         
         var sort = sortBuilder.Descending(o => o.SentAt).Build();
         
-        return await DbContext.GetManyAsync<Message>(DatabaseInfo, orFilter, sort, offset, limit);
+        return await DbContext.GetManyAsync<Message>(DatabaseInfo, conversationIdFilter, sort, offset, limit);
     }
 
     public async Task<List<Message>> GetGroupMessagesAsync(string groupId, int offset, int limit)
@@ -43,8 +35,9 @@ public class MessageRepository : RepositoryBaseWrapper<Message>, IMessageReposit
         var filterBuilder = new FilterBuilder<Message>();
         var sortBuilder = new SortBuilder<Message>();
 
-        var groupIdFilter = filterBuilder.Eq(o => o.SendTo, groupId);
+        var groupIdFilter = filterBuilder.Eq(o => o.ReceiverId, groupId);
         var isGroupMessageFilter = filterBuilder.Eq(o => o.IsGroupMessage, true);
+
         var andFilter = filterBuilder.And(groupIdFilter, isGroupMessageFilter);
 
         var sort = sortBuilder.Descending(o => o.SentAt).Build();
@@ -63,8 +56,8 @@ public class MessageRepository : RepositoryBaseWrapper<Message>, IMessageReposit
     {
         var filterBuilder = new FilterBuilder<Message>();
 
-        var senderFilter = filterBuilder.Eq(o => o.UserId, senderId);
-        var receiverFilter = filterBuilder.Eq(o => o.SendTo, receiverId);
+        var senderFilter = filterBuilder.Eq(o => o.SenderId, senderId);
+        var receiverFilter = filterBuilder.Eq(o => o.ReceiverId, receiverId);
         var andFilter = filterBuilder.And(senderFilter, receiverFilter);
         
         return await DbContext.GetManyAsync<Message>(DatabaseInfo, andFilter);

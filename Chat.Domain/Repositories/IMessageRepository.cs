@@ -5,7 +5,7 @@ namespace Chat.Domain.Repositories;
 
 public interface IMessageRepository : IRepository<Message>
 {
-    Task<List<Message>> GetMessagesAsync(string userId, string sendTo, int offset, int limit);
+    Task<List<Message>> GetConversationMessagesAsync(string conversationId, int offset, int limit);
 
     Task<List<Message>> GetSenderAndReceiverSpecificMessagesAsync(string senderId, string receiverId);
 

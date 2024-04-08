@@ -8,18 +8,18 @@ namespace Chat.Domain.Entities;
 public class Message : Entity, IRepositoryItem
 {
     public string ConversationId { get; private set; }
-    public string UserId { get; private set; }
-    public string SendTo { get; private set; }
+    public string SenderId { get; private set; }
+    public string ReceiverId { get; private set; }
     public string Content { get; private set; }
     public DateTime SentAt { get; private set; }
     public string Status { get; private set; }
     public bool IsGroupMessage { get; private set; }
 
-    private Message(string conversationId, string userId, string sendTo, string messageContent, bool isGroupMessage)
+    private Message(string conversationId, string senderId, string receiverId, string messageContent, bool isGroupMessage)
         : base(Guid.NewGuid().ToString())
     {
-        UserId = userId;
-        SendTo = sendTo;
+        SenderId = senderId;
+        ReceiverId = receiverId;
         Content = messageContent;
         SentAt = DateTime.UtcNow;
         Status = MessageStatus.Sent;
@@ -27,11 +27,11 @@ public class Message : Entity, IRepositoryItem
         ConversationId = conversationId;
     }
 
-    public static IResult<Message> Create(string conversationId, string userId, string sendTo, string messageContent, bool isGroupMessage)
+    public static IResult<Message> Create(string conversationId, string senderId, string receiverId, string messageContent, bool isGroupMessage)
     {
-        var message = new Message(conversationId, userId, sendTo, messageContent, isGroupMessage);
+        var message = new Message(conversationId, senderId, receiverId, messageContent, isGroupMessage);
 
-        message.RaiseDomainEvent(new MessageCreatedDomainEvent(message));
+        message.RaiseDomainEvent(new MessageCreatedDomainEvent(message.Id));
 
         return Result.Success(message);
     }

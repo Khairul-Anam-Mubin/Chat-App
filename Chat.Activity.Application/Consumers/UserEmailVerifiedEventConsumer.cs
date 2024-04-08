@@ -7,17 +7,17 @@ using Chat.Framework.MessageBrokers;
 
 namespace Chat.Activity.Application.Consumers;
 
-public class VerifiedUserAccountCreatedEventConsumer : AEventConsumer<VerifiedUserAccountCreatedEvent>
+public class UserEmailVerifiedEventConsumer : AEventConsumer<UserEmailVerifiedEvent>
 {
     private readonly IPresenceRepository _presenceRepository;
 
-    public VerifiedUserAccountCreatedEventConsumer(IPresenceRepository presenceRepository, IScopeIdentity scopeIdentity)
+    public UserEmailVerifiedEventConsumer(IPresenceRepository presenceRepository, IScopeIdentity scopeIdentity)
         : base(scopeIdentity)
     {
         _presenceRepository = presenceRepository;
     }
 
-    protected override async Task OnConsumeAsync(VerifiedUserAccountCreatedEvent @event, IMessageContext<VerifiedUserAccountCreatedEvent>? context = null)
+    protected override async Task OnConsumeAsync(UserEmailVerifiedEvent @event, IMessageContext<UserEmailVerifiedEvent>? context = null)
     {
         var result = Presence.Create(@event.UserId);
 
