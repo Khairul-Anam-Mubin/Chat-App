@@ -1,5 +1,4 @@
-﻿using Chat.Domain.Entities;
-using Chat.Framework.DDD;
+﻿using Chat.Framework.DDD;
 
 namespace Chat.Domain.DomainEvents;
 

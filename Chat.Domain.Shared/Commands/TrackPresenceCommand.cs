@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations;
 using Chat.Framework.CQRS;
 
 namespace Chat.Domain.Shared.Commands;

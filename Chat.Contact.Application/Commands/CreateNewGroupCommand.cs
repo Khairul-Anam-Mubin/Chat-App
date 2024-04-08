@@ -8,12 +8,8 @@ public class CreateNewGroupCommand : ICommand
     [Required]
     public string GroupName { get; set; }
 
-    [Required]
-    public string UserId { get; set; }
-
-    public CreateNewGroupCommand(string groupName, string userId)
+    public CreateNewGroupCommand(string groupName)
     {
         GroupName = groupName;
-        UserId = userId;
     }
 }

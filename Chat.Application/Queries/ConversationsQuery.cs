@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations;
 using Chat.Application.DTOs;
 using Chat.Framework.CQRS;
 using Chat.Framework.Pagination;

@@ -7,7 +7,4 @@ public class AddContactCommand : ICommand
 {
     [Required]
     public string ContactEmail { get; set; } = string.Empty;
-
-    [Required]
-    public string UserId { get; set; } = string.Empty;
 }
