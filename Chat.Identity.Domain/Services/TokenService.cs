@@ -1,7 +1,6 @@
 using System.Security.Claims;
 using System.Text;
 using Chat.Domain.Shared.Constants;
-using Chat.Domain.Shared.Entities;
 using Chat.Framework.Identity;
 using Chat.Framework.Results;
 using Chat.Identity.Domain.Entities;

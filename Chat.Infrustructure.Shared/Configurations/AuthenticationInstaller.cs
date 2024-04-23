@@ -1,6 +1,6 @@
 ﻿using System.Text;
-using Chat.Domain.Shared.Entities;
 using Chat.Framework.Extensions;
+using Chat.Framework.Identity;
 using Chat.Framework.ServiceInstaller;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
@@ -16,6 +16,7 @@ public class AuthenticationInstaller : IServiceInstaller
     {
         var tokenConfig = configuration.TryGetConfig<TokenConfig>();
         services.AddSingleton(tokenConfig);
+
         services.AddAuthentication(options => 
         {
             options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
