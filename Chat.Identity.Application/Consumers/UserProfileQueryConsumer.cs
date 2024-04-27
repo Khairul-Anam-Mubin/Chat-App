@@ -1,11 +1,11 @@
 using Chat.Domain.Shared.Queries;
-using Chat.Framework.CQRS;
-using Chat.Framework.Identity;
-using Chat.Framework.MessageBrokers;
-using Chat.Framework.Results;
 using Chat.Identity.Application.Extensions;
 using Chat.Identity.Domain.Entities;
 using Chat.Identity.Domain.Repositories;
+using KCluster.Framework.CQRS;
+using KCluster.Framework.Identity;
+using KCluster.Framework.MessageBrokers;
+using KCluster.Framework.Results;
 
 namespace Chat.Identity.Application.Consumers;
 

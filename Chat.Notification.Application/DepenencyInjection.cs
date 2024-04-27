@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
-using Chat.Framework.EmailSenders;
-using Chat.Framework.Mediators;
+using KCluster.Framework.EmailSenders;
+using KCluster.Framework.Mediators;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Chat.Notification.Application;

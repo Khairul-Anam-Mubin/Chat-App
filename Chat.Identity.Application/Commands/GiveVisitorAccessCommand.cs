@@ -1,4 +1,4 @@
-﻿using Chat.Framework.CQRS;
+﻿using KCluster.Framework.CQRS;
 
 namespace Chat.Identity.Application.Commands
 {

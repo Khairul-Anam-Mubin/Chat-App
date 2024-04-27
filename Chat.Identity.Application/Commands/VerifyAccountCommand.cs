@@ -1,5 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Chat.Framework.CQRS;
+﻿using KCluster.Framework.CQRS;
+using System.ComponentModel.DataAnnotations;
 
 namespace Chat.Identity.Application.Commands;
 

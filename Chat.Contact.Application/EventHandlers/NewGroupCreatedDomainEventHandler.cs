@@ -1,7 +1,7 @@
 ﻿using Chat.Contacts.Application.Commands;
 using Chat.Contacts.Domain.DomainEvents;
-using Chat.Framework.CQRS;
-using Chat.Framework.DDD;
+using KCluster.Framework.CQRS;
+using KCluster.Framework.DDD;
 
 namespace Chat.Contacts.Application.EventHandlers;
 

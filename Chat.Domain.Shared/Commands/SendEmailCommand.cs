@@ -1,6 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Chat.Framework.CQRS;
-using Chat.Framework.EmailSenders;
+﻿using KCluster.Framework.CQRS;
+using KCluster.Framework.EmailSenders;
+using System.ComponentModel.DataAnnotations;
 
 namespace Chat.Domain.Shared.Commands;
 

@@ -1,10 +1,11 @@
 ﻿using Chat.Identity.Application.Dtos;
+using Chat.Identity.Domain.Entities;
 
 namespace Chat.Identity.Application.Extensions;
 
 public static class TokenExtension
 {
-    public static TokenDto ToTokenDto(this Domain.Entities.Token token)
+    public static TokenDto ToTokenDto(this Token token)
     {
         return new TokenDto
         {

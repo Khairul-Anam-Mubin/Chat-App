@@ -1,4 +1,4 @@
-﻿using Chat.Framework.CQRS;
+﻿using KCluster.Framework.CQRS;
 using System.ComponentModel.DataAnnotations;
 
 namespace Chat.Contacts.Application.Queries;

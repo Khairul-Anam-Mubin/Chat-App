@@ -1,9 +1,9 @@
 using Chat.FileStore.Application.Queries;
 using Chat.FileStore.Domain.Entities;
 using Chat.FileStore.Domain.Repositories;
-using Chat.Framework.CQRS;
-using Chat.Framework.Pagination;
-using Chat.Framework.Results;
+using KCluster.Framework.CQRS;
+using KCluster.Framework.Pagination;
+using KCluster.Framework.Results;
 
 namespace Chat.FileStore.Application.QueryHandlers;
 

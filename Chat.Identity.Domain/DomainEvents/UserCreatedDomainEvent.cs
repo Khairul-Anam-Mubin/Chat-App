@@ -1,4 +1,4 @@
-﻿using Chat.Framework.DDD;
+﻿using KCluster.Framework.DDD;
 
 namespace Chat.Identity.Domain.DomainEvents;
 

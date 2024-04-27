@@ -1,6 +1,6 @@
 ﻿using Chat.Domain.Shared.Constants;
 using Chat.Domain.Shared.Entities;
-using Chat.Framework.Identity;
+using KCluster.Framework.Identity;
 using System.Security.Claims;
 
 namespace Chat.Application.Shared.Providers;

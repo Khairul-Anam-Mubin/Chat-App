@@ -1,5 +1,5 @@
-using Chat.Framework.Extensions;
-using Chat.Framework.Identity;
+using KCluster.Framework.Extensions;
+using KCluster.Framework.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 

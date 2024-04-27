@@ -1,8 +1,8 @@
 using Chat.FileStore.Application.Commands;
 using Chat.FileStore.Application.DTOs;
 using Chat.FileStore.Application.Queries;
-using Chat.Framework.CQRS;
-using Chat.Framework.Pagination;
+using KCluster.Framework.CQRS;
+using KCluster.Framework.Pagination;
 using Chat.Infrastructure.Shared.Controllers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;

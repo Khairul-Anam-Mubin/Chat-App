@@ -1,7 +1,7 @@
 ﻿using Chat.Application;
 using Chat.Domain.Repositories;
-using Chat.Framework.ORM.Interfaces;
-using Chat.Framework.ServiceInstaller;
+using KCluster.Framework.ORM.Interfaces;
+using KCluster.Framework.ServiceInstaller;
 using Chat.Infrastructure.Migrations;
 using Chat.Infrastructure.Repositories;
 using Microsoft.Extensions.Configuration;

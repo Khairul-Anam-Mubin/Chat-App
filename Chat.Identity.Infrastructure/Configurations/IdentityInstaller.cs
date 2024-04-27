@@ -1,5 +1,5 @@
-﻿using Chat.Framework.ORM.Interfaces;
-using Chat.Framework.ServiceInstaller;
+﻿using KCluster.Framework.ORM.Interfaces;
+using KCluster.Framework.ServiceInstaller;
 using Chat.Identity.Application;
 using Chat.Identity.Domain.Repositories;
 using Chat.Identity.Domain.Services;

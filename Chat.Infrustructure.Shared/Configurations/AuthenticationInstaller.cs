@@ -1,7 +1,7 @@
 ﻿using System.Text;
-using Chat.Framework.Extensions;
-using Chat.Framework.Identity;
-using Chat.Framework.ServiceInstaller;
+using KCluster.Framework.Extensions;
+using KCluster.Framework.Identity;
+using KCluster.Framework.ServiceInstaller;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

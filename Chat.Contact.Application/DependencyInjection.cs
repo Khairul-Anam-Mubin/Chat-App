@@ -1,6 +1,6 @@
-﻿using System.Reflection;
-using Chat.Framework.Mediators;
+﻿using KCluster.Framework.Mediators;
 using Microsoft.Extensions.DependencyInjection;
+using System.Reflection;
 
 namespace Chat.Contacts.Application;
 

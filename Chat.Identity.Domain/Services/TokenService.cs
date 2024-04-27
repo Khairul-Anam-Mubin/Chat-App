@@ -1,9 +1,9 @@
 using System.Security.Claims;
 using System.Text;
 using Chat.Domain.Shared.Constants;
-using Chat.Framework.Identity;
-using Chat.Framework.Results;
 using Chat.Identity.Domain.Entities;
+using KCluster.Framework.Identity;
+using KCluster.Framework.Results;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Chat.Identity.Domain.Services;

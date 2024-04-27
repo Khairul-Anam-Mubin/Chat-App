@@ -3,10 +3,10 @@ using Chat.Contacts.Application.Extensions;
 using Chat.Contacts.Application.Queries;
 using Chat.Contacts.Domain.Entities;
 using Chat.Contacts.Domain.Repositories;
-using Chat.Framework.CQRS;
-using Chat.Framework.Identity;
-using Chat.Framework.Pagination;
-using Chat.Framework.Results;
+using KCluster.Framework.CQRS;
+using KCluster.Framework.Identity;
+using KCluster.Framework.Pagination;
+using KCluster.Framework.Results;
 
 namespace Chat.Contacts.Application.QueryHandlers;
 

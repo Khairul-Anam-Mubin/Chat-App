@@ -1,4 +1,4 @@
-﻿using Chat.Framework.Results;
+﻿using KCluster.Framework.Results;
 
 namespace Chat.Activity.Domain.Results;
 

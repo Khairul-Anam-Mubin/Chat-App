@@ -1,4 +1,4 @@
-using Chat.Framework.CQRS;
+using KCluster.Framework.CQRS;
 using Chat.Identity.Application.Commands;
 using Chat.Identity.Application.Dtos;
 using Chat.Infrastructure.Shared.Controllers;

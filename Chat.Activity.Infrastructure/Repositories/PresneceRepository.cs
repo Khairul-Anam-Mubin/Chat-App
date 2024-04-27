@@ -1,9 +1,9 @@
 using Chat.Activity.Domain.Entities;
 using Chat.Activity.Domain.Repositories;
-using Chat.Framework.ORM;
-using Chat.Framework.ORM.Builders;
-using Chat.Framework.ORM.Enums;
-using Chat.Framework.ORM.Interfaces;
+using KCluster.Framework.ORM;
+using KCluster.Framework.ORM.Builders;
+using KCluster.Framework.ORM.Enums;
+using KCluster.Framework.ORM.Interfaces;
 
 namespace Chat.Activity.Infrastructure.Repositories;
 

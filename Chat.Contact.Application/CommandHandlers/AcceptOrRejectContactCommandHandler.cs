@@ -1,9 +1,9 @@
 using Chat.Contacts.Application.Commands;
 using Chat.Contacts.Domain.Repositories;
 using Chat.Contacts.Domain.Results;
-using Chat.Framework.CQRS;
-using Chat.Framework.Identity;
-using Chat.Framework.Results;
+using KCluster.Framework.CQRS;
+using KCluster.Framework.Identity;
+using KCluster.Framework.Results;
 
 namespace Chat.Contacts.Application.CommandHandlers;
 

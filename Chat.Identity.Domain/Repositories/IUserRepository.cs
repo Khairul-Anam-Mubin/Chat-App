@@ -1,5 +1,5 @@
-using Chat.Framework.ORM.Interfaces;
 using Chat.Identity.Domain.Entities;
+using KCluster.Framework.ORM.Interfaces;
 
 namespace Chat.Identity.Domain.Repositories;
 

@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using Chat.Application.DTOs;
-using Chat.Framework.CQRS;
-using Chat.Framework.Pagination;
+using KCluster.Framework.CQRS;
+using KCluster.Framework.Pagination;
 
 namespace Chat.Application.Queries;
 

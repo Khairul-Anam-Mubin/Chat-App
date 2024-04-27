@@ -1,5 +1,5 @@
 ﻿using Chat.Domain.Shared.Entities;
-using Chat.Framework.Pagination;
+using KCluster.Framework.Pagination;
 
 namespace Chat.Domain.Shared.Queries;
 

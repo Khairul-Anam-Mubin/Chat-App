@@ -1,5 +1,5 @@
 ﻿using Chat.Domain.Shared.Constants;
-using Chat.Framework.ORM.Interfaces;
+using KCluster.Framework.ORM.Interfaces;
 using Chat.Identity.Domain.Entities;
 using Chat.Identity.Domain.Repositories;
 

@@ -1,9 +1,9 @@
 ﻿using Chat.Activity.Domain.Entities;
 using Chat.Activity.Domain.Repositories;
 using Chat.Domain.Shared.Events;
-using Chat.Framework.EDD;
-using Chat.Framework.Identity;
-using Chat.Framework.MessageBrokers;
+using KCluster.Framework.EDD;
+using KCluster.Framework.Identity;
+using KCluster.Framework.MessageBrokers;
 
 namespace Chat.Activity.Application.Consumers;
 

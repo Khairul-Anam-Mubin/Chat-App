@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Chat.Framework\Chat.Framework.csproj" />
+    <ProjectReference Include="..\Chat.Domain.Shared\Chat.Domain.Shared.csproj" />
   </ItemGroup>
 
 </Project>

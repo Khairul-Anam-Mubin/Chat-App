@@ -1,4 +1,4 @@
-﻿using Chat.Framework.Mediators;
+﻿using KCluster.Framework.Mediators;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 

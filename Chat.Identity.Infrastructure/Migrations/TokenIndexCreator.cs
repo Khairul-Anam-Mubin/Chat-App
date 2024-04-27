@@ -1,6 +1,6 @@
-﻿using Chat.Framework.ORM;
-using Chat.Framework.ORM.Builders;
-using Chat.Framework.ORM.Interfaces;
+﻿using KCluster.Framework.ORM;
+using KCluster.Framework.ORM.Builders;
+using KCluster.Framework.ORM.Interfaces;
 using Chat.Identity.Domain.Entities;
 
 namespace Chat.Identity.Infrastructure.Migrations;

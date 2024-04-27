@@ -1,7 +1,7 @@
-﻿using Chat.Framework.Identity;
-using Chat.Framework.Interfaces;
-using Chat.Framework.Mediators;
-using Chat.Framework.PubSub;
+﻿using KCluster.Framework.Identity;
+using KCluster.Framework.Interfaces;
+using KCluster.Framework.Mediators;
+using KCluster.Framework.PubSub;
 using Chat.Notification.Domain.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 

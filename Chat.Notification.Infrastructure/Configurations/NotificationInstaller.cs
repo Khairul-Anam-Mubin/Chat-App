@@ -1,6 +1,6 @@
-﻿using Chat.Framework.Interfaces;
-using Chat.Framework.PubSub;
-using Chat.Framework.ServiceInstaller;
+﻿using KCluster.Framework.Interfaces;
+using KCluster.Framework.PubSub;
+using KCluster.Framework.ServiceInstaller;
 using Chat.Notification.Application;
 using Chat.Notification.Domain.Interfaces;
 using Chat.Notification.Infrastructure.PubSub;

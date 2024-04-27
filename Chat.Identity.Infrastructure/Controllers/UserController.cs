@@ -1,8 +1,8 @@
 ﻿using Chat.Domain.Shared.Constants;
 using Chat.Domain.Shared.Entities;
 using Chat.Domain.Shared.Queries;
-using Chat.Framework.CQRS;
-using Chat.Framework.Identity;
+using KCluster.Framework.CQRS;
+using KCluster.Framework.Identity;
 using Chat.Identity.Application.Commands;
 using Chat.Infrastructure.Shared.Controllers;
 using Microsoft.AspNetCore.Authorization;

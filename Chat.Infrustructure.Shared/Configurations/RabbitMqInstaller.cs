@@ -1,7 +1,7 @@
-﻿using Chat.Framework;
-using Chat.Framework.Extensions;
-using Chat.Framework.MessageBrokers;
-using Chat.Framework.ServiceInstaller;
+﻿using KCluster.Framework;
+using KCluster.Framework.Extensions;
+using KCluster.Framework.MessageBrokers;
+using KCluster.Framework.ServiceInstaller;
 using MassTransit;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

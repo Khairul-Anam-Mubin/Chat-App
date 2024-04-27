@@ -1,7 +1,7 @@
 using Chat.Activity.Application.DTOs;
 using Chat.Activity.Application.Queries;
 using Chat.Domain.Shared.Commands;
-using Chat.Framework.CQRS;
+using KCluster.Framework.CQRS;
 using Chat.Infrastructure.Shared.Controllers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

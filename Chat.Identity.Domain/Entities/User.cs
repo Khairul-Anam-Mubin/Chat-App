@@ -1,8 +1,8 @@
-using Chat.Framework.DDD;
-using Chat.Framework.ORM.Interfaces;
-using Chat.Framework.Results;
-using Chat.Framework.Security;
 using Chat.Identity.Domain.DomainEvents;
+using KCluster.Framework.DDD;
+using KCluster.Framework.ORM.Interfaces;
+using KCluster.Framework.Results;
+using KCluster.Framework.Security;
 using System.ComponentModel.DataAnnotations;
 
 namespace Chat.Identity.Domain.Entities;

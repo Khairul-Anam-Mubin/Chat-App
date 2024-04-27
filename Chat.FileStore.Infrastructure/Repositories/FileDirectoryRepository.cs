@@ -1,8 +1,8 @@
 using Chat.FileStore.Domain.Entities;
 using Chat.FileStore.Domain.Repositories;
-using Chat.Framework.ORM;
-using Chat.Framework.ORM.Enums;
-using Chat.Framework.ORM.Interfaces;
+using KCluster.Framework.ORM;
+using KCluster.Framework.ORM.Enums;
+using KCluster.Framework.ORM.Interfaces;
 
 namespace Chat.FileStore.Infrastructure.Repositories;
 

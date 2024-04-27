@@ -1,10 +1,10 @@
 ﻿using Chat.Domain.Shared.Commands;
-using Chat.Framework.CQRS;
-using Chat.Framework.EmailSenders;
-using Chat.Framework.Identity;
-using Chat.Framework.MessageBrokers;
-using Chat.Framework.Results;
 using Chat.Notification.Application.Constants;
+using KCluster.Framework.CQRS;
+using KCluster.Framework.EmailSenders;
+using KCluster.Framework.Identity;
+using KCluster.Framework.MessageBrokers;
+using KCluster.Framework.Results;
 using Microsoft.FeatureManagement;
 
 namespace Chat.Notification.Application.Consumers;

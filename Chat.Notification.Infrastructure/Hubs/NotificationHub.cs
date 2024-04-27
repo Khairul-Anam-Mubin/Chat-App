@@ -1,7 +1,7 @@
 using Chat.Domain.Shared.Events;
-using Chat.Framework.EDD;
-using Chat.Framework.Identity;
-using Chat.Framework.MessageBrokers;
+using KCluster.Framework.EDD;
+using KCluster.Framework.Identity;
+using KCluster.Framework.MessageBrokers;
 using Chat.Notification.Application.Helpers;
 using Chat.Notification.Domain.Interfaces;
 using Microsoft.AspNetCore.Authorization;

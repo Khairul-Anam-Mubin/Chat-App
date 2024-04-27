@@ -1,8 +1,8 @@
 using Chat.Application.Commands;
 using Chat.Application.DTOs;
 using Chat.Application.Queries;
-using Chat.Framework.CQRS;
-using Chat.Framework.Pagination;
+using KCluster.Framework.CQRS;
+using KCluster.Framework.Pagination;
 using Chat.Infrastructure.Shared.Controllers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

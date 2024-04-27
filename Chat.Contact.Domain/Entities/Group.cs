@@ -1,8 +1,8 @@
 ﻿using Chat.Contacts.Domain.DomainEvents;
 using Chat.Contacts.Domain.Results;
-using Chat.Framework.DDD;
-using Chat.Framework.ORM.Interfaces;
-using Chat.Framework.Results;
+using KCluster.Framework.DDD;
+using KCluster.Framework.ORM.Interfaces;
+using KCluster.Framework.Results;
 
 namespace Chat.Contacts.Domain.Entities;
 
