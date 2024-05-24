@@ -1,6 +1,6 @@
 ﻿using Chat.Domain.Shared.Constants;
 using Chat.Domain.Shared.Entities;
-using KCluster.Framework.Identity;
+using Peacious.Framework.Identity;
 using System.Security.Claims;
 
 namespace Chat.Application.Shared.Providers;

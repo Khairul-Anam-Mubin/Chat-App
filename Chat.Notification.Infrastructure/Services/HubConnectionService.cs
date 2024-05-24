@@ -1,7 +1,7 @@
 using System.Collections.Concurrent;
-using KCluster.Framework.Cache.DistributedCache;
-using KCluster.Framework.Extensions;
-using KCluster.Framework.ORM;
+using Peacious.Framework.Cache.DistributedCache;
+using Peacious.Framework.Extensions;
+using Peacious.Framework.ORM;
 using Chat.Notification.Domain.Interfaces;
 using Microsoft.Extensions.Configuration;
 

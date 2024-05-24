@@ -2,8 +2,8 @@
 using Chat.Contacts.Domain.Repositories;
 using Chat.Contacts.Infrastructure.Migrations;
 using Chat.Contacts.Infrastructure.Repositories;
-using KCluster.Framework.ORM.Interfaces;
-using KCluster.Framework.ServiceInstaller;
+using Peacious.Framework.ORM.Interfaces;
+using Peacious.Framework.ServiceInstaller;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 

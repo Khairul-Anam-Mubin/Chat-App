@@ -1,8 +1,8 @@
 using Chat.Identity.Domain.DomainEvents;
-using KCluster.Framework.DDD;
-using KCluster.Framework.ORM.Interfaces;
-using KCluster.Framework.Results;
-using KCluster.Framework.Security;
+using Peacious.Framework.DDD;
+using Peacious.Framework.ORM.Interfaces;
+using Peacious.Framework.Results;
+using Peacious.Framework.Security;
 using System.ComponentModel.DataAnnotations;
 
 namespace Chat.Identity.Domain.Entities;
@@ -79,10 +79,10 @@ public class User : AggregateRoot, IRepositoryItem
             return Result.Error("Incorrect password");
         }
 
-        if (!IsEmailVerified)
-        {
-            return Result.Error("Email not verified yet. Please check your email to verify.");
-        }
+        //if (!IsEmailVerified)
+        //{
+        //    return Result.Error("Email not verified yet. Please check your email to verify.");
+        //}
 
         return Result.Success();
     }

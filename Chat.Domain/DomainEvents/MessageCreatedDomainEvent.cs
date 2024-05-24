@@ -1,4 +1,4 @@
-﻿using KCluster.Framework.DDD;
+﻿using Peacious.Framework.DDD;
 
 namespace Chat.Domain.DomainEvents;
 

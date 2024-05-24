@@ -1,4 +1,4 @@
-﻿using KCluster.Framework.CQRS;
+﻿using Peacious.Framework.CQRS;
 
 namespace Chat.Contacts.Application.Queries;
 

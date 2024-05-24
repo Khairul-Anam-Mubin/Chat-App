@@ -1,7 +1,7 @@
-﻿using KCluster.Framework.Identity;
-using KCluster.Framework.Interfaces;
-using KCluster.Framework.Mediators;
-using KCluster.Framework.PubSub;
+﻿using Peacious.Framework.Identity;
+using Peacious.Framework.Interfaces;
+using Peacious.Framework.Mediators;
+using Peacious.Framework.PubSub;
 using Chat.Notification.Domain.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 

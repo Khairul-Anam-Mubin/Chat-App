@@ -1,11 +1,11 @@
 ﻿using Chat.Domain.Shared.Commands;
 using Chat.Identity.Application.Commands;
 using Chat.Identity.Domain.DomainEvents;
-using KCluster.Framework.CQRS;
-using KCluster.Framework.DDD;
-using KCluster.Framework.EmailSenders;
-using KCluster.Framework.Extensions;
-using KCluster.Framework.Identity;
+using Peacious.Framework.CQRS;
+using Peacious.Framework.DDD;
+using Peacious.Framework.EmailSenders;
+using Peacious.Framework.Extensions;
+using Peacious.Framework.Identity;
 using Microsoft.Extensions.Configuration;
 
 namespace Chat.Identity.Application.EventHandlers;

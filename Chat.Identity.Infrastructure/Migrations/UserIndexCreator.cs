@@ -1,6 +1,6 @@
-﻿using KCluster.Framework.ORM;
-using KCluster.Framework.ORM.Builders;
-using KCluster.Framework.ORM.Interfaces;
+﻿using Peacious.Framework.ORM;
+using Peacious.Framework.ORM.Builders;
+using Peacious.Framework.ORM.Interfaces;
 using Chat.Identity.Domain.Entities;
 
 namespace Chat.Identity.Infrastructure.Migrations;

@@ -1,7 +1,7 @@
 ﻿using Chat.FileStore.Application;
 using Chat.FileStore.Domain.Repositories;
 using Chat.FileStore.Infrastructure.Repositories;
-using KCluster.Framework.ServiceInstaller;
+using Peacious.Framework.ServiceInstaller;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 

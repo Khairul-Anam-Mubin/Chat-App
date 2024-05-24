@@ -1,6 +1,6 @@
-﻿using KCluster.Framework.DDD;
-using KCluster.Framework.ORM.Interfaces;
-using KCluster.Framework.Results;
+﻿using Peacious.Framework.DDD;
+using Peacious.Framework.ORM.Interfaces;
+using Peacious.Framework.Results;
 
 namespace Chat.Contacts.Domain.Entities;
 

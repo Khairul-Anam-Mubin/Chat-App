@@ -1,4 +1,4 @@
-using KCluster.Framework.CQRS;
+using Peacious.Framework.CQRS;
 using Chat.Identity.Application.Commands;
 using Chat.Identity.Application.Dtos;
 using Chat.Infrastructure.Shared.Controllers;

@@ -1,7 +1,7 @@
-using KCluster.Framework.DDD;
-using KCluster.Framework.ORM.Interfaces;
-using KCluster.Framework.Results;
-using KCluster.Framework.Security;
+using Peacious.Framework.DDD;
+using Peacious.Framework.ORM.Interfaces;
+using Peacious.Framework.Results;
+using Peacious.Framework.Security;
 
 namespace Chat.Domain.Entities;
 

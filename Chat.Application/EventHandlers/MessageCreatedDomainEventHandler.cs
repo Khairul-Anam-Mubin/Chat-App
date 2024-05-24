@@ -4,8 +4,8 @@ using Chat.Domain.Entities;
 using Chat.Domain.Repositories;
 using Chat.Domain.Shared.Commands;
 using Chat.Domain.Shared.Entities;
-using KCluster.Framework.CQRS;
-using KCluster.Framework.DDD;
+using Peacious.Framework.CQRS;
+using Peacious.Framework.DDD;
 
 namespace Chat.Application.EventHandlers;
 

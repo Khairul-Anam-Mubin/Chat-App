@@ -1,4 +1,4 @@
-﻿using KCluster.Framework.Results;
+﻿using Peacious.Framework.Results;
 
 namespace Chat.Activity.Domain.Results;
 

@@ -2,9 +2,9 @@ using Chat.Contacts.Application.Commands;
 using Chat.Contacts.Application.DTOs;
 using Chat.Contacts.Application.Queries;
 using Chat.Domain.Shared.Constants;
-using KCluster.Framework.CQRS;
-using KCluster.Framework.Identity;
-using KCluster.Framework.Pagination;
+using Peacious.Framework.CQRS;
+using Peacious.Framework.Identity;
+using Peacious.Framework.Pagination;
 using Chat.Infrastructure.Shared.Controllers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -20,21 +20,21 @@ public class ContactController : ACommonController
         : base(commandExecutor, queryExecutor) { }
 
     [HttpPost, Route("add")]
-    [HasPermission(Permissions.ContactCreate)]
+    //[HasPermission(Permissions.ContactCreate)]
     public async Task<IActionResult> AddContactAsync(AddContactCommand command)
     {
         return Ok(await GetCommandResponseAsync(command));
     }
 
     [HttpPost, Route("accept-reject")]
-    [HasPermission(Permissions.ContactUpdate)]
+    //[HasPermission(Permissions.ContactUpdate)]
     public async Task<IActionResult> AcceptOrRejectContactRequestAsync(AcceptOrRejectContactRequestCommand command)
     {
         return Ok(await GetCommandResponseAsync(command));
     }
 
     [HttpPost, Route("get")]
-    [HasPermission(Permissions.ContactRead)]
+    //[HasPermission(Permissions.ContactRead)]
     public async Task<IActionResult> AddContactAsync(ContactQuery query)
     {
         return Ok(await GetQueryResponseAsync<ContactQuery, IPaginationResponse<ContactDto>>(query));

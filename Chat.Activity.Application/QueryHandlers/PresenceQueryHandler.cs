@@ -2,8 +2,8 @@ using Chat.Activity.Application.DTOs;
 using Chat.Activity.Application.Extensions;
 using Chat.Activity.Application.Queries;
 using Chat.Activity.Domain.Repositories;
-using KCluster.Framework.CQRS;
-using KCluster.Framework.Results;
+using Peacious.Framework.CQRS;
+using Peacious.Framework.Results;
 
 namespace Chat.Activity.Application.QueryHandlers;
 

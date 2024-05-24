@@ -1,5 +1,5 @@
 ﻿using System.Reflection;
-using KCluster.Framework.Mediators;
+using Peacious.Framework.Mediators;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Chat.FileStore.Application;

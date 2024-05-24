@@ -1,9 +1,9 @@
 using Chat.Contacts.Domain.Entities;
 using Chat.Contacts.Domain.Repositories;
-using KCluster.Framework.ORM;
-using KCluster.Framework.ORM.Builders;
-using KCluster.Framework.ORM.Enums;
-using KCluster.Framework.ORM.Interfaces;
+using Peacious.Framework.ORM;
+using Peacious.Framework.ORM.Builders;
+using Peacious.Framework.ORM.Enums;
+using Peacious.Framework.ORM.Interfaces;
 
 namespace Chat.Contacts.Infrastructure.Repositories;
 

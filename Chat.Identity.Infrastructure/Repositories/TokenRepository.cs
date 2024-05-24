@@ -1,8 +1,8 @@
-using KCluster.Framework.Extensions;
-using KCluster.Framework.ORM;
-using KCluster.Framework.ORM.Builders;
-using KCluster.Framework.ORM.Enums;
-using KCluster.Framework.ORM.Interfaces;
+using Peacious.Framework.Extensions;
+using Peacious.Framework.ORM;
+using Peacious.Framework.ORM.Builders;
+using Peacious.Framework.ORM.Enums;
+using Peacious.Framework.ORM.Interfaces;
 using Chat.Identity.Domain.Entities;
 using Chat.Identity.Domain.Repositories;
 using Microsoft.Extensions.Configuration;

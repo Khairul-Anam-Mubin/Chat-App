@@ -1,5 +1,5 @@
-using KCluster.Framework.Extensions;
-using KCluster.Framework.Identity;
+using Peacious.Framework.Extensions;
+using Peacious.Framework.Identity;
 using Chat.Notification.Infrastructure.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);

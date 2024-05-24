@@ -1,5 +1,5 @@
 using Chat.FileStore.Domain.Entities;
-using KCluster.Framework.ORM.Interfaces;
+using Peacious.Framework.ORM.Interfaces;
 
 namespace Chat.FileStore.Domain.Repositories;
 

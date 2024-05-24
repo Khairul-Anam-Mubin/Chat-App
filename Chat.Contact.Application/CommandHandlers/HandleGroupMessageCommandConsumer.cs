@@ -1,10 +1,10 @@
 ﻿using Chat.Contacts.Domain.Repositories;
 using Chat.Domain.Shared.Commands;
 using Chat.Domain.Shared.Entities;
-using KCluster.Framework.CQRS;
-using KCluster.Framework.Identity;
-using KCluster.Framework.MessageBrokers;
-using KCluster.Framework.Results;
+using Peacious.Framework.CQRS;
+using Peacious.Framework.Identity;
+using Peacious.Framework.MessageBrokers;
+using Peacious.Framework.Results;
 
 namespace Chat.Contacts.Application.CommandHandlers;
 

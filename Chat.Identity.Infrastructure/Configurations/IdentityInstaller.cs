@@ -1,5 +1,5 @@
-﻿using KCluster.Framework.ORM.Interfaces;
-using KCluster.Framework.ServiceInstaller;
+﻿using Peacious.Framework.ORM.Interfaces;
+using Peacious.Framework.ServiceInstaller;
 using Chat.Identity.Application;
 using Chat.Identity.Domain.Repositories;
 using Chat.Identity.Domain.Services;

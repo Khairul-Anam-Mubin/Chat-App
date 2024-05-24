@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Chat.Domain.Shared.Entities;
-using KCluster.Framework.CQRS;
+using Peacious.Framework.CQRS;
 
 namespace Chat.Domain.Shared.Commands;
 

@@ -1,5 +1,5 @@
-﻿using KCluster.Framework.CQRS;
-using KCluster.Framework.EmailSenders;
+﻿using Peacious.Framework.CQRS;
+using Peacious.Framework.EmailSenders;
 using System.ComponentModel.DataAnnotations;
 
 namespace Chat.Domain.Shared.Commands;

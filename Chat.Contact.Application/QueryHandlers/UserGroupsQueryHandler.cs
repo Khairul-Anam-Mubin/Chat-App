@@ -1,9 +1,9 @@
 ﻿using Chat.Contacts.Application.Queries;
 using Chat.Contacts.Domain.Entities;
 using Chat.Contacts.Domain.Repositories;
-using KCluster.Framework.CQRS;
-using KCluster.Framework.Identity;
-using KCluster.Framework.Results;
+using Peacious.Framework.CQRS;
+using Peacious.Framework.Identity;
+using Peacious.Framework.Results;
 
 namespace Chat.Contacts.Application.QueryHandlers;
 

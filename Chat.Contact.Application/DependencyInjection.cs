@@ -1,4 +1,4 @@
-﻿using KCluster.Framework.Mediators;
+﻿using Peacious.Framework.Mediators;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 

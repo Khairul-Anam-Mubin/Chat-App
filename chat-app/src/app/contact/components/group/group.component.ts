@@ -49,9 +49,9 @@ export class GroupComponent implements OnInit {
         const userProfiles = response.value.items;
         for (let i = 0; i < this.contacts.length; i++) {
           for (let j = 0; j < userProfiles.length; j++) {
-            if (this.contacts[i].contactUserId === userProfiles[i].id) {
-              this.contacts[i].email = userProfiles[i].email;
-              this.contacts[i].name = userProfiles[i].firstName + " " + userProfiles[i].lastName;
+            if (this.contacts[i].contactUserId === userProfiles[j].id) {
+              this.contacts[i].email = userProfiles[j].email;
+              this.contacts[i].name = userProfiles[j].firstName + " " + userProfiles[j].lastName;
               console.log(this.contacts[i]);
               break;
             }
@@ -72,9 +72,9 @@ export class GroupComponent implements OnInit {
         const userProfiles = response.value.items;
         for (let i = 0; i < this.groupMembers.length; i++) {
           for (let j = 0; j < userProfiles.length; j++) {
-            if (this.groupMembers[i].memberId === userProfiles[i].id) {
-              this.groupMembers[i].email = userProfiles[i].email;
-              this.groupMembers[i].name = userProfiles[i].firstName + " " + userProfiles[i].lastName;
+            if (this.groupMembers[i].memberId === userProfiles[j].id) {
+              this.groupMembers[i].email = userProfiles[j].email;
+              this.groupMembers[i].name = userProfiles[j].firstName + " " + userProfiles[j].lastName;
               break;
             }
           }

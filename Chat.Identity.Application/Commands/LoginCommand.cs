@@ -1,4 +1,4 @@
-using KCluster.Framework.CQRS;
+using Peacious.Framework.CQRS;
 using System.ComponentModel.DataAnnotations;
 
 namespace Chat.Identity.Application.Commands;

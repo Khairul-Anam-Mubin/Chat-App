@@ -1,9 +1,9 @@
 ﻿using Chat.Domain.Shared.Events;
 using Chat.Identity.Application.Commands;
 using Chat.Identity.Domain.Repositories;
-using KCluster.Framework.CQRS;
-using KCluster.Framework.EDD;
-using KCluster.Framework.Results;
+using Peacious.Framework.CQRS;
+using Peacious.Framework.EDD;
+using Peacious.Framework.Results;
 
 namespace Chat.Identity.Application.CommandHandlers;
 

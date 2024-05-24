@@ -1,5 +1,5 @@
-﻿using KCluster.Framework.CQRS;
-using KCluster.Framework.Results;
+﻿using Peacious.Framework.CQRS;
+using Peacious.Framework.Results;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Chat.Infrastructure.Shared.Controllers;

@@ -1,6 +1,6 @@
 using Chat.Contacts.Application.DTOs;
-using KCluster.Framework.CQRS;
-using KCluster.Framework.Pagination;
+using Peacious.Framework.CQRS;
+using Peacious.Framework.Pagination;
 
 namespace Chat.Contacts.Application.Queries;
 

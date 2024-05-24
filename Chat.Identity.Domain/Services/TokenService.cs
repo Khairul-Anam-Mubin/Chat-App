@@ -2,8 +2,8 @@ using System.Security.Claims;
 using System.Text;
 using Chat.Domain.Shared.Constants;
 using Chat.Identity.Domain.Entities;
-using KCluster.Framework.Identity;
-using KCluster.Framework.Results;
+using Peacious.Framework.Identity;
+using Peacious.Framework.Results;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Chat.Identity.Domain.Services;

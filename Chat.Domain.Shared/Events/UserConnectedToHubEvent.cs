@@ -1,5 +1,5 @@
-﻿using KCluster.Framework.CQRS;
-using KCluster.Framework.EDD;
+﻿using Peacious.Framework.CQRS;
+using Peacious.Framework.EDD;
 using System.ComponentModel.DataAnnotations;
 
 namespace Chat.Domain.Shared.Events;

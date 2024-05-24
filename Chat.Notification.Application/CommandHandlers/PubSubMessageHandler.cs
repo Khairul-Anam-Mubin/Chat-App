@@ -1,8 +1,8 @@
 ﻿using Chat.Notification.Application.Commands;
-using KCluster.Framework.CQRS;
-using KCluster.Framework.Extensions;
-using KCluster.Framework.Mediators;
-using KCluster.Framework.PubSub;
+using Peacious.Framework.CQRS;
+using Peacious.Framework.Extensions;
+using Peacious.Framework.Mediators;
+using Peacious.Framework.PubSub;
 
 namespace Chat.Notification.Application.CommandHandlers;
 

@@ -1,5 +1,5 @@
-﻿using KCluster.Framework.MessageBrokers;
-using KCluster.Framework.ServiceInstaller;
+﻿using Peacious.Framework.MessageBrokers;
+using Peacious.Framework.ServiceInstaller;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 

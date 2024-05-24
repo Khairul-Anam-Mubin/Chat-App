@@ -1,5 +1,5 @@
 using Chat.Domain.Entities;
-using KCluster.Framework.ORM.Interfaces;
+using Peacious.Framework.ORM.Interfaces;
 
 namespace Chat.Domain.Repositories;
 

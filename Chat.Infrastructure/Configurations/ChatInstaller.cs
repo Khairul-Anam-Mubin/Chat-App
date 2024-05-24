@@ -1,7 +1,7 @@
 ﻿using Chat.Application;
 using Chat.Domain.Repositories;
-using KCluster.Framework.ORM.Interfaces;
-using KCluster.Framework.ServiceInstaller;
+using Peacious.Framework.ORM.Interfaces;
+using Peacious.Framework.ServiceInstaller;
 using Chat.Infrastructure.Migrations;
 using Chat.Infrastructure.Repositories;
 using Microsoft.Extensions.Configuration;

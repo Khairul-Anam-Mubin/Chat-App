@@ -1,8 +1,8 @@
 ﻿using Chat.Domain.Shared.Constants;
 using Chat.Domain.Shared.Entities;
 using Chat.Domain.Shared.Queries;
-using KCluster.Framework.CQRS;
-using KCluster.Framework.Identity;
+using Peacious.Framework.CQRS;
+using Peacious.Framework.Identity;
 using Chat.Identity.Application.Commands;
 using Chat.Infrastructure.Shared.Controllers;
 using Microsoft.AspNetCore.Authorization;
@@ -28,7 +28,7 @@ public class UserController : ACommonController
 
     [HttpPost]
     [Route("profiles")]
-    [HasPermission(Permissions.UserRead)]
+    //[HasPermission(Permissions.UserRead)]
     public async Task<IActionResult> UserProfileAsync(UserProfileQuery query)
     {
         var response = await GetQueryResponseAsync<UserProfileQuery, UserProfileResponse>(query);
@@ -37,7 +37,7 @@ public class UserController : ACommonController
 
     [HttpPost]
     [Route("update")]
-    [HasPermission(Permissions.UserUpdate)]
+    //[HasPermission(Permissions.UserUpdate)]
     public async Task<IActionResult> UpdateUserAsync(UpdateUserProfileCommand command)
     {
         return Ok(await GetCommandResponseAsync<UpdateUserProfileCommand, UserProfile>(command));

@@ -1,6 +1,6 @@
 using Chat.Domain.Shared.Entities;
-using KCluster.Framework.CQRS;
-using KCluster.Framework.Pagination;
+using Peacious.Framework.CQRS;
+using Peacious.Framework.Pagination;
 
 namespace Chat.Domain.Shared.Queries;
 

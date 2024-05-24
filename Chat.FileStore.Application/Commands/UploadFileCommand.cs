@@ -1,5 +1,5 @@
 using System.ComponentModel.DataAnnotations;
-using KCluster.Framework.CQRS;
+using Peacious.Framework.CQRS;
 using Microsoft.AspNetCore.Http;
 
 namespace Chat.FileStore.Application.Commands;

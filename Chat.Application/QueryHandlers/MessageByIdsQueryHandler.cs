@@ -2,8 +2,8 @@
 using Chat.Application.Extensions;
 using Chat.Application.Queries;
 using Chat.Domain.Repositories;
-using KCluster.Framework.CQRS;
-using KCluster.Framework.Results;
+using Peacious.Framework.CQRS;
+using Peacious.Framework.Results;
 
 namespace Chat.Application.QueryHandlers;
 
