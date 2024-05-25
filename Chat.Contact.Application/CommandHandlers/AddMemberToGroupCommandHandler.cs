@@ -20,6 +20,11 @@ public class AddMemberToGroupCommandHandler : ICommandHandler<AddMemberToGroupCo
         _scopeIdentity = scopeIdentity;
     }
 
+    public Task<IResult> Handle(AddMemberToGroupCommand request, CancellationToken cancellationToken)
+    {
+        return HandleAsync(request);
+    }
+
     public async Task<IResult> HandleAsync(AddMemberToGroupCommand request)
     {
         var groupId = request.GroupId;

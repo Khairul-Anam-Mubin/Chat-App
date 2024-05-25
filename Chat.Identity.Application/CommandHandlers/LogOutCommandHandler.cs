@@ -13,7 +13,12 @@ public class LogOutCommandHandler : ICommandHandler<LogOutCommand>
     {
         _tokenRepository = tokenRepository;
     }
-    
+
+    public Task<IResult> Handle(LogOutCommand request, CancellationToken cancellationToken)
+    {
+        return HandleAsync(request);
+    }
+
     public async Task<IResult> HandleAsync(LogOutCommand command)
     {
         if (!await _tokenRepository.RevokeAllTokenByAppIdAsync(command.AppId))

@@ -18,6 +18,11 @@ public class VerifyAccountCommandHandler : ICommandHandler<VerifyAccountCommand>
         _eventService = eventService;
     }
 
+    public Task<IResult> Handle(VerifyAccountCommand request, CancellationToken cancellationToken)
+    {
+        return HandleAsync(request);
+    }
+
     public async Task<IResult> HandleAsync(VerifyAccountCommand request)
     {
         if (!await _userRepository.UpdateEmailVerificationStatus(request.UserId, true))

@@ -20,6 +20,11 @@ public class UpdateMessageStatusCommandHandler : ICommandHandler<UpdateMessageSt
         _scopeIdentity = scopeIdentity;
     }
 
+    public Task<IResult> Handle(UpdateMessageStatusCommand request, CancellationToken cancellationToken)
+    {
+        return HandleAsync(request);
+    }
+
     public async Task<IResult> HandleAsync(UpdateMessageStatusCommand command)
     {
         var userId = _scopeIdentity.GetUserId()!;

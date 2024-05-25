@@ -20,6 +20,11 @@ public class SendMessageCommandHandler : ICommandHandler<SendMessageCommand>
         _conversationRepository = conversationRepository;
     }
 
+    public Task<IResult> Handle(SendMessageCommand request, CancellationToken cancellationToken)
+    {
+        return HandleAsync(request);
+    }
+
     public async Task<IResult> HandleAsync(SendMessageCommand command)
     {
         var senderId = _scopeIdentity.GetUserId()!;

@@ -19,6 +19,11 @@ public class LoginCommandHandler : ICommandHandler<LoginCommand, TokenDto>
         _commandService = commandService;
     }
 
+    public Task<IResult<TokenDto>> Handle(LoginCommand request, CancellationToken cancellationToken)
+    {
+        return HandleAsync(request);
+    }
+
     public async Task<IResult<TokenDto>> HandleAsync(LoginCommand command)
     {
         var user = await _userRepository.GetUserByEmailAsync(command.Email);

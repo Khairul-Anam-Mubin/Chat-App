@@ -16,6 +16,11 @@ public class SendNotificationToClientCommandHandler : ICommandHandler<SendNotifi
         _notificationHubService = notificationHubService;
     }
 
+    public Task<IResult> Handle(SendNotificationToClientCommand request, CancellationToken cancellationToken)
+    {
+        return HandleAsync(request);
+    }
+
     public async Task<IResult> HandleAsync(SendNotificationToClientCommand request)
     {
         var notification = request.Notification;

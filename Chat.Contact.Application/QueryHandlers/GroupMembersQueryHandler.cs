@@ -17,6 +17,11 @@ public class GroupMembersQueryHandler : IQueryHandler<GroupMembersQuery, List<Gr
         _groupMemberRepository = groupMemberRepository;
     }
 
+    public Task<IResult<List<GroupMember>>> Handle(GroupMembersQuery request, CancellationToken cancellationToken)
+    {
+        return HandleAsync(request);
+    }
+
     public async Task<IResult<List<GroupMember>>> HandleAsync(GroupMembersQuery request)
     {
         var groupMembers = 

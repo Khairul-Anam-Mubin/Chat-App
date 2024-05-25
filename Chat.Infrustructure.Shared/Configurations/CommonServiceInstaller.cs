@@ -1,4 +1,8 @@
-﻿using Peacious.Framework;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.FeatureManagement;
+using Peacious.Framework;
 using Peacious.Framework.Attributes;
 using Peacious.Framework.CQRS;
 using Peacious.Framework.EDD;
@@ -7,11 +11,7 @@ using Peacious.Framework.Identity;
 using Peacious.Framework.Loggers;
 using Peacious.Framework.Mediators;
 using Peacious.Framework.ORM;
-using Peacious  .Framework.ServiceInstaller;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.FeatureManagement;
+using Peacious.Framework.ServiceInstaller;
 
 namespace Chat.Infrastructure.Shared.Configurations;
 
@@ -40,12 +40,12 @@ public class CommonServiceInstaller : IServiceInstaller
         services.AddRedis();
 
         services.AddMediator();
-        services.AddMediatR(cfg =>
-        {
-            AssemblyCache.Instance.GetAddedAssemblies()
-            .ForEach(
-                assembly => cfg.RegisterServicesFromAssembly(assembly));
-        });
+        //services.AddMediatR(cfg =>
+        //{
+        //    AssemblyCache.Instance.GetAddedAssemblies()
+        //    .ForEach(
+        //        assembly => cfg.RegisterServicesFromAssembly(assembly));
+        //});
 
         services.AddTransient<IEventExecutor, EventExecutor>();
         services.AddTransient<IQueryExecutor, QueryExecutor>();

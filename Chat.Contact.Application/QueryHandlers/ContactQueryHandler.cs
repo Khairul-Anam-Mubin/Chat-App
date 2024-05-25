@@ -21,6 +21,11 @@ public class ContactQueryHandler : IQueryHandler<ContactQuery, IPaginationRespon
         _scopeIdentity = scopeIdentity;
     }
 
+    public Task<IResult<IPaginationResponse<ContactDto>>> Handle(ContactQuery request, CancellationToken cancellationToken)
+    {
+        return HandleAsync(request);
+    }
+
     public async Task<IResult<IPaginationResponse<ContactDto>>> HandleAsync(ContactQuery query)
     {
         var response = query.CreateResponse();

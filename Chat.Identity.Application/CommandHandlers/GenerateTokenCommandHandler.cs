@@ -23,6 +23,11 @@ public class GenerateTokenCommandHandler : ICommandHandler<GenerateTokenCommand,
         _userRepository = userRepository;
     }
 
+    public Task<IResult<TokenDto>> Handle(GenerateTokenCommand request, CancellationToken cancellationToken)
+    {
+        return HandleAsync(request);
+    }
+
     public async Task<IResult<TokenDto>> HandleAsync(GenerateTokenCommand command)
     {
         var user = await _userRepository.GetByIdAsync(command.UserId);

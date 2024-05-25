@@ -21,6 +21,11 @@ public class RegisterCommandHandler : ICommandHandler<RegisterCommand>
         _scopeIdentity = scopeIdentity;
     }
 
+    public Task<IResult> Handle(RegisterCommand request, CancellationToken cancellationToken)
+    {
+        return HandleAsync(request);
+    }
+
     public async Task<IResult> HandleAsync(RegisterCommand command)
     {
         var userCreatedResult = 

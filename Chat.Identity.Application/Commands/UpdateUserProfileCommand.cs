@@ -1,9 +1,10 @@
+using Chat.Domain.Shared.Entities;
 using Peacious.Framework.CQRS;
 using System.ComponentModel.DataAnnotations;
 
 namespace Chat.Identity.Application.Commands;
 
-public class UpdateUserProfileCommand : ICommand
+public class UpdateUserProfileCommand : ICommand<UserProfile>
 {
     public string? FirstName { get; set; }
 

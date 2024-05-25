@@ -20,6 +20,11 @@ public class GiveVisitorAccessCommandHandler : ICommandHandler<GiveVisitorAccess
         _userAccessRepository = userAccessRepository;
     }
 
+    public Task<IResult> Handle(GiveVisitorAccessCommand request, CancellationToken cancellationToken)
+    {
+        return HandleAsync(request);
+    }
+
     public async Task<IResult> HandleAsync(GiveVisitorAccessCommand command)
     {
         var userId = command.UserId;

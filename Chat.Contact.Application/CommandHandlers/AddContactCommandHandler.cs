@@ -25,6 +25,11 @@ public class AddContactCommandHandler : ICommandHandler<AddContactCommand>
         _queryService = queryService;
     }
 
+    public Task<IResult> Handle(AddContactCommand request, CancellationToken cancellationToken)
+    {
+        return HandleAsync(request);
+    }
+
     public async Task<IResult> HandleAsync(AddContactCommand command)
     {
         var userId = _scopeIdentity.GetUserId()!;

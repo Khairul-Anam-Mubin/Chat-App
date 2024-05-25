@@ -17,6 +17,11 @@ public class PublishNotificationToConnectedHubCommandHandler : ICommandHandler<P
         _pubSub = pubSub;
     }
 
+    public Task<IResult> Handle(PublishNotificationToConnectedHubCommand request, CancellationToken cancellationToken)
+    {
+        return HandleAsync(request);
+    }
+
     public async Task<IResult> HandleAsync(PublishNotificationToConnectedHubCommand request)
     {
         var channel = request.HubId;

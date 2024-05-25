@@ -5,7 +5,7 @@ using Peacious.Framework.Pagination;
 
 namespace Chat.FileStore.Application.Queries;
 
-public class FileDirectoryQuery : APaginationQuery<FileDirectory>, IQuery
+public class FileDirectoryQuery : APaginationQuery<FileDirectory>, IQuery<IPaginationResponse<FileDirectory>>
 {
     [Required]
     public string FileId { get; set; } = string.Empty;

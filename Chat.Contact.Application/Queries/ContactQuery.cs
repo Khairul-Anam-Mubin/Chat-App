@@ -4,7 +4,7 @@ using Peacious.Framework.Pagination;
 
 namespace Chat.Contacts.Application.Queries;
 
-public class ContactQuery : APaginationQuery<ContactDto>, IQuery
+public class ContactQuery : APaginationQuery<ContactDto>, IQuery<IPaginationResponse<ContactDto>>
 {
     public bool IsRequestContacts { get; set; }
     public bool IsPendingContacts { get; set; }

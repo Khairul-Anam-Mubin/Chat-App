@@ -16,6 +16,11 @@ public class MessageByIdsQueryHandler : IQueryHandler<MessageByIdsQuery, List<Me
         _messageRepository = messageRepository;
     }
 
+    public Task<IResult<List<MessageDto>>> Handle(MessageByIdsQuery request, CancellationToken cancellationToken)
+    {
+        return HandleAsync(request);
+    }
+
     public async Task<IResult<List<MessageDto>>> HandleAsync(MessageByIdsQuery request)
     {
         var messageIds = request.MessageIds;

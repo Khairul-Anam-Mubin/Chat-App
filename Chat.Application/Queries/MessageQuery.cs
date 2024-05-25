@@ -5,7 +5,7 @@ using Peacious.Framework.Pagination;
 
 namespace Chat.Application.Queries;
 
-public class MessageQuery : APaginationQuery<MessageDto>, IQuery
+public class MessageQuery : APaginationQuery<MessageDto>, IQuery<IPaginationResponse<MessageDto>>
 {
     [Required]
     public string ReceiverId { get; set; } = string.Empty;

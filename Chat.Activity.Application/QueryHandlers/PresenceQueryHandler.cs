@@ -16,6 +16,11 @@ public class PresenceQueryHandler : IQueryHandler<PresenceQuery, List<PresenceDt
         _presenceRepository = presenceRepository;
     }
 
+    public Task<IResult<List<PresenceDto>>> Handle(PresenceQuery request, CancellationToken cancellationToken)
+    {
+        return HandleAsync(request);
+    }
+
     public async Task<IResult<List<PresenceDto>>> HandleAsync(PresenceQuery query)
     {
         var presenceList = 

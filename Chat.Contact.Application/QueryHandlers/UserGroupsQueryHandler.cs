@@ -20,6 +20,11 @@ public class UserGroupsQueryHandler : IQueryHandler<UserGroupsQuery, List<Group>
         _groupMemberRepository = groupMemberRepository;
     }
 
+    public Task<IResult<List<Group>>> Handle(UserGroupsQuery request, CancellationToken cancellationToken)
+    {
+        return HandleAsync(request);
+    }
+
     public async Task<IResult<List<Group>>> HandleAsync(UserGroupsQuery request)
     {
         var userId = _scopeIdentity.GetUserId()!;

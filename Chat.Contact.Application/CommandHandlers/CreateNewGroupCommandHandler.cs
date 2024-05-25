@@ -21,6 +21,11 @@ public class CreateNewGroupCommandHandler : ICommandHandler<CreateNewGroupComman
         _groupRepository = groupRepository;
     }
 
+    public Task<IResult> Handle(CreateNewGroupCommand request, CancellationToken cancellationToken)
+    {
+        return HandleAsync(request);
+    }
+
     public async Task<IResult> HandleAsync(CreateNewGroupCommand request)
     {
         var groupName = request.GroupName;

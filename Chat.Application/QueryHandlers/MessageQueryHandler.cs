@@ -21,6 +21,11 @@ public class MessageQueryHandler : IQueryHandler<MessageQuery, IPaginationRespon
         _scopeIdentity = scopeIdentity;
     }
 
+    public Task<IResult<IPaginationResponse<MessageDto>>> Handle(MessageQuery request, CancellationToken cancellationToken)
+    {
+        return HandleAsync(request);
+    }
+
     public async Task<IResult<IPaginationResponse<MessageDto>>> HandleAsync(MessageQuery query)
     {
         var senderId = _scopeIdentity.GetUserId()!;

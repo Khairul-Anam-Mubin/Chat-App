@@ -22,14 +22,14 @@ public abstract class ACommonController : ControllerBase
     }
 
     protected async Task<IResult<TResponse>> GetCommandResponseAsync<TCommand, TResponse>(TCommand command) 
-        where TCommand : class, ICommand
+        where TCommand : class, ICommand<TResponse>
         where TResponse : class
     {
         return await CommandExecutor.ExecuteAsync<TCommand, TResponse>(command);
     }
 
     protected async Task<IResult<TResponse>> GetQueryResponseAsync<TQuery, TResponse>(TQuery query)
-        where TQuery : class, IQuery
+        where TQuery : class, IQuery<TResponse>
         where TResponse : class
     {
         return await QueryExecutor.ExecuteAsync<TQuery, TResponse>(query);

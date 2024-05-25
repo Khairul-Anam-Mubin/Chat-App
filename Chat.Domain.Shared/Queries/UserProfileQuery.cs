@@ -4,7 +4,7 @@ using Peacious.Framework.Pagination;
 
 namespace Chat.Domain.Shared.Queries;
 
-public class UserProfileQuery : APaginationQuery<UserProfile>, IQuery, IInternalMessage
+public class UserProfileQuery : APaginationQuery<UserProfile>, IQuery<UserProfileResponse>, IInternalMessage
 {
     public List<string> UserIds { get; set; }
     public List<string> Emails { get; set; }

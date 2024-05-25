@@ -15,6 +15,11 @@ public class PubSubMessageHandler : IHandler<PubSubMessage>
         _commandExecutor = commandExecutor;
     }
 
+    public Task Handle(PubSubMessage request, CancellationToken cancellationToken)
+    {
+        return HandleAsync(request);
+    }
+
     public async Task HandleAsync(PubSubMessage pubSubMessage)
     {
         switch (pubSubMessage.MessageType)

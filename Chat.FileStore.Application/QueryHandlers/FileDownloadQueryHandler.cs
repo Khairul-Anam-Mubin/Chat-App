@@ -16,6 +16,11 @@ public class FileDownloadQueryHandler : IQueryHandler<FileDownloadQuery, IPagina
         _fileDirectoryRepository = fileDirectoryRepository;
     }
 
+    public Task<IResult<IPaginationResponse<FileDownloadResult>>> Handle(FileDownloadQuery request, CancellationToken cancellationToken)
+    {
+        return HandleAsync(request);
+    }
+
     public async Task<IResult<IPaginationResponse<FileDownloadResult>>> HandleAsync(FileDownloadQuery query)
     {
         var response = query.CreateResponse();

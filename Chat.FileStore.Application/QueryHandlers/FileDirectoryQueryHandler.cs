@@ -16,6 +16,11 @@ public class FileDirectoryQueryHandler : IQueryHandler<FileDirectoryQuery, IPagi
         _fileDirectoryRepository = fileDirectoryRespository;
     }
 
+    public Task<IResult<IPaginationResponse<FileDirectory>>> Handle(FileDirectoryQuery request, CancellationToken cancellationToken)
+    {
+        return HandleAsync(request);
+    }
+
     public async Task<IResult<IPaginationResponse<FileDirectory>>> HandleAsync(FileDirectoryQuery query)
     {
         var response = query.CreateResponse();

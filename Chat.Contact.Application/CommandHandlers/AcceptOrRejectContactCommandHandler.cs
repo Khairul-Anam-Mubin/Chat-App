@@ -18,6 +18,11 @@ public class AcceptOrRejectContactCommandHandler : ICommandHandler<AcceptOrRejec
         _scopeIdentity = scopeIdentity;
     }
 
+    public Task<IResult> Handle(AcceptOrRejectContactRequestCommand request, CancellationToken cancellationToken)
+    {
+        return HandleAsync(request);
+    }
+
     public async Task<IResult> HandleAsync(AcceptOrRejectContactRequestCommand command)
     {
         var contact = await _contactRepository.GetByIdAsync(command.ContactId);

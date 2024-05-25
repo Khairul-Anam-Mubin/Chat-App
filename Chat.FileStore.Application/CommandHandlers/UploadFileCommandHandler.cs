@@ -26,6 +26,11 @@ public class UploadFileCommandHandler : ICommandHandler<UploadFileCommand, strin
         _scopeIdentity = scopeIdentity;
     }
 
+    public Task<IResult<string>> Handle(UploadFileCommand request, CancellationToken cancellationToken)
+    {
+        return HandleAsync(request);
+    }
+
     public async Task<IResult<string>> HandleAsync(UploadFileCommand command)
     {
         var file = command.FormFile;

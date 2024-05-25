@@ -20,6 +20,11 @@ public class GiveDeveloperAccessCommandHandler : ICommandHandler<GiveDeveloperAc
         _userAccessRepository = userAccessRepository;
     }
 
+    public Task<IResult> Handle(GiveDeveloperAccessCommand request, CancellationToken cancellationToken)
+    {
+        return HandleAsync(request);
+    }
+
     public async Task<IResult> HandleAsync(GiveDeveloperAccessCommand command)
     {
         var userId = command.UserId;

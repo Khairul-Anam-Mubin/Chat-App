@@ -4,4 +4,4 @@ using Peacious.Framework.Pagination;
 
 namespace Chat.Application.Queries;
 
-public class ConversationsQuery : APaginationQuery<ConversationDto>, IQuery {}
+public class ConversationsQuery : APaginationQuery<ConversationDto>, IQuery<IPaginationResponse<ConversationDto>> { }

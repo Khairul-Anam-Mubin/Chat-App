@@ -5,7 +5,7 @@ using Peacious.Framework.Pagination;
 
 namespace Chat.FileStore.Application.Queries;
 
-public class FileDownloadQuery : APaginationQuery<FileDownloadResult>, IQuery
+public class FileDownloadQuery : APaginationQuery<FileDownloadResult>, IQuery<IPaginationResponse<FileDownloadResult>>
 {
     [Required]
     public string FileId { get; set; } = string.Empty;

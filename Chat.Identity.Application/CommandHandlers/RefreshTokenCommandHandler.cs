@@ -21,6 +21,11 @@ public class RefreshTokenCommandHandler : ICommandHandler<RefreshTokenCommand, T
         _commandService = commandService;
     }
 
+    public Task<IResult<TokenDto>> Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
+    {
+        return HandleAsync(request);
+    }
+
     public async Task<IResult<TokenDto>> HandleAsync(RefreshTokenCommand command)
     {
         var refreshTokenRequestValidationResult = 

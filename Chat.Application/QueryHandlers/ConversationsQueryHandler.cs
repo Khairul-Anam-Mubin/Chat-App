@@ -20,6 +20,11 @@ public class ConversationsQueryHandler : IQueryHandler<ConversationsQuery, IPagi
         _scopeIdentity = scopeIdentity;
     }
 
+    public Task<IResult<IPaginationResponse<ConversationDto>>> Handle(ConversationsQuery request, CancellationToken cancellationToken)
+    {
+        return HandleAsync(request);
+    }
+
     public async Task<IResult<IPaginationResponse<ConversationDto>>> HandleAsync(ConversationsQuery query)
     {
         var userId = _scopeIdentity.GetUserId()!;

@@ -1,9 +1,10 @@
+using Chat.Identity.Application.Dtos;
 using Peacious.Framework.CQRS;
 using System.ComponentModel.DataAnnotations;
 
 namespace Chat.Identity.Application.Commands;
 
-public class LoginCommand : ICommand
+public class LoginCommand : ICommand<TokenDto>
 {
     [EmailAddress]
     public string Email { get; set; } = string.Empty;

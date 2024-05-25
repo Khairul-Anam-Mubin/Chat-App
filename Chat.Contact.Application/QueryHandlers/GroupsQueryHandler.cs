@@ -15,6 +15,11 @@ public class GroupsQueryHandler : IQueryHandler<GroupsQuery, List<Group>>
         _groupRepositroy = groupRepository;
     }
 
+    public Task<IResult<List<Group>>> Handle(GroupsQuery request, CancellationToken cancellationToken)
+    {
+        return HandleAsync(request);
+    }
+
     public async Task<IResult<List<Group>>> HandleAsync(GroupsQuery request)
     {
         var groups = await _groupRepositroy.GetGroupsByGroupIds(request.GroupIds);

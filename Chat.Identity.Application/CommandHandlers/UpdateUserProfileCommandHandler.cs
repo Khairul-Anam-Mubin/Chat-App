@@ -20,6 +20,11 @@ public class UpdateUserProfileCommandHandler :
         _scopeIdentity = scopeIdentity;
     }
 
+    public Task<IResult<UserProfile>> Handle(UpdateUserProfileCommand request, CancellationToken cancellationToken)
+    {
+        return HandleAsync(request);
+    }
+
     public async Task<IResult<UserProfile>> HandleAsync(UpdateUserProfileCommand command)
     {
         var userId = _scopeIdentity.GetUserId()!;
