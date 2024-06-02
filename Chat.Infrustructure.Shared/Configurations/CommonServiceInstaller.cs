@@ -10,6 +10,7 @@ using Peacious.Framework.Extensions;
 using Peacious.Framework.Identity;
 using Peacious.Framework.Loggers;
 using Peacious.Framework.Mediators;
+using Peacious.Framework.MessageBrokers;
 using Peacious.Framework.ORM;
 using Peacious.Framework.ServiceInstaller;
 
@@ -39,7 +40,11 @@ public class CommonServiceInstaller : IServiceInstaller
         services.AddMongoDb();
         services.AddRedis();
 
-        services.AddMediator();
+        services.AddCQRSWithRabbitMqMassTransit(
+            configuration.TryGetConfig<MessageBrokerConfig>("MessageBrokerConfig"),
+            AssemblyCache.Instance.GetAddedAssemblies());
+
+        //services.AddMediator();
         //services.AddMediatR(cfg =>
         //{
         //    AssemblyCache.Instance.GetAddedAssemblies()
@@ -48,10 +53,10 @@ public class CommonServiceInstaller : IServiceInstaller
         //});
 
         services.AddTransient<IEventExecutor, EventExecutor>();
-        services.AddTransient<IQueryExecutor, QueryExecutor>();
-        services.AddTransient<ICommandExecutor, CommandExecutor>();
-        services.AddTransient<ICommandService, CommandService>();
-        services.AddTransient<IQueryService, QueryService>();
+        //services.AddTransient<IQueryExecutor, QueryExecutor>();
+        //services.AddTransient<ICommandExecutor, CommandExecutor>();
+        //services.AddTransient<ICommandService, CommandService>();
+        //services.AddTransient<IQueryService, QueryService>();
         services.AddTransient<IEventService, EventService>();
 
         services.AddControllers();
